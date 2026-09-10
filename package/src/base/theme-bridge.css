@@ -1,0 +1,28 @@
+/*
+ * Exposes the semantic tokens to Tailwind's utility namespaces, so `bg-k-primary`
+ * and `rounded-k` exist for both this kit's own component CSS and for consumers
+ * who compile the source through their own Tailwind build.
+ *
+ * `inline` is load-bearing: it makes the generated utilities emit
+ * `var(--k-primary)` rather than resolving the value at build time, which is
+ * what lets a data-theme switch repaint the page with no rebuild.
+ */
+@theme inline {
+  --color-k-surface: var(--k-surface);
+  --color-k-surface-raised: var(--k-surface-raised);
+  --color-k-fg: var(--k-fg);
+  --color-k-fg-muted: var(--k-fg-muted);
+  --color-k-border: var(--k-border);
+
+  --color-k-primary: var(--k-primary);
+  --color-k-primary-fg: var(--k-primary-fg);
+  --color-k-primary-hover: var(--k-primary-hover);
+
+  --color-k-danger: var(--k-danger);
+  --color-k-danger-fg: var(--k-danger-fg);
+
+  --color-k-ring: var(--k-ring);
+
+  --radius-k: var(--k-radius);
+  --radius-k-lg: var(--k-radius-lg);
+}

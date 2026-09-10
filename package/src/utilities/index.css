@@ -1,0 +1,15 @@
+/*
+ * Utilities layer, built standalone.
+ *
+ * Requires the base layer at runtime for the tokens these utilities reference.
+ * `@reference` pulls the base in for resolution only, so none of it is
+ * duplicated into this file's output.
+ */
+
+@layer theme, base, components, utilities;
+
+@reference '../base/index.css';
+
+@import './utilities.css';
+@import 'tailwindcss/utilities.css' layer(utilities);
+@import './safelist.css';

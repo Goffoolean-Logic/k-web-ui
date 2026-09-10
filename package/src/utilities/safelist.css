@@ -1,0 +1,16 @@
+/*
+ * Utilities are tree-shaken by scanning source files, but a published stylesheet
+ * has no source files to scan — a consumer's markup is written long after this
+ * builds. These directives pin the utility surface the kit guarantees to ship.
+ *
+ * This is the published API. Adding a token here is what makes its utilities
+ * available to no-build consumers; anyone compiling the source through their own
+ * Tailwind gets the full range tree-shaken to what they actually use.
+ */
+
+@source inline(
+  "{,hover:,focus-visible:}{bg,text,border}-k-{surface,surface-raised,fg,fg-muted,border,primary,primary-fg,primary-hover,danger,danger-fg,ring}"
+);
+@source inline("rounded-{k,k-lg}");
+@source inline("k-visually-hidden");
+@source inline("k-focus-ring");

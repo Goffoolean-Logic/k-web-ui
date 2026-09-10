@@ -1,0 +1,36 @@
+{
+  "name": "k-web-components",
+  "version": "0.0.0",
+  "description": "A framework-agnostic design system delivered as CSS: tokens, themes, utilities, and components.",
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist",
+    "src"
+  ],
+  "style": "./dist/full.css",
+  "exports": {
+    ".": "./dist/full.css",
+    "./min": "./dist/full.min.css",
+    "./base": "./dist/base/index.css",
+    "./components": "./dist/components/index.css",
+    "./utilities": "./dist/utilities/index.css",
+    "./source": "./src/index.css",
+    "./source/*": "./src/*"
+  },
+  "scripts": {
+    "build": "pnpm run build:full && pnpm run build:min && pnpm run build:base && pnpm run build:components && pnpm run build:utilities",
+    "build:full": "tailwindcss --input src/index.css --output dist/full.css",
+    "build:min": "tailwindcss --input src/index.css --output dist/full.min.css --minify",
+    "build:base": "tailwindcss --input src/base/index.css --output dist/base/index.css",
+    "build:components": "tailwindcss --input src/components/index.css --output dist/components/index.css",
+    "build:utilities": "tailwindcss --input src/utilities/index.css --output dist/utilities/index.css",
+    "dev": "tailwindcss --input src/index.css --output dist/full.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}

@@ -1,0 +1,32 @@
+/*
+ * Primitive palette.
+ *
+ * Raw values, theme-independent. Nothing outside themes.css should reference
+ * these directly — components consume the semantic tokens instead, so a theme
+ * can repoint them without touching component CSS.
+ */
+:root {
+  --k-palette-white: #ffffff;
+  --k-palette-black: #000000;
+
+  --k-palette-neutral-50: #fafafa;
+  --k-palette-neutral-100: #f4f4f5;
+  --k-palette-neutral-200: #e4e4e7;
+  --k-palette-neutral-300: #d4d4d8;
+  --k-palette-neutral-400: #a1a1aa;
+  --k-palette-neutral-500: #71717a;
+  --k-palette-neutral-600: #52525b;
+  --k-palette-neutral-700: #3f3f46;
+  --k-palette-neutral-800: #27272a;
+  --k-palette-neutral-900: #18181b;
+  --k-palette-neutral-950: #09090b;
+
+  --k-palette-blue-400: #60a5fa;
+  --k-palette-blue-500: #3b82f6;
+
+  --k-palette-red-400: #f87171;
+  --k-palette-red-600: #dc2626;
+
+  --k-radius: 0.375rem;
+  --k-radius-lg: 0.625rem;
+}

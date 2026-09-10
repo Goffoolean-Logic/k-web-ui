@@ -1,0 +1,15 @@
+/* The kit itself, straight from source — editing package/src hot-reloads here. */
+@import '../../package/src/index.css';
+
+/* Tailwind scans the stories so demo layout classes resolve during development. */
+@source '../stories';
+
+/*
+ * Story canvas only. The published kit deliberately styles nothing but .k-*
+ * elements, so the workbench has to paint its own background for the dark
+ * theme to be visible.
+ */
+body {
+  background-color: var(--k-surface);
+  color: var(--k-fg);
+}

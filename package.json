@@ -1,0 +1,11 @@
+{
+  "name": "k-web-components-workspace",
+  "private": true,
+  "packageManager": "pnpm@12.3.4",
+  "scripts": {
+    "dev": "pnpm --filter k-web-components-dev-env dev",
+    "build": "pnpm --filter k-web-components build",
+    "build:storybook": "pnpm --filter k-web-components-dev-env build",
+    "typecheck": "pnpm -r typecheck"
+  }
+}

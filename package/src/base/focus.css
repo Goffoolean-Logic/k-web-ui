@@ -1,0 +1,22 @@
+:root {
+  --k-focus-ring-width: 2px;
+  --k-focus-ring-offset: 2px;
+  --k-focus-ring-color: var(--k-ring);
+}
+
+@layer base {
+  /*
+   * One focus treatment for the entire system. Individual components must not
+   * declare their own outline — changing the ring should be a one-line edit
+   * here, and inconsistent focus styling is an accessibility defect.
+   *
+   * Scoped to elements carrying a k- class so the kit never restyles focus on
+   * markup it doesn't own. The two selectors match a k- class in first position
+   * and in any later position respectively; `[class*='k-']` alone would also
+   * match unrelated names like "dark-mode".
+   */
+  :is([class^='k-'], [class*=' k-']):focus-visible {
+    outline: var(--k-focus-ring-width) solid var(--k-focus-ring-color);
+    outline-offset: var(--k-focus-ring-offset);
+  }
+}

@@ -1,0 +1,14 @@
+/*
+ * Components layer, built standalone.
+ *
+ * Requires the base layer at runtime for the tokens these classes reference.
+ * `@reference` resolves them at build time without duplicating the base output.
+ */
+
+@layer theme, base, components;
+
+@reference '../base/index.css';
+
+@import './classes/button.css';
+@import './classes/card.css';
+@import './classes/input.css';
