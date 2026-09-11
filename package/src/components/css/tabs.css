@@ -1,0 +1,42 @@
+@layer components {
+  div.k-tabs {
+    @apply flex flex-col;
+  }
+
+  /* Shrink-wrap to the tabs so the rule is never wider than what is shown. */
+  div.k-tabs__list {
+    @apply inline-flex w-fit max-w-full flex-wrap self-start border-b-2 border-k-border;
+  }
+
+  button.k-tabs__tab {
+    @apply relative cursor-pointer border-0 bg-transparent px-4 py-2
+      text-sm font-medium text-k-fg-muted;
+  }
+
+  button.k-tabs__tab:hover:not([aria-selected='true']) {
+    @apply text-k-fg;
+  }
+
+  /* Indicator is the full tab control, not the label width. */
+  button.k-tabs__tab[aria-selected='true'] {
+    @apply text-k-fg;
+  }
+
+  button.k-tabs__tab[aria-selected='true']::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -2px;
+    left: 0;
+    height: 2px;
+    background-color: var(--k-primary);
+  }
+
+  div.k-tabs__panel {
+    @apply w-full px-1 py-4 text-sm text-k-fg;
+  }
+
+  div.k-tabs__panel[hidden] {
+    display: none;
+  }
+}

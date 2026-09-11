@@ -1,7 +1,7 @@
 {
   "name": "k-web-components",
   "version": "0.0.0",
-  "description": "A framework-agnostic design system delivered as CSS: tokens, themes, utilities, and components.",
+  "description": "A framework-agnostic design system: CSS chrome plus a small JS behavior layer.",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -17,20 +17,32 @@
     "./base": "./dist/base/index.css",
     "./components": "./dist/components/index.css",
     "./utilities": "./dist/utilities/index.css",
+    "./fonts/*": "./dist/fonts/*",
+    "./js": {
+      "types": "./dist/js/index.d.ts",
+      "default": "./dist/js/index.js"
+    },
     "./source": "./src/index.css",
     "./source/*": "./src/*"
   },
   "scripts": {
-    "build": "pnpm run build:full && pnpm run build:min && pnpm run build:base && pnpm run build:components && pnpm run build:utilities",
+    "build": "pnpm run build:css && pnpm run build:js",
+    "build:css": "pnpm run build:full && pnpm run build:min && pnpm run build:base && pnpm run build:components && pnpm run build:utilities && pnpm run build:fonts",
+    "build:fonts": "node scripts/copy-fonts.js",
     "build:full": "tailwindcss --input src/index.css --output dist/full.css",
     "build:min": "tailwindcss --input src/index.css --output dist/full.min.css --minify",
     "build:base": "tailwindcss --input src/base/index.css --output dist/base/index.css",
     "build:components": "tailwindcss --input src/components/index.css --output dist/components/index.css",
     "build:utilities": "tailwindcss --input src/utilities/index.css --output dist/utilities/index.css",
-    "dev": "tailwindcss --input src/index.css --output dist/full.css --watch"
+    "build:js": "vite build",
+    "dev": "tailwindcss --input src/index.css --output dist/full.css --watch",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
-    "tailwindcss": "^4.3.3"
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.0",
+    "vite-plugin-dts": "^5.1.0"
   }
 }

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/html-vite';
 
 interface ButtonArgs {
   label: string;
-  variant: 'primary' | 'secondary' | 'ghost' | 'danger';
+  variant: 'primary' | 'secondary' | 'ghost' | 'accent' | 'danger';
   size: 'sm' | 'md' | 'lg';
   block: boolean;
   disabled: boolean;
@@ -28,7 +28,7 @@ const meta: Meta<ButtonArgs> = {
   argTypes: {
     variant: {
       control: 'inline-radio',
-      options: ['primary', 'secondary', 'ghost', 'danger'],
+      options: ['primary', 'secondary', 'ghost', 'accent', 'danger'],
     },
     size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
     block: { control: 'boolean' },
@@ -50,6 +50,10 @@ export const Ghost: Story = {
   args: { variant: 'ghost', label: 'Ghost' },
 };
 
+export const Accent: Story = {
+  args: { variant: 'accent', label: 'Accent' },
+};
+
 export const Danger: Story = {
   args: { variant: 'danger', label: 'Delete' },
 };
@@ -64,19 +68,6 @@ export const Sizes: Story = {
       <button type="button" class="k-btn k-btn--primary k-btn--sm">Small</button>
       <button type="button" class="k-btn k-btn--primary">Medium</button>
       <button type="button" class="k-btn k-btn--primary k-btn--lg">Large</button>
-    </div>
-  `,
-};
-
-/**
- * The classes are element-agnostic. An anchor styled as a button keeps link
- * semantics; use aria-disabled on it, since anchors ignore the disabled attribute.
- */
-export const AsLink: Story = {
-  render: () => `
-    <div class="flex items-center gap-3">
-      <a href="#" class="k-btn k-btn--primary">Anchor</a>
-      <a href="#" class="k-btn k-btn--secondary" aria-disabled="true">Disabled anchor</a>
     </div>
   `,
 };

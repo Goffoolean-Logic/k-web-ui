@@ -1,32 +1,47 @@
 /*
  * Primitive palette.
  *
- * Raw values, theme-independent. Nothing outside themes.css should reference
- * these directly — components consume the semantic tokens instead, so a theme
- * can repoint them without touching component CSS.
+ * Brand: orange, black, and white. Orange is the chrome (fields, actions,
+ * borders, focus) and the light canvas wash. Black is the dark canvas.
+ * White is type on dark chrome. Red exists only for danger.
+ *
+ * Nothing outside themes.css should reference these directly.
  */
 :root {
   --k-palette-white: #ffffff;
   --k-palette-black: #000000;
 
-  --k-palette-neutral-50: #fafafa;
-  --k-palette-neutral-100: #f4f4f5;
-  --k-palette-neutral-200: #e4e4e7;
-  --k-palette-neutral-300: #d4d4d8;
-  --k-palette-neutral-400: #a1a1aa;
-  --k-palette-neutral-500: #71717a;
-  --k-palette-neutral-600: #52525b;
-  --k-palette-neutral-700: #3f3f46;
-  --k-palette-neutral-800: #27272a;
-  --k-palette-neutral-900: #18181b;
-  --k-palette-neutral-950: #09090b;
+  --k-palette-neutral-50: #f8fafc;
+  --k-palette-neutral-100: #f1f5f9;
+  --k-palette-neutral-200: #e2e8f0;
+  --k-palette-neutral-300: #cbd5e1;
+  --k-palette-neutral-400: #94a3b8;
+  --k-palette-neutral-500: #64748b;
+  --k-palette-neutral-600: #475569;
+  --k-palette-neutral-700: #334155;
+  --k-palette-neutral-800: #1e293b;
+  --k-palette-neutral-900: #0f172a;
+  --k-palette-neutral-950: #020617;
 
-  --k-palette-blue-400: #60a5fa;
-  --k-palette-blue-500: #3b82f6;
+  --k-palette-orange-50: #fff7ed;
+  --k-palette-orange-100: #ffedd5;
+  --k-palette-orange-200: #fed7aa;
+  --k-palette-orange-300: #fdba74;
+  --k-palette-orange-400: #fb923c;
+  --k-palette-orange-500: #f97316;
+  --k-palette-orange-600: #ea580c;
+  --k-palette-orange-700: #c2410c;
+  --k-palette-orange-800: #9a3412;
+  --k-palette-orange-900: #7c2d12;
+  --k-palette-orange-950: #431407;
 
   --k-palette-red-400: #f87171;
   --k-palette-red-600: #dc2626;
+  --k-palette-red-950: #450a0a;
 
   --k-radius: 0.375rem;
   --k-radius-lg: 0.625rem;
+
+  --k-font-sans: Outfit, ui-sans-serif, system-ui, sans-serif;
+  --k-font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 }

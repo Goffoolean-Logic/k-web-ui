@@ -12,12 +12,17 @@ type Story = StoryObj;
 const SEMANTIC_TOKENS = [
   'surface',
   'surface-raised',
+  'field',
+  'field-fg',
   'fg',
   'fg-muted',
   'border',
   'primary',
   'primary-fg',
   'primary-hover',
+  'accent',
+  'accent-fg',
+  'accent-hover',
   'danger',
   'danger-fg',
   'ring',
@@ -56,7 +61,7 @@ export const FocusRing: Story = {
   render: () => `
     <div class="flex flex-wrap items-center gap-3">
       <button type="button" class="k-btn k-btn--primary">Button</button>
-      <a href="#" class="k-btn k-btn--secondary">Anchor</a>
+      <a href="#" class="k-link">Anchor</a>
       <input class="k-input" style="max-width: 12rem;" placeholder="Input" />
     </div>
   `,

@@ -1,74 +1,70 @@
 /*
  * Themes.
  *
- * Activated with a data-theme attribute on <html> or any subtree:
- *
- *   <html data-theme="dark">     explicit
- *   <html data-theme="auto">     follow the OS preference
- *
- * With no attribute at all the light theme applies, so the kit is usable
- * without any host-page setup.
- *
- * Every semantic token is defined in all themes. A token that exists in one
- * theme and not another is the main way a design system breaks in dark mode.
+ * Orange, black, and white. Orange is the chrome — fields, actions, borders,
+ * focus — and does not change with the theme. Light canvas is a warm orange
+ * wash; dark canvas is black.
  */
+
+:root {
+  --k-field: var(--k-palette-orange-300);
+  --k-field-fg: var(--k-palette-black);
+  --k-border: var(--k-palette-orange-500);
+
+  --k-primary: var(--k-palette-orange-700);
+  --k-primary-fg: var(--k-palette-white);
+  --k-primary-hover: var(--k-palette-orange-800);
+
+  --k-ring: var(--k-palette-orange-500);
+}
 
 :root,
 [data-theme='light'] {
   color-scheme: light;
 
-  --k-surface: var(--k-palette-white);
-  --k-surface-raised: var(--k-palette-neutral-50);
-  --k-fg: var(--k-palette-neutral-900);
-  --k-fg-muted: var(--k-palette-neutral-500);
-  --k-border: var(--k-palette-neutral-300);
+  --k-surface: var(--k-palette-orange-50);
+  --k-surface-raised: var(--k-palette-orange-100);
+  --k-fg: var(--k-palette-black);
+  --k-fg-muted: var(--k-palette-orange-800);
 
-  --k-primary: var(--k-palette-neutral-900);
-  --k-primary-fg: var(--k-palette-white);
-  --k-primary-hover: var(--k-palette-neutral-700);
+  --k-accent: var(--k-palette-black);
+  --k-accent-fg: var(--k-palette-white);
+  --k-accent-hover: var(--k-palette-orange-950);
 
   --k-danger: var(--k-palette-red-600);
   --k-danger-fg: var(--k-palette-white);
-
-  --k-ring: var(--k-palette-blue-500);
 }
 
 [data-theme='dark'] {
   color-scheme: dark;
 
-  --k-surface: var(--k-palette-neutral-900);
-  --k-surface-raised: var(--k-palette-neutral-800);
-  --k-fg: var(--k-palette-neutral-100);
-  --k-fg-muted: var(--k-palette-neutral-400);
-  --k-border: var(--k-palette-neutral-700);
+  --k-surface: var(--k-palette-black);
+  --k-surface-raised: var(--k-palette-black);
+  --k-fg: var(--k-palette-white);
+  --k-fg-muted: var(--k-palette-orange-300);
 
-  --k-primary: var(--k-palette-neutral-100);
-  --k-primary-fg: var(--k-palette-neutral-900);
-  --k-primary-hover: var(--k-palette-white);
+  --k-accent: var(--k-palette-white);
+  --k-accent-fg: var(--k-palette-black);
+  --k-accent-hover: var(--k-palette-orange-100);
 
   --k-danger: var(--k-palette-red-400);
-  --k-danger-fg: var(--k-palette-neutral-950);
-
-  --k-ring: var(--k-palette-blue-400);
+  --k-danger-fg: var(--k-palette-red-950);
 }
 
 @media (prefers-color-scheme: dark) {
   [data-theme='auto'] {
     color-scheme: dark;
 
-    --k-surface: var(--k-palette-neutral-900);
-    --k-surface-raised: var(--k-palette-neutral-800);
-    --k-fg: var(--k-palette-neutral-100);
-    --k-fg-muted: var(--k-palette-neutral-400);
-    --k-border: var(--k-palette-neutral-700);
+    --k-surface: var(--k-palette-black);
+    --k-surface-raised: var(--k-palette-black);
+    --k-fg: var(--k-palette-white);
+    --k-fg-muted: var(--k-palette-orange-300);
 
-    --k-primary: var(--k-palette-neutral-100);
-    --k-primary-fg: var(--k-palette-neutral-900);
-    --k-primary-hover: var(--k-palette-white);
+    --k-accent: var(--k-palette-white);
+    --k-accent-fg: var(--k-palette-black);
+    --k-accent-hover: var(--k-palette-orange-100);
 
     --k-danger: var(--k-palette-red-400);
-    --k-danger-fg: var(--k-palette-neutral-950);
-
-    --k-ring: var(--k-palette-blue-400);
+    --k-danger-fg: var(--k-palette-red-950);
   }
 }

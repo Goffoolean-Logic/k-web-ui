@@ -4,15 +4,15 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["node"],
+    "types": [],
     "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
-    "noEmit": true,
-    "paths": {
-      "k-web-components/js": ["../package/src/components/js/index.ts"]
-    }
+    "declaration": true,
+    "noEmit": true
   },
-  "include": [".storybook", "stories"]
+  "include": ["src/components/js", "vite.config.ts"]
 }

@@ -9,8 +9,9 @@
  */
 
 @source inline(
-  "{,hover:,focus-visible:}{bg,text,border}-k-{surface,surface-raised,fg,fg-muted,border,primary,primary-fg,primary-hover,danger,danger-fg,ring}"
+  "{,hover:,focus-visible:}{bg,text,border}-k-{surface,surface-raised,field,field-fg,fg,fg-muted,border,primary,primary-fg,primary-hover,accent,accent-fg,accent-hover,danger,danger-fg,ring}"
 );
 @source inline("rounded-{k,k-lg}");
+@source inline("font-k-{sans,mono}");
 @source inline("k-visually-hidden");
 @source inline("k-focus-ring");

@@ -1,25 +1,25 @@
 @layer components {
-  .k-card {
-    @apply flex flex-col rounded-k-lg border border-k-border bg-k-surface;
+  div.k-card {
+    @apply flex flex-col rounded-k-lg border border-k-border bg-k-surface-raised;
   }
 
-  .k-card__header {
+  div.k-card__header {
     @apply flex flex-col gap-1 border-b border-k-border px-5 py-4;
   }
 
-  .k-card__title {
+  h3.k-card__title {
     @apply text-base leading-tight font-semibold text-k-fg;
   }
 
-  .k-card__subtitle {
+  p.k-card__subtitle {
     @apply text-sm text-k-fg-muted;
   }
 
-  .k-card__body {
+  div.k-card__body {
     @apply flex flex-col gap-4 px-5 py-4 text-sm text-k-fg;
   }
 
-  .k-card__footer {
+  div.k-card__footer {
     @apply flex items-center justify-end gap-2 border-t border-k-border px-5 py-3;
   }
 }

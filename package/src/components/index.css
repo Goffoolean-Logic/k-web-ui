@@ -9,6 +9,8 @@
 
 @reference '../base/index.css';
 
-@import './classes/button.css';
-@import './classes/card.css';
-@import './classes/input.css';
+@import './css/button.css';
+@import './css/card.css';
+@import './css/input.css';
+@import './css/link.css';
+@import './css/tabs.css';

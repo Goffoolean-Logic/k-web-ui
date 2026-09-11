@@ -1,5 +1,5 @@
 /*
- * Base layer — design tokens, themes, and the global focus ring.
+ * Base layer — design tokens, themes, hosted fonts, and the global focus ring.
  *
  * Required by the components and utilities layers, which reference these
  * tokens but do not define them. Ships no reset.
@@ -12,4 +12,5 @@
 @import './tokens.css';
 @import './themes.css';
 @import './theme-bridge.css';
+@import './fonts.css';
 @import './focus.css';

@@ -5,8 +5,7 @@
  * the guaranteed utility surface. Ships no reset, so dropping this into a page
  * restyles nothing that doesn't carry a k- class.
  *
- * Imports the layer partials directly rather than the per-layer entry points,
- * since those each carry their own preamble.
+ * Visual classes live in components/css. Behavior lives in components/js.
  */
 
 @layer theme, base, components, utilities;
@@ -16,11 +15,14 @@
 @import './base/tokens.css';
 @import './base/themes.css';
 @import './base/theme-bridge.css';
+@import './base/fonts.css';
 @import './base/focus.css';
 
-@import './components/classes/button.css';
-@import './components/classes/card.css';
-@import './components/classes/input.css';
+@import './components/css/button.css';
+@import './components/css/card.css';
+@import './components/css/input.css';
+@import './components/css/link.css';
+@import './components/css/tabs.css';
 
 @import './utilities/utilities.css';
 @import 'tailwindcss/utilities.css' layer(utilities);

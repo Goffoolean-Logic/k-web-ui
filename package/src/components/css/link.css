@@ -1,0 +1,14 @@
+@layer components {
+  /* Requires <a class="k-link">. Orange is the chrome — links follow primary. */
+  a.k-link {
+    @apply text-k-primary underline decoration-from-font underline-offset-2;
+  }
+
+  a.k-link:hover {
+    @apply text-k-primary-hover;
+  }
+
+  a.k-link[aria-disabled='true'] {
+    @apply pointer-events-none cursor-not-allowed opacity-50 no-underline;
+  }
+}

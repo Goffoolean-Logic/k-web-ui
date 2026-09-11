@@ -12,4 +12,5 @@
 body {
   background-color: var(--k-surface);
   color: var(--k-fg);
+  font-family: var(--k-font-sans);
 }

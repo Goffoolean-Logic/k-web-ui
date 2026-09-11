@@ -10,6 +10,8 @@
 @theme inline {
   --color-k-surface: var(--k-surface);
   --color-k-surface-raised: var(--k-surface-raised);
+  --color-k-field: var(--k-field);
+  --color-k-field-fg: var(--k-field-fg);
   --color-k-fg: var(--k-fg);
   --color-k-fg-muted: var(--k-fg-muted);
   --color-k-border: var(--k-border);
@@ -18,6 +20,10 @@
   --color-k-primary-fg: var(--k-primary-fg);
   --color-k-primary-hover: var(--k-primary-hover);
 
+  --color-k-accent: var(--k-accent);
+  --color-k-accent-fg: var(--k-accent-fg);
+  --color-k-accent-hover: var(--k-accent-hover);
+
   --color-k-danger: var(--k-danger);
   --color-k-danger-fg: var(--k-danger-fg);
 
@@ -25,4 +31,7 @@
 
   --radius-k: var(--k-radius);
   --radius-k-lg: var(--k-radius-lg);
+
+  --font-k-sans: var(--k-font-sans);
+  --font-k-mono: var(--k-font-mono);
 }

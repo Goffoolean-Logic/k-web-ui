@@ -1,0 +1,9 @@
+Outfit
+  Copyright 2021 The Outfit Project Authors (https://github.com/Outfitio/Outfit-Fonts)
+  SIL Open Font License 1.1 — see OFL-Outfit.txt
+
+IBM Plex Mono
+  Copyright 2017 IBM Corp.
+  SIL Open Font License 1.1 — see LICENSE-IBM-Plex.txt
+
+Latin subsets only. Do not drop these license files when copying the woff2s.

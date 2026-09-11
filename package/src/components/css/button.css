@@ -1,0 +1,68 @@
+@layer components {
+  /* Requires <button class="k-btn">. */
+  button.k-btn {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2
+      rounded-k border border-transparent px-5 py-2.5
+      text-sm leading-tight font-medium no-underline
+      transition-colors duration-150;
+  }
+
+  button.k-btn:disabled,
+  button.k-btn[aria-disabled='true'] {
+    @apply cursor-not-allowed opacity-50;
+  }
+
+  /* Variants */
+  button.k-btn--primary {
+    @apply bg-k-primary text-k-primary-fg;
+  }
+
+  button.k-btn--primary:hover:not(:disabled):not([aria-disabled='true']) {
+    @apply bg-k-primary-hover;
+  }
+
+  button.k-btn--secondary {
+    @apply border-k-border bg-k-surface text-k-fg;
+  }
+
+  button.k-btn--secondary:hover:not(:disabled):not([aria-disabled='true']) {
+    @apply bg-k-surface-raised;
+  }
+
+  button.k-btn--ghost {
+    @apply bg-transparent text-k-fg;
+  }
+
+  button.k-btn--ghost:hover:not(:disabled):not([aria-disabled='true']) {
+    @apply bg-k-surface-raised;
+  }
+
+  button.k-btn--accent {
+    @apply bg-k-accent text-k-accent-fg;
+  }
+
+  button.k-btn--accent:hover:not(:disabled):not([aria-disabled='true']) {
+    @apply bg-k-accent-hover;
+  }
+
+  button.k-btn--danger {
+    @apply bg-k-danger text-k-danger-fg;
+  }
+
+  button.k-btn--danger:hover:not(:disabled):not([aria-disabled='true']) {
+    @apply brightness-110;
+  }
+
+  /* Sizes */
+  button.k-btn--sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+
+  button.k-btn--lg {
+    @apply px-10 py-3.5 text-base;
+  }
+
+  button.k-btn--block {
+    @apply flex w-full;
+  }
+}
