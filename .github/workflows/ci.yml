@@ -5,12 +5,8 @@ on:
   push:
     branches: [main]
 
-concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
-  lint:
+  quality:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,20 +17,10 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
-
-  typecheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
 
   test:
+    needs: [quality]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -46,7 +32,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm test
 
-  build:
+  builds:
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -57,48 +44,12 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
-
-  docs:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm build:docs
-
-  storybook:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm build:storybook
-
-  ci:
-    if: always()
-    needs: [lint, typecheck, test, build, docs, storybook]
-    runs-on: ubuntu-latest
-    steps:
-      - name: All required jobs passed
-        run: |
-          test "${{ needs.lint.result }}" = success
-          test "${{ needs.typecheck.result }}" = success
-          test "${{ needs.test.result }}" = success
-          test "${{ needs.build.result }}" = success
-          test "${{ needs.docs.result }}" = success
-          test "${{ needs.storybook.result }}" = success
+      - run: pnpm --filter k-web-ui-docs build
+      - run: pnpm --filter k-web-ui-dev-env build
 
   publish:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [ci]
+    needs: [builds]
     runs-on: ubuntu-latest
     permissions:
       contents: read
