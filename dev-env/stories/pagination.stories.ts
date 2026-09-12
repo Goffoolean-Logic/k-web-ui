@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/html-vite';
-import { KPagination } from 'k-web-components/js';
+import { KPagination } from 'k-web-ui/js';
 
 const meta: Meta = {
   title: 'Components/Pagination',

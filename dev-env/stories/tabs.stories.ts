@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/html-vite';
-import { KTabs } from 'k-web-components/js';
+import { KTabs } from 'k-web-ui/js';
 
 const ITEMS = [
   {

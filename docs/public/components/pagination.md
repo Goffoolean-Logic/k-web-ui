@@ -27,7 +27,7 @@ Twelve pages, starting on 5. First and last stay; the window is 4 5 6.
 ```
 
 ```js
-import { KPagination } from 'k-web-components/js';
+import { KPagination } from 'k-web-ui/js';
 
 KPagination.mount('docs-pagination', { count: 12, page: 5 });
 ```

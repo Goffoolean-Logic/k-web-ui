@@ -12,7 +12,7 @@ Every docs page has a `.md` twin. Copy it from the button at the top, start at [
 ## Install
 
 ```bash
-pnpm add k-web-components
+pnpm add k-web-ui
 ```
 
 ## CSS
@@ -20,15 +20,15 @@ pnpm add k-web-components
 This one import is the full prebuilt stylesheet. You do not need Tailwind for it:
 
 ```js
-import 'k-web-components';
+import 'k-web-ui';
 ```
 
 Or pull the layers in separately:
 
 ```js
-import 'k-web-components/base';
-import 'k-web-components/components';
-import 'k-web-components/utilities';
+import 'k-web-ui/base';
+import 'k-web-ui/components';
+import 'k-web-ui/utilities';
 ```
 
 `base` is colors, fonts, icon masks, and the focus ring. See [Colors](/foundations/colors/), [Typography](/foundations/typography/), and [Styles](/foundations/styles/) for the tokens. `components` is the UI pieces. `utilities` is a small set of helpers such as `bg-k-primary`. Components expect `base` to be imported first.
@@ -36,7 +36,7 @@ import 'k-web-components/utilities';
 If you already compile Tailwind, import the source and let the compiler omit what you did not use:
 
 ```js
-import 'k-web-components/source';
+import 'k-web-ui/source';
 ```
 
 ## Markup
@@ -71,7 +71,7 @@ A few widgets need you to leave an empty element on the page and call `mount`:
 ```
 
 ```js
-import { KPagination } from 'k-web-components/js';
+import { KPagination } from 'k-web-ui/js';
 
 KPagination.mount('pages', { count: 12, page: 5 });
 ```

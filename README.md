@@ -1,4 +1,4 @@
-# k-web-components
+# K-Web-UI
 
 CSS classes for real HTML. Put `k-` classes on a button, a table, or a dialog and they pick up the kit look. Most of the kit is a stylesheet. A few widgets (tabs, pagination, dropdowns, and the carousel) need a `mount()` call because CSS cannot manage that behavior on its own.
 
@@ -7,11 +7,11 @@ The kit does not wrap elements in React, does not register custom elements, and 
 ## Use
 
 ```bash
-pnpm add k-web-components
+pnpm add k-web-ui
 ```
 
 ```js
-import 'k-web-components';
+import 'k-web-ui';
 ```
 
 ```html
@@ -27,14 +27,14 @@ For pagination, tabs, dropdowns, and the carousel, leave an empty element on the
 ```
 
 ```js
-import { KPagination } from 'k-web-components/js';
+import { KPagination } from 'k-web-ui/js';
 
 KPagination.mount('pages', { count: 12, page: 5 });
 ```
 
 Accordion, grid, modal, sidebar, spin, table, toast, and tooltip are CSS only. You write the markup and skip `mount`.
 
-`import 'k-web-components'` is the full prebuilt stylesheet. If you already run Tailwind, `k-web-components/source` lets the compiler omit classes you never used. You can also import `/base`, `/components`, and `/utilities` separately.
+`import 'k-web-ui'` is the full prebuilt stylesheet. If you already run Tailwind, `k-web-ui/source` lets the compiler omit classes you never used. You can also import `/base`, `/components`, and `/utilities` separately.
 
 ## Repo
 
@@ -42,7 +42,7 @@ This is a pnpm workspace. Node 24.
 
 | Folder | What it is |
 | --- | --- |
-| `package/` | The kit on npm (`k-web-components@0.1.0`) |
+| `package/` | The kit on npm (`k-web-ui@0.1.0`) |
 | `docs/` | The docs site. It depends on the package like anyone else. |
 | `dev-env/` | Storybook. Same deal. |
 

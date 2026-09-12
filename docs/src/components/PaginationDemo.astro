@@ -11,7 +11,7 @@ const { id = 'docs-pagination', count = 12, page = 5 } = Astro.props;
 <div id={id} class="k-pagination" data-count={count} data-page={page}></div>
 
 <script>
-  import { KPagination } from 'k-web-components/js';
+  import { KPagination } from 'k-web-ui/js';
 
   document.querySelectorAll<HTMLElement>('.k-pagination[data-count]').forEach((root) => {
     const count = Number(root.dataset.count);

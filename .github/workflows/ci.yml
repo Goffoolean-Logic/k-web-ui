@@ -116,9 +116,9 @@ jobs:
       - name: Publish if the version is new
         run: |
           current="$(node -p "require('./package/package.json').version")"
-          published="$(npm view k-web-components version 2>/dev/null || true)"
+          published="$(npm view k-web-ui version 2>/dev/null || true)"
           if [ "$published" = "$current" ]; then
-            echo "k-web-components@$current is already on npm"
+            echo "k-web-ui@$current is already on npm"
             exit 0
           fi
-          pnpm --filter k-web-components publish --access public --no-git-checks
+          pnpm --filter k-web-ui publish --access public --no-git-checks
