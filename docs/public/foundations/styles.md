@@ -1,24 +1,12 @@
----
-title: Styles
-description: Radius, shadows, and the focus ring.
----
+# Styles
 
-import Preview from '../../../components/Preview.astro';
+Radius, shadows, and the focus ring.
 
 Everything that is not a [color](/foundations/colors/) or a [typeface](/foundations/typography/) lives here: corner radius, elevation, and the focus ring. These tokens sit on `:root`. Shadows pick up a stronger treatment in dark mode so they still read on a black page.
 
 ## Radius
 
 `--k-radius` is the default corner on buttons, inputs, and most controls. `--k-radius-lg` is used on cards, dialogs, and preview frames. Both are 2px.
-
-<Preview>
-  <div class="k-radius-demo k-radius-demo--k bg-k-surface-raised">
-    rounded-k · 2px
-  </div>
-  <div class="k-radius-demo k-radius-demo--lg bg-k-surface-raised">
-    rounded-k-lg · 2px
-  </div>
-</Preview>
 
 ```html
 <div class="rounded-k">Default</div>
@@ -33,18 +21,6 @@ Everything that is not a [color](/foundations/colors/) or a [typeface](/foundati
 ## Shadows
 
 Three elevations. Use `--k-shadow-1` for a light lift (a resting card). `--k-shadow-2` is a menu or popover. `--k-shadow-3` is something that should sit clearly above the page, such as a dialog.
-
-<Preview lift>
-  <div class="k-shadow-demo rounded-k-lg bg-k-surface-raised shadow-k-1">
-    shadow-k-1
-  </div>
-  <div class="k-shadow-demo rounded-k-lg bg-k-surface-raised shadow-k-2">
-    shadow-k-2
-  </div>
-  <div class="k-shadow-demo rounded-k-lg bg-k-surface-raised shadow-k-3">
-    shadow-k-3
-  </div>
-</Preview>
 
 ```html
 <div class="shadow-k-1">Resting</div>
@@ -64,13 +40,11 @@ Light mode uses a soft slate shadow. Dark mode adds a faint light edge so the li
 
 The ring is defined once for every `k-` class. Width, offset, and color are tokens. The color follows `--k-ring`, which stays orange in both themes.
 
-Tab through these. Every control should get the same ring.
-
-<Preview>
-  <button type="button" class="k-btn k-btn--primary">Button</button>
-  <a class="k-link" href="#focus">Link</a>
-  <input class="k-input" style="max-width: 12rem;" placeholder="Input" />
-</Preview>
+```html
+<button type="button" class="k-btn k-btn--primary">Button</button>
+<a class="k-link" href="#focus">Link</a>
+<input class="k-input" placeholder="Input" />
+```
 
 | Token | Value |
 | --- | --- |

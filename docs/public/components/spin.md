@@ -1,0 +1,56 @@
+# Spin
+
+span.k-spin wraps an icon and rotates it.
+
+Spin is the rotation, not the icon itself. The [loading icon](/foundations/iconography/) sits still until you wrap it. Use `<span class="k-spin">` around any kit icon when something is in progress, such as a save or a refresh.
+
+`createSpin()` builds the wrapper and defaults to the loading icon. Pass a name and size if you want to spin something else. Reduced motion turns the animation off. The icon still shows.
+
+Inside a button the inner icon drops to `1em`, same as any other icon next to a label.
+
+## Classes
+
+| Class | Type |
+| --- | --- |
+| `k-spin` | component |
+
+## Examples
+
+### Loading icon
+
+The default busy mark. The wrapper rotates; the glyph does not.
+
+```html
+<span class="k-spin">
+  <span class="k-icon k-icon--loading" aria-hidden="true"></span>
+</span>
+```
+
+### In a button
+
+A disabled secondary button while work is in progress.
+
+```html
+<button type="button" class="k-btn k-btn--secondary" disabled>
+  <span class="k-spin">
+    <span class="k-icon k-icon--loading" aria-hidden="true"></span>
+  </span>
+  Saving
+</button>
+```
+
+## Accessibility
+
+The spin is decorative motion. Keep the icon `aria-hidden="true"`. Name the busy state on the control: `aria-busy="true"` on the button, or visible text like Saving. `prefers-reduced-motion: reduce` stops the rotation. The icon still shows.
+
+## Dos and don'ts
+
+**Do**
+- Wrap the icon in `.k-spin`. The glyph does not rotate on its own.
+- Name the busy state in visible text or `aria-busy`.
+- Use `createSpin()` when you build the mark in JS.
+
+**Don't**
+- Put the meaning only in the spinning icon.
+- Animate some other element and call it a spin.
+- Leave the icon in the accessibility tree.

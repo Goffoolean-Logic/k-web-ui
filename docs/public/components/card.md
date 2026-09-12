@@ -1,0 +1,54 @@
+# Card
+
+div.k-card with optional header, body, footer.
+
+A card is a box around one unit of content: a deployment, a setting, a summary. It is a layout shell, not an interactive widget. Put buttons and links inside it. Do not hang a click handler on the box itself.
+
+The element is `<div class="k-card">`. Header, body, and footer are optional. Title and subtitle go in the header. Copy goes in the body. The footer is a row of actions, aligned to the end. A card with only a body is fine.
+
+## Classes
+
+| Class | Type |
+| --- | --- |
+| `k-card` | component |
+| `k-card__header` | part |
+| `k-card__title` | part |
+| `k-card__subtitle` | part |
+| `k-card__body` | part |
+| `k-card__footer` | part |
+
+## Examples
+
+### Header, body, and footer
+
+The full stack: identity in the header, copy in the body, an action in the footer.
+
+```html
+<div class="k-card">
+  <div class="k-card__header">
+    <h3 class="k-card__title">Deployment</h3>
+    <p class="k-card__subtitle">Last run 4 minutes ago</p>
+  </div>
+  <div class="k-card__body">
+    <p>Every check passed on the latest commit.</p>
+  </div>
+  <div class="k-card__footer">
+    <button type="button" class="k-btn k-btn--secondary k-btn--sm">Logs</button>
+  </div>
+</div>
+```
+
+## Accessibility
+
+This is a grouping, not a button. Leave `onclick` off `.k-card`. The title should be a heading (`h3.k-card__title` in a normal outline). Actions belong in the footer as real buttons or links so they stay in the tab order and pick up the kit ring.
+
+## Dos and don'ts
+
+**Do**
+- Skip the parts you do not need. A body-only card is valid.
+- Put actions in the footer as real buttons or links.
+
+**Don't**
+- Make the whole card clickable.
+- Nest cards inside cards.
+- Stuff tabular data in here. Use a [table](/components/table/).
