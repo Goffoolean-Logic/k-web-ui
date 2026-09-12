@@ -21,7 +21,10 @@ function fill(node: HTMLElement, content: string | Node): void {
   node.replaceChildren(content);
 }
 
-export function tabFromEvent(root: HTMLElement, event: Event): HTMLElement | null {
+export function tabFromEvent(
+  root: HTMLElement,
+  event: Event,
+): HTMLElement | null {
   const tab = (event.target as Element | null)?.closest?.('[role="tab"]');
   if (!(tab instanceof HTMLElement) || !root.contains(tab)) {
     return null;

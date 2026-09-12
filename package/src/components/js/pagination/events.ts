@@ -18,16 +18,24 @@ export function bindEvents(state: KPaginationState): void {
   const prev = state.root.querySelector('.k-pagination__prev');
   const next = state.root.querySelector('.k-pagination__next');
   const last = state.root.querySelector('.k-pagination__last');
-  first?.addEventListener('click', () => goTo(state, 1), { signal: state.signal });
-  prev?.addEventListener('click', () => goTo(state, state.page - 1), { signal: state.signal });
-  next?.addEventListener('click', () => goTo(state, state.page + 1), { signal: state.signal });
-  last?.addEventListener('click', () => goTo(state, state.count), { signal: state.signal });
+  first?.addEventListener('click', () => goTo(state, 1), {
+    signal: state.signal,
+  });
+  prev?.addEventListener('click', () => goTo(state, state.page - 1), {
+    signal: state.signal,
+  });
+  next?.addEventListener('click', () => goTo(state, state.page + 1), {
+    signal: state.signal,
+  });
+  last?.addEventListener('click', () => goTo(state, state.count), {
+    signal: state.signal,
+  });
 
-  for (const btn of state.root.querySelectorAll<HTMLButtonElement>('[data-page]')) {
-    btn.addEventListener(
-      'click',
-      () => goTo(state, Number(btn.dataset.page)),
-      { signal: state.signal },
-    );
+  for (const btn of state.root.querySelectorAll<HTMLButtonElement>(
+    '[data-page]',
+  )) {
+    btn.addEventListener('click', () => goTo(state, Number(btn.dataset.page)), {
+      signal: state.signal,
+    });
   }
 }

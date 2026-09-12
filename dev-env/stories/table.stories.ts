@@ -58,5 +58,6 @@ export const Zebra: Story = {
 };
 
 export const Small: Story = {
-  render: () => `<table class="k-table k-table--sm k-table--zebra">${rows}</table>`,
+  render: () =>
+    `<table class="k-table k-table--sm k-table--zebra">${rows}</table>`,
 };

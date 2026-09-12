@@ -18,8 +18,12 @@ export function goTo(state: KCarouselState, index: number): void {
 }
 
 export function bindEvents(state: KCarouselState, signal: AbortSignal): void {
-  state.prev.addEventListener('click', () => goTo(state, state.index - 1), { signal });
-  state.next.addEventListener('click', () => goTo(state, state.index + 1), { signal });
+  state.prev.addEventListener('click', () => goTo(state, state.index - 1), {
+    signal,
+  });
+  state.next.addEventListener('click', () => goTo(state, state.index + 1), {
+    signal,
+  });
   for (const [i, dot] of state.dots.entries()) {
     dot.addEventListener('click', () => goTo(state, i), { signal });
   }

@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   build: {
@@ -13,5 +13,9 @@ export default defineConfig({
     },
     outDir: 'dist/js',
   },
-  plugins: [dts({ include: ['src/components/js'] })],
+  plugins: [dts({ include: ['src/components/js'], exclude: ['**/*.test.ts'] })],
+  test: {
+    environment: 'happy-dom',
+    include: ['src/components/js/**/*.test.ts'],
+  },
 });

@@ -1,10 +1,5 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"],
-  "compilerOptions": {
-    "paths": {
-      "k-web-components/js": ["../package/src/components/js/index.ts"]
-    }
-  }
+  "exclude": ["dist"]
 }

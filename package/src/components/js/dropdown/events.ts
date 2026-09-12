@@ -17,7 +17,9 @@ export function bindEvents(state: KDropdownState, signal: AbortSignal): void {
   state.menu.addEventListener(
     'click',
     (event) => {
-      const item = (event.target as Element | null)?.closest?.('.k-dropdown__item');
+      const item = (event.target as Element | null)?.closest?.(
+        '.k-dropdown__item',
+      );
       if (item instanceof HTMLElement && state.root.contains(item)) {
         setOpen(state, false);
         state.trigger.focus();

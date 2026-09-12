@@ -1,8 +1,7 @@
-/* The kit itself, straight from source — editing package/src hot-reloads here. */
-@import '../../package/src/index.css';
+@import "k-web-components/source";
 
 /* Tailwind scans the stories so demo layout classes resolve during development. */
-@source '../stories';
+@source "../stories";
 
 /*
  * Story canvas only. The published kit deliberately styles nothing but .k-*

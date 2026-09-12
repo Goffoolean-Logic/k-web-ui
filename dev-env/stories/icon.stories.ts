@@ -17,7 +17,7 @@ const icon = (name: string, size?: string) =>
  * Host is a span with `.k-icon` and a name modifier. The glyph is a CSS mask —
  * no inline SVG required. `createIcon(name)` builds the same markup from JS.
  */
-export const Set: Story = {
+export const IconSet: Story = {
   render: () => `
     <ul class="k-grid">
       ${K_ICON_NAMES.map(

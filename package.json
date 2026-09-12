@@ -2,12 +2,21 @@
   "name": "k-web-components-workspace",
   "private": true,
   "packageManager": "pnpm@12.3.4",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
-    "dev": "pnpm --filter k-web-components-dev-env dev",
-    "docs": "pnpm --filter k-web-components-docs dev",
+    "dev": "pnpm --filter k-web-components build && pnpm --filter k-web-components-dev-env dev",
+    "docs": "pnpm --filter k-web-components build && pnpm --filter k-web-components-docs dev",
     "build": "pnpm --filter k-web-components build",
-    "build:storybook": "pnpm --filter k-web-components-dev-env build",
-    "build:docs": "pnpm --filter k-web-components-docs build",
-    "typecheck": "pnpm -r typecheck"
+    "build:storybook": "pnpm --filter k-web-components build && pnpm --filter k-web-components-dev-env build",
+    "build:docs": "pnpm --filter k-web-components build && pnpm --filter k-web-components-docs build",
+    "typecheck": "pnpm --filter k-web-components build && pnpm -r typecheck",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "test": "pnpm --filter k-web-components test"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.13"
   }
 }

@@ -1,7 +1,12 @@
 {
   "name": "k-web-components",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Fast, lightweight, framework-agnostic UI components. A toolbox you can configure and build with.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Goffoolean-Logic/k-web-components.git",
+    "directory": "package"
+  },
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -38,13 +43,16 @@
     "build:utilities": "tailwindcss --input src/utilities/index.css --output dist/utilities/index.css",
     "build:js": "vite build",
     "dev": "tailwindcss --input src/index.css --output dist/full.css --watch",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
+    "happy-dom": "^20.0.2",
     "vite": "^8.3.0",
-    "vite-plugin-dts": "^5.1.0"
+    "vite-plugin-dts": "^5.1.0",
+    "vitest": "^4.0.0"
   }
 }

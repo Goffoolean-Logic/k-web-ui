@@ -13,10 +13,14 @@ export function bindKeybinds(state: KDropdownState, signal: AbortSignal): void {
       }
 
       if (!state.open || state.items.length === 0) {
-        if ((event.key === 'ArrowDown' || event.key === 'ArrowUp') && !state.open) {
+        if (
+          (event.key === 'ArrowDown' || event.key === 'ArrowUp') &&
+          !state.open
+        ) {
           event.preventDefault();
           setOpen(state, true);
-          const next = event.key === 'ArrowUp' ? state.items.at(-1) : state.items[0];
+          const next =
+            event.key === 'ArrowUp' ? state.items.at(-1) : state.items[0];
           next?.focus();
         }
         return;

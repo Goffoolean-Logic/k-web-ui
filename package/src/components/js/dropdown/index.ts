@@ -1,8 +1,8 @@
+import { resolveRoot } from '../root.js';
 import { queryParts, setOpen } from './dom.js';
 import { bindEvents } from './events.js';
 import { bindKeybinds } from './keybinds.js';
 import type { KDropdownState } from './models.js';
-import { resolveRoot } from '../root.js';
 
 const instances = new WeakMap<HTMLElement, KDropdown>();
 

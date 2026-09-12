@@ -9,7 +9,12 @@ interface ButtonArgs {
 }
 
 const buttonClass = ({ variant, size, block }: ButtonArgs): string =>
-  ['k-btn', `k-btn--${variant}`, size === 'md' ? '' : `k-btn--${size}`, block ? 'k-btn--block' : '']
+  [
+    'k-btn',
+    `k-btn--${variant}`,
+    size === 'md' ? '' : `k-btn--${size}`,
+    block ? 'k-btn--block' : '',
+  ]
     .filter(Boolean)
     .join(' ');
 

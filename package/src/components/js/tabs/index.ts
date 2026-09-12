@@ -57,7 +57,9 @@ export class KTabs {
   }
 
   get selectedIndex(): number {
-    return this.#state.tabs.findIndex((tab) => tab.getAttribute('aria-selected') === 'true');
+    return this.#state.tabs.findIndex(
+      (tab) => tab.getAttribute('aria-selected') === 'true',
+    );
   }
 
   select(index: number, { focus = false } = {}): void {

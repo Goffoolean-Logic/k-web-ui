@@ -1,4 +1,7 @@
-export function resolveRoot(target: string | HTMLElement, name: string): HTMLElement {
+export function resolveRoot(
+  target: string | HTMLElement,
+  name: string,
+): HTMLElement {
   if (typeof target !== 'string') {
     return target;
   }
