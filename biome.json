@@ -5,27 +5,56 @@
       "package/src/components/js/**",
       "package/scripts/**",
       "package/vite.config.ts",
+      "package/tsconfig.json",
       "dev-env/**/*.ts",
+      "docs/src/**/*.ts",
+      "docs/*.mjs",
+      "docs/tsconfig.json",
+      "docs/package.json",
+      "package.json",
+      "biome.json",
       "!**/dist",
       "!**/storybook-static",
-      "!**/node_modules"
+      "!**/node_modules",
+      "!**/.astro"
     ]
   },
   "formatter": {
+    "enabled": true,
     "indentStyle": "space",
-    "indentWidth": 2
+    "indentWidth": 2,
+    "lineWidth": 80,
+    "lineEnding": "lf",
+    "attributePosition": "auto",
+    "bracketSpacing": true,
+    "expand": "auto"
   },
   "linter": {
     "enabled": true
   },
   "javascript": {
     "formatter": {
-      "quoteStyle": "single"
+      "quoteStyle": "single",
+      "jsxQuoteStyle": "double",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "all",
+      "semicolons": "always",
+      "arrowParentheses": "always",
+      "bracketSameLine": false,
+      "bracketSpacing": true
+    }
+  },
+  "json": {
+    "formatter": {
+      "trailingCommas": "none"
     }
   },
   "css": {
     "parser": {
       "tailwindDirectives": true
+    },
+    "formatter": {
+      "quoteStyle": "single"
     }
   },
   "overrides": [

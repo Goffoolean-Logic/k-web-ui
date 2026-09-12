@@ -52,6 +52,7 @@ pnpm docs            # http://localhost:4321
 pnpm dev             # Storybook, http://localhost:6006
 pnpm test
 pnpm lint
+pnpm format
 pnpm typecheck
 pnpm build
 ```

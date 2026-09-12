@@ -49,9 +49,9 @@ const swatch = (token: string, cssVar: string) => `
 `;
 
 const scale = (name: string) =>
-  STEPS.map((step) => swatch(`${name}-${step}`, `--k-palette-${name}-${step}`)).join(
-    '',
-  );
+  STEPS.map((step) =>
+    swatch(`${name}-${step}`, `--k-palette-${name}-${step}`),
+  ).join('');
 
 /**
  * Semantic colors through the active theme. Switch the theme in the toolbar.
