@@ -10,9 +10,12 @@ export default meta;
 type Story = StoryObj;
 
 const iconInfo = '<span class="k-icon k-icon--info" aria-hidden="true"></span>';
-const iconSuccess = '<span class="k-icon k-icon--success" aria-hidden="true"></span>';
-const iconWarning = '<span class="k-icon k-icon--warning" aria-hidden="true"></span>';
-const iconDanger = '<span class="k-icon k-icon--danger" aria-hidden="true"></span>';
+const iconSuccess =
+  '<span class="k-icon k-icon--success" aria-hidden="true"></span>';
+const iconWarning =
+  '<span class="k-icon k-icon--warning" aria-hidden="true"></span>';
+const iconDanger =
+  '<span class="k-icon k-icon--danger" aria-hidden="true"></span>';
 
 /**
  * Host is a div with role="alert" and .k-banner. Extra children (icon, body,

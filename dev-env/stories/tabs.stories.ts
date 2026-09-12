@@ -2,9 +2,18 @@ import type { Meta, StoryObj } from '@storybook/html-vite';
 import { KTabs } from 'k-web-components/js';
 
 const ITEMS = [
-  { label: 'Overview', content: 'Project home, recent activity, and pinned files.' },
-  { label: 'Activity', content: 'Comments and status changes from the last 7 days.' },
-  { label: 'Settings', content: 'Members, billing, and notification defaults.' },
+  {
+    label: 'Overview',
+    content: 'Project home, recent activity, and pinned files.',
+  },
+  {
+    label: 'Activity',
+    content: 'Comments and status changes from the last 7 days.',
+  },
+  {
+    label: 'Settings',
+    content: 'Members, billing, and notification defaults.',
+  },
 ];
 
 const meta: Meta = {
@@ -45,7 +54,9 @@ export const Default: Story = {
 export const SecondSelected: Story = {
   render: () => tabsRoot('section-tabs-second', 1),
   play: ({ canvasElement }) => {
-    const root = canvasElement.querySelector<HTMLElement>('#section-tabs-second');
+    const root = canvasElement.querySelector<HTMLElement>(
+      '#section-tabs-second',
+    );
     if (root) {
       mountTabs(root, 1);
     }

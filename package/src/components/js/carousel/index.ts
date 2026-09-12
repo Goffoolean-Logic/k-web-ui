@@ -1,8 +1,8 @@
+import { resolveRoot } from '../root.js';
 import { buildCarousel } from './dom.js';
 import { bindEvents, goTo } from './events.js';
 import { bindKeybinds } from './keybinds.js';
 import type { KCarouselOptions, KCarouselState } from './models.js';
-import { resolveRoot } from '../root.js';
 
 export type { KCarouselItem, KCarouselOptions } from './models.js';
 
@@ -19,7 +19,10 @@ export class KCarousel {
   readonly #state: KCarouselState;
   readonly #abort = new AbortController();
 
-  static mount(target: string | HTMLElement, options: KCarouselOptions): KCarousel {
+  static mount(
+    target: string | HTMLElement,
+    options: KCarouselOptions,
+  ): KCarousel {
     const root = resolveRoot(target, 'KCarousel');
     const existing = instances.get(root);
     if (existing && root.querySelector('.k-carousel__track')) {

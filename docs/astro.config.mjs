@@ -1,10 +1,8 @@
 // @ts-check
-import { fileURLToPath } from 'node:url';
-import { defineConfig } from 'astro/config';
+
 import starlight from '@astrojs/starlight';
 import tailwindcss from '@tailwindcss/vite';
-
-const jsSource = fileURLToPath(new URL('../package/src/components/js/index.ts', import.meta.url));
+import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   redirects: {
@@ -66,15 +64,5 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
-    resolve: {
-      alias: {
-        'k-web-components/js': jsSource,
-      },
-    },
-    server: {
-      fs: {
-        allow: [fileURLToPath(new URL('..', import.meta.url))],
-      },
-    },
   },
 });

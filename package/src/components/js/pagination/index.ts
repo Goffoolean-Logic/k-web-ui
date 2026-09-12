@@ -1,8 +1,8 @@
+import { resolveRoot } from '../root.js';
 import { renderPagination } from './dom.js';
 import { bindEvents, goTo } from './events.js';
 import { bindKeybinds } from './keybinds.js';
 import type { KPaginationOptions, KPaginationState } from './models.js';
-import { resolveRoot } from '../root.js';
 
 export type { KPaginationOptions } from './models.js';
 
@@ -20,7 +20,10 @@ export class KPagination {
   readonly #state: KPaginationState;
   readonly #abort = new AbortController();
 
-  static mount(target: string | HTMLElement, options: KPaginationOptions): KPagination {
+  static mount(
+    target: string | HTMLElement,
+    options: KPaginationOptions,
+  ): KPagination {
     const root = resolveRoot(target, 'KPagination');
     const existing = instances.get(root);
     if (existing && root.querySelector('.k-pagination__btn')) {

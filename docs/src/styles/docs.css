@@ -1,5 +1,4 @@
-/* Kit from source so package/src edits hot-reload here. */
-@import '../../../package/src/index.css';
+@import 'k-web-components/source';
 
 @source '../content';
 @source '../components';

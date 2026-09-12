@@ -20,7 +20,11 @@ function control(
   return btn;
 }
 
-function pageButton(page: number, current: number, count: number): HTMLButtonElement {
+function pageButton(
+  page: number,
+  current: number,
+  count: number,
+): HTMLButtonElement {
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'k-pagination__btn k-pagination__page';
@@ -62,8 +66,18 @@ export function renderPagination(state: KPaginationState): void {
   const atEnd = state.page >= state.count;
   const few = state.count <= FEW_PAGES;
 
-  const prev = control('k-pagination__prev', 'Previous page', 'chevron-left', atStart);
-  const next = control('k-pagination__next', 'Next page', 'chevron-right', atEnd);
+  const prev = control(
+    'k-pagination__prev',
+    'Previous page',
+    'chevron-left',
+    atStart,
+  );
+  const next = control(
+    'k-pagination__next',
+    'Next page',
+    'chevron-right',
+    atEnd,
+  );
   const pages = visiblePages(state.page, state.count).map((n) =>
     pageButton(n, state.page, state.count),
   );

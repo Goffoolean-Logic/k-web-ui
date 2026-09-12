@@ -6,7 +6,9 @@ export function queryParts(root: HTMLElement): Omit<KDropdownState, 'open'> {
     root.querySelector<HTMLElement>('button');
   const menu = root.querySelector<HTMLElement>('.k-dropdown__menu');
   if (!trigger || !menu) {
-    throw new Error('KDropdown: expected a .k-dropdown__trigger and .k-dropdown__menu');
+    throw new Error(
+      'KDropdown: expected a .k-dropdown__trigger and .k-dropdown__menu',
+    );
   }
 
   const items = [...menu.querySelectorAll<HTMLElement>('.k-dropdown__item')];

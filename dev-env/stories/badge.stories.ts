@@ -42,7 +42,16 @@ const meta: Meta<BadgeArgs> = {
   argTypes: {
     color: {
       control: 'select',
-      options: ['default', 'primary', 'secondary', 'accent', 'info', 'success', 'warning', 'danger'],
+      options: [
+        'default',
+        'primary',
+        'secondary',
+        'accent',
+        'info',
+        'success',
+        'warning',
+        'danger',
+      ],
     },
     style: {
       control: 'inline-radio',
@@ -68,14 +77,18 @@ const COLORS: Exclude<BadgeColor, 'default'>[] = [
   'danger',
 ];
 
-const row = (inner: string) => `<div class="flex flex-wrap items-center gap-2">${inner}</div>`;
+const row = (inner: string) =>
+  `<div class="flex flex-wrap items-center gap-2">${inner}</div>`;
 
 export const Colors: Story = {
   render: () =>
     row(
       [
         '<span class="k-badge">Default</span>',
-        ...COLORS.map((color) => `<span class="k-badge k-badge--${color}">${label(color)}</span>`),
+        ...COLORS.map(
+          (color) =>
+            `<span class="k-badge k-badge--${color}">${label(color)}</span>`,
+        ),
       ].join(''),
     ),
 };
@@ -84,7 +97,8 @@ export const Soft: Story = {
   render: () =>
     row(
       COLORS.map(
-        (color) => `<span class="k-badge k-badge--soft k-badge--${color}">${label(color)}</span>`,
+        (color) =>
+          `<span class="k-badge k-badge--soft k-badge--${color}">${label(color)}</span>`,
       ).join(''),
     ),
 };
@@ -93,7 +107,8 @@ export const Outline: Story = {
   render: () =>
     row(
       COLORS.map(
-        (color) => `<span class="k-badge k-badge--outline k-badge--${color}">${label(color)}</span>`,
+        (color) =>
+          `<span class="k-badge k-badge--outline k-badge--${color}">${label(color)}</span>`,
       ).join(''),
     ),
 };
@@ -102,7 +117,8 @@ export const Dash: Story = {
   render: () =>
     row(
       COLORS.map(
-        (color) => `<span class="k-badge k-badge--dash k-badge--${color}">${label(color)}</span>`,
+        (color) =>
+          `<span class="k-badge k-badge--dash k-badge--${color}">${label(color)}</span>`,
       ).join(''),
     ),
 };
@@ -133,9 +149,12 @@ export const Empty: Story = {
 };
 
 const iconInfo = '<span class="k-icon k-icon--info" aria-hidden="true"></span>';
-const iconSuccess = '<span class="k-icon k-icon--success" aria-hidden="true"></span>';
-const iconWarning = '<span class="k-icon k-icon--warning" aria-hidden="true"></span>';
-const iconDanger = '<span class="k-icon k-icon--danger" aria-hidden="true"></span>';
+const iconSuccess =
+  '<span class="k-icon k-icon--success" aria-hidden="true"></span>';
+const iconWarning =
+  '<span class="k-icon k-icon--warning" aria-hidden="true"></span>';
+const iconDanger =
+  '<span class="k-icon k-icon--danger" aria-hidden="true"></span>';
 
 export const WithIcon: Story = {
   render: () =>

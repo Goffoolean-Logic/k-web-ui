@@ -23,7 +23,10 @@ const preview: Preview = {
   decorators: [
     (story, context) => {
       // Exactly how a consumer switches themes: one attribute on the root.
-      document.documentElement.setAttribute('data-theme', String(context.globals['theme']));
+      document.documentElement.setAttribute(
+        'data-theme',
+        String(context.globals.theme),
+      );
       return story();
     },
   ],
