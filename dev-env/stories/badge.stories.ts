@@ -29,6 +29,7 @@ const badgeClass = ({ color, style, size }: BadgeArgs): string =>
     .filter(Boolean)
     .join(' ');
 
+/** A short label. Mix a color variant with a style. An empty badge is a dot. */
 const meta: Meta<BadgeArgs> = {
   title: 'Components/Badge',
   tags: ['autodocs'],

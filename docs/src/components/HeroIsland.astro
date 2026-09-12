@@ -1,0 +1,21 @@
+---
+import HeroIslandGroup from './HeroIslandGroup.astro';
+---
+
+<div class="hero-island" aria-hidden="true" inert>
+  <div class="hero-island__veil"></div>
+  <div class="hero-island__blur">
+    <div class="hero-island__row">
+      <div class="hero-island__track hero-island__track--from-left">
+        <HeroIslandGroup lane="left" />
+        <HeroIslandGroup lane="left" />
+      </div>
+    </div>
+    <div class="hero-island__row">
+      <div class="hero-island__track hero-island__track--from-right">
+        <HeroIslandGroup lane="right" />
+        <HeroIslandGroup lane="right" />
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,16 +1,16 @@
 ---
 title: Badge
-description: span.k-badge — color, style, size.
+description: span.k-badge. Color, style, size.
 ---
 
 import Preview from '../../../components/Preview.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
-A badge is a short label for status, a count, or a category. It sits next to a heading, inside a table cell, or on a button. It is not a banner — it does not announce a page-level event.
+A badge is a short label for a status, a count, or a category. Put one next to a heading or in a table cell. If something just happened on the page, that belongs on a [banner](/components/banner/), not here.
 
-Host is a `span` or `div` with `.k-badge`. A variant sets the color. A style sets the fill: default is solid, then outline, dash, soft, and ghost. Color and style combine, so `k-badge--info k-badge--soft` is a tinted info chip.
+Put `.k-badge` on a `span`. A `div` works too. A variant picks the color. A style picks the fill: solid if you omit one, then outline, dash, soft, or ghost. Mix them. `k-badge--info k-badge--soft` is a washed info chip.
 
-Sizes run from `--xs` to `--xl`. Default is 1.5rem. An empty badge — no text, no icon — becomes a dot. Put a kit icon inside when the color alone is not enough.
+Sizes go `--xs` to `--xl`. Leave the size off and you get 1.5rem. An empty badge, no text and no icon, collapses to a dot. Drop a kit icon in when the color is not enough on its own.
 
 ## Classes
 
@@ -67,16 +67,15 @@ The same info color through every fill treatment.
 
 ## Accessibility
 
-A badge is not a live region. Do not put `role="alert"` on it. If the color carries meaning, say it in the text or pair an icon that is hidden from the tree (`aria-hidden="true"`) with a word. Empty dots are decorative; if a dot is the only status, give the badge an `aria-label`.
+This is not a live region. Leave `role="alert"` off. If the color means something, say it in the text, or hide the icon with `aria-hidden="true"` and keep the word. Empty dots are decorative. If the dot is the only status, give the badge an `aria-label`.
 
 ## Dos and don'ts
 
 **Do**
-- Pair a color variant with a style when you want a wash or an outline.
-- Keep the label to a word or a short count.
-- Use an empty badge as a dot, with an `aria-label` if it is the only status.
+- Mix a color with a style when you want a wash or an outline.
+- Keep the text to a word or a count.
 
 **Don't**
-- Put `role="alert"` on a badge. That is a [banner](/components/banner/).
+- Put `role="alert"` on it. Use a [banner](/components/banner/) if something just happened.
 - Write a sentence in a badge.
-- Rely on color alone.
+- Trust color alone to carry the meaning.

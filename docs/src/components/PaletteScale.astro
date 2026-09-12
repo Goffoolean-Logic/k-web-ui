@@ -1,0 +1,22 @@
+---
+interface Props {
+  name: string;
+  steps: number[];
+}
+
+const { name, steps } = Astro.props;
+---
+
+<ul class="k-grid k-grid--4 k-token-grid">
+  {
+    steps.map((step) => (
+      <li class="k-grid__cell">
+        <div
+          class="k-swatch"
+          style={`background-color: var(--k-palette-${name}-${step});`}
+        ></div>
+        <code>{`${name}-${step}`}</code>
+      </li>
+    ))
+  }
+</ul>

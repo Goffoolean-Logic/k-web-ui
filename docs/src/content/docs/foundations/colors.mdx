@@ -1,0 +1,184 @@
+---
+title: Colors
+description: Palette steps and the semantic colors that flip with the theme.
+---
+
+import Preview from '../../../components/Preview.astro';
+import ColorToken from '../../../components/ColorToken.astro';
+import PaletteScale from '../../../components/PaletteScale.astro';
+
+Color in the kit is two layers. The palette is a fixed set of hex values. Semantic tokens (`--k-surface`, `--k-primary`, `--k-danger`) point at those values and change when you set `data-theme` on the document root.
+
+Orange for buttons, fields, borders, and the focus ring is set once. It does not flip in dark mode, so a dark page does not turn the controls blue. Dark page backgrounds use the steel scale. Steel 950 is black.
+
+```html
+<html data-theme="light">
+```
+
+`light`, `dark`, or `auto` (follows the OS). Utilities such as `bg-k-primary` and `text-k-fg` emit `var(--k-…)`, so a theme switch does not need a rebuild.
+
+Components should use the semantic tokens, not the palette steps. The palette is the source. Semantic names are what you override if the defaults are wrong.
+
+## Surfaces and type
+
+The page background, raised panels, and text. Switch the docs theme in the header to see these move.
+
+<Preview stack>
+  <ul class="k-grid k-grid--3 k-token-grid">
+    <ColorToken token="surface" />
+    <ColorToken token="surface-raised" />
+    <ColorToken token="surface-hard" />
+    <ColorToken token="surface-soft" />
+    <ColorToken token="fg" />
+    <ColorToken token="fg-muted" />
+  </ul>
+</Preview>
+
+| Token | Role |
+| --- | --- |
+| `--k-surface` | Page background |
+| `--k-surface-raised` | Cards, menus, raised panels |
+| `--k-surface-hard` | A stronger fill on top of the page |
+| `--k-surface-soft` | A wash, usually the same as the page |
+| `--k-fg` | Body text |
+| `--k-fg-muted` | Secondary text, captions |
+
+## Brand and fields
+
+These stay orange in both themes. `--k-field` is the fill on inputs. `--k-primary` is the main action. `--k-ring` is the focus color.
+
+<Preview stack>
+  <ul class="k-grid k-grid--3 k-token-grid">
+    <ColorToken token="field" fg="field-fg" />
+    <ColorToken token="field-fg" />
+    <ColorToken token="border" />
+    <ColorToken token="primary" fg="primary-fg" />
+    <ColorToken token="primary-fg" />
+    <ColorToken token="primary-hover" />
+    <ColorToken token="ring" />
+    <ColorToken token="accent" fg="accent-fg" />
+    <ColorToken token="accent-fg" />
+    <ColorToken token="accent-hover" />
+  </ul>
+</Preview>
+
+Where a swatch shows **Aa**, that is the matching foreground token on top of the fill.
+
+| Token | Role |
+| --- | --- |
+| `--k-field` / `--k-field-fg` | Input fill and type |
+| `--k-border` | Borders |
+| `--k-primary` / `--k-primary-fg` / `--k-primary-hover` | Primary actions |
+| `--k-ring` | Focus ring color |
+| `--k-accent` / `--k-accent-fg` / `--k-accent-hover` | Inverse fill (dark type on light, or the reverse in dark mode) |
+
+## Status
+
+Danger, info, success, and warning. Warning reuses the orange scale. Red, blue, and green exist only for these roles.
+
+<Preview stack>
+  <ul class="k-grid k-grid--4 k-token-grid">
+    <ColorToken token="danger" fg="danger-fg" />
+    <ColorToken token="danger-fg" />
+    <ColorToken token="info" fg="info-fg" />
+    <ColorToken token="info-fg" />
+    <ColorToken token="success" fg="success-fg" />
+    <ColorToken token="success-fg" />
+    <ColorToken token="warning" fg="warning-fg" />
+    <ColorToken token="warning-fg" />
+  </ul>
+</Preview>
+
+## Palette
+
+Hex values. Semantic tokens point here. You usually do not use these in component CSS.
+
+### Orange
+
+Brand. Light page wash, fields, actions, borders, and focus.
+
+<Preview stack>
+  <PaletteScale
+    name="orange"
+    steps={[50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]}
+  />
+</Preview>
+
+### Steel
+
+Dark page backgrounds. 950 is black. Raised panels sit on 900. Stronger fills sit on 800.
+
+<Preview stack>
+  <PaletteScale
+    name="steel"
+    steps={[50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]}
+  />
+</Preview>
+
+### Neutral
+
+A cool gray scale. Nothing in the current themes points at it. It is there if you need a gray that is not steel.
+
+<Preview stack>
+  <PaletteScale
+    name="neutral"
+    steps={[50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]}
+  />
+</Preview>
+
+### Status ramps
+
+Only the steps the themes actually use.
+
+<Preview stack>
+  <ul class="k-grid k-grid--3 k-token-grid">
+    <li class="k-grid__cell">
+      <div class="k-swatch" style="background-color: var(--k-palette-red-400);"></div>
+      <code>red-400</code>
+    </li>
+    <li class="k-grid__cell">
+      <div class="k-swatch" style="background-color: var(--k-palette-red-600);"></div>
+      <code>red-600</code>
+    </li>
+    <li class="k-grid__cell">
+      <div class="k-swatch" style="background-color: var(--k-palette-red-950);"></div>
+      <code>red-950</code>
+    </li>
+    <li class="k-grid__cell">
+      <div class="k-swatch" style="background-color: var(--k-palette-green-400);"></div>
+      <code>green-400</code>
+    </li>
+    <li class="k-grid__cell">
+      <div class="k-swatch" style="background-color: var(--k-palette-green-700);"></div>
+      <code>green-700</code>
+    </li>
+    <li class="k-grid__cell">
+      <div class="k-swatch" style="background-color: var(--k-palette-green-950);"></div>
+      <code>green-950</code>
+    </li>
+    <li class="k-grid__cell">
+      <div class="k-swatch" style="background-color: var(--k-palette-blue-400);"></div>
+      <code>blue-400</code>
+    </li>
+    <li class="k-grid__cell">
+      <div class="k-swatch" style="background-color: var(--k-palette-blue-600);"></div>
+      <code>blue-600</code>
+    </li>
+    <li class="k-grid__cell">
+      <div class="k-swatch" style="background-color: var(--k-palette-blue-950);"></div>
+      <code>blue-950</code>
+    </li>
+    <li class="k-grid__cell">
+      <div class="k-swatch" style="background-color: var(--k-palette-white);"></div>
+      <code>white</code>
+    </li>
+    <li class="k-grid__cell">
+      <div class="k-swatch" style="background-color: var(--k-palette-black);"></div>
+      <code>black</code>
+    </li>
+  </ul>
+</Preview>
+
+## Utilities
+
+Same names as the semantic tokens: `bg-k-primary`, `text-k-fg`, `border-k-border`, `bg-k-surface-raised`. They are available when you compile from source, and the published stylesheet safelists the set above.

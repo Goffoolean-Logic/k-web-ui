@@ -26,8 +26,8 @@ function carouselRoot(id: string, loop?: boolean): HTMLElement {
 }
 
 /**
- * Host is only the id and `.k-carousel`. `KCarousel.mount` builds the track,
- * slides, and controls from `items`.
+ * Empty element with an id and `.k-carousel`. `KCarousel.mount` builds the
+ * track, slides, and controls from `items`.
  */
 export const Default: Story = {
   render: () => carouselRoot('gallery'),

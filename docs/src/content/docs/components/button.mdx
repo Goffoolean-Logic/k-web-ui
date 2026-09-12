@@ -1,16 +1,16 @@
 ---
 title: Button
-description: button.k-btn — variants, sizes, block.
+description: button.k-btn. Variants, sizes, block.
 ---
 
 import Preview from '../../../components/Preview.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
-Use a button for an action on the current page — save, cancel, delete, open a modal. Navigation belongs on a [link](/components/link/).
+Use a button when the click stays on this page: save, cancel, delete, open a modal. If you are sending someone somewhere else, use a [link](/components/link/).
 
-The host is a real `<button>` with `.k-btn` and a variant. The variant is the color job: primary is the main action, secondary sits next to it, ghost recedes, accent is ink, danger is destructive. Pair a size modifier when the chrome around it is tight or large. `--block` stretches it to the full width of its parent.
+The element has to be a real `<button>` with `.k-btn` and one variant. Primary is the main action. Secondary sits next to it. Ghost recedes. Accent is dark type on a light fill. Danger is the one that deletes things. Add `--sm` or `--lg` when the surrounding UI is tight or large. `--block` is full width of the parent.
 
-Disabled is the `disabled` attribute (or `aria-disabled="true"`). The kit dims the control and blocks the pointer. Icons inside a button size to `1em` so they follow the type, not the standalone icon scale.
+`disabled` (or `aria-disabled="true"`) dims it and blocks pointer events. Icons inside shrink to `1em` so they follow the button type size, not the large standalone icon scale.
 
 ## Classes
 
@@ -32,7 +32,7 @@ Disabled is the `disabled` attribute (or `aria-disabled="true"`). The kit dims t
 
 ### Variants
 
-Every variant, plus a disabled primary. Pick one variant. Do not stack them.
+Each variant once, plus a disabled primary. Pick one variant. Do not stack them (`k-btn--primary k-btn--danger`).
 
 <Preview>
   <button type="button" class="k-btn k-btn--primary">Primary</button>
@@ -45,7 +45,7 @@ Every variant, plus a disabled primary. Pick one variant. Do not stack them.
 
 ### Sizes
 
-`--sm` and `--lg` change padding and type. The default sits between them.
+`--sm` and `--lg` change padding and type. The unnamed size is the one in the middle.
 
 <Preview>
   <button type="button" class="k-btn k-btn--primary k-btn--sm">Small</button>
@@ -55,7 +55,7 @@ Every variant, plus a disabled primary. Pick one variant. Do not stack them.
 
 ### With an icon
 
-A kit icon before the label. Inside the button it drops to `1em`.
+Icon before the label. Inside the button it drops to `1em`.
 
 <Preview>
   <button type="button" class="k-btn k-btn--primary">
@@ -66,16 +66,16 @@ A kit icon before the label. Inside the button it drops to `1em`.
 
 ## Accessibility
 
-Use a real `<button>`, not a `div`. The kit focus ring is global for `k-` classes — do not restyle it per variant. Prefer `disabled` when the control must not fire; `aria-disabled="true"` is the same look if you need to keep it in the tab order. Icons inside are decorative — keep `aria-hidden="true"` on them and put the name in the button text, or use `aria-label` on an icon-only button.
+Use a real `<button>`. A styled `div` will not get keyboard or the kit ring for free. The ring is global; leave it alone. Prefer `disabled` when the action cannot run. `aria-disabled="true"` looks the same if you still need it in the tab order. Hide decorative icons with `aria-hidden="true"` and put the name in the text, or `aria-label` on an icon-only button.
 
 ## Dos and don'ts
 
 **Do**
-- Use a variant. Primary for the main action, secondary next to it, danger for destroy.
-- Put the name in the button text. Icons stay `aria-hidden`.
+- Give it a variant. Primary for the thing you actually want people to click.
+- Put the name in the text. Icons stay `aria-hidden`.
 - Use `disabled` when the action cannot run.
 
 **Don't**
-- Stack variants (`k-btn--primary k-btn--danger`).
-- Use a button to go to another page. That is a [link](/components/link/).
-- Restyle the focus ring. It is global.
+- Stack variants.
+- Use a button to leave the page. Use a [link](/components/link/).
+- Restyle the focus ring.

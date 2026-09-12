@@ -6,7 +6,7 @@ description: table.k-table.
 import Preview from '../../../components/Preview.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
-A table is tabular data — rows of the same shape. Use a card or a definition list when the content is not a grid. The host is a real `<table class="k-table">` with `thead` and `tbody`. The kit paints cells; it does not sort, filter, or paginate. Pair it with [pagination](/components/pagination/) when the list is long.
+A table is for tabular data: rows that share the same columns. If the content is not a grid of columns, use a card or a definition list. Use a real `<table class="k-table">` with `thead` and `tbody`. The kit styles the cells. It does not sort, filter, or paginate. Pair it with [pagination](/components/pagination/) when the list is long.
 
 `--zebra` stripes even body rows. `--sm` tightens padding and type. They combine.
 
@@ -78,7 +78,7 @@ A two-column table. Header cells are `th`, body cells are `td`.
 
 ## Accessibility
 
-Use a real `<table>` with `th` in the header and `td` in the body. The kit does not add `scope` or a caption — add a `<caption>` or `aria-label` on the table when the heading above is not enough. Zebra is visual only; do not rely on stripe color to mark a row.
+Use a real `<table>` with `th` in the header and `td` in the body. The kit does not add `scope` or a caption. Add a `<caption>` or `aria-label` when the heading above is not enough. Zebra is visual only. Do not rely on stripe color to mark a row.
 
 ## Dos and don'ts
 
@@ -88,6 +88,6 @@ Use a real `<table>` with `th` in the header and `td` in the body. The kit does 
 - Add a caption or `aria-label` when the heading above is not enough.
 
 **Don't**
-- Build a table from stacked [cards](/components/card/). A catalog of tiles is a [grid](/components/grid/).
+- Build this from stacked [cards](/components/card/). A catalog of tiles is a [grid](/components/grid/).
 - Rely on zebra stripes to mark a row.
-- Expect the kit to sort or filter. It only paints cells.
+- Expect the kit to sort or filter. It only styles cells.

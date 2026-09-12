@@ -10,8 +10,8 @@ export default meta;
 type Story = StoryObj;
 
 /**
- * Host is a span with `.k-tooltip` and `data-tip`. Shows on hover and
- * focus-within — no JS.
+ * Wrap a control in `.k-tooltip` and set `data-tip`. Shows on hover and
+ * focus-within. No JS.
  */
 export const Default: Story = {
   render: () => `

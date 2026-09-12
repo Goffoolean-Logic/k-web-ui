@@ -1,32 +1,31 @@
 ---
 title: k-web-components
-description: Fast, lightweight, framework-agnostic UI components. A toolbox you can configure and build with.
+description: Designed to feel warm and engineered to run hot.
 template: splash
-hero:
-  tagline: Fast, lightweight, framework-agnostic UI components. A toolbox you can configure and build with.
-  actions:
-    - text: Get started
-      link: /getting-started/
-      icon: right-arrow
-    - text: View components
-      link: /components/button/
-      icon: right-arrow
-      variant: minimal
+hero: {}
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import Hero from '../../components/Hero.astro';
+import SplashBand from '../../components/SplashBand.astro';
+import SplashCards from '../../components/SplashCards.astro';
 
-<CardGrid>
-  <Card title="Only what you use">
-    Compile from source. Tailwind's JIT keeps unused component CSS out of the file.
-  </Card>
-  <Card title="Framework agnostic">
-    A `button.k-btn` is a button. No React, Vue, or web-component runtime required.
-  </Card>
-  <Card title="Your markup, your tokens">
-    Variants and modifiers on the class list. Theme with `data-theme`. Tokens stay yours to override.
-  </Card>
-  <Card title="Warm orange">
-    Chrome and the light canvas are warm orange, meant to sit easy on the eyes.
-  </Card>
-</CardGrid>
+<div class="splash not-content">
+  <Hero>
+    <p slot="tagline">Designed to feel warm and engineered to run hot.</p>
+    <a slot="actions" href="/getting-started/" class="k-btn k-btn--primary">
+      Get started
+      <span class="k-icon k-icon--chevron-right" aria-hidden="true"></span>
+    </a>
+    <a slot="actions" href="/components/button/" class="k-btn k-btn--secondary">
+      View components
+      <span class="k-icon k-icon--chevron-right" aria-hidden="true"></span>
+    </a>
+  </Hero>
+
+  <div class="splash-lower">
+    <SplashBand>
+      <p>Warm, configurable, adaptable, clean, and actionable. Now introducing K-web-components.</p>
+    </SplashBand>
+    <SplashCards />
+  </div>
+</div>

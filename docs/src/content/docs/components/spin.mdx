@@ -6,11 +6,11 @@ description: span.k-spin wraps an icon and rotates it.
 import Preview from '../../../components/Preview.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
-Spin is motion, not a glyph. The [loading icon](/foundations/iconography/) does not rotate on its own. Wrap any kit icon in `<span class="k-spin">` when you need a busy indicator — a save in flight, a refresh.
+Spin is the rotation, not the icon itself. The [loading icon](/foundations/iconography/) sits still until you wrap it. Use `<span class="k-spin">` around any kit icon when something is in progress, such as a save or a refresh.
 
-`createSpin()` builds the wrapper and defaults to the loading icon. Pass a name and size to spin something else. Reduced motion turns the animation off; the icon still shows.
+`createSpin()` builds the wrapper and defaults to the loading icon. Pass a name and size if you want to spin something else. Reduced motion turns the animation off. The icon still shows.
 
-Inside a button the inner icon drops to `1em`, same as any other icon in chrome.
+Inside a button the inner icon drops to `1em`, same as any other icon next to a label.
 
 ## Classes
 
@@ -47,7 +47,7 @@ A disabled secondary button while work is in progress.
 
 ## Accessibility
 
-Spin is decorative motion. The icon inside should stay `aria-hidden="true"`. Name the busy state on the control — `aria-busy="true"` on the button, or visible text like Saving. `prefers-reduced-motion: reduce` stops the rotation; the icon still shows.
+The spin is decorative motion. Keep the icon `aria-hidden="true"`. Name the busy state on the control: `aria-busy="true"` on the button, or visible text like Saving. `prefers-reduced-motion: reduce` stops the rotation. The icon still shows.
 
 ## Dos and don'ts
 
@@ -57,6 +57,6 @@ Spin is decorative motion. The icon inside should stay `aria-hidden="true"`. Nam
 - Use `createSpin()` when you build the mark in JS.
 
 **Don't**
-- Put meaning only in the spinning icon.
-- Animate a different element and call it a spin.
-- Leave the icon without `aria-hidden="true"`.
+- Put the meaning only in the spinning icon.
+- Animate some other element and call it a spin.
+- Leave the icon in the accessibility tree.

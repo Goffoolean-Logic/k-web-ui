@@ -39,7 +39,7 @@ function tabsRoot(id: string, selected?: number): HTMLElement {
 }
 
 /**
- * Host markup is only the id and `.k-tabs`. `KTabs.mount` builds the rest.
+ * Empty element with an id and `.k-tabs`. `KTabs.mount` builds the rest.
  */
 export const Default: Story = {
   render: () => tabsRoot('section-tabs'),

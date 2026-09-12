@@ -14,8 +14,8 @@ const icon = (name: string, size?: string) =>
   `<span class="k-icon k-icon--${name}${size ? ` k-icon--${size}` : ''}" aria-hidden="true"></span>`;
 
 /**
- * Host is a span with `.k-icon` and a name modifier. The glyph is a CSS mask —
- * no inline SVG required. `createIcon(name)` builds the same markup from JS.
+ * `.k-icon` plus a name on a span. The glyph is a CSS mask, so you do not
+ * have to inline a path. `createIcon(name)` builds the same markup from JS.
  */
 export const IconSet: Story = {
   render: () => `
@@ -29,6 +29,41 @@ export const IconSet: Story = {
         `,
       ).join('')}
     </ul>
+  `,
+};
+
+/**
+ * The mask paints with `background-color`. Add a `bg-k-*` class to change
+ * the fill. With no background class, the icon follows `currentColor`.
+ */
+export const Color: Story = {
+  render: () => `
+    <div class="flex flex-wrap items-center gap-6 text-k-fg">
+      <div class="flex flex-col items-center gap-2">
+        ${icon('info', 'sm')}
+        <code class="text-xs text-k-fg-muted">currentColor</code>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <span class="k-icon k-icon--info k-icon--sm bg-k-primary" aria-hidden="true"></span>
+        <code class="text-xs text-k-fg-muted">bg-k-primary</code>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <span class="k-icon k-icon--success k-icon--sm bg-k-success" aria-hidden="true"></span>
+        <code class="text-xs text-k-fg-muted">bg-k-success</code>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <span class="k-icon k-icon--warning k-icon--sm bg-k-warning" aria-hidden="true"></span>
+        <code class="text-xs text-k-fg-muted">bg-k-warning</code>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <span class="k-icon k-icon--danger k-icon--sm bg-k-danger" aria-hidden="true"></span>
+        <code class="text-xs text-k-fg-muted">bg-k-danger</code>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <span class="k-icon k-icon--info k-icon--sm bg-k-info" aria-hidden="true"></span>
+        <code class="text-xs text-k-fg-muted">bg-k-info</code>
+      </div>
+    </div>
   `,
 };
 
@@ -50,7 +85,7 @@ export const Sizes: Story = {
   `,
 };
 
-/** Same glyphs on the components that actually ship. */
+/** The same marks inside buttons, banners, and other chrome. */
 export const OnChrome: Story = {
   render: () => `
     <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 36rem;">

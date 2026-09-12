@@ -21,8 +21,8 @@ const panel = (id: string) => `
 `;
 
 /**
- * Host is `.k-sidebar` with a checkbox toggle, scrim, panel, then main.
- * The checkbox is the open state — no JS.
+ * `.k-sidebar` with a checkbox, scrim, panel, then main. The checkbox is
+ * the open state. No JS.
  */
 export const Default: Story = {
   render: () => `

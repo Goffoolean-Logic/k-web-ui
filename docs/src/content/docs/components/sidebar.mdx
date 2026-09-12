@@ -1,14 +1,14 @@
 ---
 title: Sidebar
-description: Checkbox-hack drawer — no JS.
+description: Checkbox-hack drawer. No JS.
 ---
 
 import Preview from '../../../components/Preview.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
-A sidebar is a drawer for nav or filters. The open state is a checkbox. No kit JS. Use it when the panel should overlay the main column, not sit in the document flow.
+A sidebar is a drawer for navigation or filters. The open state is a checkbox, so there is no kit JavaScript. Use it when the panel should overlay the main column instead of sitting in the document flow.
 
-Host is `.k-sidebar`. Order matters: the hidden checkbox, then the scrim label, then the panel, then main. Labels with `for` matching the checkbox id toggle it — one in main to open, one in the panel to close. The scrim is the same toggle; clicking the dimmed page closes the drawer.
+The wrapper is `.k-sidebar`. Order matters: hidden checkbox, then the dimmed-page label (the scrim), then the panel, then main. Labels with `for` matching the checkbox id toggle it. One in main opens the drawer. One in the panel closes it. Clicking the dimmed page closes it too.
 
 `--end` docks the panel on the inline end. Reduced motion drops the slide.
 
@@ -49,7 +49,7 @@ Default dock. Open Menu, then Close or the scrim.
 
 ## Accessibility
 
-The checkbox is the state. Visually hide it with `.k-sidebar__toggle`, do not `display: none` it, or the labels stop working. Triggers are `<label for="…">` so they are operable with a click or the associated input. Put a visible Close in the panel. The scrim is the same toggle. Give the panel a heading or labelled links so the drawer has a name.
+The checkbox is the state. Hide it with `.k-sidebar__toggle`. Do not `display: none` it or the labels stop working. Triggers are `<label for="…">` so a click or the associated input both work. Put a visible Close in the panel. The scrim is the same toggle. Give the panel a heading or labelled links so the drawer has a name.
 
 ## Dos and don'ts
 
@@ -59,6 +59,5 @@ The checkbox is the state. Visually hide it with `.k-sidebar__toggle`, do not `d
 - Put a visible Close in the panel.
 
 **Don't**
-- Mount kit JS on it. There is none.
-- Hide the checkbox with `display: none`.
+- Hide the checkbox with `display: none`. The labels stop working.
 - Use a sidebar for content that should stay in the document flow.

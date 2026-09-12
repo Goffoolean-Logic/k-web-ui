@@ -10,8 +10,8 @@ export default meta;
 type Story = StoryObj;
 
 /**
- * Host is a `.k-toast` wrapping banners. CSS only — pin with `--top`,
- * `--bottom`, `--start`, `--center`, `--end`. No auto-dismiss.
+ * `.k-toast` wrapping banners. CSS only. Pin with `--top`, `--bottom`,
+ * `--start`, `--center`, `--end`. No auto-dismiss.
  */
 export const Default: Story = {
   render: () => `

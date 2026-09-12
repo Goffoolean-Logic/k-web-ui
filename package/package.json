@@ -1,7 +1,7 @@
 {
   "name": "k-web-components",
   "version": "0.1.0",
-  "description": "Fast, lightweight, framework-agnostic UI components. A toolbox you can configure and build with.",
+  "description": "CSS for real HTML. A little JS when the browser cannot do the job.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Goffoolean-Logic/k-web-components.git",

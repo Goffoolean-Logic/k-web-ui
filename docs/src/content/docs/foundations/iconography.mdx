@@ -1,13 +1,13 @@
 ---
 title: Iconography
-description: A curated icon set. Masks, not an icon font.
+description: Eleven UI icons. CSS masks. Recolor with bg-k-*.
 ---
 
 import Preview from '../../../components/Preview.astro';
 
-The kit ships a small set of marks, not an icon library. Use them for chrome — chevrons, status, close, loading. If you need a product illustration, bring your own SVG.
+The kit ships a small set of UI icons: chevrons, status, close, and loading. It is not a general icon library. If you need a product illustration, drop in your own SVG.
 
-The host is a `span` with `.k-icon` and a name modifier. The glyph is a CSS mask in `currentColor`. No inline SVG required.
+Put `.k-icon` and a name on a `span`. The glyph is a CSS mask. The painted part is `background-color`, which defaults to `currentColor`, so you do not have to inline a path.
 
 ```html
 <span class="k-icon k-icon--info" aria-hidden="true"></span>
@@ -21,7 +21,27 @@ button.append(createIcon('chevron-left'));
 
 Inline `<svg class="k-icon">` still works if you bring your own path.
 
-`k-icon--loading` is orange on the light canvas and white in dark. It does not spin. Wrap it in [Spin](/components/spin/) to rotate it.
+`k-icon--loading` is orange on a light background and white in dark mode. It sits still until you wrap it in [Spin](/components/spin/). The icon is the mark. Spin is the motion.
+
+## Color
+
+Add a `bg-k-*` class to change the fill. The mask keeps the shape. Only the background color shows through.
+
+<Preview>
+  <span class="k-icon k-icon--info k-icon--sm" aria-hidden="true"></span>
+  <span class="k-icon k-icon--info k-icon--sm bg-k-primary" aria-hidden="true"></span>
+  <span class="k-icon k-icon--success k-icon--sm bg-k-success" aria-hidden="true"></span>
+  <span class="k-icon k-icon--warning k-icon--sm bg-k-warning" aria-hidden="true"></span>
+  <span class="k-icon k-icon--danger k-icon--sm bg-k-danger" aria-hidden="true"></span>
+  <span class="k-icon k-icon--info k-icon--sm bg-k-info" aria-hidden="true"></span>
+</Preview>
+
+```html
+<span class="k-icon k-icon--info bg-k-primary" aria-hidden="true"></span>
+<span class="k-icon k-icon--danger bg-k-danger" aria-hidden="true"></span>
+```
+
+The first icon in the preview has no `bg-k-*` class, so it follows the surrounding text color. `text-k-*` on the icon or a parent does the same thing, because the default fill is `currentColor`.
 
 ## Set
 
@@ -83,7 +103,7 @@ Inline `<svg class="k-icon">` still works if you bring your own path.
 | `k-icon--sm` | 2.5rem |
 | `k-icon--lg` | 7rem |
 
-Inside a `k-btn`, pagination button, or carousel arrow, icons drop to `1em`.
+Inside a button, a pagination control, or a carousel arrow they shrink to `1em` so they follow the type.
 
 <Preview>
   <span class="k-icon k-icon--info k-icon--xs" aria-hidden="true"></span>

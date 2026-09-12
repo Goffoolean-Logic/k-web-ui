@@ -13,8 +13,7 @@ const icon = (name: string, size?: string) =>
   `<span class="k-icon k-icon--${name}${size ? ` k-icon--${size}` : ''}" aria-hidden="true"></span>`;
 
 /**
- * Host is a span with `.k-spin` wrapping a `.k-icon`. The wrapper rotates;
- * the glyph does not.
+ * `.k-spin` around a `.k-icon`. The wrapper rotates. The glyph does not.
  */
 export const Default: Story = {
   render: () => `

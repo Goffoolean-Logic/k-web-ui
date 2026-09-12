@@ -6,6 +6,7 @@ interface LinkArgs {
   disabled: boolean;
 }
 
+/** A real `<a>` with an underline. Use a button if the click stays on this page. */
 const meta: Meta<LinkArgs> = {
   title: 'Components/Link',
   tags: ['autodocs'],

@@ -6,11 +6,11 @@ description: div.k-banner with role="alert".
 import Preview from '../../../components/Preview.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
-A banner is an inline alert for something the reader should see in context — a failed save, a confirmed purchase, an update. Give the host `role="alert"`. For a message that should float over the canvas, wrap banners in a [toast](/components/toast/).
+A banner is an inline alert for something that just happened: a failed save, a confirmed purchase, an update in the page flow. Put `role="alert"` on the element. If the message should float over the page instead, wrap banners in a [toast](/components/toast/).
 
-Host is `<div class="k-banner">`. A variant paints the fill. A style lightens that fill: soft, outline, or dash. Layout modifiers flip the grid: vertical stacks and centers, horizontal is a row, `sm-horizontal` is a row from the `sm` breakpoint up.
+Start with `<div class="k-banner">`. A variant paints the fill. Soft, outline, or dash lightens that fill. Layout modifiers flip the grid: `--vertical` stacks, `--horizontal` is a row, `--sm-horizontal` becomes a row from the `sm` breakpoint up.
 
-Children are optional. A kit icon, a plain span, or the body parts (`k-banner__title`, `k-banner__description`, `k-banner__actions`) all sit in the same grid.
+Children are optional. An icon, a plain span, or the body parts (`k-banner__title`, `k-banner__description`, `k-banner__actions`) all sit in the same grid.
 
 ## Classes
 
@@ -59,16 +59,15 @@ The default filled info banner. The icon is decorative (`aria-hidden`); the text
 
 ## Accessibility
 
-Put `role="alert"` on the host so assistive tech announces it when it appears. The message must live in text, not only in color. Icons are decorative — `aria-hidden="true"`. Actions inside the banner are real buttons or links and pick up the kit focus ring.
+Put `role="alert"` on the element so assistive tech announces it when it shows up. The message has to live in text, not only in color. Hide decorative icons with `aria-hidden="true"`. Actions inside are real buttons or links, so they get the kit focus ring.
 
 ## Dos and don'ts
 
 **Do**
-- Set `role="alert"` on the host.
-- Use a banner in the page flow. Pin it with a [toast](/components/toast/) when it should float.
-- Keep one message per banner.
+- Set `role="alert"` on the banner.
+- Keep the banner in the page flow. Pin it with a [toast](/components/toast/) when it should float.
 
 **Don't**
-- Use a banner for a status chip. That is a [badge](/components/badge/).
+- Use this as a status chip. [Badges](/components/badge/) are for that.
 - Announce with color only.
-- Leave an icon without `aria-hidden="true"`.
+- Leave an icon visible to the accessibility tree.

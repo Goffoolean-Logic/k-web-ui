@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" fill="none">
+  <rect width="1600" height="900" fill="#FDBA74"/>
+
+  <g stroke="#111" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- four satellites into the center -->
+    <path d="M420 220H700V380"/>
+    <path d="M1180 220H900V380"/>
+    <path d="M380 530H650"/>
+    <path d="M1220 530H950"/>
+
+    <!-- unused center pins off the top -->
+    <path d="M755 380V-20"/>
+    <path d="M800 380V-20"/>
+    <path d="M845 380V-20"/>
+
+    <!-- center chip down and off the frame -->
+    <path d="M700 620V920"/>
+    <path d="M755 620V920"/>
+    <path d="M800 620V920"/>
+    <path d="M845 620V920"/>
+    <path d="M900 620V920"/>
+  </g>
+
+  <g stroke="#111" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" fill="#FDBA74">
+    <!-- top left -->
+    <rect x="220" y="140" width="200" height="160" rx="28"/>
+    <path d="M270 140v-28M320 140v-28M370 140v-28"/>
+    <path d="M270 300v28M320 300v28M370 300v28"/>
+
+    <!-- top right -->
+    <rect x="1180" y="140" width="200" height="160" rx="28"/>
+    <path d="M1230 140v-28M1280 140v-28M1330 140v-28"/>
+    <path d="M1230 300v28M1280 300v28M1330 300v28"/>
+
+    <!-- mid left -->
+    <rect x="180" y="450" width="200" height="160" rx="28"/>
+    <path d="M230 450v-28M280 450v-28M330 450v-28"/>
+    <path d="M230 610v28M280 610v28M330 610v28"/>
+
+    <!-- mid right -->
+    <rect x="1220" y="450" width="200" height="160" rx="28"/>
+    <path d="M1270 450v-28M1320 450v-28M1370 450v-28"/>
+    <path d="M1270 610v28M1320 610v28M1370 610v28"/>
+
+    <!-- center -->
+    <rect x="650" y="380" width="300" height="240" rx="36"/>
+    <path d="M700 380v-36M900 380v-36"/>
+  </g>
+</svg>

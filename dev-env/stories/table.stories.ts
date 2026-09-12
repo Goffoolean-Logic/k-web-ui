@@ -47,7 +47,7 @@ const rows = `
 `;
 
 /**
- * Host is a `table.k-table`. Chrome only — no JS.
+ * A real `table.k-table`. Chrome only. No JS.
  */
 export const Default: Story = {
   render: () => `<table class="k-table">${rows}</table>`,

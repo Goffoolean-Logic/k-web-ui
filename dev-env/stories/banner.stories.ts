@@ -18,8 +18,7 @@ const iconDanger =
   '<span class="k-icon k-icon--danger" aria-hidden="true"></span>';
 
 /**
- * Host is a div with role="alert" and .k-banner. Extra children (icon, body,
- * actions) are optional.
+ * A div with role="alert" and .k-banner. Icon, body, and actions are optional.
  */
 export const Default: Story = {
   render: () => `
@@ -123,7 +122,7 @@ export const Dash: Story = {
   `,
 };
 
-/** Stacks on small canvases; row from 40rem with k-banner--sm-horizontal. */
+/** Stacks on a narrow canvas. Becomes a row from 40rem with k-banner--sm-horizontal. */
 export const WithActions: Story = {
   render: () => `
     <div role="alert" class="k-banner k-banner--vertical k-banner--sm-horizontal">

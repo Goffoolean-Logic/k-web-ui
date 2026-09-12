@@ -19,7 +19,7 @@ function paginationRoot(id: string, count: number, page?: number): HTMLElement {
 }
 
 /**
- * Host is only the id and `.k-pagination`. Few pages list every number
+ * Empty element with an id and `.k-pagination`. Few pages list every number
  * and drop first/last. Longer lists keep those jumps and a three-page window.
  */
 export const Default: Story = {

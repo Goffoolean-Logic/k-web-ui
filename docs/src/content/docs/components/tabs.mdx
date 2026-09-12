@@ -1,17 +1,17 @@
 ---
 title: Tabs
-description: KTabs.mount on a .k-tabs host.
+description: KTabs.mount on an empty .k-tabs element.
 ---
 
 import Preview from '../../../components/Preview.astro';
 import TabsDemo from '../../../components/TabsDemo.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
-Tabs switch related panels in place — overview / usage / API, or three views of the same object. Do not use them for wizard steps or for content the reader must see in order.
+Tabs switch related panels in place, such as overview / usage / API, or three views of the same object. Do not use them for wizard steps or for a sequence the reader has to walk in order.
 
-Put an id and `.k-tabs` on an empty host. `KTabs.mount` builds the tablist, tabs, panels, and ARIA from `items`. Each item is a `label` and `content` (a string or a node). Options: `selected` for the starting index, `label` for the tablist name, `keyboard` (default true) for arrow / Home / End movement.
+Put an id and `.k-tabs` on an empty element. `KTabs.mount` builds the tablist, tabs, panels, and ARIA from `items`. Each item is a `label` and `content` (a string or a node). `selected` is the starting index. `label` names the tablist. `keyboard` (default true) is arrow / Home / End.
 
-The selected tab gets the orange underline. Hidden panels use `[hidden]`. If the host is wiped and you call `mount` again, it rebuilds.
+The selected tab gets the orange underline. Hidden panels use `[hidden]`. If the element is wiped and you call `mount` again, it rebuilds.
 
 ## Classes
 
@@ -28,7 +28,7 @@ The selected tab gets the orange underline. Hidden panels use `[hidden]`. If the
 
 ### Three panels
 
-A mounted host. Click a tab or move with the arrow keys once one is focused.
+A mounted example. Click a tab or move with the arrow keys once one is focused.
 
 <Preview stack>
   <TabsDemo />
@@ -41,11 +41,11 @@ A mounted host. Click a tab or move with the arrow keys once one is focused.
 ## Dos and don'ts
 
 **Do**
-- Mount on an empty host with an id and `.k-tabs`.
+- Mount on an empty element with an id and `.k-tabs`.
 - Pass `items` with a `label` and `content`.
 - Use tabs for related views of the same object.
 
 **Don't**
-- Use tabs as wizard steps or a sequence the reader must follow.
+- Use tabs as wizard steps.
 - Hand-write the tablist. `mount` builds it.
 - Hide required content in a panel the reader may never open.

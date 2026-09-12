@@ -10,8 +10,8 @@ export default meta;
 type Story = StoryObj;
 
 /**
- * Host is a dialog with popover and `.k-modal`. A button with matching
- * popovertarget opens it — no JS.
+ * A dialog with popover and `.k-modal`. A button with matching
+ * popovertarget opens it. No JS.
  */
 export const Default: Story = {
   render: () => `

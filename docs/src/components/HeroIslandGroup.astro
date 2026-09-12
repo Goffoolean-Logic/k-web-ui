@@ -1,0 +1,286 @@
+---
+interface Props {
+  lane: 'left' | 'right';
+}
+
+const { lane } = Astro.props;
+
+const icon = (name: string, size = 'sm') =>
+  `<span class="k-icon k-icon--${name} k-icon--${size}" aria-hidden="true"></span>`;
+---
+
+<div class="hero-island__group">
+  {
+    lane === 'left' ? (
+      <>
+        <div class="hero-island__item hero-island__item--pane">
+          <div class="k-accordion">
+            <details class="k-accordion__item" open>
+              <summary class="k-accordion__trigger">Billing</summary>
+              <div class="k-accordion__panel">Invoices go out on the first of the month.</div>
+            </details>
+            <details class="k-accordion__item">
+              <summary class="k-accordion__trigger">Privacy</summary>
+              <div class="k-accordion__panel">Session cookies only.</div>
+            </details>
+          </div>
+        </div>
+
+        <div class="hero-island__item">
+          <span class="k-badge k-badge--info">Info</span>
+        </div>
+
+        <div class="hero-island__item hero-island__item--pane">
+          <div class="k-banner k-banner--info">
+            <Fragment set:html={icon('info', 'xs')} />
+            <span>New software update available.</span>
+          </div>
+        </div>
+
+        <div class="hero-island__item">
+          <button type="button" class="k-btn k-btn--primary k-btn--sm" tabindex="-1">
+            Save
+          </button>
+        </div>
+
+        <div class="hero-island__item hero-island__item--pane">
+          <div class="k-card">
+            <div class="k-card__header">
+              <h3 class="k-card__title">Deployment</h3>
+              <p class="k-card__subtitle">Last run 4 minutes ago</p>
+            </div>
+            <div class="k-card__body">
+              <p>Every check passed on the latest commit.</p>
+            </div>
+            <div class="k-card__footer">
+              <button type="button" class="k-btn k-btn--ghost k-btn--sm" tabindex="-1">
+                Cancel
+              </button>
+              <button type="button" class="k-btn k-btn--primary k-btn--sm" tabindex="-1">
+                Promote
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-island__item hero-island__item--pane">
+          <div class="k-carousel">
+            <div class="k-carousel__viewport">
+              <div class="k-carousel__track">
+                <div class="k-carousel__slide" aria-roledescription="slide">Draft the brief.</div>
+              </div>
+            </div>
+            <button type="button" class="k-carousel__prev" tabindex="-1">
+              <Fragment set:html={icon('chevron-left', 'xs')} />
+            </button>
+            <button type="button" class="k-carousel__next" tabindex="-1">
+              <Fragment set:html={icon('chevron-right', 'xs')} />
+            </button>
+            <div class="k-carousel__dots">
+              <button type="button" class="k-carousel__dot" aria-current="true" tabindex="-1" />
+              <button type="button" class="k-carousel__dot" tabindex="-1" />
+              <button type="button" class="k-carousel__dot" tabindex="-1" />
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-island__item">
+          <div class="k-dropdown">
+            <button type="button" class="k-btn k-btn--secondary k-btn--sm k-dropdown__trigger" tabindex="-1">
+              Sort
+            </button>
+            <div class="k-dropdown__menu">
+              <button type="button" class="k-dropdown__item" tabindex="-1">
+                Name
+              </button>
+              <button type="button" class="k-dropdown__item" tabindex="-1">
+                Date
+              </button>
+              <button type="button" class="k-dropdown__item" tabindex="-1">
+                Size
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-island__item hero-island__item--pane">
+          <ul class="k-grid k-grid--3 k-grid--tight">
+            <li class="k-grid__cell">
+              <Fragment set:html={icon('info', 'xs')} />
+              <code>info</code>
+            </li>
+            <li class="k-grid__cell">
+              <Fragment set:html={icon('success', 'xs')} />
+              <code>success</code>
+            </li>
+            <li class="k-grid__cell">
+              <Fragment set:html={icon('warning', 'xs')} />
+              <code>warning</code>
+            </li>
+            <li class="k-grid__cell">
+              <Fragment set:html={icon('danger', 'xs')} />
+              <code>danger</code>
+            </li>
+            <li class="k-grid__cell">
+              <Fragment set:html={icon('close', 'xs')} />
+              <code>close</code>
+            </li>
+            <li class="k-grid__cell">
+              <Fragment set:html={icon('loading', 'xs')} />
+              <code>loading</code>
+            </li>
+          </ul>
+        </div>
+
+        <div class="hero-island__item">
+          <Fragment set:html={icon('success')} />
+        </div>
+      </>
+    ) : (
+      <>
+        <div class="hero-island__item hero-island__item--field">
+          <div class="k-field">
+            <label class="k-label">Email</label>
+            <input class="k-input" type="text" value="you@example.com" readonly tabindex="-1" />
+            <p class="k-hint">We'll never share it.</p>
+          </div>
+        </div>
+
+        <div class="hero-island__item">
+          <a class="k-link" href="#_top" tabindex="-1">
+            Read the guide
+          </a>
+        </div>
+
+        <div class="hero-island__item hero-island__item--pane">
+          <div class="k-modal__box">
+            <h3 class="k-modal__title">Delete file</h3>
+            <p class="k-modal__body">This will remove report.pdf from the project.</p>
+            <div class="k-modal__actions">
+              <button type="button" class="k-btn k-btn--ghost k-btn--sm" tabindex="-1">
+                Cancel
+              </button>
+              <button type="button" class="k-btn k-btn--danger k-btn--sm" tabindex="-1">
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-island__item">
+          <div class="k-pagination">
+            <button type="button" class="k-pagination__btn k-pagination__prev" disabled tabindex="-1">
+              <Fragment set:html={icon('chevron-left', 'xs')} />
+            </button>
+            <button
+              type="button"
+              class="k-pagination__btn k-pagination__page k-pagination__current"
+              aria-current="page"
+              tabindex="-1"
+            >
+              1
+            </button>
+            <button type="button" class="k-pagination__btn k-pagination__page" tabindex="-1">
+              2
+            </button>
+            <button type="button" class="k-pagination__btn k-pagination__page" tabindex="-1">
+              3
+            </button>
+            <button type="button" class="k-pagination__btn k-pagination__next" tabindex="-1">
+              <Fragment set:html={icon('chevron-right', 'xs')} />
+            </button>
+          </div>
+        </div>
+
+        <div class="hero-island__item">
+          <div class="k-sidebar">
+            <aside class="k-sidebar__panel">
+              <span class="k-sidebar__trigger">Close</span>
+              <a class="k-link" href="#_top" tabindex="-1">
+                Overview
+              </a>
+              <a class="k-link" href="#_top" tabindex="-1">
+                Projects
+              </a>
+              <a class="k-link" href="#_top" tabindex="-1">
+                Settings
+              </a>
+            </aside>
+            <div class="k-sidebar__main">
+              <span class="k-sidebar__trigger">Menu</span>
+              <p>The page stays in the main column.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-island__item">
+          <span class="k-spin">
+            <Fragment set:html={icon('loading')} />
+          </span>
+        </div>
+
+        <div class="hero-island__item hero-island__item--table">
+          <table class="k-table k-table--sm k-table--zebra">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Ada Kim</td>
+                <td>Admin</td>
+                <td>Active</td>
+              </tr>
+              <tr>
+                <td>Sam Ortiz</td>
+                <td>Editor</td>
+                <td>Invited</td>
+              </tr>
+              <tr>
+                <td>Riley Chen</td>
+                <td>Viewer</td>
+                <td>Active</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="hero-island__item hero-island__item--pane">
+          <div class="k-tabs">
+            <div class="k-tabs__list" role="tablist">
+              <button type="button" class="k-tabs__tab" role="tab" aria-selected="true" tabindex="-1">
+                Overview
+              </button>
+              <button type="button" class="k-tabs__tab" role="tab" tabindex="-1">
+                Activity
+              </button>
+            </div>
+            <div class="k-tabs__panel" role="tabpanel">Project home, recent activity, and pinned files.</div>
+          </div>
+        </div>
+
+        <div class="hero-island__item hero-island__item--pane">
+          <div class="k-toast">
+            <div class="k-banner k-banner--success k-banner--soft">
+              <span>Changes saved.</span>
+            </div>
+            <div class="k-banner k-banner--info k-banner--soft">
+              <span>Invite sent to the team.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-island__item">
+          <span class="k-tooltip" data-tip="Saved 2 minutes ago">
+            <button type="button" class="k-btn k-btn--secondary k-btn--sm" tabindex="-1">
+              Save
+            </button>
+          </span>
+        </div>
+      </>
+    )
+  }
+</div>

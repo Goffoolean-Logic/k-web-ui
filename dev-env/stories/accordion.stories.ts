@@ -25,8 +25,8 @@ const items = (name?: string) => `
 `;
 
 /**
- * Host is a `.k-accordion` of `details.k-accordion__item`. Native details —
- * no JS. Same `name` on each details makes the group exclusive.
+ * A `.k-accordion` of `details.k-accordion__item`. Native details, no JS.
+ * Same `name` on each details makes the group exclusive.
  */
 export const Default: Story = {
   render: () => `

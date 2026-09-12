@@ -6,11 +6,11 @@ description: a.k-link.
 import Preview from '../../../components/Preview.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
-A link is navigation — another page, a hash, an external URL. Use a [button](/components/button/) when the click stays on this page.
+A link goes somewhere: another page, a hash, or an external URL. If the click stays on this page, use a [button](/components/button/).
 
-Host is an `<a>` with `.k-link`. It uses primary orange and an underline. Hover darkens to the primary hover token.
+The element is an `<a>` with `.k-link`. It is orange and underlined. Hover darkens it. Keep the underline. Color alone is not enough to mark a link.
 
-There is no disabled class. Add `aria-disabled="true"` when the destination is unavailable; the kit removes pointer events and the underline.
+There is no disabled class. `aria-disabled="true"` when the destination is gone; the kit kills pointer events and the underline.
 
 ## Classes
 
@@ -32,16 +32,16 @@ A text link. The `href` is yours.
 
 ## Accessibility
 
-Use a real `<a>` with an `href`. Color is not the only cue — the underline stays. `aria-disabled="true"` removes pointer events and the underline; the link should also be taken out of the tab order or given a reason in the surrounding copy if it must stay visible.
+Use a real `<a>` with an `href`. Color is not the only cue; the underline stays. `aria-disabled="true"` removes pointer events and the underline. Take it out of the tab order too, or explain nearby why it is still sitting there.
 
 ## Dos and don'ts
 
 **Do**
 - Use a real `<a>` with an `href`.
-- Keep the underline. It is the cue besides color.
+- Keep the underline.
 - Use a [button](/components/button/) for an action on this page.
 
 **Don't**
 - Style a `span` or `div` as a link.
-- Drop the underline for a "cleaner" look.
+- Drop the underline.
 - Use a link as a button.

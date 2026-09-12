@@ -6,9 +6,9 @@ description: div.k-card with optional header, body, footer.
 import Preview from '../../../components/Preview.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
-A card groups one unit of content — a deployment, a setting, a summary — so it reads as a block on the page. It is a layout shell, not an interactive widget. Put buttons and links inside it; the card itself does not handle clicks.
+A card is a box around one unit of content: a deployment, a setting, a summary. It is a layout shell, not an interactive widget. Put buttons and links inside it. Do not hang a click handler on the box itself.
 
-Host is `<div class="k-card">`. Header, body, and footer are optional parts. The header holds a title and optional subtitle. The body is the main copy. The footer is a row for actions, aligned to the end. You can use any subset; a card with only a body is valid.
+The element is `<div class="k-card">`. Header, body, and footer are optional. Title and subtitle go in the header. Copy goes in the body. The footer is a row of actions, aligned to the end. A card with only a body is fine.
 
 ## Classes
 
@@ -46,16 +46,15 @@ The full stack: identity in the header, copy in the body, an action in the foote
 
 ## Accessibility
 
-A card is a grouping, not a button. Do not put `onclick` on `.k-card`. The title should be a heading (`h3.k-card__title` in the usual page outline). Actions belong in the footer as real buttons or links so they stay in the tab order and get the kit focus ring.
+This is a grouping, not a button. Leave `onclick` off `.k-card`. The title should be a heading (`h3.k-card__title` in a normal outline). Actions belong in the footer as real buttons or links so they stay in the tab order and pick up the kit ring.
 
 ## Dos and don'ts
 
 **Do**
-- Use only the parts you need. A body-only card is fine.
+- Skip the parts you do not need. A body-only card is valid.
 - Put actions in the footer as real buttons or links.
-- Keep one unit of content per card.
 
 **Don't**
 - Make the whole card clickable.
 - Nest cards inside cards.
-- Use a card as a table. That is a [table](/components/table/).
+- Stuff tabular data in here. Use a [table](/components/table/).

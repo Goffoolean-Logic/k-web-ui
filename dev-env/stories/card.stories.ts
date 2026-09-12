@@ -27,7 +27,7 @@ export const Default: Story = {
   `,
 };
 
-/** Header and footer are optional; the body alone is a valid card. */
+/** Header and footer are optional. A body-only card is fine. */
 export const BodyOnly: Story = {
   render: () => `
     <div class="k-card" style="max-width: 24rem;">

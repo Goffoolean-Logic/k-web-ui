@@ -4,7 +4,7 @@ import './preview.css';
 const preview: Preview = {
   globalTypes: {
     theme: {
-      description: 'Design system theme',
+      description: 'Light, dark, or follow the OS',
       toolbar: {
         title: 'Theme',
         icon: 'paintbrush',

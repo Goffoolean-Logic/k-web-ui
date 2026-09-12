@@ -1,10 +1,190 @@
 ---
 title: Typography
-description: Outfit for UI. IBM Plex Mono for code.
+description: Outfit for UI. IBM Plex Mono for code. Sizes and weights.
 ---
 
-Outfit is the UI face. IBM Plex Mono is the code face. Both are self-hosted as Latin `.woff2` files.
+import Preview from '../../../components/Preview.astro';
 
-Every `k-` class gets Outfit. `code`, `kbd`, `samp`, and `pre` inside kit markup get Plex Mono. The page around a component is left alone.
+Outfit is the font on kit UI. IBM Plex Mono is the font on code. Both ship as self-hosted Latin `.woff2` files.
 
-Utilities: `font-k-sans` and `font-k-mono`.
+Every `k-` class gets Outfit. `code`, `kbd`, `samp`, and `pre` inside kit markup get Plex. The rest of your page keeps whatever font you already set. Importing the kit does not rewrite a blog's type.
+
+Outfit is a variable face from 100 to 900. Plex ships three static weights: 400, 500, and 600. Utilities if you need the faces outside a component: `font-k-sans` and `font-k-mono`.
+
+```html
+<p class="font-k-sans">Outfit</p>
+<code class="font-k-mono">IBM Plex Mono</code>
+```
+
+| Token | Family | Utility |
+| --- | --- | --- |
+| `--k-font-sans` | Outfit | `font-k-sans` |
+| `--k-font-mono` | IBM Plex Mono | `font-k-mono` |
+
+## Outfit
+
+The pangram below is the same string at each size, regular weight (400).
+
+<Preview stack>
+  <div class="font-k-sans text-k-fg">
+    <div class="k-type-row">
+      <span class="k-type-row__meta">text-xs · 0.75rem / 12px</span>
+      <p class="text-xs" style="margin: 0;">The quick brown fox jumps over the lazy dog.</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">text-sm · 0.875rem / 14px</span>
+      <p class="text-sm" style="margin: 0;">The quick brown fox jumps over the lazy dog.</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">text-base · 1rem / 16px</span>
+      <p class="text-base" style="margin: 0;">The quick brown fox jumps over the lazy dog.</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">text-lg · 1.125rem / 18px</span>
+      <p class="text-lg" style="margin: 0;">The quick brown fox jumps over the lazy dog.</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">text-xl · 1.25rem / 20px</span>
+      <p class="text-xl" style="margin: 0;">The quick brown fox jumps over the lazy dog.</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">text-2xl · 1.5rem / 24px</span>
+      <p class="text-2xl" style="margin: 0;">The quick brown fox jumps over the lazy dog.</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">text-3xl · 1.875rem / 30px</span>
+      <p class="text-3xl" style="margin: 0;">The quick brown fox jumps over the lazy dog.</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">text-4xl · 2.25rem / 36px</span>
+      <p class="text-4xl" style="margin: 0;">The quick brown fox jumps over the lazy dog.</p>
+    </div>
+  </div>
+</Preview>
+
+### Weights
+
+Same size (`text-xl`), 100 through 900. Thin at the top, black at the bottom.
+
+<Preview stack>
+  <div class="font-k-sans text-xl text-k-fg">
+    <div class="k-type-row">
+      <span class="k-type-row__meta">100 Thin</span>
+      <p style="margin: 0; font-weight: 100;">The quick brown fox jumps over the lazy dog.</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">200 Extra light</span>
+      <p style="margin: 0; font-weight: 200;">The quick brown fox jumps over the lazy dog.</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">300 Light</span>
+      <p style="margin: 0; font-weight: 300;">The quick brown fox jumps over the lazy dog.</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">400 Regular</span>
+      <p style="margin: 0; font-weight: 400;">The quick brown fox jumps over the lazy dog.</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">500 Medium</span>
+      <p style="margin: 0; font-weight: 500;">The quick brown fox jumps over the lazy dog.</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">600 Semibold</span>
+      <p style="margin: 0; font-weight: 600;">The quick brown fox jumps over the lazy dog.</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">700 Bold</span>
+      <p style="margin: 0; font-weight: 700;">The quick brown fox jumps over the lazy dog.</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">800 Extra bold</span>
+      <p style="margin: 0; font-weight: 800;">The quick brown fox jumps over the lazy dog.</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">900 Black</span>
+      <p style="margin: 0; font-weight: 900;">The quick brown fox jumps over the lazy dog.</p>
+    </div>
+  </div>
+</Preview>
+
+### Size and weight together
+
+A short stack of how UI type usually lands: small captions, body, and a heading.
+
+<Preview stack>
+  <div class="font-k-sans text-k-fg" style="display: flex; flex-direction: column; gap: 1rem;">
+    <p class="text-xs" style="margin: 0; font-weight: 500;">Caption · text-xs / 500</p>
+    <p class="text-sm" style="margin: 0; font-weight: 400;">Body · text-sm / 400. Most kit UI sits around this size.</p>
+    <p class="text-base" style="margin: 0; font-weight: 500;">Emphasis · text-base / 500</p>
+    <p class="text-xl" style="margin: 0; font-weight: 600;">Title · text-xl / 600</p>
+    <p class="text-3xl" style="margin: 0; font-weight: 700;">Display · text-3xl / 700</p>
+  </div>
+</Preview>
+
+## IBM Plex Mono
+
+Used for code inside kit markup, and for anything you mark `font-k-mono`. Only 400, 500, and 600 ship.
+
+<Preview stack>
+  <div class="font-k-mono text-k-fg">
+    <div class="k-type-row">
+      <span class="k-type-row__meta">text-xs · 400</span>
+      <p class="text-xs" style="margin: 0; font-weight: 400;">KPagination.mount('pages', 12)</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">text-sm · 400</span>
+      <p class="text-sm" style="margin: 0; font-weight: 400;">KPagination.mount('pages', 12)</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">text-base · 400</span>
+      <p class="text-base" style="margin: 0; font-weight: 400;">KPagination.mount('pages', 12)</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">text-lg · 400</span>
+      <p class="text-lg" style="margin: 0; font-weight: 400;">KPagination.mount('pages', 12)</p>
+    </div>
+  </div>
+</Preview>
+
+<Preview stack>
+  <div class="font-k-mono text-base text-k-fg">
+    <div class="k-type-row">
+      <span class="k-type-row__meta">400 Regular</span>
+      <p style="margin: 0; font-weight: 400;">0123456789 ABCDEF abcdef --k-primary</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">500 Medium</span>
+      <p style="margin: 0; font-weight: 500;">0123456789 ABCDEF abcdef --k-primary</p>
+    </div>
+    <div class="k-type-row">
+      <span class="k-type-row__meta">600 Semibold</span>
+      <p style="margin: 0; font-weight: 600;">0123456789 ABCDEF abcdef --k-primary</p>
+    </div>
+  </div>
+</Preview>
+
+## On kit chrome
+
+The same faces on a field, buttons, a link, and a card.
+
+<Preview stack>
+  <div class="k-field" style="max-width: 20rem;">
+    <label class="k-label" for="type-email">Email</label>
+    <input class="k-input" id="type-email" type="text" placeholder="you@example.com" />
+    <p class="k-hint">We'll never share it.</p>
+  </div>
+  <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;">
+    <button type="button" class="k-btn k-btn--primary">Primary</button>
+    <button type="button" class="k-btn k-btn--secondary">Secondary</button>
+    <a class="k-link" href="#">Read the guide</a>
+  </div>
+  <div class="k-card">
+    <div class="k-card__header">
+      <h3 class="k-card__title">Deployment</h3>
+      <p class="k-card__subtitle">Last run 4 minutes ago</p>
+    </div>
+    <div class="k-card__body">
+      <p>Every check passed on the latest commit. The log is in <code>dist/out</code>.</p>
+    </div>
+  </div>
+</Preview>

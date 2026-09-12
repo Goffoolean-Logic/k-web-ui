@@ -4,3 +4,4 @@ storybook-static/
 .astro/
 *.log
 .DS_Store
+.cursor

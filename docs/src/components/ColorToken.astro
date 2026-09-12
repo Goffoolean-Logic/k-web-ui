@@ -1,0 +1,21 @@
+---
+interface Props {
+  token: string;
+  fg?: string;
+}
+
+const { token, fg } = Astro.props;
+---
+
+<li class="k-grid__cell">
+  <div class="k-swatch" style={`background-color: var(--k-${token});`}>
+    {
+      fg ? (
+        <span class="k-swatch__sample" style={`color: var(--k-${fg});`}>
+          Aa
+        </span>
+      ) : null
+    }
+  </div>
+  <code>{`--k-${token}`}</code>
+</li>

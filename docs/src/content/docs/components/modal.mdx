@@ -1,16 +1,16 @@
 ---
 title: Modal
-description: dialog.k-modal with popover — no JS.
+description: dialog.k-modal with popover. No JS.
 ---
 
 import Preview from '../../../components/Preview.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
-A modal is a focused task on top of the page — confirm a delete, a short form, a warning. The host is a `<dialog class="k-modal" popover>`. The Popover API opens and closes it. No kit JS.
+A focused task on top of the page: confirm a delete, a short form, a warning. Use `<dialog class="k-modal" popover>`. The Popover API opens and closes it.
 
-A button with `popovertarget` matching the dialog `id` opens it. The same attribute with `popovertargetaction="hide"` closes it. Escape and the backdrop dismiss it as the platform does.
+A button with `popovertarget` matching the dialog `id` opens it. The same attribute with `popovertargetaction="hide"` closes it. Escape and the backdrop dismiss it the way the browser already does.
 
-Put title, body, and actions inside `.k-modal__box`. That box is the raised surface; the dialog itself is the full-viewport layer.
+Put title, body, and actions inside `.k-modal__box`. That box is the raised surface. The dialog itself is the full-viewport layer.
 
 ## Classes
 
@@ -52,7 +52,7 @@ A destructive confirm. Cancel and Delete both hide the dialog. Open it from the 
 
 ## Accessibility
 
-The host is a `<dialog popover>`. The Popover API handles light-dismiss, Escape, and focus. Title the dialog with `.k-modal__title` so the box has a heading. Close controls are real buttons with `popovertarget` / `popovertargetaction="hide"`. Do not trap focus yourself — the platform already does.
+The element is a `<dialog popover>`. The Popover API handles light-dismiss, Escape, and focus. Title the dialog with `.k-modal__title` so the box has a heading. Close controls are real buttons with `popovertarget` / `popovertargetaction="hide"`. Do not trap focus yourself. The browser already does.
 
 ## Dos and don'ts
 
@@ -62,6 +62,6 @@ The host is a `<dialog popover>`. The Popover API handles light-dismiss, Escape,
 - Put title, body, and actions in `.k-modal__box`.
 
 **Don't**
-- Mount kit JS on it. There is none.
+- Call `mount`. The Popover API already opens it.
 - Trap focus yourself.
 - Open a modal for a tooltip or a toast.

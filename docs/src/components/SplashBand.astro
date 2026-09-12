@@ -1,0 +1,16 @@
+---
+import heroBand from '../assets/hero-band.svg';
+
+const src = typeof heroBand === 'string' ? heroBand : heroBand.src;
+const width = typeof heroBand === 'string' ? 1600 : heroBand.width;
+const height = typeof heroBand === 'string' ? 900 : heroBand.height;
+---
+
+<section class="splash-band">
+  <div class="splash-band__frame">
+    <img src={src} alt="" width={width} height={height} />
+  </div>
+  <div class="splash-band__copy">
+    <slot />
+  </div>
+</section>

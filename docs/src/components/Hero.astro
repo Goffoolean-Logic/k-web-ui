@@ -1,46 +1,71 @@
 ---
 import DraftContentNotice from 'virtual:starlight/components/DraftContentNotice';
-import { LinkButton } from '@astrojs/starlight/components';
 import Wordmark from './Wordmark.astro';
+import HeroIsland from './HeroIsland.astro';
+import heroAside from '../assets/hero-aside.png';
 
 const { data } = Astro.locals.starlightRoute.entry;
-const { tagline, actions = [] } = data.hero || {};
+const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
 ---
 
-<div class="hero">
-  <div class="sl-flex stack">
-    <div class="sl-flex copy">
-      <h1 id="_top" data-page-title>
-        <Wordmark />
-      </h1>
-      {data.draft && <DraftContentNotice />}
-      {tagline && <div class="tagline" set:html={tagline} />}
-    </div>
-    {
-      actions.length > 0 && (
-        <div class="sl-flex actions">
-          {actions.map(
-            ({ attrs: { class: className, ...attrs } = {}, icon, link: href, text, variant }) => (
-              <LinkButton {href} {variant} icon={icon?.name} class:list={[className]} {...attrs}>
-                {text}
-                {icon?.html && <Fragment set:html={icon.html} />}
-              </LinkButton>
-            ),
-          )}
+{composed && <div class="hero">
+  <div class="hero-stage">
+    <HeroIsland />
+    <div class="hero-panel sl-flex">
+      <div class="sl-flex stack">
+        <div class="sl-flex copy">
+          <h1 id="_top" data-page-title>
+            <Wordmark />
+          </h1>
+          {data.draft && <DraftContentNotice />}
+          {
+            Astro.slots.has('tagline') && (
+              <div class="tagline">
+                <slot name="tagline" />
+              </div>
+            )
+          }
         </div>
-      )
-    }
+        {
+          Astro.slots.has('actions') && (
+            <div class="sl-flex actions">
+              <slot name="actions" />
+            </div>
+          )
+        }
+      </div>
+      <div class="hero-frame hero-frame--aside">
+        <img src={heroAside.src} alt="" width={heroAside.width} height={heroAside.height} />
+      </div>
+    </div>
   </div>
-</div>
+</div>}
 
 <style>
   @layer starlight.core {
     .hero {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1.5rem, calc(1rem + 3vw), 3rem);
       padding-block: clamp(2.5rem, calc(1rem + 10vmin), 10rem);
-      padding-bottom: 1rem;
+      padding-bottom: 0;
+    }
+
+    .hero-stage {
+      position: relative;
+      isolation: isolate;
+    }
+
+    .hero-panel {
+      position: relative;
+      z-index: 1;
+      align-items: center;
+      justify-content: space-between;
+      gap: clamp(1.5rem, calc(1rem + 4vw), 4rem);
     }
 
     .stack {
+      flex: 1 1 18rem;
       flex-direction: column;
       gap: clamp(1.5rem, calc(1.5rem + 1vw), 2rem);
     }
@@ -67,10 +92,44 @@ const { tagline, actions = [] } = data.hero || {};
       color: var(--sl-color-gray-2);
     }
 
+    .tagline :global(p) {
+      margin: 0;
+    }
+
     .actions {
       gap: 1rem 2rem;
       flex-wrap: wrap;
       justify-content: flex-start;
+    }
+
+    .hero-frame {
+      overflow: hidden;
+      border-radius: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .hero-frame img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-frame--aside {
+      width: min(22rem, 38%);
+      aspect-ratio: 1;
+    }
+
+    @media (max-width: 50rem) {
+      .hero-panel {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero-frame--aside {
+        width: min(16rem, 100%);
+        align-self: center;
+      }
     }
   }
 </style>

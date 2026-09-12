@@ -1,11 +1,12 @@
 ---
 interface Props {
   stack?: boolean;
+  lift?: boolean;
 }
 
-const { stack = false } = Astro.props;
+const { stack = false, lift = false } = Astro.props;
 ---
 
-<div class:list={['k-preview', 'not-content', stack && 'k-preview--stack']}>
+<div class:list={['k-preview', 'not-content', stack && 'k-preview--stack', lift && 'k-preview--lift']}>
   <slot />
 </div>

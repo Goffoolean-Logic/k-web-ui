@@ -27,7 +27,7 @@ function dropdownRoot(id: string, extraClass = ''): HTMLElement {
 }
 
 /**
- * Host is a `.k-dropdown` with a trigger and a hidden menu. `KDropdown.mount`
+ * You write the `.k-dropdown`, trigger, and hidden menu. `KDropdown.mount`
  * wires toggle, outside click, and keyboard movement.
  */
 export const Default: Story = {

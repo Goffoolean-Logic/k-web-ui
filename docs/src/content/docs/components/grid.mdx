@@ -1,18 +1,16 @@
 ---
 title: Grid
-description: div.k-grid or ul.k-grid — CSS only.
+description: div.k-grid or ul.k-grid. CSS only.
 ---
 
 import Preview from '../../../components/Preview.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
-A grid is a row of repeating tiles — an icon set, a swatch list, a gallery. It is not a [table](/components/table/). Use a table when the data is rows of the same columns.
+A grid is a row of repeating tiles, such as an icon set, a swatch list, or a gallery. Rows of the same columns belong in a [table](/components/table/).
 
-Host is `<div class="k-grid">` or `<ul class="k-grid">`. Default columns auto-fill from `8rem`. Pin a count with `--2`, `--3`, `--4`, or `--6`. `--tight` shortens the gap.
+Use `<div class="k-grid">` or `<ul class="k-grid">`. Default columns auto-fill from `8rem`. Pin a count with `--2`, `--3`, `--4`, or `--6`. `--tight` shortens the gap.
 
 Children can be anything. `k-grid__cell` is an optional tile: raised surface, border, centered stack. A `code` caption in the cell picks up muted type.
-
-No kit JS.
 
 ## Classes
 
@@ -81,16 +79,16 @@ The default. Columns wrap as the page widens. A list, because the cells are a se
 
 ## Accessibility
 
-A grid here is layout, not an ARIA grid. Do not set `role="grid"`. Use a `<ul>` when the tiles are a set. Decorative marks stay `aria-hidden`; the name lives in text in the cell.
+This is layout, not an ARIA grid. Leave `role="grid"` off. Use a `<ul>` when the tiles are a set. Decorative marks stay `aria-hidden`. The name lives in text in the cell.
 
 ## Dos and don'ts
 
 **Do**
-- Use auto-fill for catalogs. Pin a count only when the row must stay even.
+- Use auto-fill for catalogs. Pin a count only when the row has to stay even.
 - Use a `<ul>` when the cells are a set.
 - Put the name in text. Icons stay `aria-hidden`.
 
 **Don't**
-- Use a grid for tabular data. That is a [table](/components/table/).
-- Put `role="grid"` on the host.
-- Mount kit JS on it. There is none.
+- Put tabular data here. Use a [table](/components/table/).
+- Put `role="grid"` on it.
+- Expect a widget. This is a CSS grid.

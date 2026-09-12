@@ -7,12 +7,12 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   redirects: {
     '/components/icon': '/foundations/iconography',
+    '/foundations/tokens': '/foundations/colors',
   },
   integrations: [
     starlight({
       title: 'k-web-components',
-      description:
-        'Fast, lightweight, framework-agnostic UI components. A toolbox you can configure and build with.',
+      description: 'Designed to feel warm and engineered to run hot.',
       favicon: '/logo.png',
       components: {
         SiteTitle: './src/components/SiteTitle.astro',
@@ -27,12 +27,13 @@ export default defineConfig({
       ],
       customCss: ['./src/styles/docs.css'],
       sidebar: [
-        { label: 'Getting started', slug: 'getting-started' },
+        { label: 'Getting started', link: '/getting-started/' },
         {
           label: 'Foundations',
           items: [
-            { label: 'Tokens', slug: 'foundations/tokens' },
+            { label: 'Colors', slug: 'foundations/colors' },
             { label: 'Typography', slug: 'foundations/typography' },
+            { label: 'Styles', slug: 'foundations/styles' },
             { label: 'Iconography', slug: 'foundations/iconography' },
           ],
         },

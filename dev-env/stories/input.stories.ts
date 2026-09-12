@@ -8,6 +8,7 @@ interface InputArgs {
   disabled: boolean;
 }
 
+/** One field: label, input, hint. Pair `for` / `id`. Red border needs `.k-error`. */
 const meta: Meta<InputArgs> = {
   title: 'Components/Input',
   tags: ['autodocs'],

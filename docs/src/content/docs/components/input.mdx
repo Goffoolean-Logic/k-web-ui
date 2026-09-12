@@ -6,11 +6,11 @@ description: k-field, k-label, k-input, k-hint.
 import Preview from '../../../components/Preview.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
-These classes paint a single form field: a label, a text input, and optional helper text. Use them for short values — email, name, a search box. They do not wrap `<select>` or `<textarea>`.
+These classes style one form field: a label, a text input, and optional helper text. Use them for short values such as email, a name, or a search box. They do not wrap `<select>` or `<textarea>`.
 
-`.k-field` is the stack. Pair `.k-label` to the input with `for` / `id`. `.k-input` is the control. `.k-hint` is quiet help under the field. When the value is wrong, set `aria-invalid="true"` on the input and replace the hint with `.k-error` so the red border and the message agree.
+`.k-field` is the stack. Point `.k-label` at the input with `for` / `id`. `.k-input` is the control. `.k-hint` is the quiet line under it. When the value is wrong, set `aria-invalid="true"` on the input and swap the hint for `.k-error` so the red border and the message agree.
 
-Disabled is the `disabled` attribute on the input. The caret and focus ring use the kit ring token.
+`disabled` on the input is enough. The caret and focus ring use the kit ring token.
 
 ## Classes
 
@@ -52,14 +52,14 @@ A complete field. The hint is extra context, not an error.
 
 ## Accessibility
 
-The label must point at the input with `for` and `id`. Do not rely on placeholder as the name. Invalid is `aria-invalid="true"` on the input plus `.k-error` for the message — the red border alone is not enough. Disabled is the `disabled` attribute. Focus uses the kit ring token.
+The label has to point at the input with `for` and `id`. Placeholder is not a name. Invalid means `aria-invalid="true"` on the input plus `.k-error` for the message. The red border alone is not enough. `disabled` is the attribute. Focus uses the kit ring.
 
 ## Dos and don'ts
 
 **Do**
-- Pair `for` and `id` on the label and input.
-- Use `.k-error` with `aria-invalid="true"` together.
-- Use `.k-hint` for help, not for errors.
+- Pair `for` and `id`.
+- Use `.k-error` and `aria-invalid="true"` together. One without the other looks broken.
+- Keep `.k-hint` for help, not for errors.
 
 **Don't**
 - Use placeholder as the only label.

@@ -1,14 +1,14 @@
 ---
 title: Accordion
-description: details.k-accordion__item — CSS only.
+description: details.k-accordion__item. CSS only.
 ---
 
 import Preview from '../../../components/Preview.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
-An accordion is a list of sections the reader can open one at a time — FAQ, settings groups, long reference. The platform does the work: each item is a `<details>` element. There is no kit JS.
+An accordion is a list of sections the reader can open, such as an FAQ or a settings group. Each item is a `<details>` element. The browser owns open state, so there is nothing to `mount`.
 
-Host is `<div class="k-accordion">` of `<details class="k-accordion__item">`. The summary is `.k-accordion__trigger`. The open content is `.k-accordion__panel`. Put the same `name` on every details in the group so opening one closes the others. Omit `name` if several items can stay open. `open` on a details starts that item expanded.
+Wrap them in `<div class="k-accordion">`. Each item is `<details class="k-accordion__item">`. The summary is `.k-accordion__trigger`. The open content is `.k-accordion__panel`. Put the same `name` on every details in the group if opening one should close the others. Leave `name` off if several can stay open. `open` on a details starts that one expanded.
 
 The chevron is a CSS `::after` on the trigger. It flips when the item is open.
 
@@ -44,16 +44,16 @@ Same `name` on both items. Opening the second closes the first. The first starts
 
 ## Accessibility
 
-Each item is a native `<details>` / `<summary>`. The platform exposes open state and keyboard (Enter / Space on the summary). Do not replace the summary with a `div`. The chevron is CSS on the trigger — it is not in the accessibility tree. Give each trigger a clear name; the panel is the following content.
+Each item is a native `<details>` / `<summary>`. The browser exposes open state and keyboard (Enter / Space on the summary). Do not replace the summary with a `div`. The chevron is CSS on the trigger, so it is not in the accessibility tree. Give each trigger a clear name. The panel is whatever comes after.
 
 ## Dos and don'ts
 
 **Do**
-- Use `<details>` and `<summary>`. The platform owns open state.
+- Use `<details>` and `<summary>`. The browser already did this job.
 - Share one `name` when only one item should be open.
 - Put the answer in `.k-accordion__panel`.
 
 **Don't**
-- Build this with kit JS. There is none.
+- Import JS for this. There is nothing to mount.
 - Replace the summary with a styled `div`.
-- Hide important content only in a closed accordion if the reader must see it.
+- Hide something the reader has to see inside a closed item.

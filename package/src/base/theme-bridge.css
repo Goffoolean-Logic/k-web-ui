@@ -10,6 +10,8 @@
 @theme inline {
   --color-k-surface: var(--k-surface);
   --color-k-surface-raised: var(--k-surface-raised);
+  --color-k-surface-hard: var(--k-surface-hard);
+  --color-k-surface-soft: var(--k-surface-soft);
   --color-k-field: var(--k-field);
   --color-k-field-fg: var(--k-field-fg);
   --color-k-fg: var(--k-fg);
@@ -40,6 +42,10 @@
 
   --radius-k: var(--k-radius);
   --radius-k-lg: var(--k-radius-lg);
+
+  --shadow-k-1: var(--k-shadow-1);
+  --shadow-k-2: var(--k-shadow-2);
+  --shadow-k-3: var(--k-shadow-3);
 
   --font-k-sans: var(--k-font-sans);
   --font-k-mono: var(--k-font-mono);

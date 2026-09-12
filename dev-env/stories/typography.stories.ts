@@ -11,49 +11,80 @@ type Story = StoryObj;
 
 const PANGRAM = 'The quick brown fox jumps over the lazy dog.';
 
+const SIZE_ROWS = [
+  ['text-xs', '0.75rem / 12px'],
+  ['text-sm', '0.875rem / 14px'],
+  ['text-base', '1rem / 16px'],
+  ['text-lg', '1.125rem / 18px'],
+  ['text-xl', '1.25rem / 20px'],
+  ['text-2xl', '1.5rem / 24px'],
+  ['text-3xl', '1.875rem / 30px'],
+  ['text-4xl', '2.25rem / 36px'],
+] as const;
+
+const WEIGHTS = [
+  [100, 'Thin'],
+  [200, 'Extra light'],
+  [300, 'Light'],
+  [400, 'Regular'],
+  [500, 'Medium'],
+  [600, 'Semibold'],
+  [700, 'Bold'],
+  [800, 'Extra bold'],
+  [900, 'Black'],
+] as const;
+
 /**
- * Outfit on kit chrome. Switch the theme in the toolbar — the face does not
- * change, only the ink.
+ * Outfit sizes, regular weight. Switch the theme in the toolbar. The face
+ * does not change, only the ink.
  */
-export const Outfit: Story = {
+export const OutfitSizes: Story = {
   render: () => `
-    <div class="k-card" style="max-width: 40rem;">
-      <div class="k-card__body">
-        <p class="text-xs text-k-fg-muted">Outfit 400 / text-sm</p>
-        <p class="text-sm">${PANGRAM}</p>
-        <p class="text-xs text-k-fg-muted" style="margin-top: 1.25rem;">Outfit 500 / text-sm</p>
-        <p class="text-sm font-medium">${PANGRAM}</p>
-        <p class="text-xs text-k-fg-muted" style="margin-top: 1.25rem;">Outfit 600 / text-base</p>
-        <p class="text-base font-semibold">${PANGRAM}</p>
-        <div class="flex flex-wrap items-end gap-3" style="margin-top: 1.25rem;">
-          <span class="text-xs text-k-fg-muted">xs</span>
-          <span class="text-sm">sm</span>
-          <span class="text-base">base</span>
-        </div>
-      </div>
+    <div class="font-k-sans text-k-fg" style="max-width: 48rem;">
+      ${SIZE_ROWS.map(
+        ([cls, label]) => `
+          <div style="padding-block: 0.75rem; border-bottom: 1px solid var(--k-border);">
+            <p class="text-xs text-k-fg-muted" style="margin: 0 0 0.25rem;">${cls} · ${label}</p>
+            <p class="${cls}" style="margin: 0;">${PANGRAM}</p>
+          </div>
+        `,
+      ).join('')}
     </div>
   `,
 };
 
-/** IBM Plex Mono for code inside kit markup, and the font-k-mono utility. */
+/** Outfit weights 100 through 900 at text-xl. */
+export const OutfitWeights: Story = {
+  render: () => `
+    <div class="font-k-sans text-xl text-k-fg" style="max-width: 48rem;">
+      ${WEIGHTS.map(
+        ([weight, label]) => `
+          <div style="padding-block: 0.75rem; border-bottom: 1px solid var(--k-border);">
+            <p class="text-xs text-k-fg-muted" style="margin: 0 0 0.25rem;">${weight} ${label}</p>
+            <p style="margin: 0; font-weight: ${weight};">${PANGRAM}</p>
+          </div>
+        `,
+      ).join('')}
+    </div>
+  `,
+};
+
+/** IBM Plex Mono sizes and the three shipped weights. */
 export const PlexMono: Story = {
   render: () => `
-    <div style="display: flex; flex-direction: column; gap: 1rem; max-width: 40rem;">
-      <p class="text-xs text-k-fg-muted">Nested in a k- card — code uses mono automatically.</p>
-      <div class="k-card">
-        <div class="k-card__body">
-          <code>--k-font-mono: 'IBM Plex Mono'</code>
-        </div>
-      </div>
-      <p class="text-xs text-k-fg-muted">Utility, 400 / 500 / 600</p>
-      <p class="font-k-mono text-sm text-k-fg" style="font-weight: 400;">400 0123456789 k-tabs</p>
-      <p class="font-k-mono text-sm text-k-fg" style="font-weight: 500;">500 0123456789 k-tabs</p>
-      <p class="font-k-mono text-sm text-k-fg" style="font-weight: 600;">600 0123456789 k-tabs</p>
+    <div class="font-k-mono text-k-fg" style="max-width: 40rem; display: flex; flex-direction: column; gap: 1.25rem;">
+      <p class="text-xs" style="margin: 0; font-weight: 400;">KPagination.mount('pages', 12)</p>
+      <p class="text-sm" style="margin: 0; font-weight: 400;">KPagination.mount('pages', 12)</p>
+      <p class="text-base" style="margin: 0; font-weight: 400;">KPagination.mount('pages', 12)</p>
+      <p class="text-lg" style="margin: 0; font-weight: 400;">KPagination.mount('pages', 12)</p>
+      <p class="text-base" style="margin: 0; font-weight: 400;">400 0123456789 --k-primary</p>
+      <p class="text-base" style="margin: 0; font-weight: 500;">500 0123456789 --k-primary</p>
+      <p class="text-base" style="margin: 0; font-weight: 600;">600 0123456789 --k-primary</p>
     </div>
   `,
 };
 
-/** Same faces on the components that actually ship. */
+/** The same faces on a field, buttons, a link, and a card. */
 export const OnChrome: Story = {
   render: () => `
     <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 24rem;">

@@ -16,7 +16,7 @@ const cell = (name: string) => `
   </li>
 `;
 
-/** Default columns auto-fill. A list, because the cells are a set. */
+/** Columns auto-fill. A list, because the cells are a set. */
 export const AutoFill: Story = {
   render: () => `
     <ul class="k-grid">

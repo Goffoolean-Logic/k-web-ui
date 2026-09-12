@@ -18,6 +18,7 @@ const buttonClass = ({ variant, size, block }: ButtonArgs): string =>
     .filter(Boolean)
     .join(' ');
 
+/** A real `<button>` with `.k-btn` and one variant. Not a dressed-up div. */
 const meta: Meta<ButtonArgs> = {
   title: 'Components/Button',
   tags: ['autodocs'],
