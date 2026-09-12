@@ -6,7 +6,7 @@ Everything that is not a [color](/foundations/colors/) or a [typeface](/foundati
 
 ## Radius
 
-`--k-radius` is the default corner on buttons, inputs, badges, and most controls. `--k-radius-lg` is the larger corner on cards, dialogs, and preview frames.
+`--k-radius` is the default corner on buttons, inputs, and most controls. `--k-radius-lg` is used on cards, dialogs, and preview frames. Both are 2px.
 
 ```html
 <div class="rounded-k">Default</div>
@@ -15,8 +15,8 @@ Everything that is not a [color](/foundations/colors/) or a [typeface](/foundati
 
 | Token | Value | Utility |
 | --- | --- | --- |
-| `--k-radius` | 0.375rem | `rounded-k` |
-| `--k-radius-lg` | 0.625rem | `rounded-k-lg` |
+| `--k-radius` | 0.125rem | `rounded-k` |
+| `--k-radius-lg` | 0.125rem | `rounded-k-lg` |
 
 ## Shadows
 
