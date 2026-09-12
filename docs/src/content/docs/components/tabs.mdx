@@ -1,0 +1,51 @@
+---
+title: Tabs
+description: KTabs.mount on a .k-tabs host.
+---
+
+import Preview from '../../../components/Preview.astro';
+import TabsDemo from '../../../components/TabsDemo.astro';
+import ClassTable from '../../../components/ClassTable.astro';
+
+Tabs switch related panels in place — overview / usage / API, or three views of the same object. Do not use them for wizard steps or for content the reader must see in order.
+
+Put an id and `.k-tabs` on an empty host. `KTabs.mount` builds the tablist, tabs, panels, and ARIA from `items`. Each item is a `label` and `content` (a string or a node). Options: `selected` for the starting index, `label` for the tablist name, `keyboard` (default true) for arrow / Home / End movement.
+
+The selected tab gets the orange underline. Hidden panels use `[hidden]`. If the host is wiped and you call `mount` again, it rebuilds.
+
+## Classes
+
+<ClassTable
+  rows={[
+    { name: 'k-tabs', type: 'component' },
+    { name: 'k-tabs__list', type: 'part' },
+    { name: 'k-tabs__tab', type: 'part' },
+    { name: 'k-tabs__panel', type: 'part' },
+  ]}
+/>
+
+## Examples
+
+### Three panels
+
+A mounted host. Click a tab or move with the arrow keys once one is focused.
+
+<Preview stack>
+  <TabsDemo />
+</Preview>
+
+## Accessibility
+
+`KTabs.mount` builds `role="tablist"`, `role="tab"`, and `role="tabpanel"`. Tabs get `aria-selected`, `aria-controls`, and matching `aria-labelledby` on the panel. Hidden panels use `[hidden]`. Arrow keys, Home, and End move between tabs when `keyboard` is true (the default). Pass `label` to name the tablist. The kit focus ring applies to the tab buttons.
+
+## Dos and don'ts
+
+**Do**
+- Mount on an empty host with an id and `.k-tabs`.
+- Pass `items` with a `label` and `content`.
+- Use tabs for related views of the same object.
+
+**Don't**
+- Use tabs as wizard steps or a sequence the reader must follow.
+- Hand-write the tablist. `mount` builds it.
+- Hide required content in a panel the reader may never open.

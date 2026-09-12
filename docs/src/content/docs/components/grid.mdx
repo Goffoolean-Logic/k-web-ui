@@ -1,0 +1,96 @@
+---
+title: Grid
+description: div.k-grid or ul.k-grid — CSS only.
+---
+
+import Preview from '../../../components/Preview.astro';
+import ClassTable from '../../../components/ClassTable.astro';
+
+A grid is a row of repeating tiles — an icon set, a swatch list, a gallery. It is not a [table](/components/table/). Use a table when the data is rows of the same columns.
+
+Host is `<div class="k-grid">` or `<ul class="k-grid">`. Default columns auto-fill from `8rem`. Pin a count with `--2`, `--3`, `--4`, or `--6`. `--tight` shortens the gap.
+
+Children can be anything. `k-grid__cell` is an optional tile: raised surface, border, centered stack. A `code` caption in the cell picks up muted type.
+
+No kit JS.
+
+## Classes
+
+<ClassTable
+  rows={[
+    { name: 'k-grid', type: 'component' },
+    { name: 'k-grid__cell', type: 'part' },
+    { name: 'k-grid--2', type: 'modifier' },
+    { name: 'k-grid--3', type: 'modifier' },
+    { name: 'k-grid--4', type: 'modifier' },
+    { name: 'k-grid--6', type: 'modifier' },
+    { name: 'k-grid--tight', type: 'modifier' },
+  ]}
+/>
+
+## Examples
+
+### Auto-fill catalog
+
+The default. Columns wrap as the page widens. A list, because the cells are a set.
+
+<Preview stack>
+  <ul class="k-grid">
+    <li class="k-grid__cell">
+      <span class="k-icon k-icon--info k-icon--sm" aria-hidden="true"></span>
+      <code>info</code>
+    </li>
+    <li class="k-grid__cell">
+      <span class="k-icon k-icon--success k-icon--sm" aria-hidden="true"></span>
+      <code>success</code>
+    </li>
+    <li class="k-grid__cell">
+      <span class="k-icon k-icon--warning k-icon--sm" aria-hidden="true"></span>
+      <code>warning</code>
+    </li>
+    <li class="k-grid__cell">
+      <span class="k-icon k-icon--danger k-icon--sm" aria-hidden="true"></span>
+      <code>danger</code>
+    </li>
+  </ul>
+</Preview>
+
+### Fixed columns
+
+`--3` pins three columns. Cards sit in the grid without a cell wrapper.
+
+<Preview stack>
+  <div class="k-grid k-grid--3">
+    <div class="k-card">
+      <div class="k-card__body">
+        <p>Deploy</p>
+      </div>
+    </div>
+    <div class="k-card">
+      <div class="k-card__body">
+        <p>Checks</p>
+      </div>
+    </div>
+    <div class="k-card">
+      <div class="k-card__body">
+        <p>Preview</p>
+      </div>
+    </div>
+  </div>
+</Preview>
+
+## Accessibility
+
+A grid here is layout, not an ARIA grid. Do not set `role="grid"`. Use a `<ul>` when the tiles are a set. Decorative marks stay `aria-hidden`; the name lives in text in the cell.
+
+## Dos and don'ts
+
+**Do**
+- Use auto-fill for catalogs. Pin a count only when the row must stay even.
+- Use a `<ul>` when the cells are a set.
+- Put the name in text. Icons stay `aria-hidden`.
+
+**Don't**
+- Use a grid for tabular data. That is a [table](/components/table/).
+- Put `role="grid"` on the host.
+- Mount kit JS on it. There is none.

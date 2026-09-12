@@ -1,0 +1,67 @@
+---
+title: Input
+description: k-field, k-label, k-input, k-hint.
+---
+
+import Preview from '../../../components/Preview.astro';
+import ClassTable from '../../../components/ClassTable.astro';
+
+These classes paint a single form field: a label, a text input, and optional helper text. Use them for short values — email, name, a search box. They do not wrap `<select>` or `<textarea>`.
+
+`.k-field` is the stack. Pair `.k-label` to the input with `for` / `id`. `.k-input` is the control. `.k-hint` is quiet help under the field. When the value is wrong, set `aria-invalid="true"` on the input and replace the hint with `.k-error` so the red border and the message agree.
+
+Disabled is the `disabled` attribute on the input. The caret and focus ring use the kit ring token.
+
+## Classes
+
+<ClassTable
+  rows={[
+    { name: 'k-field', type: 'component' },
+    { name: 'k-label', type: 'component' },
+    { name: 'k-input', type: 'component' },
+    { name: 'k-hint', type: 'component' },
+    { name: 'k-error', type: 'component' },
+  ]}
+/>
+
+## Examples
+
+### With a hint
+
+A complete field. The hint is extra context, not an error.
+
+<Preview stack>
+  <div class="k-field">
+    <label class="k-label" for="docs-email">Email</label>
+    <input class="k-input" id="docs-email" type="text" placeholder="you@example.com" />
+    <p class="k-hint">We'll never share it.</p>
+  </div>
+</Preview>
+
+### Invalid
+
+`aria-invalid="true"` paints the danger border. `.k-error` is the message.
+
+<Preview stack>
+  <div class="k-field">
+    <label class="k-label" for="docs-email-invalid">Email</label>
+    <input class="k-input" id="docs-email-invalid" type="text" value="not-an-email" aria-invalid="true" />
+    <p class="k-error">Enter a valid email.</p>
+  </div>
+</Preview>
+
+## Accessibility
+
+The label must point at the input with `for` and `id`. Do not rely on placeholder as the name. Invalid is `aria-invalid="true"` on the input plus `.k-error` for the message — the red border alone is not enough. Disabled is the `disabled` attribute. Focus uses the kit ring token.
+
+## Dos and don'ts
+
+**Do**
+- Pair `for` and `id` on the label and input.
+- Use `.k-error` with `aria-invalid="true"` together.
+- Use `.k-hint` for help, not for errors.
+
+**Don't**
+- Use placeholder as the only label.
+- Put these classes on `<select>` or `<textarea>`.
+- Show a red border with no message.

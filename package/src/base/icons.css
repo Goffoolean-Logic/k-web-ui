@@ -1,0 +1,17 @@
+/*
+ * Icon masks. Paths are relative to this file so the published full.css
+ * resolves them from dist/icons, and the base build from dist/base/icons.
+ */
+:root {
+  --k-icon-chevron-left: url('./icons/chevron-left.svg');
+  --k-icon-chevron-right: url('./icons/chevron-right.svg');
+  --k-icon-chevron-down: url('./icons/chevron-down.svg');
+  --k-icon-chevron-first: url('./icons/chevron-first.svg');
+  --k-icon-chevron-last: url('./icons/chevron-last.svg');
+  --k-icon-info: url('./icons/info.svg');
+  --k-icon-success: url('./icons/success.svg');
+  --k-icon-warning: url('./icons/warning.svg');
+  --k-icon-danger: url('./icons/danger.svg');
+  --k-icon-close: url('./icons/close.svg');
+  --k-icon-loading: url('./icons/loading.svg');
+}

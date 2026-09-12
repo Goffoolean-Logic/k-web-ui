@@ -9,7 +9,7 @@ export default meta;
 
 type Story = StoryObj;
 
-const PANGRAM = 'The quick brown fox jumps over the lazy cabin.';
+const PANGRAM = 'The quick brown fox jumps over the lazy dog.';
 
 /**
  * Outfit on kit chrome. Switch the theme in the toolbar — the face does not
@@ -46,9 +46,9 @@ export const PlexMono: Story = {
         </div>
       </div>
       <p class="text-xs text-k-fg-muted">Utility, 400 / 500 / 600</p>
-      <p class="font-k-mono text-sm text-k-fg" style="font-weight: 400;">400 0123456789 cabin-tabs</p>
-      <p class="font-k-mono text-sm text-k-fg" style="font-weight: 500;">500 0123456789 cabin-tabs</p>
-      <p class="font-k-mono text-sm text-k-fg" style="font-weight: 600;">600 0123456789 cabin-tabs</p>
+      <p class="font-k-mono text-sm text-k-fg" style="font-weight: 400;">400 0123456789 k-tabs</p>
+      <p class="font-k-mono text-sm text-k-fg" style="font-weight: 500;">500 0123456789 k-tabs</p>
+      <p class="font-k-mono text-sm text-k-fg" style="font-weight: 600;">600 0123456789 k-tabs</p>
     </div>
   `,
 };
@@ -65,7 +65,7 @@ export const OnChrome: Story = {
       <div class="flex flex-wrap items-center gap-3">
         <button type="button" class="k-btn k-btn--primary">Primary</button>
         <button type="button" class="k-btn k-btn--secondary">Secondary</button>
-        <a class="k-link" href="#">Book a seat</a>
+        <a class="k-link" href="#">Read the guide</a>
       </div>
       <div class="k-card">
         <div class="k-card__header">

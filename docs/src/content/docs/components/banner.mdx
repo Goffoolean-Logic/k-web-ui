@@ -1,0 +1,74 @@
+---
+title: Banner
+description: div.k-banner with role="alert".
+---
+
+import Preview from '../../../components/Preview.astro';
+import ClassTable from '../../../components/ClassTable.astro';
+
+A banner is an inline alert for something the reader should see in context — a failed save, a confirmed purchase, an update. Give the host `role="alert"`. For a message that should float over the canvas, wrap banners in a [toast](/components/toast/).
+
+Host is `<div class="k-banner">`. A variant paints the fill. A style lightens that fill: soft, outline, or dash. Layout modifiers flip the grid: vertical stacks and centers, horizontal is a row, `sm-horizontal` is a row from the `sm` breakpoint up.
+
+Children are optional. A kit icon, a plain span, or the body parts (`k-banner__title`, `k-banner__description`, `k-banner__actions`) all sit in the same grid.
+
+## Classes
+
+<ClassTable
+  rows={[
+    { name: 'k-banner', type: 'component' },
+    { name: 'k-banner__body', type: 'part' },
+    { name: 'k-banner__title', type: 'part' },
+    { name: 'k-banner__description', type: 'part' },
+    { name: 'k-banner__actions', type: 'part' },
+    { name: 'k-banner--info', type: 'variant' },
+    { name: 'k-banner--success', type: 'variant' },
+    { name: 'k-banner--warning', type: 'variant' },
+    { name: 'k-banner--danger', type: 'variant' },
+    { name: 'k-banner--soft', type: 'style' },
+    { name: 'k-banner--outline', type: 'style' },
+    { name: 'k-banner--dash', type: 'style' },
+    { name: 'k-banner--vertical', type: 'modifier' },
+    { name: 'k-banner--horizontal', type: 'modifier' },
+    { name: 'k-banner--sm-horizontal', type: 'modifier' },
+  ]}
+/>
+
+## Examples
+
+### Info with an icon
+
+The default filled info banner. The icon is decorative (`aria-hidden`); the text is the message.
+
+<Preview stack>
+  <div role="alert" class="k-banner k-banner--info">
+    <span class="k-icon k-icon--info" aria-hidden="true"></span>
+    <span>New software update available.</span>
+  </div>
+</Preview>
+
+### Soft success
+
+`--soft` keeps the success color as a wash instead of a solid fill. Use it when the banner should recede.
+
+<Preview stack>
+  <div role="alert" class="k-banner k-banner--success k-banner--soft">
+    <span>Your purchase has been confirmed.</span>
+  </div>
+</Preview>
+
+## Accessibility
+
+Put `role="alert"` on the host so assistive tech announces it when it appears. The message must live in text, not only in color. Icons are decorative — `aria-hidden="true"`. Actions inside the banner are real buttons or links and pick up the kit focus ring.
+
+## Dos and don'ts
+
+**Do**
+- Set `role="alert"` on the host.
+- Use a banner in the page flow. Pin it with a [toast](/components/toast/) when it should float.
+- Keep one message per banner.
+
+**Don't**
+- Use a banner for a status chip. That is a [badge](/components/badge/).
+- Announce with color only.
+- Leave an icon without `aria-hidden="true"`.

@@ -2,12 +2,14 @@ import { tabFromEvent } from './dom.js';
 import { selectTab } from './events.js';
 import type { KTabsState } from './models.js';
 
-export function bindKeybinds(state: KTabsState): void {
+export function bindKeybinds(state: KTabsState, signal: AbortSignal): void {
   if (!state.keyboard) {
     return;
   }
 
-  state.root.addEventListener('keydown', (event) => {
+  state.root.addEventListener(
+    'keydown',
+    (event) => {
     const tab = tabFromEvent(state.root, event);
     if (!tab) {
       return;
@@ -42,5 +44,7 @@ export function bindKeybinds(state: KTabsState): void {
 
     event.preventDefault();
     selectTab(state, next, { focus: true });
-  });
+  },
+    { signal },
+  );
 }

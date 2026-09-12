@@ -1,9 +1,10 @@
 /*
  * Primitive palette.
  *
- * Brand: orange, black, and white. Orange is the chrome (fields, actions,
- * borders, focus) and the light canvas wash. Black is the dark canvas.
- * White is type on dark chrome. Red exists only for danger.
+ * Brand: orange, steel, and white. Orange is the chrome (fields, actions,
+ * borders, focus) and the light canvas wash. Steel is the dark canvas —
+ * 950 is black. White is type on dark chrome. Red, green, and blue exist
+ * only for status (danger, success, info). Warning reuses the orange chrome.
  *
  * Nothing outside themes.css should reference these directly.
  */
@@ -23,6 +24,18 @@
   --k-palette-neutral-900: #0f172a;
   --k-palette-neutral-950: #020617;
 
+  --k-palette-steel-50: #f4f5f6;
+  --k-palette-steel-100: #e2e4e7;
+  --k-palette-steel-200: #c4c8ce;
+  --k-palette-steel-300: #9aa0a8;
+  --k-palette-steel-400: #6f7680;
+  --k-palette-steel-500: #555c66;
+  --k-palette-steel-600: #3f454d;
+  --k-palette-steel-700: #2c3137;
+  --k-palette-steel-800: #1a1d21;
+  --k-palette-steel-900: #0d0f12;
+  --k-palette-steel-950: #000000;
+
   --k-palette-orange-50: #fff7ed;
   --k-palette-orange-100: #ffedd5;
   --k-palette-orange-200: #fed7aa;
@@ -38,6 +51,14 @@
   --k-palette-red-400: #f87171;
   --k-palette-red-600: #dc2626;
   --k-palette-red-950: #450a0a;
+
+  --k-palette-green-400: #4ade80;
+  --k-palette-green-700: #15803d;
+  --k-palette-green-950: #052e16;
+
+  --k-palette-blue-400: #60a5fa;
+  --k-palette-blue-600: #2563eb;
+  --k-palette-blue-950: #172554;
 
   --k-radius: 0.375rem;
   --k-radius-lg: 0.625rem;

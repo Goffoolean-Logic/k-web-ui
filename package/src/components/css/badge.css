@@ -1,0 +1,115 @@
+@layer components {
+  /*
+   * Requires <span class="k-badge"> or <div class="k-badge">.
+   * Color and style modifiers combine: k-badge--info k-badge--outline.
+   */
+  :is(span.k-badge, div.k-badge) {
+    --k-badge-color: var(--k-fg);
+    --k-badge-on-color: var(--k-surface);
+    --k-badge-size: 1.5rem;
+
+    @apply box-border inline-flex w-fit shrink-0 items-center justify-center
+      gap-1 rounded-full border border-k-border bg-k-surface-raised
+      align-middle text-sm leading-none font-medium whitespace-nowrap text-k-fg;
+    height: var(--k-badge-size);
+    padding-inline: calc(var(--k-badge-size) / 2 - 1px);
+  }
+
+  :is(span.k-badge, div.k-badge) > :is(svg, span.k-icon) {
+    @apply shrink-0;
+    width: 1em;
+    height: 1em;
+  }
+
+  :is(span.k-badge, div.k-badge):empty {
+    @apply px-0;
+    width: var(--k-badge-size);
+  }
+
+  /* Colors — filled. Style modifiers below restyle using the same vars. */
+  :is(span.k-badge, div.k-badge).k-badge--primary {
+    --k-badge-color: var(--k-primary);
+    --k-badge-on-color: var(--k-primary-fg);
+    @apply border-k-primary bg-k-primary text-k-primary-fg;
+  }
+
+  :is(span.k-badge, div.k-badge).k-badge--secondary {
+    --k-badge-color: var(--k-field);
+    --k-badge-on-color: var(--k-field-fg);
+    @apply border-k-field bg-k-field text-k-field-fg;
+  }
+
+  :is(span.k-badge, div.k-badge).k-badge--accent {
+    --k-badge-color: var(--k-accent);
+    --k-badge-on-color: var(--k-accent-fg);
+    @apply border-k-accent bg-k-accent text-k-accent-fg;
+  }
+
+  :is(span.k-badge, div.k-badge).k-badge--info {
+    --k-badge-color: var(--k-info);
+    --k-badge-on-color: var(--k-info-fg);
+    @apply border-k-info bg-k-info text-k-info-fg;
+  }
+
+  :is(span.k-badge, div.k-badge).k-badge--success {
+    --k-badge-color: var(--k-success);
+    --k-badge-on-color: var(--k-success-fg);
+    @apply border-k-success bg-k-success text-k-success-fg;
+  }
+
+  :is(span.k-badge, div.k-badge).k-badge--warning {
+    --k-badge-color: var(--k-warning);
+    --k-badge-on-color: var(--k-warning-fg);
+    @apply border-k-warning bg-k-warning text-k-warning-fg;
+  }
+
+  :is(span.k-badge, div.k-badge).k-badge--danger {
+    --k-badge-color: var(--k-danger);
+    --k-badge-on-color: var(--k-danger-fg);
+    @apply border-k-danger bg-k-danger text-k-danger-fg;
+  }
+
+  /* Styles — pick one. Later rules win if several are applied. */
+  :is(span.k-badge, div.k-badge).k-badge--outline {
+    @apply bg-transparent;
+    border-color: var(--k-badge-color);
+    color: var(--k-badge-color);
+  }
+
+  :is(span.k-badge, div.k-badge).k-badge--dash {
+    @apply border-dashed bg-transparent;
+    border-color: var(--k-badge-color);
+    color: var(--k-badge-color);
+  }
+
+  :is(span.k-badge, div.k-badge).k-badge--soft {
+    border-color: color-mix(in oklab, var(--k-badge-color) 22%, var(--k-surface));
+    background-color: color-mix(in oklab, var(--k-badge-color) 14%, var(--k-surface));
+    color: var(--k-badge-color);
+  }
+
+  :is(span.k-badge, div.k-badge).k-badge--ghost {
+    @apply border-transparent bg-k-surface-raised text-k-fg-muted;
+  }
+
+  /* Sizes — md is the default; --md is an explicit no-op. */
+  :is(span.k-badge, div.k-badge).k-badge--xs {
+    --k-badge-size: 1rem;
+    font-size: 0.625rem;
+  }
+
+  :is(span.k-badge, div.k-badge).k-badge--sm {
+    --k-badge-size: 1.25rem;
+    @apply text-xs leading-none;
+  }
+
+  :is(span.k-badge, div.k-badge).k-badge--lg {
+    --k-badge-size: 1.75rem;
+    @apply text-base leading-none;
+  }
+
+  :is(span.k-badge, div.k-badge).k-badge--xl {
+    --k-badge-size: 2rem;
+    @apply text-lg leading-none;
+  }
+}

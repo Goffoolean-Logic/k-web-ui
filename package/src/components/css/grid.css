@@ -1,0 +1,45 @@
+@layer components {
+  /*
+   * Requires <div class="k-grid"> or <ul class="k-grid">.
+   * Default columns auto-fill. Pin a count with --2, --3, --4, or --6.
+   * Cells are optional tiles.
+   */
+  :is(div.k-grid, ul.k-grid) {
+    @apply m-0 grid w-full list-none p-0;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+  }
+
+  :is(div.k-grid, ul.k-grid).k-grid--tight {
+    gap: 0.375rem;
+  }
+
+  :is(div.k-grid, ul.k-grid).k-grid--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  :is(div.k-grid, ul.k-grid).k-grid--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  :is(div.k-grid, ul.k-grid).k-grid--4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  :is(div.k-grid, ul.k-grid).k-grid--6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  :is(div.k-grid__cell, li.k-grid__cell) {
+    @apply flex min-w-0 flex-col items-center justify-center gap-2 rounded-k
+      border border-k-border bg-k-surface-raised p-3 text-center;
+  }
+
+  :is(div.k-grid, ul.k-grid).k-grid--tight > :is(div.k-grid__cell, li.k-grid__cell) {
+    @apply p-2;
+  }
+
+  :is(div.k-grid__cell, li.k-grid__cell) > code {
+    @apply text-xs break-all text-k-fg-muted;
+  }
+}

@@ -1,0 +1,101 @@
+@layer components {
+  /*
+   * Requires <span class="k-icon k-icon--name"> or <svg class="k-icon">.
+   * Named spans use the kit masks. Inline svgs keep their own paths.
+   */
+  :is(span.k-icon, svg.k-icon) {
+    @apply inline-block shrink-0 align-middle;
+    width: 4rem;
+    height: 4rem;
+  }
+
+  span.k-icon {
+    background-color: currentColor;
+    -webkit-mask: var(--k-icon-mask) center / contain no-repeat;
+    mask: var(--k-icon-mask) center / contain no-repeat;
+  }
+
+  svg.k-icon {
+    stroke: currentColor;
+    fill: none;
+  }
+
+  :is(span.k-icon, svg.k-icon).k-icon--xs {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  :is(span.k-icon, svg.k-icon).k-icon--sm {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  :is(span.k-icon, svg.k-icon).k-icon--lg {
+    width: 7rem;
+    height: 7rem;
+  }
+
+  span.k-icon--chevron-left {
+    --k-icon-mask: var(--k-icon-chevron-left);
+  }
+
+  span.k-icon--chevron-right {
+    --k-icon-mask: var(--k-icon-chevron-right);
+  }
+
+  span.k-icon--chevron-down {
+    --k-icon-mask: var(--k-icon-chevron-down);
+  }
+
+  span.k-icon--chevron-first {
+    --k-icon-mask: var(--k-icon-chevron-first);
+  }
+
+  span.k-icon--chevron-last {
+    --k-icon-mask: var(--k-icon-chevron-last);
+  }
+
+  span.k-icon--info {
+    --k-icon-mask: var(--k-icon-info);
+  }
+
+  span.k-icon--success {
+    --k-icon-mask: var(--k-icon-success);
+  }
+
+  span.k-icon--warning {
+    --k-icon-mask: var(--k-icon-warning);
+  }
+
+  span.k-icon--danger {
+    --k-icon-mask: var(--k-icon-danger);
+  }
+
+  span.k-icon--close {
+    --k-icon-mask: var(--k-icon-close);
+  }
+
+  span.k-icon--loading {
+    --k-icon-mask: var(--k-icon-loading);
+    background-color: var(--k-primary);
+  }
+
+  [data-theme='dark'] span.k-icon--loading {
+    background-color: var(--k-fg);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-theme='auto'] span.k-icon--loading {
+      background-color: var(--k-fg);
+    }
+  }
+
+  button.k-btn > :is(span.k-icon, svg.k-icon),
+  button.k-btn > span.k-spin > :is(span.k-icon, svg.k-icon),
+  button.k-pagination__btn > :is(span.k-icon, svg.k-icon),
+  button.k-carousel__prev > :is(span.k-icon, svg.k-icon),
+  button.k-carousel__next > :is(span.k-icon, svg.k-icon) {
+    width: 1em;
+    height: 1em;
+  }
+}

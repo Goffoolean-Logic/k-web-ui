@@ -1,0 +1,55 @@
+---
+title: Carousel
+description: KCarousel.mount on a .k-carousel host.
+---
+
+import Preview from '../../../components/Preview.astro';
+import CarouselDemo from '../../../components/CarouselDemo.astro';
+import ClassTable from '../../../components/ClassTable.astro';
+
+A carousel steps through slides in one viewport — screenshots, quotes, a short tour. Put an id and `.k-carousel` on an empty host. `KCarousel.mount` builds the track, slides, prev/next, and dots from `items`. Each item is `content` (a string or a node).
+
+It loops by default. Pass `loop: false` to stop at the ends; the arrows disable there. `index` sets the starting slide. `keyboard` (default true) lets arrow keys move once the carousel is focused.
+
+Reduced motion drops the track transition.
+
+## Classes
+
+<ClassTable
+  rows={[
+    { name: 'k-carousel', type: 'component' },
+    { name: 'k-carousel__viewport', type: 'part' },
+    { name: 'k-carousel__track', type: 'part' },
+    { name: 'k-carousel__slide', type: 'part' },
+    { name: 'k-carousel__prev', type: 'part' },
+    { name: 'k-carousel__next', type: 'part' },
+    { name: 'k-carousel__dots', type: 'part' },
+    { name: 'k-carousel__dot', type: 'part' },
+  ]}
+/>
+
+## Examples
+
+### Looping slides
+
+Three slides, loop on. Arrows wrap. Dots jump.
+
+<Preview stack>
+  <CarouselDemo />
+</Preview>
+
+## Accessibility
+
+The host gets `aria-roledescription="carousel"` and `tabindex="0"` so it can take keyboard focus. Slides are labelled `1 of n`. Prev / next and dots have `aria-label`. The current dot is `aria-current="true"`. Arrow keys, Home, and End move when `keyboard` is true. With `loop: false`, end arrows are `disabled`. Reduced motion drops the slide animation.
+
+## Dos and don'ts
+
+**Do**
+- Mount on an empty host with an id and `.k-carousel`.
+- Pass `items` as `content` strings or nodes.
+- Use `loop: false` when the ends should stop.
+
+**Don't**
+- Hand-write the track, arrows, and dots. `mount` builds them.
+- Put required page content only in a carousel.
+- Nest carousels.

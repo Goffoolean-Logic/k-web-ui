@@ -1,0 +1,28 @@
+@layer components {
+  /* Requires <div class="k-dropdown"> with a trigger button and a menu. */
+  div.k-dropdown {
+    @apply relative inline-block;
+  }
+
+  div.k-dropdown__menu {
+    @apply absolute start-0 z-30 mt-1 min-w-40 rounded-k border
+      border-k-border bg-k-surface-raised py-1;
+  }
+
+  div.k-dropdown__menu[hidden] {
+    display: none;
+  }
+
+  div.k-dropdown--end div.k-dropdown__menu {
+    @apply start-auto end-0;
+  }
+
+  :is(button.k-dropdown__item, a.k-dropdown__item) {
+    @apply flex w-full cursor-pointer border-0 bg-transparent px-3 py-2
+      text-start text-sm no-underline text-k-fg;
+  }
+
+  :is(button.k-dropdown__item, a.k-dropdown__item):hover {
+    @apply bg-k-field;
+  }
+}

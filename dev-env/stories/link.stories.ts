@@ -34,9 +34,9 @@ export const Disabled: Story = {
 export const InCopy: Story = {
   render: () => `
     <p class="text-sm text-k-fg" style="max-width: 28rem;">
-      Tickets are open.
-      <a class="k-link" href="#">Book a seat</a>
-      or <a class="k-link" href="#">see the fare rules</a>.
+      The docs are public.
+      <a class="k-link" href="#">Read the guide</a>
+      or <a class="k-link" href="#">browse examples</a>.
     </p>
   `,
 };

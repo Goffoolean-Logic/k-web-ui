@@ -1,0 +1,120 @@
+@layer components {
+  /*
+   * Requires <div class="k-banner" role="alert">.
+   * Optional children: .k-icon, k-banner__body, k-banner__actions.
+   */
+  div.k-banner {
+    --k-banner-color: var(--k-fg);
+    --k-banner-on-color: var(--k-surface);
+
+    @apply grid items-center justify-start justify-items-start gap-4
+      rounded-k-lg border border-k-border bg-k-surface-raised
+      px-4 py-3 text-start text-sm text-k-fg;
+    grid-auto-flow: column;
+    grid-template-columns: auto;
+  }
+
+  div.k-banner:has(> :nth-child(2)) {
+    grid-template-columns: auto minmax(auto, 1fr);
+  }
+
+  div.k-banner > :is(svg, span.k-icon) {
+    @apply shrink-0;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  div.k-banner--info {
+    --k-banner-color: var(--k-info);
+    --k-banner-on-color: var(--k-info-fg);
+    @apply border-k-info bg-k-info text-k-info-fg;
+  }
+
+  div.k-banner--success {
+    --k-banner-color: var(--k-success);
+    --k-banner-on-color: var(--k-success-fg);
+    @apply border-k-success bg-k-success text-k-success-fg;
+  }
+
+  div.k-banner--warning {
+    --k-banner-color: var(--k-warning);
+    --k-banner-on-color: var(--k-warning-fg);
+    @apply border-k-warning bg-k-warning text-k-warning-fg;
+  }
+
+  div.k-banner--danger {
+    --k-banner-color: var(--k-danger);
+    --k-banner-on-color: var(--k-danger-fg);
+    @apply border-k-danger bg-k-danger text-k-danger-fg;
+  }
+
+  div.k-banner--soft {
+    border-color: color-mix(in oklab, var(--k-banner-color) 22%, var(--k-surface));
+    background-color: color-mix(in oklab, var(--k-banner-color) 14%, var(--k-surface));
+    color: var(--k-banner-color);
+  }
+
+  div.k-banner--outline {
+    @apply bg-transparent;
+    border-color: var(--k-banner-color);
+    color: var(--k-banner-color);
+  }
+
+  div.k-banner--dash {
+    @apply border-dashed bg-transparent;
+    border-color: var(--k-banner-color);
+    color: var(--k-banner-color);
+  }
+
+  div.k-banner--vertical {
+    @apply justify-center justify-items-center text-center;
+    grid-auto-flow: row;
+    grid-template-columns: auto;
+  }
+
+  div.k-banner--vertical:has(> :nth-child(2)) {
+    grid-template-columns: auto;
+  }
+
+  div.k-banner--horizontal {
+    @apply justify-start justify-items-start text-start;
+    grid-auto-flow: column;
+    grid-template-columns: auto;
+  }
+
+  div.k-banner--horizontal:has(> :nth-child(2)) {
+    grid-template-columns: auto minmax(auto, 1fr);
+  }
+
+  @media (min-width: 40rem) {
+    div.k-banner--sm-horizontal {
+      @apply justify-start justify-items-start text-start;
+      grid-auto-flow: column;
+      grid-template-columns: auto;
+    }
+
+    div.k-banner--sm-horizontal:has(> :nth-child(2)) {
+      grid-template-columns: auto minmax(auto, 1fr);
+    }
+  }
+
+  div.k-banner__body {
+    @apply flex min-w-0 flex-col gap-0.5;
+  }
+
+  h3.k-banner__title {
+    @apply text-sm leading-tight font-semibold;
+  }
+
+  p.k-banner__description {
+    @apply text-xs opacity-85;
+  }
+
+  div.k-banner__actions {
+    @apply flex flex-wrap items-center gap-2;
+  }
+
+  div.k-banner--vertical div.k-banner__actions {
+    @apply justify-center;
+  }
+}

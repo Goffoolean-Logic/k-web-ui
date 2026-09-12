@@ -26,15 +26,19 @@ export function selectTab(
   }
 }
 
-export function bindEvents(state: KTabsState): void {
-  state.root.addEventListener('click', (event) => {
-    const tab = tabFromEvent(state.root, event);
-    if (!tab) {
-      return;
-    }
-    const index = state.tabs.indexOf(tab);
-    if (index >= 0) {
-      selectTab(state, index, { focus: true });
-    }
-  });
+export function bindEvents(state: KTabsState, signal: AbortSignal): void {
+  state.root.addEventListener(
+    'click',
+    (event) => {
+      const tab = tabFromEvent(state.root, event);
+      if (!tab) {
+        return;
+      }
+      const index = state.tabs.indexOf(tab);
+      if (index >= 0) {
+        selectTab(state, index, { focus: true });
+      }
+    },
+    { signal },
+  );
 }

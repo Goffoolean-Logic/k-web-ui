@@ -25,8 +25,38 @@ const SEMANTIC_TOKENS = [
   'accent-hover',
   'danger',
   'danger-fg',
+  'info',
+  'info-fg',
+  'success',
+  'success-fg',
+  'warning',
+  'warning-fg',
   'ring',
 ];
+
+const STEEL = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+
+/**
+ * Dark canvas scale. 950 is black. Switch to dark to see these become the
+ * surface stack — canvas at 950, raised chrome at 900, hard at 800.
+ */
+export const Steel: Story = {
+  render: () => `
+    <ul class="k-grid k-grid--4">
+      ${STEEL.map(
+        (step) => `
+        <li class="k-grid__cell">
+          <div
+            class="h-12 w-full rounded-k border border-k-border"
+            style="background-color: var(--k-palette-steel-${step});"
+          ></div>
+          <code>--k-palette-steel-${step}</code>
+        </li>
+      `,
+      ).join('')}
+    </ul>
+  `,
+};
 
 /**
  * Every semantic token, resolved through the active theme. Switch the theme in
@@ -35,21 +65,19 @@ const SEMANTIC_TOKENS = [
  */
 export const Colors: Story = {
   render: () => `
-    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+    <ul class="k-grid k-grid--3">
       ${SEMANTIC_TOKENS.map(
         (token) => `
-        <div class="k-card">
-          <div class="k-card__body">
-            <div
-              class="h-12 w-full rounded-k border border-k-border"
-              style="background-color: var(--k-${token});"
-            ></div>
-            <code class="text-xs text-k-fg-muted">--k-${token}</code>
-          </div>
-        </div>
+        <li class="k-grid__cell">
+          <div
+            class="h-12 w-full rounded-k border border-k-border"
+            style="background-color: var(--k-${token});"
+          ></div>
+          <code>--k-${token}</code>
+        </li>
       `,
       ).join('')}
-    </div>
+    </ul>
   `,
 };
 

@@ -1,0 +1,81 @@
+---
+title: Button
+description: button.k-btn — variants, sizes, block.
+---
+
+import Preview from '../../../components/Preview.astro';
+import ClassTable from '../../../components/ClassTable.astro';
+
+Use a button for an action on the current page — save, cancel, delete, open a modal. Navigation belongs on a [link](/components/link/).
+
+The host is a real `<button>` with `.k-btn` and a variant. The variant is the color job: primary is the main action, secondary sits next to it, ghost recedes, accent is ink, danger is destructive. Pair a size modifier when the chrome around it is tight or large. `--block` stretches it to the full width of its parent.
+
+Disabled is the `disabled` attribute (or `aria-disabled="true"`). The kit dims the control and blocks the pointer. Icons inside a button size to `1em` so they follow the type, not the standalone icon scale.
+
+## Classes
+
+<ClassTable
+  rows={[
+    { name: 'k-btn', type: 'component' },
+    { name: 'k-btn--primary', type: 'variant' },
+    { name: 'k-btn--secondary', type: 'variant' },
+    { name: 'k-btn--ghost', type: 'variant' },
+    { name: 'k-btn--accent', type: 'variant' },
+    { name: 'k-btn--danger', type: 'variant' },
+    { name: 'k-btn--sm', type: 'modifier' },
+    { name: 'k-btn--lg', type: 'modifier' },
+    { name: 'k-btn--block', type: 'modifier' },
+  ]}
+/>
+
+## Examples
+
+### Variants
+
+Every variant, plus a disabled primary. Pick one variant. Do not stack them.
+
+<Preview>
+  <button type="button" class="k-btn k-btn--primary">Primary</button>
+  <button type="button" class="k-btn k-btn--secondary">Secondary</button>
+  <button type="button" class="k-btn k-btn--ghost">Ghost</button>
+  <button type="button" class="k-btn k-btn--accent">Accent</button>
+  <button type="button" class="k-btn k-btn--danger">Danger</button>
+  <button type="button" class="k-btn k-btn--primary" disabled>Disabled</button>
+</Preview>
+
+### Sizes
+
+`--sm` and `--lg` change padding and type. The default sits between them.
+
+<Preview>
+  <button type="button" class="k-btn k-btn--primary k-btn--sm">Small</button>
+  <button type="button" class="k-btn k-btn--primary">Default</button>
+  <button type="button" class="k-btn k-btn--primary k-btn--lg">Large</button>
+</Preview>
+
+### With an icon
+
+A kit icon before the label. Inside the button it drops to `1em`.
+
+<Preview>
+  <button type="button" class="k-btn k-btn--primary">
+    <span class="k-icon k-icon--success" aria-hidden="true"></span>
+    Save
+  </button>
+</Preview>
+
+## Accessibility
+
+Use a real `<button>`, not a `div`. The kit focus ring is global for `k-` classes — do not restyle it per variant. Prefer `disabled` when the control must not fire; `aria-disabled="true"` is the same look if you need to keep it in the tab order. Icons inside are decorative — keep `aria-hidden="true"` on them and put the name in the button text, or use `aria-label` on an icon-only button.
+
+## Dos and don'ts
+
+**Do**
+- Use a variant. Primary for the main action, secondary next to it, danger for destroy.
+- Put the name in the button text. Icons stay `aria-hidden`.
+- Use `disabled` when the action cannot run.
+
+**Don't**
+- Stack variants (`k-btn--primary k-btn--danger`).
+- Use a button to go to another page. That is a [link](/components/link/).
+- Restyle the focus ring. It is global.

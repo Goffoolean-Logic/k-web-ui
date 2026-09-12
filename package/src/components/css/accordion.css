@@ -1,0 +1,44 @@
+@layer components {
+  /*
+   * Requires <div class="k-accordion"> of <details class="k-accordion__item">.
+   * Exclusive groups: the same name attribute on each details.
+   */
+  div.k-accordion {
+    @apply flex flex-col overflow-hidden rounded-k-lg border border-k-border;
+  }
+
+  details.k-accordion__item {
+    @apply border-b border-k-border bg-k-surface-raised;
+  }
+
+  details.k-accordion__item:last-child {
+    @apply border-b-0;
+  }
+
+  summary.k-accordion__trigger {
+    @apply flex cursor-pointer list-none items-center justify-between gap-3
+      px-4 py-3 text-sm font-medium text-k-fg;
+  }
+
+  summary.k-accordion__trigger::-webkit-details-marker {
+    display: none;
+  }
+
+  summary.k-accordion__trigger::after {
+    content: '';
+    @apply shrink-0;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-inline-end: 2px solid var(--k-fg);
+    border-bottom: 2px solid var(--k-fg);
+    transform: rotate(45deg);
+  }
+
+  details.k-accordion__item[open] > summary.k-accordion__trigger::after {
+    transform: rotate(-135deg);
+  }
+
+  div.k-accordion__panel {
+    @apply px-4 pb-4 text-sm text-k-fg;
+  }
+}

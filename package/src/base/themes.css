@@ -1,9 +1,9 @@
 /*
  * Themes.
  *
- * Orange, black, and white. Orange is the chrome — fields, actions, borders,
+ * Orange, steel, and white. Orange is the chrome — fields, actions, borders,
  * focus — and does not change with the theme. Light canvas is a warm orange
- * wash; dark canvas is black.
+ * wash; dark canvas is steel, 950 at black.
  */
 
 :root {
@@ -24,6 +24,8 @@
 
   --k-surface: var(--k-palette-orange-50);
   --k-surface-raised: var(--k-palette-orange-100);
+  --k-surface-hard: var(--k-palette-orange-300);
+  --k-surface-soft: var(--k-palette-orange-50);
   --k-fg: var(--k-palette-black);
   --k-fg-muted: var(--k-palette-orange-800);
 
@@ -33,38 +35,69 @@
 
   --k-danger: var(--k-palette-red-600);
   --k-danger-fg: var(--k-palette-white);
+
+  --k-info: var(--k-palette-blue-600);
+  --k-info-fg: var(--k-palette-white);
+
+  --k-success: var(--k-palette-green-700);
+  --k-success-fg: var(--k-palette-white);
+
+  --k-warning: var(--k-palette-orange-700);
+  --k-warning-fg: var(--k-palette-white);
 }
 
 [data-theme='dark'] {
   color-scheme: dark;
 
-  --k-surface: var(--k-palette-black);
-  --k-surface-raised: var(--k-palette-black);
+  --k-surface: var(--k-palette-steel-950);
+  --k-surface-raised: var(--k-palette-steel-900);
+  --k-surface-hard: var(--k-palette-steel-800);
+  --k-surface-soft: var(--k-palette-steel-950);
   --k-fg: var(--k-palette-white);
   --k-fg-muted: var(--k-palette-orange-300);
 
   --k-accent: var(--k-palette-white);
-  --k-accent-fg: var(--k-palette-black);
+  --k-accent-fg: var(--k-palette-steel-950);
   --k-accent-hover: var(--k-palette-orange-100);
 
   --k-danger: var(--k-palette-red-400);
   --k-danger-fg: var(--k-palette-red-950);
+
+  --k-info: var(--k-palette-blue-400);
+  --k-info-fg: var(--k-palette-blue-950);
+
+  --k-success: var(--k-palette-green-400);
+  --k-success-fg: var(--k-palette-green-950);
+
+  --k-warning: var(--k-palette-orange-400);
+  --k-warning-fg: var(--k-palette-orange-950);
 }
 
 @media (prefers-color-scheme: dark) {
   [data-theme='auto'] {
     color-scheme: dark;
 
-    --k-surface: var(--k-palette-black);
-    --k-surface-raised: var(--k-palette-black);
+    --k-surface: var(--k-palette-steel-950);
+    --k-surface-raised: var(--k-palette-steel-900);
+    --k-surface-hard: var(--k-palette-steel-800);
+    --k-surface-soft: var(--k-palette-steel-950);
     --k-fg: var(--k-palette-white);
     --k-fg-muted: var(--k-palette-orange-300);
 
     --k-accent: var(--k-palette-white);
-    --k-accent-fg: var(--k-palette-black);
+    --k-accent-fg: var(--k-palette-steel-950);
     --k-accent-hover: var(--k-palette-orange-100);
 
     --k-danger: var(--k-palette-red-400);
     --k-danger-fg: var(--k-palette-red-950);
+
+    --k-info: var(--k-palette-blue-400);
+    --k-info-fg: var(--k-palette-blue-950);
+
+    --k-success: var(--k-palette-green-400);
+    --k-success-fg: var(--k-palette-green-950);
+
+    --k-warning: var(--k-palette-orange-400);
+    --k-warning-fg: var(--k-palette-orange-950);
   }
 }

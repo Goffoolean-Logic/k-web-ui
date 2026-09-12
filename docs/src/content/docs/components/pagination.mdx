@@ -1,0 +1,58 @@
+---
+title: Pagination
+description: KPagination.mount — page window and first/last jumps.
+---
+
+import Preview from '../../../components/Preview.astro';
+import PaginationDemo from '../../../components/PaginationDemo.astro';
+import ClassTable from '../../../components/ClassTable.astro';
+
+Pagination walks a numbered list of pages. Use it under a table or a result set when you already know the page count. The host is an empty element with an id and `.k-pagination`. `KPagination.mount` builds the buttons.
+
+Five or fewer pages list every number and drop first/last. More than five keep first and last and a sliding three-page window. The window clamps at the ends: page 1 shows 1 2 3, the last page shows n-2 n-1 n. The current page (`aria-current="page"`) does not pick up the hover fill.
+
+Arrow keys step. Home and End jump to the ends even when first/last are omitted. Pass `count`, optional `page`, and optional `onChange`.
+
+## Classes
+
+<ClassTable
+  rows={[
+    { name: 'k-pagination', type: 'component' },
+    { name: 'k-pagination__btn', type: 'part' },
+    { name: 'k-pagination__current', type: 'part' },
+  ]}
+/>
+
+## Examples
+
+### Long list
+
+Twelve pages, starting on 5. First and last stay; the window is 4 5 6.
+
+<Preview>
+  <PaginationDemo id="docs-pagination" count={12} page={5} />
+</Preview>
+
+### Few pages
+
+Four pages. Every number is listed. First and last are omitted; Home and End still jump.
+
+<Preview>
+  <PaginationDemo id="docs-pagination-few" count={4} page={1} />
+</Preview>
+
+## Accessibility
+
+`mount` sets `aria-label="Pagination"` on the host. Each control is a `<button>` with an `aria-label` (`Page 5 of 12`, First, Previous, and so on). The current page is `aria-current="page"`. Arrow keys step; Home and End jump. First/last may be omitted from the DOM on short lists — the keys still work. Disabled ends use the `disabled` attribute.
+
+## Dos and don'ts
+
+**Do**
+- Mount on an empty host with an id and `.k-pagination`.
+- Pass `count` and handle `onChange`.
+- Pair it with a [table](/components/table/) or a result list.
+
+**Don't**
+- Hand-write the page buttons. `mount` builds them.
+- Use pagination when the list is short enough to show in one view.
+- Style the current page as a hover fill. The kit already marks it.

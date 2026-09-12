@@ -1,0 +1,24 @@
+@layer components {
+  /* Requires <table class="k-table">. */
+  table.k-table {
+    @apply w-full border-collapse text-start text-sm text-k-fg;
+  }
+
+  table.k-table th,
+  table.k-table td {
+    @apply border-b border-k-border px-3 py-2;
+  }
+
+  table.k-table th {
+    @apply font-semibold text-left;
+  }
+
+  table.k-table--zebra tbody tr:nth-child(even) {
+    background-color: color-mix(in oklab, var(--k-fg) 6%, var(--k-surface-raised));
+  }
+
+  table.k-table--sm th,
+  table.k-table--sm td {
+    @apply px-2 py-1 text-xs;
+  }
+}

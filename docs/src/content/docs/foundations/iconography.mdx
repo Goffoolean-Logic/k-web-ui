@@ -1,0 +1,93 @@
+---
+title: Iconography
+description: A curated icon set. Masks, not an icon font.
+---
+
+import Preview from '../../../components/Preview.astro';
+
+The kit ships a small set of marks, not an icon library. Use them for chrome — chevrons, status, close, loading. If you need a product illustration, bring your own SVG.
+
+The host is a `span` with `.k-icon` and a name modifier. The glyph is a CSS mask in `currentColor`. No inline SVG required.
+
+```html
+<span class="k-icon k-icon--info" aria-hidden="true"></span>
+```
+
+```js
+import { createIcon } from 'k-web-components/js';
+
+button.append(createIcon('chevron-left'));
+```
+
+Inline `<svg class="k-icon">` still works if you bring your own path.
+
+`k-icon--loading` is orange on the light canvas and white in dark. It does not spin. Wrap it in [Spin](/components/spin/) to rotate it.
+
+## Set
+
+<Preview stack>
+  <ul class="k-grid">
+    <li class="k-grid__cell">
+      <span class="k-icon k-icon--chevron-left k-icon--sm" aria-hidden="true"></span>
+      <code>chevron-left</code>
+    </li>
+    <li class="k-grid__cell">
+      <span class="k-icon k-icon--chevron-right k-icon--sm" aria-hidden="true"></span>
+      <code>chevron-right</code>
+    </li>
+    <li class="k-grid__cell">
+      <span class="k-icon k-icon--chevron-down k-icon--sm" aria-hidden="true"></span>
+      <code>chevron-down</code>
+    </li>
+    <li class="k-grid__cell">
+      <span class="k-icon k-icon--chevron-first k-icon--sm" aria-hidden="true"></span>
+      <code>chevron-first</code>
+    </li>
+    <li class="k-grid__cell">
+      <span class="k-icon k-icon--chevron-last k-icon--sm" aria-hidden="true"></span>
+      <code>chevron-last</code>
+    </li>
+    <li class="k-grid__cell">
+      <span class="k-icon k-icon--info k-icon--sm" aria-hidden="true"></span>
+      <code>info</code>
+    </li>
+    <li class="k-grid__cell">
+      <span class="k-icon k-icon--success k-icon--sm" aria-hidden="true"></span>
+      <code>success</code>
+    </li>
+    <li class="k-grid__cell">
+      <span class="k-icon k-icon--warning k-icon--sm" aria-hidden="true"></span>
+      <code>warning</code>
+    </li>
+    <li class="k-grid__cell">
+      <span class="k-icon k-icon--danger k-icon--sm" aria-hidden="true"></span>
+      <code>danger</code>
+    </li>
+    <li class="k-grid__cell">
+      <span class="k-icon k-icon--close k-icon--sm" aria-hidden="true"></span>
+      <code>close</code>
+    </li>
+    <li class="k-grid__cell">
+      <span class="k-icon k-icon--loading k-icon--sm" aria-hidden="true"></span>
+      <code>loading</code>
+    </li>
+  </ul>
+</Preview>
+
+## Sizes
+
+| Class | Size |
+| --- | --- |
+| — | 4rem |
+| `k-icon--xs` | 1.5rem |
+| `k-icon--sm` | 2.5rem |
+| `k-icon--lg` | 7rem |
+
+Inside a `k-btn`, pagination button, or carousel arrow, icons drop to `1em`.
+
+<Preview>
+  <span class="k-icon k-icon--info k-icon--xs" aria-hidden="true"></span>
+  <span class="k-icon k-icon--info k-icon--sm" aria-hidden="true"></span>
+  <span class="k-icon k-icon--info" aria-hidden="true"></span>
+  <span class="k-icon k-icon--info k-icon--lg" aria-hidden="true"></span>
+</Preview>

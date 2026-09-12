@@ -1,0 +1,61 @@
+---
+title: Card
+description: div.k-card with optional header, body, footer.
+---
+
+import Preview from '../../../components/Preview.astro';
+import ClassTable from '../../../components/ClassTable.astro';
+
+A card groups one unit of content — a deployment, a setting, a summary — so it reads as a block on the page. It is a layout shell, not an interactive widget. Put buttons and links inside it; the card itself does not handle clicks.
+
+Host is `<div class="k-card">`. Header, body, and footer are optional parts. The header holds a title and optional subtitle. The body is the main copy. The footer is a row for actions, aligned to the end. You can use any subset; a card with only a body is valid.
+
+## Classes
+
+<ClassTable
+  rows={[
+    { name: 'k-card', type: 'component' },
+    { name: 'k-card__header', type: 'part' },
+    { name: 'k-card__title', type: 'part' },
+    { name: 'k-card__subtitle', type: 'part' },
+    { name: 'k-card__body', type: 'part' },
+    { name: 'k-card__footer', type: 'part' },
+  ]}
+/>
+
+## Examples
+
+### Header, body, and footer
+
+The full stack: identity in the header, copy in the body, an action in the footer.
+
+<Preview stack>
+  <div class="k-card">
+    <div class="k-card__header">
+      <h3 class="k-card__title">Deployment</h3>
+      <p class="k-card__subtitle">Last run 4 minutes ago</p>
+    </div>
+    <div class="k-card__body">
+      <p>Every check passed on the latest commit.</p>
+    </div>
+    <div class="k-card__footer">
+      <button type="button" class="k-btn k-btn--secondary k-btn--sm">Logs</button>
+    </div>
+  </div>
+</Preview>
+
+## Accessibility
+
+A card is a grouping, not a button. Do not put `onclick` on `.k-card`. The title should be a heading (`h3.k-card__title` in the usual page outline). Actions belong in the footer as real buttons or links so they stay in the tab order and get the kit focus ring.
+
+## Dos and don'ts
+
+**Do**
+- Use only the parts you need. A body-only card is fine.
+- Put actions in the footer as real buttons or links.
+- Keep one unit of content per card.
+
+**Don't**
+- Make the whole card clickable.
+- Nest cards inside cards.
+- Use a card as a table. That is a [table](/components/table/).

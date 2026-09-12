@@ -1,0 +1,43 @@
+@layer components {
+  /*
+   * Requires <dialog class="k-modal" popover>. Open with popovertarget on a
+   * button — no JS.
+   */
+  dialog.k-modal {
+    @apply m-0 border-0 bg-transparent p-4 text-k-fg;
+    max-width: none;
+    max-height: none;
+  }
+
+  dialog.k-modal::backdrop {
+    background-color: rgb(0 0 0 / 0.45);
+  }
+
+  dialog.k-modal:popover-open,
+  dialog.k-modal[open] {
+    @apply grid place-items-center;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  div.k-modal__box {
+    @apply box-border flex w-full max-w-md flex-col gap-3 rounded-k-lg border
+      border-k-border bg-k-surface-raised p-6 text-k-fg;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+  }
+
+  h3.k-modal__title {
+    @apply text-base leading-tight font-semibold;
+  }
+
+  p.k-modal__body {
+    @apply text-sm text-k-fg;
+  }
+
+  div.k-modal__actions {
+    @apply mt-2 flex justify-end gap-2;
+  }
+}

@@ -1,0 +1,64 @@
+---
+title: Sidebar
+description: Checkbox-hack drawer — no JS.
+---
+
+import Preview from '../../../components/Preview.astro';
+import ClassTable from '../../../components/ClassTable.astro';
+
+A sidebar is a drawer for nav or filters. The open state is a checkbox. No kit JS. Use it when the panel should overlay the main column, not sit in the document flow.
+
+Host is `.k-sidebar`. Order matters: the hidden checkbox, then the scrim label, then the panel, then main. Labels with `for` matching the checkbox id toggle it — one in main to open, one in the panel to close. The scrim is the same toggle; clicking the dimmed page closes the drawer.
+
+`--end` docks the panel on the inline end. Reduced motion drops the slide.
+
+## Classes
+
+<ClassTable
+  rows={[
+    { name: 'k-sidebar', type: 'component' },
+    { name: 'k-sidebar__toggle', type: 'part' },
+    { name: 'k-sidebar__scrim', type: 'part' },
+    { name: 'k-sidebar__panel', type: 'part' },
+    { name: 'k-sidebar__trigger', type: 'part' },
+    { name: 'k-sidebar__main', type: 'part' },
+    { name: 'k-sidebar--end', type: 'modifier' },
+  ]}
+/>
+
+## Examples
+
+### From the start edge
+
+Default dock. Open Menu, then Close or the scrim.
+
+<Preview stack>
+  <div class="k-sidebar" style="min-height: 14rem;">
+    <input id="docs-nav" type="checkbox" class="k-sidebar__toggle" />
+    <label for="docs-nav" class="k-sidebar__scrim"></label>
+    <aside class="k-sidebar__panel">
+      <label for="docs-nav" class="k-sidebar__trigger">Close</label>
+      <a class="k-link" href="#overview">Overview</a>
+      <a class="k-link" href="#projects">Projects</a>
+    </aside>
+    <div class="k-sidebar__main">
+      <label for="docs-nav" class="k-sidebar__trigger">Menu</label>
+    </div>
+  </div>
+</Preview>
+
+## Accessibility
+
+The checkbox is the state. Visually hide it with `.k-sidebar__toggle`, do not `display: none` it, or the labels stop working. Triggers are `<label for="…">` so they are operable with a click or the associated input. Put a visible Close in the panel. The scrim is the same toggle. Give the panel a heading or labelled links so the drawer has a name.
+
+## Dos and don'ts
+
+**Do**
+- Keep the order: checkbox, scrim, panel, main.
+- Match every `for` to the checkbox `id`.
+- Put a visible Close in the panel.
+
+**Don't**
+- Mount kit JS on it. There is none.
+- Hide the checkbox with `display: none`.
+- Use a sidebar for content that should stay in the document flow.

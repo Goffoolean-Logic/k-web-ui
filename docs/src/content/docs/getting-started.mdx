@@ -1,0 +1,79 @@
+---
+title: Getting started
+description: Install k-web-components and drop it into a page.
+---
+
+import Preview from '../../components/Preview.astro';
+
+Fast, lightweight, framework-agnostic UI components. A toolbox you can configure and build with.
+
+You write HTML. The kit paints `k-` classes. JS mounts only when CSS cannot. Nothing restyles unless it carries a `k-` class.
+
+## Install
+
+```bash
+pnpm add k-web-components
+```
+
+## CSS
+
+The prebuilt file is the whole kit — no Tailwind build required:
+
+```js
+import 'k-web-components';
+```
+
+Or take the layers apart:
+
+```js
+import 'k-web-components/base';
+import 'k-web-components/components';
+import 'k-web-components/utilities';
+```
+
+`base` is tokens, themes, fonts, icon masks, and the focus ring. `components` is the chrome. `utilities` is the guaranteed utility surface. Components need base at runtime.
+
+Compile from source into your own Tailwind build. Utilities tree-shake to the classes in your markup. Import only the component CSS you need if you want unused components out of the file:
+
+```js
+import 'k-web-components/source';
+```
+
+## Markup
+
+Element-qualified classes. A button is a `button` with `.k-btn`:
+
+<Preview>
+  <button type="button" class="k-btn k-btn--primary">Save</button>
+  <button type="button" class="k-btn k-btn--secondary">Cancel</button>
+</Preview>
+
+```html
+<button type="button" class="k-btn k-btn--primary">Save</button>
+```
+
+## Theme
+
+One attribute on the root:
+
+```html
+<html data-theme="light">
+```
+
+`light`, `dark`, or `auto` (follows `prefers-color-scheme`). Orange chrome does not change with the theme. The canvas does.
+
+## JavaScript
+
+Only widgets that cannot be CSS. Import from `k-web-components/js` and mount a host you already put on the page:
+
+```html
+<div id="pages" class="k-pagination"></div>
+```
+
+```js
+import { KPagination } from 'k-web-components/js';
+
+KPagination.mount('pages', { count: 12, page: 5 });
+```
+
+CSS-only pieces — accordion, grid, modal, sidebar, spin, table, toast, tooltip — need no JS.

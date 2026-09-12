@@ -1,0 +1,119 @@
+/* Kit from source so package/src edits hot-reload here. */
+@import '../../../package/src/index.css';
+
+@source '../content';
+@source '../components';
+
+:root {
+  --sl-font: var(--k-font-sans);
+  --sl-font-mono: var(--k-font-mono);
+}
+
+:root,
+[data-theme='light'] {
+  --sl-color-accent-low: var(--k-surface-raised);
+  --sl-color-accent: var(--k-primary);
+  --sl-color-accent-high: var(--k-primary-hover);
+  --sl-color-white: var(--k-fg);
+  --sl-color-gray-1: var(--k-fg);
+  --sl-color-gray-2: var(--k-fg-muted);
+  --sl-color-gray-3: var(--k-fg-muted);
+  --sl-color-gray-4: var(--k-border);
+  --sl-color-gray-5: var(--k-surface-raised);
+  --sl-color-gray-6: var(--k-surface);
+  --sl-color-black: var(--k-surface);
+  --sl-color-hairline-light: var(--k-border);
+  --sl-color-hairline-shade: var(--k-border);
+}
+
+[data-theme='dark'] {
+  --sl-color-accent-low: var(--k-surface);
+  --sl-color-accent: var(--k-primary);
+  --sl-color-accent-high: var(--k-fg-muted);
+  --sl-color-white: var(--k-fg);
+  --sl-color-gray-1: var(--k-fg);
+  --sl-color-gray-2: var(--k-fg-muted);
+  --sl-color-gray-3: var(--k-fg-muted);
+  --sl-color-gray-4: var(--k-border);
+  --sl-color-gray-5: var(--k-surface);
+  --sl-color-gray-6: var(--k-surface);
+  --sl-color-black: var(--k-surface);
+}
+
+.k-preview {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  border: 1px solid var(--k-border);
+  border-radius: var(--k-radius-lg);
+  background-color: var(--k-surface);
+}
+
+.k-preview .k-toast-demo {
+  position: relative;
+  min-height: 8rem;
+  width: 100%;
+}
+
+.k-preview .k-toast {
+  position: absolute;
+}
+
+.k-preview--stack {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.k-class-table {
+  margin-block: 1.25rem 2rem;
+}
+
+.site-title {
+  align-items: center;
+  gap: 0;
+  font-size: var(--sl-text-h4);
+  font-weight: 600;
+  color: var(--sl-color-white);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-title:hover,
+.site-title:focus-visible {
+  color: var(--sl-color-white);
+  text-decoration: none;
+}
+
+.k-wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+}
+
+.k-wordmark img {
+  display: block;
+  height: 1em;
+  width: 1em;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 0.15em;
+}
+
+[data-theme='dark'] .pagination-links a,
+[data-theme='dark'] .sl-markdown-content pre,
+[data-theme='dark'] .expressive-code,
+[data-theme='dark'] .expressive-code pre {
+  --ec-borderColor: var(--k-border);
+  border-color: var(--k-border);
+}
+
+[data-theme='dark'] .sl-markdown-content :not(pre) > code {
+  border: 1px solid var(--k-border);
+}
+
+.sl-markdown-content td :is(span.k-icon, svg.k-icon) {
+  vertical-align: middle;
+}

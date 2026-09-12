@@ -9,7 +9,7 @@
  */
 
 @source inline(
-  "{,hover:,focus-visible:}{bg,text,border}-k-{surface,surface-raised,field,field-fg,fg,fg-muted,border,primary,primary-fg,primary-hover,accent,accent-fg,accent-hover,danger,danger-fg,ring}"
+  "{,hover:,focus-visible:}{bg,text,border}-k-{surface,surface-raised,field,field-fg,fg,fg-muted,border,primary,primary-fg,primary-hover,accent,accent-fg,accent-hover,danger,danger-fg,info,info-fg,success,success-fg,warning,warning-fg,ring}"
 );
 @source inline("rounded-{k,k-lg}");
 @source inline("font-k-{sans,mono}");

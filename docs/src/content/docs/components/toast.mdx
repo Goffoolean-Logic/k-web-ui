@@ -1,0 +1,58 @@
+---
+title: Toast
+description: div.k-toast wrapping banners — CSS only.
+---
+
+import Preview from '../../../components/Preview.astro';
+import ClassTable from '../../../components/ClassTable.astro';
+
+A toast is a stack of [banners](/components/banner/) pinned to a corner of the canvas. Use it for short outcomes that should not shove the page — saved, sent, failed. It does not auto-dismiss. You add and remove the banners.
+
+Host is `<div class="k-toast">`. Default pin is bottom-end. Combine a block modifier (`--top` or `--bottom`) with an inline one (`--start`, `--center`, `--end`). The stack is `position: fixed`; children take pointer events, the host does not.
+
+This preview keeps the toast inside the box so it does not cover the docs chrome.
+
+## Classes
+
+<ClassTable
+  rows={[
+    { name: 'k-toast', type: 'component' },
+    { name: 'k-toast--top', type: 'modifier' },
+    { name: 'k-toast--bottom', type: 'modifier' },
+    { name: 'k-toast--start', type: 'modifier' },
+    { name: 'k-toast--center', type: 'modifier' },
+    { name: 'k-toast--end', type: 'modifier' },
+  ]}
+/>
+
+## Examples
+
+### Default pin
+
+Bottom-end, the default. Two banners would stack upward from this corner.
+
+<Preview stack>
+  <div class="k-toast-demo">
+    <div class="k-toast">
+      <div role="alert" class="k-banner k-banner--success k-banner--soft">
+        <span>Changes saved.</span>
+      </div>
+    </div>
+  </div>
+</Preview>
+
+## Accessibility
+
+Each child should be a banner with `role="alert"` so new toasts are announced. The toast host is not a live region of its own. Because there is no auto-dismiss, the reader can reach the message; do not remove it before they can. Keep the copy short.
+
+## Dos and don'ts
+
+**Do**
+- Put [banners](/components/banner/) inside the toast, each with `role="alert"`.
+- Pin the stack with a block and an inline modifier when the default corner is wrong.
+- Add and remove the banners yourself.
+
+**Don't**
+- Expect auto-dismiss. The kit does not time them out.
+- Put a toast in the page flow. Use a [banner](/components/banner/) there.
+- Put `role="alert"` on the toast host.

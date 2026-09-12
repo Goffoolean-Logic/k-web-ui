@@ -1,0 +1,32 @@
+---
+title: k-web-components
+description: Fast, lightweight, framework-agnostic UI components. A toolbox you can configure and build with.
+template: splash
+hero:
+  tagline: Fast, lightweight, framework-agnostic UI components. A toolbox you can configure and build with.
+  actions:
+    - text: Get started
+      link: /getting-started/
+      icon: right-arrow
+    - text: View components
+      link: /components/button/
+      icon: right-arrow
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <Card title="Only what you use">
+    Compile from source. Tailwind's JIT keeps unused component CSS out of the file.
+  </Card>
+  <Card title="Framework agnostic">
+    A `button.k-btn` is a button. No React, Vue, or web-component runtime required.
+  </Card>
+  <Card title="Your markup, your tokens">
+    Variants and modifiers on the class list. Theme with `data-theme`. Tokens stay yours to override.
+  </Card>
+  <Card title="Warm orange">
+    Chrome and the light canvas are warm orange, meant to sit easy on the eyes.
+  </Card>
+</CardGrid>

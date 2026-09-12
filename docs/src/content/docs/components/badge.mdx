@@ -1,0 +1,82 @@
+---
+title: Badge
+description: span.k-badge — color, style, size.
+---
+
+import Preview from '../../../components/Preview.astro';
+import ClassTable from '../../../components/ClassTable.astro';
+
+A badge is a short label for status, a count, or a category. It sits next to a heading, inside a table cell, or on a button. It is not a banner — it does not announce a page-level event.
+
+Host is a `span` or `div` with `.k-badge`. A variant sets the color. A style sets the fill: default is solid, then outline, dash, soft, and ghost. Color and style combine, so `k-badge--info k-badge--soft` is a tinted info chip.
+
+Sizes run from `--xs` to `--xl`. Default is 1.5rem. An empty badge — no text, no icon — becomes a dot. Put a kit icon inside when the color alone is not enough.
+
+## Classes
+
+<ClassTable
+  rows={[
+    { name: 'k-badge', type: 'component' },
+    { name: 'k-badge--primary', type: 'variant' },
+    { name: 'k-badge--secondary', type: 'variant' },
+    { name: 'k-badge--accent', type: 'variant' },
+    { name: 'k-badge--info', type: 'variant' },
+    { name: 'k-badge--success', type: 'variant' },
+    { name: 'k-badge--warning', type: 'variant' },
+    { name: 'k-badge--danger', type: 'variant' },
+    { name: 'k-badge--outline', type: 'style' },
+    { name: 'k-badge--dash', type: 'style' },
+    { name: 'k-badge--soft', type: 'style' },
+    { name: 'k-badge--ghost', type: 'style' },
+    { name: 'k-badge--xs', type: 'modifier' },
+    { name: 'k-badge--sm', type: 'modifier' },
+    { name: 'k-badge--lg', type: 'modifier' },
+    { name: 'k-badge--xl', type: 'modifier' },
+  ]}
+/>
+
+## Examples
+
+### Colors
+
+Variants without a style class. Filled is the default. Danger here also carries an icon.
+
+<Preview>
+  <span class="k-badge">Default</span>
+  <span class="k-badge k-badge--primary">Primary</span>
+  <span class="k-badge k-badge--info">Info</span>
+  <span class="k-badge k-badge--success">Success</span>
+  <span class="k-badge k-badge--warning">Warning</span>
+  <span class="k-badge k-badge--danger">
+    <span class="k-icon k-icon--danger" aria-hidden="true"></span>
+    Danger
+  </span>
+</Preview>
+
+### Styles
+
+The same info color through every fill treatment.
+
+<Preview>
+  <span class="k-badge k-badge--info">Filled</span>
+  <span class="k-badge k-badge--info k-badge--soft">Soft</span>
+  <span class="k-badge k-badge--info k-badge--outline">Outline</span>
+  <span class="k-badge k-badge--info k-badge--dash">Dash</span>
+  <span class="k-badge k-badge--info k-badge--ghost">Ghost</span>
+</Preview>
+
+## Accessibility
+
+A badge is not a live region. Do not put `role="alert"` on it. If the color carries meaning, say it in the text or pair an icon that is hidden from the tree (`aria-hidden="true"`) with a word. Empty dots are decorative; if a dot is the only status, give the badge an `aria-label`.
+
+## Dos and don'ts
+
+**Do**
+- Pair a color variant with a style when you want a wash or an outline.
+- Keep the label to a word or a short count.
+- Use an empty badge as a dot, with an `aria-label` if it is the only status.
+
+**Don't**
+- Put `role="alert"` on a badge. That is a [banner](/components/banner/).
+- Write a sentence in a badge.
+- Rely on color alone.

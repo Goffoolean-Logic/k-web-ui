@@ -9,8 +9,22 @@
 
 @reference '../base/index.css';
 
+@import './css/icon.css';
+@import './css/spin.css';
 @import './css/button.css';
 @import './css/card.css';
 @import './css/input.css';
 @import './css/link.css';
+@import './css/badge.css';
+@import './css/banner.css';
 @import './css/tabs.css';
+@import './css/modal.css';
+@import './css/dropdown.css';
+@import './css/grid.css';
+@import './css/tooltip.css';
+@import './css/accordion.css';
+@import './css/table.css';
+@import './css/pagination.css';
+@import './css/toast.css';
+@import './css/sidebar.css';
+@import './css/carousel.css';

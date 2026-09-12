@@ -1,6 +1,7 @@
 packages:
   - package
   - dev-env
+  - docs
 
 allowBuilds:
   '@parcel/watcher': true

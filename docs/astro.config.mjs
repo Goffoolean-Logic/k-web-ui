@@ -1,0 +1,80 @@
+// @ts-check
+import { fileURLToPath } from 'node:url';
+import { defineConfig } from 'astro/config';
+import starlight from '@astrojs/starlight';
+import tailwindcss from '@tailwindcss/vite';
+
+const jsSource = fileURLToPath(new URL('../package/src/components/js/index.ts', import.meta.url));
+
+export default defineConfig({
+  redirects: {
+    '/components/icon': '/foundations/iconography',
+  },
+  integrations: [
+    starlight({
+      title: 'k-web-components',
+      description:
+        'Fast, lightweight, framework-agnostic UI components. A toolbox you can configure and build with.',
+      favicon: '/logo.png',
+      components: {
+        SiteTitle: './src/components/SiteTitle.astro',
+        Hero: './src/components/Hero.astro',
+      },
+      social: [
+        {
+          icon: 'github',
+          label: 'GitHub',
+          href: 'https://github.com/Goffoolean-Logic/k-web-components',
+        },
+      ],
+      customCss: ['./src/styles/docs.css'],
+      sidebar: [
+        { label: 'Getting started', slug: 'getting-started' },
+        {
+          label: 'Foundations',
+          items: [
+            { label: 'Tokens', slug: 'foundations/tokens' },
+            { label: 'Typography', slug: 'foundations/typography' },
+            { label: 'Iconography', slug: 'foundations/iconography' },
+          ],
+        },
+        {
+          label: 'Components',
+          items: [
+            { label: 'Accordion', slug: 'components/accordion' },
+            { label: 'Badge', slug: 'components/badge' },
+            { label: 'Banner', slug: 'components/banner' },
+            { label: 'Button', slug: 'components/button' },
+            { label: 'Card', slug: 'components/card' },
+            { label: 'Carousel', slug: 'components/carousel' },
+            { label: 'Dropdown', slug: 'components/dropdown' },
+            { label: 'Grid', slug: 'components/grid' },
+            { label: 'Input', slug: 'components/input' },
+            { label: 'Link', slug: 'components/link' },
+            { label: 'Modal', slug: 'components/modal' },
+            { label: 'Pagination', slug: 'components/pagination' },
+            { label: 'Sidebar', slug: 'components/sidebar' },
+            { label: 'Spin', slug: 'components/spin' },
+            { label: 'Table', slug: 'components/table' },
+            { label: 'Tabs', slug: 'components/tabs' },
+            { label: 'Toast', slug: 'components/toast' },
+            { label: 'Tooltip', slug: 'components/tooltip' },
+          ],
+        },
+      ],
+    }),
+  ],
+  vite: {
+    plugins: [tailwindcss()],
+    resolve: {
+      alias: {
+        'k-web-components/js': jsSource,
+      },
+    },
+    server: {
+      fs: {
+        allow: [fileURLToPath(new URL('..', import.meta.url))],
+      },
+    },
+  },
+});

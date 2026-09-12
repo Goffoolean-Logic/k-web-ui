@@ -1,0 +1,36 @@
+@layer components {
+  /*
+   * Requires <div class="k-toast"> wrapping banners. CSS only — no auto-dismiss.
+   * Default pin is bottom-end.
+   */
+  div.k-toast {
+    @apply pointer-events-none fixed z-50 flex flex-col gap-2 p-4;
+    inset-block: auto 0;
+    inset-inline: auto 0;
+  }
+
+  div.k-toast > * {
+    @apply pointer-events-auto;
+  }
+
+  div.k-toast--top {
+    inset-block: 0 auto;
+  }
+
+  div.k-toast--bottom {
+    inset-block: auto 0;
+  }
+
+  div.k-toast--start {
+    inset-inline: 0 auto;
+  }
+
+  div.k-toast--center {
+    inset-inline: 50% auto;
+    translate: -50% 0;
+  }
+
+  div.k-toast--end {
+    inset-inline: auto 0;
+  }
+}

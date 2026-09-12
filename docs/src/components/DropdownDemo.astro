@@ -1,0 +1,14 @@
+<div id="docs-dropdown" class="k-dropdown">
+  <button type="button" class="k-btn k-btn--secondary k-dropdown__trigger">Sort</button>
+  <div id="docs-dropdown-menu" class="k-dropdown__menu" hidden>
+    <button type="button" class="k-dropdown__item">Name</button>
+    <button type="button" class="k-dropdown__item">Date</button>
+    <button type="button" class="k-dropdown__item">Size</button>
+  </div>
+</div>
+
+<script>
+  import { KDropdown } from 'k-web-components/js';
+
+  KDropdown.mount('docs-dropdown');
+</script>

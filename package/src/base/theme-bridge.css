@@ -27,6 +27,15 @@
   --color-k-danger: var(--k-danger);
   --color-k-danger-fg: var(--k-danger-fg);
 
+  --color-k-info: var(--k-info);
+  --color-k-info-fg: var(--k-info-fg);
+
+  --color-k-success: var(--k-success);
+  --color-k-success-fg: var(--k-success-fg);
+
+  --color-k-warning: var(--k-warning);
+  --color-k-warning-fg: var(--k-warning-fg);
+
   --color-k-ring: var(--k-ring);
 
   --radius-k: var(--k-radius);

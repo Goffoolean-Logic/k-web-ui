@@ -4,8 +4,10 @@
   "packageManager": "pnpm@12.3.4",
   "scripts": {
     "dev": "pnpm --filter k-web-components-dev-env dev",
+    "docs": "pnpm --filter k-web-components-docs dev",
     "build": "pnpm --filter k-web-components build",
     "build:storybook": "pnpm --filter k-web-components-dev-env build",
+    "build:docs": "pnpm --filter k-web-components-docs build",
     "typecheck": "pnpm -r typecheck"
   }
 }

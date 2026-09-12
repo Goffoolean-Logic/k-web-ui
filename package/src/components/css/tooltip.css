@@ -1,0 +1,42 @@
+@layer components {
+  /* Requires <span class="k-tooltip" data-tip="…"> wrapping the control. */
+  span.k-tooltip {
+    @apply relative inline-block;
+  }
+
+  span.k-tooltip[data-tip]::before {
+    content: attr(data-tip);
+    @apply pointer-events-none absolute z-20 max-w-xs rounded-k bg-k-accent
+      px-2 py-1 text-center text-xs leading-snug font-normal whitespace-normal
+      text-k-accent-fg opacity-0;
+    width: max-content;
+    bottom: calc(100% + 0.4rem);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  span.k-tooltip:hover[data-tip]::before,
+  span.k-tooltip:focus-within[data-tip]::before {
+    @apply opacity-100;
+  }
+
+  span.k-tooltip--bottom[data-tip]::before {
+    top: calc(100% + 0.4rem);
+    bottom: auto;
+  }
+
+  span.k-tooltip--left[data-tip]::before {
+    top: 50%;
+    bottom: auto;
+    left: auto;
+    right: calc(100% + 0.4rem);
+    transform: translateY(-50%);
+  }
+
+  span.k-tooltip--right[data-tip]::before {
+    top: 50%;
+    bottom: auto;
+    left: calc(100% + 0.4rem);
+    transform: translateY(-50%);
+  }
+}
