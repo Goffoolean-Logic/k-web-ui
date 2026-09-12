@@ -1,13 +1,10 @@
----
-title: Getting started
-description: Install the kit and put a class on a button.
----
+# Getting started
 
-import Preview from '../../components/Preview.astro';
+Install the kit and put a class on a button.
 
 You write the HTML. Classes that start with `k-` get the kit look. JavaScript is only there for widgets CSS cannot do, such as tabs and pagination. If an element has no `k-` class, the kit leaves it alone.
 
-Every docs page has a `.md` twin. Copy it from the button at the top, start at [`/llms.txt`](/llms.txt), or take [`/llms-full.txt`](/llms-full.txt) in one request.
+Every docs page has a `.md` twin. Copy it from the button at the top, start at [/llms.txt](/llms.txt), or take [/llms-full.txt](/llms-full.txt) in one request.
 
 ## Install
 
@@ -43,13 +40,9 @@ import 'k-web-components/source';
 
 Classes are tied to the element. A button is a `<button>` with `.k-btn`, not a `div` you styled to look like one.
 
-<Preview>
-  <button type="button" class="k-btn k-btn--primary">Save</button>
-  <button type="button" class="k-btn k-btn--secondary">Cancel</button>
-</Preview>
-
 ```html
 <button type="button" class="k-btn k-btn--primary">Save</button>
+<button type="button" class="k-btn k-btn--secondary">Cancel</button>
 ```
 
 ## Theme

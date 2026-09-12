@@ -1,0 +1,61 @@
+# Modal
+
+dialog.k-modal with popover. No JS.
+
+A focused task on top of the page: confirm a delete, a short form, a warning. Use `<dialog class="k-modal" popover>`. The Popover API opens and closes it.
+
+A button with `popovertarget` matching the dialog `id` opens it. The same attribute with `popovertargetaction="hide"` closes it. Escape and the backdrop dismiss it the way the browser already does.
+
+Put title, body, and actions inside `.k-modal__box`. That box is the raised surface. The dialog itself is the full-viewport layer.
+
+## Classes
+
+| Class | Type |
+| --- | --- |
+| `k-modal` | component |
+| `k-modal__box` | part |
+| `k-modal__title` | part |
+| `k-modal__body` | part |
+| `k-modal__actions` | part |
+
+## Examples
+
+### Confirm
+
+A destructive confirm. Cancel and Delete both hide the dialog. Open it from the button.
+
+```html
+<button type="button" class="k-btn k-btn--primary" popovertarget="docs-modal">
+  Open modal
+</button>
+<dialog id="docs-modal" class="k-modal" popover>
+  <div class="k-modal__box">
+    <h3 class="k-modal__title">Delete file</h3>
+    <p class="k-modal__body">This will remove report.pdf. You can't undo this.</p>
+    <div class="k-modal__actions">
+      <button type="button" class="k-btn k-btn--ghost" popovertarget="docs-modal" popovertargetaction="hide">
+        Cancel
+      </button>
+      <button type="button" class="k-btn k-btn--primary" popovertarget="docs-modal" popovertargetaction="hide">
+        Delete
+      </button>
+    </div>
+  </div>
+</dialog>
+```
+
+## Accessibility
+
+The element is a `<dialog popover>`. The Popover API handles light-dismiss, Escape, and focus. Title the dialog with `.k-modal__title` so the box has a heading. Close controls are real buttons with `popovertarget` / `popovertargetaction="hide"`. Do not trap focus yourself. The browser already does.
+
+## Dos and don'ts
+
+**Do**
+- Use `<dialog class="k-modal" popover>`.
+- Match `popovertarget` to the dialog `id`.
+- Put title, body, and actions in `.k-modal__box`.
+
+**Don't**
+- Call `mount`. The Popover API already opens it.
+- Trap focus yourself.
+- Open a modal for a tooltip or a toast.

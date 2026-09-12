@@ -42,6 +42,8 @@
   --sl-color-gray-5: var(--k-surface);
   --sl-color-gray-6: var(--k-surface);
   --sl-color-black: var(--k-surface);
+  --sl-color-hairline-light: var(--k-border);
+  --sl-color-hairline-shade: var(--k-border);
 }
 
 .k-preview {
@@ -172,11 +174,29 @@
   border-radius: 0.15em;
 }
 
+.expressive-code {
+  --ec-brdCol: var(--k-border);
+  --ec-frm-trmTtbBrdBtmCol: var(--k-border);
+  --ec-frm-edTabBarBrdCol: var(--k-border);
+  --ec-frm-edActTabBrdCol: var(--k-border);
+}
+
+.expressive-code .frame.is-terminal {
+  --button-spacing: 0.4rem;
+}
+
+.expressive-code .frame.is-terminal .header {
+  display: none;
+}
+
+.expressive-code .frame.is-terminal pre {
+  border: var(--ec-brdWd) solid var(--k-border);
+  border-radius: calc(var(--ec-brdRad) + var(--ec-brdWd));
+}
+
 [data-theme='dark'] .pagination-links a,
 [data-theme='dark'] .sl-markdown-content pre,
-[data-theme='dark'] .expressive-code,
 [data-theme='dark'] .expressive-code pre {
-  --ec-borderColor: var(--k-border);
   border-color: var(--k-border);
 }
 

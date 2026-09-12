@@ -1,0 +1,88 @@
+# Grid
+
+div.k-grid or ul.k-grid. CSS only.
+
+A grid is a row of repeating tiles, such as an icon set, a swatch list, or a gallery. Rows of the same columns belong in a [table](/components/table/).
+
+Use `<div class="k-grid">` or `<ul class="k-grid">`. Default columns auto-fill from `8rem`. Pin a count with `--2`, `--3`, `--4`, or `--6`. `--tight` shortens the gap.
+
+Children can be anything. `k-grid__cell` is an optional tile: raised surface, border, centered stack. A `code` caption in the cell picks up muted type.
+
+## Classes
+
+| Class | Type |
+| --- | --- |
+| `k-grid` | component |
+| `k-grid__cell` | part |
+| `k-grid--2` | modifier |
+| `k-grid--3` | modifier |
+| `k-grid--4` | modifier |
+| `k-grid--6` | modifier |
+| `k-grid--tight` | modifier |
+
+## Examples
+
+### Auto-fill catalog
+
+The default. Columns wrap as the page widens. A list, because the cells are a set.
+
+```html
+<ul class="k-grid">
+  <li class="k-grid__cell">
+    <span class="k-icon k-icon--info k-icon--sm" aria-hidden="true"></span>
+    <code>info</code>
+  </li>
+  <li class="k-grid__cell">
+    <span class="k-icon k-icon--success k-icon--sm" aria-hidden="true"></span>
+    <code>success</code>
+  </li>
+  <li class="k-grid__cell">
+    <span class="k-icon k-icon--warning k-icon--sm" aria-hidden="true"></span>
+    <code>warning</code>
+  </li>
+  <li class="k-grid__cell">
+    <span class="k-icon k-icon--danger k-icon--sm" aria-hidden="true"></span>
+    <code>danger</code>
+  </li>
+</ul>
+```
+
+### Fixed columns
+
+`--3` pins three columns. Cards sit in the grid without a cell wrapper.
+
+```html
+<div class="k-grid k-grid--3">
+  <div class="k-card">
+    <div class="k-card__body">
+      <p>Deploy</p>
+    </div>
+  </div>
+  <div class="k-card">
+    <div class="k-card__body">
+      <p>Checks</p>
+    </div>
+  </div>
+  <div class="k-card">
+    <div class="k-card__body">
+      <p>Preview</p>
+    </div>
+  </div>
+</div>
+```
+
+## Accessibility
+
+This is layout, not an ARIA grid. Leave `role="grid"` off. Use a `<ul>` when the tiles are a set. Decorative marks stay `aria-hidden`. The name lives in text in the cell.
+
+## Dos and don'ts
+
+**Do**
+- Use auto-fill for catalogs. Pin a count only when the row has to stay even.
+- Use a `<ul>` when the cells are a set.
+- Put the name in text. Icons stay `aria-hidden`.
+
+**Don't**
+- Put tabular data here. Use a [table](/components/table/).
+- Put `role="grid"` on it.
+- Expect a widget. This is a CSS grid.

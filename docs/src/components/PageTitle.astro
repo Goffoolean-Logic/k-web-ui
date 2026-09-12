@@ -1,0 +1,61 @@
+---
+const { entry } = Astro.locals.starlightRoute;
+---
+
+<div class="doc-title">
+  <h1 id="_top" data-page-title>{entry.data.title}</h1>
+  <button type="button" class="k-btn k-btn--secondary k-btn--sm" data-copy-md>
+    Copy markdown
+  </button>
+</div>
+
+<script>
+  document.addEventListener('click', async (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const button = target.closest<HTMLButtonElement>('[data-copy-md]');
+    if (!button) return;
+
+    const path = window.location.pathname.replace(/\/$/, '');
+    const label = button.textContent;
+
+    try {
+      const response = await fetch(`${path}.md`);
+      if (!response.ok) throw new Error('missing markdown');
+      await navigator.clipboard.writeText(await response.text());
+      button.textContent = 'Copied';
+    } catch {
+      button.textContent = 'Could not copy';
+    }
+
+    window.setTimeout(() => {
+      button.textContent = label;
+    }, 1600);
+  });
+</script>
+
+<style>
+  @layer starlight.core {
+    .doc-title {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem 1rem;
+      margin-top: 1rem;
+    }
+
+    .doc-title :global([data-copy-md]) {
+      flex-shrink: 0;
+    }
+
+    h1 {
+      margin: 0;
+      flex: 1 1 12rem;
+      font-size: var(--sl-text-h1);
+      line-height: var(--sl-line-height-headings);
+      font-weight: 600;
+      color: var(--sl-color-white);
+    }
+  }
+</style>
