@@ -1,9 +1,8 @@
-import type { APIRoute } from 'astro';
 import { readFileSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
+import type { APIRoute } from 'astro';
 
-const publicDir = resolve(dirname(fileURLToPath(import.meta.url)), '../../public');
+const publicDir = resolve(process.cwd(), 'public');
 
 const PAGES = [
   'getting-started.md',
