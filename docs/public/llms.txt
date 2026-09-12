@@ -1,4 +1,4 @@
-# k-web-components
+# K-Web-UI
 
 > Designed to feel warm and engineered to run hot.
 

@@ -1,4 +1,4 @@
-@import "k-web-components/source";
+@import "k-web-ui/source";
 
 /* Tailwind scans the stories so demo layout classes resolve during development. */
 @source "../stories";

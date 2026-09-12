@@ -28,7 +28,7 @@ A mounted example. Click a tab or move with the arrow keys once one is focused.
 ```
 
 ```js
-import { KTabs } from 'k-web-components/js';
+import { KTabs } from 'k-web-ui/js';
 
 KTabs.mount('docs-tabs', {
   items: [

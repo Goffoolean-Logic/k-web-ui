@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/html-vite';
-import { K_ICON_NAMES } from 'k-web-components/js';
+import { K_ICON_NAMES } from 'k-web-ui/js';
 
 const meta: Meta = {
   title: 'Foundations/Iconography',

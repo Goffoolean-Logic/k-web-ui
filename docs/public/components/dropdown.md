@@ -36,7 +36,7 @@ A secondary button as the trigger. Open it, then pick an item or click away.
 ```
 
 ```js
-import { KDropdown } from 'k-web-components/js';
+import { KDropdown } from 'k-web-ui/js';
 
 KDropdown.mount('docs-dropdown');
 ```

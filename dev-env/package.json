@@ -1,5 +1,5 @@
 {
-  "name": "k-web-components-dev-env",
+  "name": "k-web-ui-dev-env",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "k-web-components": "0.1.0"
+    "k-web-ui": "0.1.0"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^10.6.0",

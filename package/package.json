@@ -1,10 +1,10 @@
 {
-  "name": "k-web-components",
+  "name": "k-web-ui",
   "version": "0.1.0",
   "description": "CSS for real HTML. A little JS when the browser cannot do the job.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Goffoolean-Logic/k-web-components.git",
+    "url": "git+https://github.com/Goffoolean-Logic/k-web-ui.git",
     "directory": "package"
   },
   "type": "module",

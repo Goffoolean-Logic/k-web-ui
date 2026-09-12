@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/html-vite';
-import { KCarousel } from 'k-web-components/js';
+import { KCarousel } from 'k-web-ui/js';
 
 const meta: Meta = {
   title: 'Components/Carousel',

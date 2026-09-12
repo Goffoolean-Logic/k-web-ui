@@ -11,7 +11,7 @@ export default defineConfig({
   },
   integrations: [
     starlight({
-      title: 'k-web-components',
+      title: 'K-Web-UI',
       description: 'Designed to feel warm and engineered to run hot.',
       favicon: '/logo.png',
       components: {
@@ -23,7 +23,7 @@ export default defineConfig({
         {
           icon: 'github',
           label: 'GitHub',
-          href: 'https://github.com/Goffoolean-Logic/k-web-components',
+          href: 'https://github.com/Goffoolean-Logic/k-web-ui',
         },
       ],
       customCss: ['./src/styles/docs.css'],

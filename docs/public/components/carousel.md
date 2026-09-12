@@ -32,7 +32,7 @@ Three slides, loop on. Arrows wrap. Dots jump.
 ```
 
 ```js
-import { KCarousel } from 'k-web-components/js';
+import { KCarousel } from 'k-web-ui/js';
 
 KCarousel.mount('docs-carousel', {
   items: [
