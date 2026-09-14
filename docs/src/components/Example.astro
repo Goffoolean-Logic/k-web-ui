@@ -1,0 +1,70 @@
+---
+import { Code } from '@astrojs/starlight/components';
+
+interface Props {
+  html: string;
+  ts?: string;
+  stack?: boolean;
+  lift?: boolean;
+}
+
+const { html, ts, stack = false, lift = false } = Astro.props;
+const id = `docs-snippet-${crypto.randomUUID()}`;
+---
+
+<div class="k-example not-content">
+  <div
+    class:list={[
+      'k-preview',
+      stack && 'k-preview--stack',
+      lift && 'k-preview--lift',
+    ]}
+  >
+    <slot />
+  </div>
+
+  <k-tabs id={id} class="k-tabs k-example__tabs" label="Implementation"></k-tabs>
+  <div class="k-example__source" hidden>
+    <div data-code-panel="html">
+      <Code code={html} lang="html" />
+    </div>
+    {
+      ts && (
+        <div data-code-panel="ts">
+          <Code code={ts} lang="ts" />
+        </div>
+      )
+    }
+  </div>
+</div>
+
+<script>
+  import { KTabs } from 'k-web-ui/js';
+
+  function wire(example: Element): void {
+    if (!(example instanceof HTMLElement) || example.dataset.wired === 'true') {
+      return;
+    }
+
+    const host = example.querySelector('.k-example__tabs');
+    const htmlPanel = example.querySelector('[data-code-panel="html"]');
+    const tsPanel = example.querySelector('[data-code-panel="ts"]');
+    if (!(host instanceof KTabs) || !(htmlPanel instanceof HTMLElement)) {
+      return;
+    }
+
+    const items = [{ label: 'HTML', content: htmlPanel }];
+    if (tsPanel instanceof HTMLElement) {
+      items.push({ label: 'TS', content: tsPanel });
+    }
+    host.items = items;
+    example.dataset.wired = 'true';
+  }
+
+  function wireAll(): void {
+    document.querySelectorAll('.k-example').forEach(wire);
+  }
+
+  wireAll();
+  document.addEventListener('astro:page-load', wireAll);
+</script>

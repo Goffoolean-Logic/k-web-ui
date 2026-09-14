@@ -1,5 +1,5 @@
 @layer components {
-  div.k-tabs {
+  k-tabs.k-tabs {
     @apply flex flex-col;
   }
 

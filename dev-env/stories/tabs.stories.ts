@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/html-vite';
-import { KTabs } from 'k-web-ui/js';
+import type { KTabs } from 'k-web-ui/js';
+import 'k-web-ui/js';
 
 const ITEMS = [
   {
@@ -25,28 +26,32 @@ export default meta;
 
 type Story = StoryObj;
 
-function mountTabs(root: HTMLElement, selected?: number): void {
-  KTabs.mount(root, { label: 'Sections', items: ITEMS, selected });
+function paintTabs(root: KTabs, selected?: number): void {
+  root.setAttribute('label', 'Sections');
+  if (selected != null) {
+    root.setAttribute('selected', String(selected));
+  }
+  root.items = ITEMS;
 }
 
-function tabsRoot(id: string, selected?: number): HTMLElement {
-  const root = document.createElement('div');
+function tabsRoot(id: string, selected?: number): KTabs {
+  const root = document.createElement('k-tabs');
   root.id = id;
   root.className = 'k-tabs';
   root.style.maxWidth = '28rem';
-  mountTabs(root, selected);
+  paintTabs(root, selected);
   return root;
 }
 
 /**
- * Empty element with an id and `.k-tabs`. `KTabs.mount` builds the rest.
+ * Empty `<k-tabs class="k-tabs">`. Set `items` and the element builds the rest.
  */
 export const Default: Story = {
   render: () => tabsRoot('section-tabs'),
   play: ({ canvasElement }) => {
-    const root = canvasElement.querySelector<HTMLElement>('#section-tabs');
+    const root = canvasElement.querySelector<KTabs>('#section-tabs');
     if (root) {
-      mountTabs(root);
+      paintTabs(root);
     }
   },
 };
@@ -54,11 +59,9 @@ export const Default: Story = {
 export const SecondSelected: Story = {
   render: () => tabsRoot('section-tabs-second', 1),
   play: ({ canvasElement }) => {
-    const root = canvasElement.querySelector<HTMLElement>(
-      '#section-tabs-second',
-    );
+    const root = canvasElement.querySelector<KTabs>('#section-tabs-second');
     if (root) {
-      mountTabs(root, 1);
+      paintTabs(root, 1);
     }
   },
 };

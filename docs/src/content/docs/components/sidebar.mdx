@@ -3,7 +3,7 @@ title: Sidebar
 description: Checkbox-hack drawer. No JS.
 ---
 
-import Preview from '../../../components/Preview.astro';
+import Example from '../../../components/Example.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
 A sidebar is a drawer for navigation or filters. The open state is a checkbox, so there is no kit JavaScript. Use it when the panel should overlay the main column instead of sitting in the document flow.
@@ -32,7 +32,18 @@ The wrapper is `.k-sidebar`. Order matters: hidden checkbox, then the dimmed-pag
 
 Default dock. Open Menu, then Close or the scrim.
 
-<Preview stack>
+<Example stack html={`<div class="k-sidebar">
+  <input id="nav" type="checkbox" class="k-sidebar__toggle" />
+  <label for="nav" class="k-sidebar__scrim"></label>
+  <aside class="k-sidebar__panel">
+    <label for="nav" class="k-sidebar__trigger">Close</label>
+    <a class="k-link" href="#overview">Overview</a>
+    <a class="k-link" href="#projects">Projects</a>
+  </aside>
+  <div class="k-sidebar__main">
+    <label for="nav" class="k-sidebar__trigger">Menu</label>
+  </div>
+</div>`}>
   <div class="k-sidebar" style="min-height: 14rem;">
     <input id="docs-nav" type="checkbox" class="k-sidebar__toggle" />
     <label for="docs-nav" class="k-sidebar__scrim"></label>
@@ -45,7 +56,7 @@ Default dock. Open Menu, then Close or the scrim.
       <label for="docs-nav" class="k-sidebar__trigger">Menu</label>
     </div>
   </div>
-</Preview>
+</Example>
 
 ## Accessibility
 

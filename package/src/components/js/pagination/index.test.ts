@@ -1,48 +1,58 @@
 import { describe, expect, it, vi } from 'vitest';
-import { KPagination } from './index.js';
+import type { KPagination } from './index.js';
+import './index.js';
 
-function host(): HTMLElement {
-  const el = document.createElement('div');
+function host(): KPagination {
+  const el = document.createElement('k-pagination');
   el.id = 'pages';
-  document.body.append(el);
   return el;
 }
 
-describe('KPagination.mount', () => {
+describe('k-pagination', () => {
   it('throws when count is below 1', () => {
-    const root = host();
-    expect(() => KPagination.mount(root, { count: 0 })).toThrow(
+    const pager = host();
+    pager.setAttribute('count', '0');
+    expect(() => document.body.append(pager)).toThrow(
       'KPagination: count must be at least 1',
     );
-    root.remove();
+    pager.remove();
   });
 
   it('marks the current page', () => {
-    const root = host();
-    const pager = KPagination.mount(root, { count: 12, page: 5 });
-    const current = root.querySelector('[aria-current="page"]');
+    const pager = host();
+    pager.setAttribute('count', '12');
+    pager.setAttribute('page', '5');
+    document.body.append(pager);
+    const current = pager.querySelector('[aria-current="page"]');
     expect(current?.textContent).toBe('5');
     expect(pager.page).toBe(5);
-    root.remove();
+    pager.remove();
   });
 
   it('omits first and last on a short list', () => {
-    const root = host();
-    KPagination.mount(root, { count: 4, page: 1 });
-    expect(root.querySelector('.k-pagination__first')).toBeNull();
-    expect(root.querySelector('.k-pagination__last')).toBeNull();
-    expect(root.querySelectorAll('[data-page]')).toHaveLength(4);
-    root.remove();
+    const pager = host();
+    pager.setAttribute('count', '4');
+    pager.setAttribute('page', '1');
+    document.body.append(pager);
+    expect(pager.querySelector('.k-pagination__first')).toBeNull();
+    expect(pager.querySelector('.k-pagination__last')).toBeNull();
+    expect(pager.querySelectorAll('[data-page]')).toHaveLength(4);
+    pager.remove();
   });
 
-  it('goTo fires onChange', () => {
-    const root = host();
+  it('goTo fires k-change', () => {
+    const pager = host();
+    pager.setAttribute('count', '12');
+    pager.setAttribute('page', '5');
+    document.body.append(pager);
     const onChange = vi.fn();
-    const pager = KPagination.mount(root, { count: 12, page: 5, onChange });
+    pager.addEventListener('k-change', onChange);
     pager.goTo(6);
     expect(pager.page).toBe(6);
-    expect(onChange).toHaveBeenCalledWith(6);
-    expect(root.querySelector('[aria-current="page"]')?.textContent).toBe('6');
-    root.remove();
+    expect(onChange).toHaveBeenCalledTimes(1);
+    const event = onChange.mock.calls[0]?.[0] as CustomEvent<{ page: number }>;
+    expect(event.detail).toEqual({ page: 6 });
+    expect(pager.querySelector('[aria-current="page"]')?.textContent).toBe('6');
+    pager.remove();
   });
 });

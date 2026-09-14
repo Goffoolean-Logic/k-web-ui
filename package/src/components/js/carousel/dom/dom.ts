@@ -1,6 +1,6 @@
-import { createIcon } from '../icon.js';
-import { fill } from '../root.js';
-import type { KCarouselOptions, KCarouselState } from './models.js';
+import { createIcon } from '../../icon.js';
+import { fill } from '../../root.js';
+import type { KCarouselOptions, KCarouselState } from '../models/models.js';
 
 export function buildCarousel(
   root: HTMLElement,

@@ -1,4 +1,4 @@
-import type { KDropdownState } from './models.js';
+import type { KDropdownState } from '../models/models.js';
 
 export function queryParts(root: HTMLElement): Omit<KDropdownState, 'open'> {
   const trigger =

@@ -1,13 +1,14 @@
-<div id="docs-tabs" class="k-tabs"></div>
+<k-tabs id="docs-tabs" class="k-tabs"></k-tabs>
 
 <script>
   import { KTabs } from 'k-web-ui/js';
 
-  KTabs.mount('docs-tabs', {
-    items: [
+  const tabs = document.getElementById('docs-tabs');
+  if (tabs instanceof KTabs) {
+    tabs.items = [
       { label: 'Overview', content: 'The first panel.' },
       { label: 'Usage', content: 'The second panel.' },
       { label: 'API', content: 'The third panel.' },
-    ],
-  });
+    ];
+  }
 </script>

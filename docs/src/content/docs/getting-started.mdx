@@ -3,7 +3,7 @@ title: Getting started
 description: Install the kit and put a class on a button.
 ---
 
-import Preview from '../../components/Preview.astro';
+import Example from '../../components/Example.astro';
 
 You write the HTML. Classes that start with `k-` get the kit look. JavaScript is only there for widgets CSS cannot do, such as tabs and pagination. If an element has no `k-` class, the kit leaves it alone.
 
@@ -43,14 +43,11 @@ import 'k-web-ui/source';
 
 Classes are tied to the element. A button is a `<button>` with `.k-btn`, not a `div` you styled to look like one.
 
-<Preview>
+<Example html={`<button type="button" class="k-btn k-btn--primary">Save</button>
+<button type="button" class="k-btn k-btn--secondary">Cancel</button>`}>
   <button type="button" class="k-btn k-btn--primary">Save</button>
   <button type="button" class="k-btn k-btn--secondary">Cancel</button>
-</Preview>
-
-```html
-<button type="button" class="k-btn k-btn--primary">Save</button>
-```
+</Example>
 
 ## Theme
 
@@ -64,16 +61,13 @@ One attribute on the document root:
 
 ## JavaScript
 
-A few widgets need you to leave an empty element on the page and call `mount`:
+Four widgets are custom elements: tabs, pagination, dropdown, and carousel. Import the JS once and the tags upgrade. Pagination is attributes on the host:
 
-```html
-<div id="pages" class="k-pagination"></div>
-```
+<Example
+  html={`<k-pagination class="k-pagination" count="12" page="5"></k-pagination>`}
+  ts={`import 'k-web-ui/js';`}
+>
+  <k-pagination class="k-pagination" count="12" page="5"></k-pagination>
+</Example>
 
-```js
-import { KPagination } from 'k-web-ui/js';
-
-KPagination.mount('pages', { count: 12, page: 5 });
-```
-
-Accordion, grid, modal, sidebar, spin, table, toast, and tooltip are CSS only. You write the markup and skip `mount`.
+Accordion, grid, modal, sidebar, spin, table, toast, and tooltip are CSS only. You write the markup and skip the JS import.

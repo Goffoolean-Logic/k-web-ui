@@ -1,5 +1,6 @@
-import { renderPagination } from './dom.js';
-import type { KPaginationState } from './models.js';
+import { emitKChange } from '../../root.js';
+import { renderPagination } from '../dom/dom.js';
+import type { KPaginationState } from '../models/models.js';
 
 export function goTo(state: KPaginationState, page: number): void {
   const next = Math.min(state.count, Math.max(1, page));
@@ -10,7 +11,7 @@ export function goTo(state: KPaginationState, page: number): void {
   renderPagination(state);
   bindEvents(state);
   state.root.querySelector<HTMLElement>('[aria-current="page"]')?.focus();
-  state.onChange?.(state.page);
+  emitKChange(state.root, { page: state.page });
 }
 
 export function bindEvents(state: KPaginationState): void {

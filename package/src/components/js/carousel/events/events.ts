@@ -1,7 +1,12 @@
-import { paint } from './dom.js';
-import type { KCarouselState } from './models.js';
+import { emitKChange } from '../../root.js';
+import { paint } from '../dom/dom.js';
+import type { KCarouselState } from '../models/models.js';
 
-export function goTo(state: KCarouselState, index: number): void {
+export function goTo(
+  state: KCarouselState,
+  index: number,
+  { emit = true } = {},
+): void {
   const last = state.slides.length - 1;
   let next = index;
   if (state.loop) {
@@ -15,6 +20,9 @@ export function goTo(state: KCarouselState, index: number): void {
   }
   state.index = next;
   paint(state);
+  if (emit) {
+    emitKChange(state.root, { index: state.index });
+  }
 }
 
 export function bindEvents(state: KCarouselState, signal: AbortSignal): void {

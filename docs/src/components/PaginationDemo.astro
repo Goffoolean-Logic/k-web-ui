@@ -8,14 +8,8 @@ interface Props {
 const { id = 'docs-pagination', count = 12, page = 5 } = Astro.props;
 ---
 
-<div id={id} class="k-pagination" data-count={count} data-page={page}></div>
+<k-pagination id={id} class="k-pagination" count={count} page={page}></k-pagination>
 
 <script>
-  import { KPagination } from 'k-web-ui/js';
-
-  document.querySelectorAll<HTMLElement>('.k-pagination[data-count]').forEach((root) => {
-    const count = Number(root.dataset.count);
-    const page = Number(root.dataset.page);
-    KPagination.mount(root, { count, page });
-  });
+  import 'k-web-ui/js';
 </script>

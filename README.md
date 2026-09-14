@@ -1,8 +1,8 @@
 # K-Web-UI
 
-CSS classes for real HTML. Put `k-` classes on a button, a table, or a dialog and they pick up the kit look. Most of the kit is a stylesheet. A few widgets (tabs, pagination, dropdowns, and the carousel) need a `mount()` call because CSS cannot manage that behavior on its own.
+CSS classes for real HTML. Put `k-` classes on a button, a table, or a dialog and they pick up the kit look. Most of the kit is a stylesheet. Four widgets (tabs, pagination, dropdowns, and the carousel) are custom elements because CSS cannot manage that behavior on its own.
 
-The kit does not wrap elements in React, does not register custom elements, and does not restyle the rest of your page. If an element has no `k-` class, it is left alone.
+The kit does not wrap elements in React and does not restyle the rest of your page. If an element has no `k-` class, it is left alone.
 
 ## Use
 
@@ -20,19 +20,17 @@ import 'k-web-ui';
 
 Set `data-theme="light"`, `dark`, or `auto` on the document root. Light and dark change the page background and text. The orange on buttons, fields, and focus stays the same in both themes.
 
-For pagination, tabs, dropdowns, and the carousel, leave an empty element on the page and call `mount`:
+For pagination, tabs, dropdowns, and the carousel, import the JS once and put the tag on the page. Pagination is attributes only:
 
 ```html
-<div id="pages" class="k-pagination"></div>
+<k-pagination class="k-pagination" count="12" page="5"></k-pagination>
 ```
 
 ```js
-import { KPagination } from 'k-web-ui/js';
-
-KPagination.mount('pages', { count: 12, page: 5 });
+import 'k-web-ui/js';
 ```
 
-Accordion, grid, modal, sidebar, spin, table, toast, and tooltip are CSS only. You write the markup and skip `mount`.
+Accordion, grid, modal, sidebar, spin, table, toast, and tooltip are CSS only. You write the markup and skip the JS import.
 
 `import 'k-web-ui'` is the full prebuilt stylesheet. If you already run Tailwind, `k-web-ui/source` lets the compiler omit classes you never used. You can also import `/base`, `/components`, and `/utilities` separately.
 

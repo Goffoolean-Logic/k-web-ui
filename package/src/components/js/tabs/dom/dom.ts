@@ -1,25 +1,5 @@
-import type { KTabsOptions, KTabsState } from './models.js';
-
-export function resolveRoot(target: string | HTMLElement): HTMLElement {
-  if (typeof target !== 'string') {
-    return target;
-  }
-
-  const id = target.startsWith('#') ? target.slice(1) : target;
-  const el = document.getElementById(id);
-  if (!el) {
-    throw new Error(`KTabs: no element with id "${id}"`);
-  }
-  return el;
-}
-
-function fill(node: HTMLElement, content: string | Node): void {
-  if (typeof content === 'string') {
-    node.textContent = content;
-    return;
-  }
-  node.replaceChildren(content);
-}
+import { fill } from '../../root.js';
+import type { KTabsOptions, KTabsState } from '../models/models.js';
 
 export function tabFromEvent(
   root: HTMLElement,

@@ -3,7 +3,7 @@ title: Grid
 description: div.k-grid or ul.k-grid. CSS only.
 ---
 
-import Preview from '../../../components/Preview.astro';
+import Example from '../../../components/Example.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
 A grid is a row of repeating tiles, such as an icon set, a swatch list, or a gallery. Rows of the same columns belong in a [table](/components/table/).
@@ -32,7 +32,24 @@ Children can be anything. `k-grid__cell` is an optional tile: raised surface, bo
 
 The default. Columns wrap as the page widens. A list, because the cells are a set.
 
-<Preview stack>
+<Example stack html={`<ul class="k-grid">
+  <li class="k-grid__cell">
+    <span class="k-icon k-icon--info k-icon--sm" aria-hidden="true"></span>
+    <code>info</code>
+  </li>
+  <li class="k-grid__cell">
+    <span class="k-icon k-icon--success k-icon--sm" aria-hidden="true"></span>
+    <code>success</code>
+  </li>
+  <li class="k-grid__cell">
+    <span class="k-icon k-icon--warning k-icon--sm" aria-hidden="true"></span>
+    <code>warning</code>
+  </li>
+  <li class="k-grid__cell">
+    <span class="k-icon k-icon--danger k-icon--sm" aria-hidden="true"></span>
+    <code>danger</code>
+  </li>
+</ul>`}>
   <ul class="k-grid">
     <li class="k-grid__cell">
       <span class="k-icon k-icon--info k-icon--sm" aria-hidden="true"></span>
@@ -51,13 +68,29 @@ The default. Columns wrap as the page widens. A list, because the cells are a se
       <code>danger</code>
     </li>
   </ul>
-</Preview>
+</Example>
 
 ### Fixed columns
 
 `--3` pins three columns. Cards sit in the grid without a cell wrapper.
 
-<Preview stack>
+<Example stack html={`<div class="k-grid k-grid--3">
+  <div class="k-card">
+    <div class="k-card__body">
+      <p>Deploy</p>
+    </div>
+  </div>
+  <div class="k-card">
+    <div class="k-card__body">
+      <p>Checks</p>
+    </div>
+  </div>
+  <div class="k-card">
+    <div class="k-card__body">
+      <p>Preview</p>
+    </div>
+  </div>
+</div>`}>
   <div class="k-grid k-grid--3">
     <div class="k-card">
       <div class="k-card__body">
@@ -75,7 +108,7 @@ The default. Columns wrap as the page widens. A list, because the cells are a se
       </div>
     </div>
   </div>
-</Preview>
+</Example>
 
 ## Accessibility
 

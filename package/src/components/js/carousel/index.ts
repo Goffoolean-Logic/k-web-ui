@@ -1,68 +1,98 @@
-import { resolveRoot } from '../root.js';
-import { buildCarousel } from './dom.js';
-import { bindEvents, goTo } from './events.js';
-import { bindKeybinds } from './keybinds.js';
-import type { KCarouselOptions, KCarouselState } from './models.js';
+import { defineElement } from '../root.js';
+import { buildCarousel } from './dom/dom.js';
+import { bindEvents, goTo } from './events/events.js';
+import { bindKeybinds } from './keybinds/keybinds.js';
+import type { KCarouselItem, KCarouselState } from './models/models.js';
 
-export type { KCarouselItem, KCarouselOptions } from './models.js';
-
-const instances = new WeakMap<HTMLElement, KCarousel>();
+export type { KCarouselItem, KCarouselOptions } from './models/models.js';
 
 /**
- * Carousel. Markup is a host with an id and `.k-carousel`. This class builds
- * the track, slides, and controls from `items`.
+ * Carousel. The host is `<k-carousel class="k-carousel">`. Set `items` and
+ * the element builds the track, slides, and controls. `loop`, `index`, and
+ * `keyboard` are attributes.
  *
- *   <div id="shots" class="k-carousel"></div>
- *   KCarousel.mount('shots', { items: [{ content: 'One' }] });
+ *   <k-carousel id="shots" class="k-carousel"></k-carousel>
+ *   document.getElementById('shots').items = [{ content: 'One' }];
  */
-export class KCarousel {
-  readonly #state: KCarouselState;
-  readonly #abort = new AbortController();
+export class KCarousel extends HTMLElement {
+  #state: KCarouselState | null = null;
+  #abort = new AbortController();
+  #items: KCarouselItem[] = [];
 
-  static mount(
-    target: string | HTMLElement,
-    options: KCarouselOptions,
-  ): KCarousel {
-    const root = resolveRoot(target, 'KCarousel');
-    const existing = instances.get(root);
-    if (existing && root.querySelector('.k-carousel__track')) {
-      return existing;
-    }
-    existing?.disconnect();
-    return new KCarousel(root, options);
+  static get observedAttributes(): string[] {
+    return ['index', 'loop', 'keyboard'];
   }
 
-  constructor(target: string | HTMLElement, options: KCarouselOptions) {
-    const root = resolveRoot(target, 'KCarousel');
-    const parts = buildCarousel(root, options);
-    this.#state = {
-      ...parts,
-      index: options.index ?? 0,
-      loop: options.loop ?? true,
-      keyboard: options.keyboard ?? true,
-    };
-    instances.set(root, this);
-    root.classList.add('k-carousel');
-    root.setAttribute('aria-roledescription', 'carousel');
-    root.tabIndex = 0;
-    bindEvents(this.#state, this.#abort.signal);
-    bindKeybinds(this.#state, this.#abort.signal);
-    goTo(this.#state, this.#state.index);
+  connectedCallback(): void {
+    this.classList.add('k-carousel');
+    this.#connect();
+  }
+
+  disconnectedCallback(): void {
+    this.disconnect();
+    this.#abort = new AbortController();
+    this.#state = null;
+  }
+
+  attributeChangedCallback(): void {
+    if (this.isConnected) {
+      this.#connect();
+    }
   }
 
   disconnect(): void {
     this.#abort.abort();
   }
 
-  get root(): HTMLElement {
-    return this.#state.root;
+  get items(): KCarouselItem[] {
+    return this.#items;
+  }
+
+  set items(value: KCarouselItem[]) {
+    this.#items = value;
+    if (this.isConnected) {
+      this.#connect();
+    }
   }
 
   get index(): number {
-    return this.#state.index;
+    return this.#state?.index ?? Number(this.getAttribute('index') ?? 0);
   }
 
   goTo(index: number): void {
+    if (!this.#state) {
+      return;
+    }
     goTo(this.#state, index);
+  }
+
+  #connect(): void {
+    if (this.#items.length === 0) {
+      return;
+    }
+
+    this.#abort.abort();
+    this.#abort = new AbortController();
+    const index = Number(this.getAttribute('index') ?? 0);
+    const parts = buildCarousel(this, { items: this.#items });
+    this.#state = {
+      ...parts,
+      index: Number.isFinite(index) ? index : 0,
+      loop: this.getAttribute('loop') !== 'false',
+      keyboard: this.getAttribute('keyboard') !== 'false',
+    };
+    this.setAttribute('aria-roledescription', 'carousel');
+    this.tabIndex = 0;
+    bindEvents(this.#state, this.#abort.signal);
+    bindKeybinds(this.#state, this.#abort.signal);
+    goTo(this.#state, this.#state.index, { emit: false });
+  }
+}
+
+defineElement('k-carousel', KCarousel);
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'k-carousel': KCarousel;
   }
 }

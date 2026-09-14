@@ -3,7 +3,7 @@ title: Spin
 description: span.k-spin wraps an icon and rotates it.
 ---
 
-import Preview from '../../../components/Preview.astro';
+import Example from '../../../components/Example.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
 Spin is the rotation, not the icon itself. The [loading icon](/foundations/iconography/) sits still until you wrap it. Use `<span class="k-spin">` around any kit icon when something is in progress, such as a save or a refresh.
@@ -26,24 +26,36 @@ Inside a button the inner icon drops to `1em`, same as any other icon next to a 
 
 The default busy mark. The wrapper rotates; the glyph does not.
 
-<Preview>
+<Example
+  html={`<span class="k-spin">
+  <span class="k-icon k-icon--loading" aria-hidden="true"></span>
+</span>`}
+  ts={`import { createSpin } from 'k-web-ui/js';
+
+document.body.append(createSpin());`}
+>
   <span class="k-spin">
     <span class="k-icon k-icon--loading" aria-hidden="true"></span>
   </span>
-</Preview>
+</Example>
 
 ### In a button
 
 A disabled secondary button while work is in progress.
 
-<Preview>
+<Example html={`<button type="button" class="k-btn k-btn--secondary" disabled>
+  <span class="k-spin">
+    <span class="k-icon k-icon--loading" aria-hidden="true"></span>
+  </span>
+  Saving
+</button>`}>
   <button type="button" class="k-btn k-btn--secondary" disabled>
     <span class="k-spin">
       <span class="k-icon k-icon--loading" aria-hidden="true"></span>
     </span>
     Saving
   </button>
-</Preview>
+</Example>
 
 ## Accessibility
 

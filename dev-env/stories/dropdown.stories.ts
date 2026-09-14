@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/html-vite';
-import { KDropdown } from 'k-web-ui/js';
+import type { KDropdown } from 'k-web-ui/js';
+import 'k-web-ui/js';
 
 const meta: Meta = {
   title: 'Components/Dropdown',
@@ -10,8 +11,8 @@ export default meta;
 
 type Story = StoryObj;
 
-function dropdownRoot(id: string, extraClass = ''): HTMLElement {
-  const root = document.createElement('div');
+function dropdownRoot(id: string, extraClass = ''): KDropdown {
+  const root = document.createElement('k-dropdown');
   root.id = id;
   root.className = extraClass ? `k-dropdown ${extraClass}` : 'k-dropdown';
   root.innerHTML = `
@@ -22,22 +23,15 @@ function dropdownRoot(id: string, extraClass = ''): HTMLElement {
       <button type="button" class="k-dropdown__item">Size</button>
     </div>
   `;
-  KDropdown.mount(root);
   return root;
 }
 
 /**
- * You write the `.k-dropdown`, trigger, and hidden menu. `KDropdown.mount`
- * wires toggle, outside click, and keyboard movement.
+ * You write the `<k-dropdown>`, trigger, and hidden menu. Importing the JS
+ * registers the tag and wires toggle, outside click, and keyboard movement.
  */
 export const Default: Story = {
   render: () => dropdownRoot('sort-dropdown'),
-  play: ({ canvasElement }) => {
-    const root = canvasElement.querySelector<HTMLElement>('#sort-dropdown');
-    if (root) {
-      KDropdown.mount(root);
-    }
-  },
 };
 
 export const End: Story = {
@@ -47,11 +41,5 @@ export const End: Story = {
     wrap.style.justifyContent = 'flex-end';
     wrap.append(dropdownRoot('sort-dropdown-end', 'k-dropdown--end'));
     return wrap;
-  },
-  play: ({ canvasElement }) => {
-    const root = canvasElement.querySelector<HTMLElement>('#sort-dropdown-end');
-    if (root) {
-      KDropdown.mount(root);
-    }
   },
 };

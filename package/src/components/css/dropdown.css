@@ -1,6 +1,6 @@
 @layer components {
-  /* Requires <div class="k-dropdown"> with a trigger button and a menu. */
-  div.k-dropdown {
+  /* Requires <k-dropdown class="k-dropdown"> with a trigger button and a menu. */
+  k-dropdown.k-dropdown {
     @apply relative inline-block;
   }
 
@@ -13,7 +13,7 @@
     display: none;
   }
 
-  div.k-dropdown--end div.k-dropdown__menu {
+  k-dropdown.k-dropdown--end div.k-dropdown__menu {
     @apply start-auto end-0;
   }
 

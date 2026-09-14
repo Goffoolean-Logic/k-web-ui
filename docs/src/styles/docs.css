@@ -79,6 +79,55 @@
   overflow: visible;
 }
 
+.k-example {
+  margin-block: 1.25rem 2rem;
+}
+
+.k-example .k-preview {
+  margin: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.k-example__tabs.k-tabs {
+  border: 1px solid var(--k-border);
+  border-top: 0;
+  border-radius: 0 0 var(--k-radius-lg) var(--k-radius-lg);
+  background-color: var(--k-surface);
+}
+
+.k-example__tabs .k-tabs__list {
+  width: 100%;
+  padding-inline: 0.75rem;
+}
+
+.k-example__tabs:not(:has(.k-tabs__tab:nth-of-type(2))) .k-tabs__list {
+  display: none;
+}
+
+.k-example__tabs .k-tabs__panel {
+  width: 100%;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+.k-example__tabs .expressive-code {
+  margin: 0;
+}
+
+.k-example__tabs .expressive-code .frame {
+  --ec-brdCol: transparent;
+  border: 0;
+  border-radius: 0 0 var(--k-radius-lg) var(--k-radius-lg);
+  box-shadow: none;
+}
+
+.k-example__tabs .expressive-code pre {
+  border: 0;
+  border-radius: 0 0 var(--k-radius-lg) var(--k-radius-lg);
+}
+
 .k-class-table {
   margin-block: 1.25rem 2rem;
 }

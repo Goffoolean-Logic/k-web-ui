@@ -3,7 +3,7 @@ title: Badge
 description: span.k-badge. Color, style, size.
 ---
 
-import Preview from '../../../components/Preview.astro';
+import Example from '../../../components/Example.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
 A badge is a short label for a status, a count, or a category. Put one next to a heading or in a table cell. If something just happened on the page, that belongs on a [banner](/components/banner/), not here.
@@ -41,7 +41,15 @@ Sizes go `--xs` to `--xl`. Leave the size off and you get 1.5rem. An empty badge
 
 Variants without a style class. Filled is the default. Danger here also carries an icon.
 
-<Preview>
+<Example html={`<span class="k-badge">Default</span>
+<span class="k-badge k-badge--primary">Primary</span>
+<span class="k-badge k-badge--info">Info</span>
+<span class="k-badge k-badge--success">Success</span>
+<span class="k-badge k-badge--warning">Warning</span>
+<span class="k-badge k-badge--danger">
+  <span class="k-icon k-icon--danger" aria-hidden="true"></span>
+  Danger
+</span>`}>
   <span class="k-badge">Default</span>
   <span class="k-badge k-badge--primary">Primary</span>
   <span class="k-badge k-badge--info">Info</span>
@@ -51,19 +59,23 @@ Variants without a style class. Filled is the default. Danger here also carries 
     <span class="k-icon k-icon--danger" aria-hidden="true"></span>
     Danger
   </span>
-</Preview>
+</Example>
 
 ### Styles
 
 The same info color through every fill treatment.
 
-<Preview>
+<Example html={`<span class="k-badge k-badge--info">Filled</span>
+<span class="k-badge k-badge--info k-badge--soft">Soft</span>
+<span class="k-badge k-badge--info k-badge--outline">Outline</span>
+<span class="k-badge k-badge--info k-badge--dash">Dash</span>
+<span class="k-badge k-badge--info k-badge--ghost">Ghost</span>`}>
   <span class="k-badge k-badge--info">Filled</span>
   <span class="k-badge k-badge--info k-badge--soft">Soft</span>
   <span class="k-badge k-badge--info k-badge--outline">Outline</span>
   <span class="k-badge k-badge--info k-badge--dash">Dash</span>
   <span class="k-badge k-badge--info k-badge--ghost">Ghost</span>
-</Preview>
+</Example>
 
 ## Accessibility
 

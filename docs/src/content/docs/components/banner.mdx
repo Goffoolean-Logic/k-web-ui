@@ -3,7 +3,7 @@ title: Banner
 description: div.k-banner with role="alert".
 ---
 
-import Preview from '../../../components/Preview.astro';
+import Example from '../../../components/Example.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
 A banner is an inline alert for something that just happened: a failed save, a confirmed purchase, an update in the page flow. Put `role="alert"` on the element. If the message should float over the page instead, wrap banners in a [toast](/components/toast/).
@@ -40,22 +40,27 @@ Children are optional. An icon, a plain span, or the body parts (`k-banner__titl
 
 The default filled info banner. The icon is decorative (`aria-hidden`); the text is the message.
 
-<Preview stack>
+<Example stack html={`<div role="alert" class="k-banner k-banner--info">
+  <span class="k-icon k-icon--info" aria-hidden="true"></span>
+  <span>New software update available.</span>
+</div>`}>
   <div role="alert" class="k-banner k-banner--info">
     <span class="k-icon k-icon--info" aria-hidden="true"></span>
     <span>New software update available.</span>
   </div>
-</Preview>
+</Example>
 
 ### Soft success
 
 `--soft` keeps the success color as a wash instead of a solid fill. Use it when the banner should recede.
 
-<Preview stack>
+<Example stack html={`<div role="alert" class="k-banner k-banner--success k-banner--soft">
+  <span>Your purchase has been confirmed.</span>
+</div>`}>
   <div role="alert" class="k-banner k-banner--success k-banner--soft">
     <span>Your purchase has been confirmed.</span>
   </div>
-</Preview>
+</Example>
 
 ## Accessibility
 

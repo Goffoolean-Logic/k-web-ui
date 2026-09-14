@@ -3,7 +3,7 @@ title: Table
 description: table.k-table.
 ---
 
-import Preview from '../../../components/Preview.astro';
+import Example from '../../../components/Example.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
 A table is for tabular data: rows that share the same columns. If the content is not a grid of columns, use a card or a definition list. Use a real `<table class="k-table">` with `thead` and `tbody`. The kit styles the cells. It does not sort, filter, or paginate. Pair it with [pagination](/components/pagination/) when the list is long.
@@ -26,7 +26,24 @@ A table is for tabular data: rows that share the same columns. If the content is
 
 A two-column table. Header cells are `th`, body cells are `td`.
 
-<Preview stack>
+<Example stack html={`<table class="k-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Deploy</td>
+      <td>Ready</td>
+    </tr>
+    <tr>
+      <td>Checks</td>
+      <td>Passed</td>
+    </tr>
+  </tbody>
+</table>`}>
   <table class="k-table">
     <thead>
       <tr>
@@ -45,13 +62,34 @@ A two-column table. Header cells are `th`, body cells are `td`.
       </tr>
     </tbody>
   </table>
-</Preview>
+</Example>
 
 ### Zebra and compact
 
 `--zebra` and `--sm` together. Use zebra when rows are dense enough that the eye needs a track.
 
-<Preview stack>
+<Example stack html={`<table class="k-table k-table--zebra k-table--sm">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Deploy</td>
+      <td>Ready</td>
+    </tr>
+    <tr>
+      <td>Checks</td>
+      <td>Passed</td>
+    </tr>
+    <tr>
+      <td>Preview</td>
+      <td>Queued</td>
+    </tr>
+  </tbody>
+</table>`}>
   <table class="k-table k-table--zebra k-table--sm">
     <thead>
       <tr>
@@ -74,7 +112,7 @@ A two-column table. Header cells are `th`, body cells are `td`.
       </tr>
     </tbody>
   </table>
-</Preview>
+</Example>
 
 ## Accessibility
 

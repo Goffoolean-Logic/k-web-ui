@@ -3,7 +3,7 @@ title: Tooltip
 description: span.k-tooltip with data-tip. No JS.
 ---
 
-import Preview from '../../../components/Preview.astro';
+import Example from '../../../components/Example.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
 A tooltip is extra context on a control the reader already sees, such as a last-saved time or a keyboard hint. It is not a banner and it is not a modal. Keep the text short.
@@ -29,21 +29,25 @@ If the tip is required to use the control, put that copy in the UI, not only in 
 
 The default. Hover or focus the button.
 
-<Preview>
+<Example html={`<span class="k-tooltip" data-tip="Saved 2 minutes ago">
+  <button type="button" class="k-btn k-btn--secondary">Save</button>
+</span>`}>
   <span class="k-tooltip" data-tip="Saved 2 minutes ago">
     <button type="button" class="k-btn k-btn--secondary">Save</button>
   </span>
-</Preview>
+</Example>
 
 ### Below
 
 `--bottom` when there is no room above the control.
 
-<Preview>
+<Example html={`<span class="k-tooltip k-tooltip--bottom" data-tip="Opens below">
+  <button type="button" class="k-btn k-btn--secondary">Below</button>
+</span>`}>
   <span class="k-tooltip k-tooltip--bottom" data-tip="Opens below">
     <button type="button" class="k-btn k-btn--secondary">Below</button>
   </span>
-</Preview>
+</Example>
 
 ## Accessibility
 

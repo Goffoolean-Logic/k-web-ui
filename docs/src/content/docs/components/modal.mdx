@@ -3,7 +3,7 @@ title: Modal
 description: dialog.k-modal with popover. No JS.
 ---
 
-import Preview from '../../../components/Preview.astro';
+import Example from '../../../components/Example.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
 A focused task on top of the page: confirm a delete, a short form, a warning. Use `<dialog class="k-modal" popover>`. The Popover API opens and closes it.
@@ -31,7 +31,30 @@ Put title, body, and actions inside `.k-modal__box`. That box is the raised surf
 
 A destructive confirm. Open it from the button. Cancel, Delete, and a click on the dimmed backdrop all hide it.
 
-<Preview>
+<Example html={`<button type="button" class="k-btn k-btn--primary" popovertarget="confirm">
+  Open modal
+</button>
+<dialog id="confirm" class="k-modal" popover>
+  <button
+    type="button"
+    class="k-modal__scrim"
+    popovertarget="confirm"
+    popovertargetaction="hide"
+    aria-label="Close"
+  ></button>
+  <div class="k-modal__box">
+    <h3 class="k-modal__title">Delete file</h3>
+    <p class="k-modal__body">This will remove report.pdf. You can't undo this.</p>
+    <div class="k-modal__actions">
+      <button type="button" class="k-btn k-btn--ghost" popovertarget="confirm" popovertargetaction="hide">
+        Cancel
+      </button>
+      <button type="button" class="k-btn k-btn--primary" popovertarget="confirm" popovertargetaction="hide">
+        Delete
+      </button>
+    </div>
+  </div>
+</dialog>`}>
   <button type="button" class="k-btn k-btn--primary" popovertarget="docs-modal">
     Open modal
   </button>
@@ -56,7 +79,7 @@ A destructive confirm. Open it from the button. Cancel, Delete, and a click on t
       </div>
     </div>
   </dialog>
-</Preview>
+</Example>
 
 ## Accessibility
 

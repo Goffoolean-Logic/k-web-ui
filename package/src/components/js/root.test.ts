@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
-import { fill, resolveRoot } from './root.js';
+import { describe, expect, it, vi } from 'vitest';
+import { defineElement, emitKChange, fill, resolveRoot } from './root.js';
 
 describe('resolveRoot', () => {
   it('returns an element argument', () => {
@@ -32,5 +32,27 @@ describe('fill', () => {
     child.textContent = 'Node';
     fill(host, child);
     expect(host.firstElementChild).toBe(child);
+  });
+});
+
+describe('defineElement', () => {
+  it('defines a tag once', () => {
+    class KRootProbe extends HTMLElement {}
+    defineElement('k-root-probe', KRootProbe);
+    expect(customElements.get('k-root-probe')).toBe(KRootProbe);
+    expect(() => defineElement('k-root-probe', KRootProbe)).not.toThrow();
+  });
+});
+
+describe('emitKChange', () => {
+  it('dispatches a bubbling k-change event', () => {
+    const host = document.createElement('div');
+    const onChange = vi.fn();
+    host.addEventListener('k-change', onChange);
+    emitKChange(host, { page: 2 });
+    expect(onChange).toHaveBeenCalledTimes(1);
+    const event = onChange.mock.calls[0]?.[0] as CustomEvent<{ page: number }>;
+    expect(event.bubbles).toBe(true);
+    expect(event.detail).toEqual({ page: 2 });
   });
 });

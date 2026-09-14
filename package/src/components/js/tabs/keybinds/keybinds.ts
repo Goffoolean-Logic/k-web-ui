@@ -1,6 +1,6 @@
-import { tabFromEvent } from './dom.js';
-import { selectTab } from './events.js';
-import type { KTabsState } from './models.js';
+import { tabFromEvent } from '../dom/dom.js';
+import { selectTab } from '../events/events.js';
+import type { KTabsState } from '../models/models.js';
 
 export function bindKeybinds(state: KTabsState, signal: AbortSignal): void {
   if (!state.keyboard) {

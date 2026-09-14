@@ -1,7 +1,7 @@
 @layer components {
-  /* Requires <div class="k-carousel">. JS builds the track, slides, and controls. */
-  div.k-carousel {
-    @apply relative overflow-hidden rounded-k-lg border border-k-border
+  /* Requires <k-carousel class="k-carousel">. JS builds the track, slides, and controls. */
+  k-carousel.k-carousel {
+    @apply relative block overflow-hidden rounded-k-lg border border-k-border
       bg-k-surface-raised;
   }
 

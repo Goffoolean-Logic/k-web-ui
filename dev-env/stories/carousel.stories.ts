@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/html-vite';
-import { KCarousel } from 'k-web-ui/js';
+import type { KCarousel } from 'k-web-ui/js';
+import 'k-web-ui/js';
 
 const meta: Meta = {
   title: 'Components/Carousel',
@@ -16,25 +17,32 @@ const ITEMS = [
   { content: 'Ship the release.' },
 ];
 
-function carouselRoot(id: string, loop?: boolean): HTMLElement {
-  const root = document.createElement('div');
+function paintCarousel(root: KCarousel, loop?: boolean): void {
+  if (loop === false) {
+    root.setAttribute('loop', 'false');
+  }
+  root.items = ITEMS;
+}
+
+function carouselRoot(id: string, loop?: boolean): KCarousel {
+  const root = document.createElement('k-carousel');
   root.id = id;
   root.className = 'k-carousel';
   root.style.maxWidth = '28rem';
-  KCarousel.mount(root, { items: ITEMS, loop });
+  paintCarousel(root, loop);
   return root;
 }
 
 /**
- * Empty element with an id and `.k-carousel`. `KCarousel.mount` builds the
- * track, slides, and controls from `items`.
+ * Empty `<k-carousel class="k-carousel">`. Set `items` and the element builds
+ * the track, slides, and controls.
  */
 export const Default: Story = {
   render: () => carouselRoot('gallery'),
   play: ({ canvasElement }) => {
-    const root = canvasElement.querySelector<HTMLElement>('#gallery');
+    const root = canvasElement.querySelector<KCarousel>('#gallery');
     if (root) {
-      KCarousel.mount(root, { items: ITEMS });
+      paintCarousel(root);
     }
   },
 };
@@ -42,9 +50,9 @@ export const Default: Story = {
 export const NoLoop: Story = {
   render: () => carouselRoot('gallery-noloop', false),
   play: ({ canvasElement }) => {
-    const root = canvasElement.querySelector<HTMLElement>('#gallery-noloop');
+    const root = canvasElement.querySelector<KCarousel>('#gallery-noloop');
     if (root) {
-      KCarousel.mount(root, { items: ITEMS, loop: false });
+      paintCarousel(root, false);
     }
   },
 };

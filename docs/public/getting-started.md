@@ -57,16 +57,14 @@ One attribute on the document root:
 
 ## JavaScript
 
-A few widgets need you to leave an empty element on the page and call `mount`:
+Four widgets are custom elements: tabs, pagination, dropdown, and carousel. Import the JS once and the tags upgrade. Pagination is attributes on the host:
 
 ```html
-<div id="pages" class="k-pagination"></div>
+<k-pagination class="k-pagination" count="12" page="5"></k-pagination>
 ```
 
 ```js
-import { KPagination } from 'k-web-ui/js';
-
-KPagination.mount('pages', { count: 12, page: 5 });
+import 'k-web-ui/js';
 ```
 
-Accordion, grid, modal, sidebar, spin, table, toast, and tooltip are CSS only. You write the markup and skip `mount`.
+Accordion, grid, modal, sidebar, spin, table, toast, and tooltip are CSS only. You write the markup and skip the JS import.

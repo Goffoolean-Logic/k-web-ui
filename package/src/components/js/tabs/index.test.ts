@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { KTabs } from './index.js';
+import type { KTabs } from './index.js';
+import './index.js';
 
-function host(): HTMLElement {
-  const el = document.createElement('div');
+function host(): KTabs {
+  const el = document.createElement('k-tabs');
   el.id = 'sections';
-  document.body.append(el);
   return el;
 }
 
@@ -13,12 +13,14 @@ const items = [
   { label: 'Usage', content: 'Second' },
 ];
 
-describe('KTabs.mount', () => {
+describe('k-tabs', () => {
   it('builds tablist, tabs, panels, and ARIA', () => {
-    const root = host();
-    const tabs = KTabs.mount(root, { items, label: 'Sections' });
+    const tabs = host();
+    tabs.setAttribute('label', 'Sections');
+    tabs.items = items;
+    document.body.append(tabs);
 
-    const list = root.querySelector('[role="tablist"]');
+    const list = tabs.querySelector('[role="tablist"]');
     expect(list).toBeTruthy();
     expect(list?.getAttribute('aria-label')).toBe('Sections');
     expect(tabs.tabs).toHaveLength(2);
@@ -27,37 +29,38 @@ describe('KTabs.mount', () => {
     expect(tabs.tabs[0]?.getAttribute('aria-controls')).toBe(
       'sections-panel-0',
     );
-    expect(root.querySelectorAll('[role="tabpanel"]')).toHaveLength(2);
-    expect(root.querySelector<HTMLElement>('#sections-panel-0')?.hidden).toBe(
+    expect(tabs.querySelectorAll('[role="tabpanel"]')).toHaveLength(2);
+    expect(tabs.querySelector<HTMLElement>('#sections-panel-0')?.hidden).toBe(
       false,
     );
-    expect(root.querySelector<HTMLElement>('#sections-panel-1')?.hidden).toBe(
+    expect(tabs.querySelector<HTMLElement>('#sections-panel-1')?.hidden).toBe(
       true,
     );
-    root.remove();
+    tabs.remove();
   });
 
   it('select shows one panel', () => {
-    const root = host();
-    const tabs = KTabs.mount(root, { items });
+    const tabs = host();
+    tabs.items = items;
+    document.body.append(tabs);
     tabs.select(1);
     expect(tabs.selectedIndex).toBe(1);
-    expect(root.querySelector<HTMLElement>('#sections-panel-0')?.hidden).toBe(
+    expect(tabs.querySelector<HTMLElement>('#sections-panel-0')?.hidden).toBe(
       true,
     );
-    expect(root.querySelector<HTMLElement>('#sections-panel-1')?.hidden).toBe(
+    expect(tabs.querySelector<HTMLElement>('#sections-panel-1')?.hidden).toBe(
       false,
     );
-    root.remove();
+    tabs.remove();
   });
 
-  it('remount on a live host does not double-bind', () => {
-    const root = host();
-    const first = KTabs.mount(root, { items });
-    const second = KTabs.mount(root, { items });
-    expect(second).toBe(first);
-    expect(root.querySelectorAll('[role="tablist"]')).toHaveLength(1);
-    expect(root.querySelectorAll('[role="tab"]')).toHaveLength(2);
-    root.remove();
+  it('setting items again does not double-bind', () => {
+    const tabs = host();
+    tabs.items = items;
+    document.body.append(tabs);
+    tabs.items = items;
+    expect(tabs.querySelectorAll('[role="tablist"]')).toHaveLength(1);
+    expect(tabs.querySelectorAll('[role="tab"]')).toHaveLength(2);
+    tabs.remove();
   });
 });

@@ -1,10 +1,11 @@
-import { tabFromEvent } from './dom.js';
-import type { KTabsState } from './models.js';
+import { emitKChange } from '../../root.js';
+import { tabFromEvent } from '../dom/dom.js';
+import type { KTabsState } from '../models/models.js';
 
 export function selectTab(
   state: KTabsState,
   index: number,
-  { focus = false } = {},
+  { focus = false, emit = true } = {},
 ): void {
   const next = state.tabs[index];
   if (!next) {
@@ -23,6 +24,10 @@ export function selectTab(
 
   if (focus) {
     next.focus();
+  }
+
+  if (emit) {
+    emitKChange(state.root, { selected: index });
   }
 }
 

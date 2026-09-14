@@ -3,7 +3,7 @@ title: Link
 description: a.k-link.
 ---
 
-import Preview from '../../../components/Preview.astro';
+import Example from '../../../components/Example.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
 A link goes somewhere: another page, a hash, or an external URL. If the click stays on this page, use a [button](/components/button/).
@@ -26,9 +26,9 @@ There is no disabled class. `aria-disabled="true"` when the destination is gone;
 
 A text link. The `href` is yours.
 
-<Preview>
+<Example html={`<a class="k-link" href="/getting-started/">Read the guide</a>`}>
   <a class="k-link" href="#">Read the guide</a>
-</Preview>
+</Example>
 
 ## Accessibility
 

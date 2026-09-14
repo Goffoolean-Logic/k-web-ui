@@ -3,7 +3,7 @@ title: Button
 description: button.k-btn. Variants, sizes, block.
 ---
 
-import Preview from '../../../components/Preview.astro';
+import Example from '../../../components/Example.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
 Use a button when the click stays on this page: save, cancel, delete, open a modal. If you are sending someone somewhere else, use a [link](/components/link/).
@@ -34,35 +34,45 @@ The element has to be a real `<button>` with `.k-btn` and one variant. Primary i
 
 Each variant once, plus a disabled primary. Pick one variant. Do not stack them (`k-btn--primary k-btn--danger`).
 
-<Preview>
+<Example html={`<button type="button" class="k-btn k-btn--primary">Primary</button>
+<button type="button" class="k-btn k-btn--secondary">Secondary</button>
+<button type="button" class="k-btn k-btn--ghost">Ghost</button>
+<button type="button" class="k-btn k-btn--accent">Accent</button>
+<button type="button" class="k-btn k-btn--danger">Danger</button>
+<button type="button" class="k-btn k-btn--primary" disabled>Disabled</button>`}>
   <button type="button" class="k-btn k-btn--primary">Primary</button>
   <button type="button" class="k-btn k-btn--secondary">Secondary</button>
   <button type="button" class="k-btn k-btn--ghost">Ghost</button>
   <button type="button" class="k-btn k-btn--accent">Accent</button>
   <button type="button" class="k-btn k-btn--danger">Danger</button>
   <button type="button" class="k-btn k-btn--primary" disabled>Disabled</button>
-</Preview>
+</Example>
 
 ### Sizes
 
 `--sm` and `--lg` change padding and type. The unnamed size is the one in the middle.
 
-<Preview>
+<Example html={`<button type="button" class="k-btn k-btn--primary k-btn--sm">Small</button>
+<button type="button" class="k-btn k-btn--primary">Default</button>
+<button type="button" class="k-btn k-btn--primary k-btn--lg">Large</button>`}>
   <button type="button" class="k-btn k-btn--primary k-btn--sm">Small</button>
   <button type="button" class="k-btn k-btn--primary">Default</button>
   <button type="button" class="k-btn k-btn--primary k-btn--lg">Large</button>
-</Preview>
+</Example>
 
 ### With an icon
 
 Icon before the label. Inside the button it drops to `1em`.
 
-<Preview>
+<Example html={`<button type="button" class="k-btn k-btn--primary">
+  <span class="k-icon k-icon--success" aria-hidden="true"></span>
+  Save
+</button>`}>
   <button type="button" class="k-btn k-btn--primary">
     <span class="k-icon k-icon--success" aria-hidden="true"></span>
     Save
   </button>
-</Preview>
+</Example>
 
 ## Accessibility
 
