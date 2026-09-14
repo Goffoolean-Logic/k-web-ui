@@ -53,6 +53,7 @@ pnpm dev             # Storybook, http://localhost:6006
 pnpm test
 pnpm lint
 pnpm format
+pnpm format:check
 pnpm typecheck
 pnpm build
 ```

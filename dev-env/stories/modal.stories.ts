@@ -19,6 +19,13 @@ export const Default: Story = {
       Delete file
     </button>
     <dialog id="delete-modal" class="k-modal" popover>
+      <button
+        type="button"
+        class="k-modal__scrim"
+        popovertarget="delete-modal"
+        popovertargetaction="hide"
+        aria-label="Close"
+      ></button>
       <div class="k-modal__box">
         <h3 class="k-modal__title">Delete file</h3>
         <p class="k-modal__body">This will remove report.pdf from the project. You can't undo this.</p>

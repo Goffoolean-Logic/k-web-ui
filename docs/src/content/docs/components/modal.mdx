@@ -8,15 +8,16 @@ import ClassTable from '../../../components/ClassTable.astro';
 
 A focused task on top of the page: confirm a delete, a short form, a warning. Use `<dialog class="k-modal" popover>`. The Popover API opens and closes it.
 
-A button with `popovertarget` matching the dialog `id` opens it. The same attribute with `popovertargetaction="hide"` closes it. Escape and the backdrop dismiss it the way the browser already does.
+A button with `popovertarget` matching the dialog `id` opens it. The same attribute with `popovertargetaction="hide"` closes it. Escape still dismisses. A click on the dimmed backdrop does not, unless you put a `.k-modal__scrim` hide button in the dialog.
 
-Put title, body, and actions inside `.k-modal__box`. That box is the raised surface. The dialog itself is the full-viewport layer.
+Put title, body, and actions inside `.k-modal__box`. That box is the raised surface. The dimmed page is `::backdrop`. The scrim sits on that dimmed area so a click closes the dialog without hitting the page underneath.
 
 ## Classes
 
 <ClassTable
   rows={[
     { name: 'k-modal', type: 'component' },
+    { name: 'k-modal__scrim', type: 'part' },
     { name: 'k-modal__box', type: 'part' },
     { name: 'k-modal__title', type: 'part' },
     { name: 'k-modal__body', type: 'part' },
@@ -28,13 +29,20 @@ Put title, body, and actions inside `.k-modal__box`. That box is the raised surf
 
 ### Confirm
 
-A destructive confirm. Cancel and Delete both hide the dialog. Open it from the button.
+A destructive confirm. Open it from the button. Cancel, Delete, and a click on the dimmed backdrop all hide it.
 
 <Preview>
   <button type="button" class="k-btn k-btn--primary" popovertarget="docs-modal">
     Open modal
   </button>
   <dialog id="docs-modal" class="k-modal" popover>
+    <button
+      type="button"
+      class="k-modal__scrim"
+      popovertarget="docs-modal"
+      popovertargetaction="hide"
+      aria-label="Close"
+    ></button>
     <div class="k-modal__box">
       <h3 class="k-modal__title">Delete file</h3>
       <p class="k-modal__body">This will remove report.pdf. You can't undo this.</p>
@@ -52,16 +60,18 @@ A destructive confirm. Cancel and Delete both hide the dialog. Open it from the 
 
 ## Accessibility
 
-The element is a `<dialog popover>`. The Popover API handles light-dismiss, Escape, and focus. Title the dialog with `.k-modal__title` so the box has a heading. Close controls are real buttons with `popovertarget` / `popovertargetaction="hide"`. Do not trap focus yourself. The browser already does.
+The element is a `<dialog popover>`. The Popover API handles Escape and focus. Backdrop close is a `.k-modal__scrim` button with `popovertargetaction="hide"` and `aria-label="Close"`. Title the dialog with `.k-modal__title`. Do not trap focus yourself. The browser already does.
 
 ## Dos and don'ts
 
 **Do**
 - Use `<dialog class="k-modal" popover>`.
 - Match `popovertarget` to the dialog `id`.
+- Put a `.k-modal__scrim` hide button in the dialog, with `aria-label="Close"`.
 - Put title, body, and actions in `.k-modal__box`.
 
 **Don't**
 - Call `mount`. The Popover API already opens it.
 - Trap focus yourself.
+- Skip the scrim and expect a click on `::backdrop` to close it.
 - Open a modal for a tooltip or a toast.
