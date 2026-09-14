@@ -1,8 +1,12 @@
 // @ts-check
 
+import { fileURLToPath } from 'node:url';
+
 import starlight from '@astrojs/starlight';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
+
+const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 
 export default defineConfig({
   redirects: {
@@ -66,5 +70,11 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      fs: {
+        // Docs import k-web-ui/source, whose font and icon urls live in ../package.
+        allow: [repoRoot],
+      },
+    },
   },
 });

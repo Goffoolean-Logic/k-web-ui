@@ -1,10 +1,11 @@
 @layer components {
   /*
-   * Requires <dialog class="k-modal" popover>. Open with popovertarget on a
-   * button — no JS.
+   * Requires <dialog class="k-modal" popover>. Open with popovertarget.
+   * A .k-modal__scrim button (popovertargetaction="hide") covers the dimmed
+   * area so a click closes the dialog without falling through to the page.
    */
   dialog.k-modal {
-    @apply m-0 border-0 bg-transparent p-4 text-k-fg;
+    @apply m-0 border-0 bg-transparent p-0 text-k-fg;
     max-width: none;
     max-height: none;
   }
@@ -20,11 +21,23 @@
     inset: 0;
     width: 100%;
     height: 100%;
+    margin: 0;
+  }
+
+  button.k-modal__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: default;
   }
 
   div.k-modal__box {
-    @apply box-border flex w-full max-w-md flex-col gap-3 rounded-k-lg border
-      border-k-border bg-k-surface-raised p-6 text-k-fg;
+    @apply relative z-10 box-border flex w-full max-w-md flex-col gap-3
+      rounded-k-lg border border-k-border bg-k-surface-raised p-6 text-k-fg;
     max-height: calc(100vh - 4rem);
     overflow-y: auto;
   }
