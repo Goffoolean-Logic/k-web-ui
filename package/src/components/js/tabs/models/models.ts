@@ -20,5 +20,6 @@ export type KTabsState = {
   root: HTMLElement;
   tabs: HTMLElement[];
   panels: HTMLElement[];
+  ink?: HTMLElement;
   keyboard: boolean;
 };

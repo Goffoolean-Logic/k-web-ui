@@ -1,6 +1,6 @@
 ---
 title: Tabs
-description: k-tabs. Tablist, panels, and ARIA from items.
+description: k-tabs. Tablist, panels, and ARIA from panels.
 ---
 
 import Example from '../../../components/Example.astro';
@@ -9,9 +9,9 @@ import ClassTable from '../../../components/ClassTable.astro';
 
 Tabs switch related panels in place, such as overview / usage / API, or three views of the same object. Do not use them for wizard steps or for a sequence the reader has to walk in order.
 
-Put `<k-tabs class="k-tabs">` on the page and set `items`. The element builds the tablist, tabs, panels, and ARIA. Each item is a `label` and `content` (a string or a node). `icon` is optional: a kit icon name or a node. `selected` is the starting index. `label` names the tablist. `keyboard` (default true) is arrow / Home / End.
+Put `<k-tabs class="k-tabs">` on the page with `panels`. The element builds the tablist, tabs, panels, and ARIA. Each panel is a `label` and `content`. `icon` is optional: a kit icon name. `selected` is the starting index. `label` names the tablist. `keyboard` (default true) is arrow / Home / End.
 
-The selected tab gets an orange background. Hidden panels use `[hidden]`. Setting `items` again rebuilds the tablist. `--lg` is a fixed 10rem tab, larger type and padding.
+Tabs sit flush. The selected chrome is primary. Switching a tab slides that fill through the tabs in between, then fades the panel. Hidden panels use `[hidden]`. Changing `panels` rebuilds the tablist. `--lg` is a fixed 10rem tab, larger type and padding. Reduced motion drops the motion.
 
 ## Classes
 
@@ -20,6 +20,7 @@ The selected tab gets an orange background. Hidden panels use `[hidden]`. Settin
     { name: 'k-tabs', type: 'component' },
     { name: 'k-tabs--lg', type: 'modifier' },
     { name: 'k-tabs__list', type: 'part' },
+    { name: 'k-tabs__ink', type: 'part' },
     { name: 'k-tabs__tab', type: 'part' },
     { name: 'k-tabs__panel', type: 'part' },
   ]}
@@ -33,38 +34,25 @@ Click a tab or move with the arrow keys once one is focused.
 
 <Example
   stack
-  html={`<k-tabs id="docs-tabs" class="k-tabs"></k-tabs>`}
-  ts={`import { KTabs } from 'k-web-ui/js';
-
-const tabs = document.getElementById('docs-tabs');
-if (tabs instanceof KTabs) {
-  tabs.items = [
-    { label: 'Overview', content: 'The first panel.' },
-    { label: 'Usage', content: 'The second panel.' },
-    { label: 'API', content: 'The third panel.' },
-  ];
-}`}
+  html={`<k-tabs
+  class="k-tabs"
+  label="Sections"
+  panels='[{"label":"Overview","content":"The first panel."},{"label":"Usage","content":"The second panel."},{"label":"API","content":"The third panel."}]'
+></k-tabs>`}
 >
   <TabsDemo />
 </Example>
 
 ### With icons
 
-`icon` is a kit name such as `info`. The glyph sits before the label and shrinks to `1em`. You can also pass a node.
+`icon` is a kit name such as `info`. The glyph sits before the label and shrinks to `1em`.
 
 <Example
   stack
-  html={`<k-tabs id="docs-tabs-icons" class="k-tabs"></k-tabs>`}
-  ts={`import { KTabs } from 'k-web-ui/js';
-
-const tabs = document.getElementById('docs-tabs-icons');
-if (tabs instanceof KTabs) {
-  tabs.items = [
-    { label: 'Overview', icon: 'info', content: 'The first panel.' },
-    { label: 'Usage', icon: 'success', content: 'The second panel.' },
-    { label: 'API', icon: 'warning', content: 'The third panel.' },
-  ];
-}`}
+  html={`<k-tabs
+  class="k-tabs"
+  panels='[{"label":"Overview","icon":"info","content":"The first panel."},{"label":"Usage","icon":"success","content":"The second panel."},{"label":"API","icon":"warning","content":"The third panel."}]'
+></k-tabs>`}
 >
   <TabsDemo
     id="docs-tabs-icons"
@@ -82,17 +70,10 @@ if (tabs instanceof KTabs) {
 
 <Example
   stack
-  html={`<k-tabs id="docs-tabs-lg" class="k-tabs k-tabs--lg"></k-tabs>`}
-  ts={`import { KTabs } from 'k-web-ui/js';
-
-const tabs = document.getElementById('docs-tabs-lg');
-if (tabs instanceof KTabs) {
-  tabs.items = [
-    { label: 'Overview', icon: 'info', content: 'The first panel.' },
-    { label: 'Usage', icon: 'success', content: 'The second panel.' },
-    { label: 'API', icon: 'warning', content: 'The third panel.' },
-  ];
-}`}
+  html={`<k-tabs
+  class="k-tabs k-tabs--lg"
+  panels='[{"label":"Overview","icon":"info","content":"The first panel."},{"label":"Usage","icon":"success","content":"The second panel."},{"label":"API","icon":"warning","content":"The third panel."}]'
+></k-tabs>`}
 >
   <TabsDemo
     id="docs-tabs-lg"
@@ -112,8 +93,8 @@ if (tabs instanceof KTabs) {
 ## Dos and don'ts
 
 **Do**
-- Use `<k-tabs class="k-tabs">` and set `items`.
-- Pass `items` with a `label` and `content`. `icon` is optional.
+- Use `<k-tabs class="k-tabs">` with `panels`.
+- Pass `panels` with a `label` and `content`. `icon` is optional.
 - Use tabs for related views of the same object.
 
 **Don't**

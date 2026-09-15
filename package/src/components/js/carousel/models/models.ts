@@ -1,12 +1,15 @@
-export type KCarouselItem = {
-  content: string | Node;
+export type KCarouselSlide = {
+  content?: string | Node;
+  src?: string;
+  alt?: string;
 };
 
 export type KCarouselOptions = {
-  items: KCarouselItem[];
+  items: Array<{ content: string | Node }>;
   index?: number;
   loop?: boolean;
   keyboard?: boolean;
+  autoscroll?: boolean;
 };
 
 export type KCarouselState = {
@@ -19,4 +22,7 @@ export type KCarouselState = {
   index: number;
   loop: boolean;
   keyboard: boolean;
+  autoscroll: boolean;
+  autoscrollPaused?: boolean;
+  autoscrollTimer?: ReturnType<typeof setTimeout>;
 };

@@ -44,6 +44,34 @@ The default. Columns wrap as the page widens. A list, because the cells are a se
     <span class="k-icon k-icon--danger k-icon--sm" aria-hidden="true"></span>
     <code>danger</code>
   </li>
+  <li class="k-grid__cell">
+    <span class="k-icon k-icon--close k-icon--sm" aria-hidden="true"></span>
+    <code>close</code>
+  </li>
+  <li class="k-grid__cell">
+    <span class="k-icon k-icon--loading k-icon--sm" aria-hidden="true"></span>
+    <code>loading</code>
+  </li>
+  <li class="k-grid__cell">
+    <span class="k-icon k-icon--chevron-left k-icon--sm" aria-hidden="true"></span>
+    <code>chevron-left</code>
+  </li>
+  <li class="k-grid__cell">
+    <span class="k-icon k-icon--chevron-right k-icon--sm" aria-hidden="true"></span>
+    <code>chevron-right</code>
+  </li>
+  <li class="k-grid__cell">
+    <span class="k-icon k-icon--chevron-down k-icon--sm" aria-hidden="true"></span>
+    <code>chevron-down</code>
+  </li>
+  <li class="k-grid__cell">
+    <span class="k-icon k-icon--chevron-first k-icon--sm" aria-hidden="true"></span>
+    <code>chevron-first</code>
+  </li>
+  <li class="k-grid__cell">
+    <span class="k-icon k-icon--chevron-last k-icon--sm" aria-hidden="true"></span>
+    <code>chevron-last</code>
+  </li>
 </ul>
 ```
 
@@ -66,6 +94,21 @@ The default. Columns wrap as the page widens. A list, because the cells are a se
   <div class="k-card">
     <div class="k-card__body">
       <p>Preview</p>
+    </div>
+  </div>
+  <div class="k-card">
+    <div class="k-card__body">
+      <p>Build</p>
+    </div>
+  </div>
+  <div class="k-card">
+    <div class="k-card__body">
+      <p>Review</p>
+    </div>
+  </div>
+  <div class="k-card">
+    <div class="k-card__body">
+      <p>Ship</p>
     </div>
   </div>
 </div>

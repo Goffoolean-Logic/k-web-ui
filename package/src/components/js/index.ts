@@ -1,6 +1,13 @@
-export type { KCarouselItem, KCarouselOptions } from './carousel/index.js';
+export type { KCarouselOptions, KCarouselSlide } from './carousel/index.js';
 export { KCarousel } from './carousel/index.js';
+export type { KDropdownItem, KDropdownOptions } from './dropdown/index.js';
 export { KDropdown } from './dropdown/index.js';
+export type {
+  KGaugeOptions,
+  KGaugeSize,
+  KGaugeVariant,
+} from './gauge/index.js';
+export { createGauge, KGauge, setGauge } from './gauge/index.js';
 export type { KIconName, KIconSize } from './icon.js';
 export { createIcon, createSpin, K_ICON_NAMES } from './icon.js';
 export type { KPaginationOptions } from './pagination/index.js';

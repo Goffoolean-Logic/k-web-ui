@@ -4,6 +4,7 @@ description: Install the kit and put a class on a button.
 ---
 
 import Example from '../../components/Example.astro';
+import TabsDemo from '../../components/TabsDemo.astro';
 
 You write the HTML. Classes that start with `k-` get the kit look. JavaScript is only there for widgets CSS cannot do, such as tabs and pagination. If an element has no `k-` class, the kit leaves it alone.
 
@@ -70,13 +71,16 @@ One attribute on the document root:
 
 ## JavaScript
 
-Four widgets are custom elements: tabs, pagination, dropdown, and carousel. Import the JS once and the tags upgrade. Pagination is attributes on the host:
+Five widgets are custom elements: tabs, pagination, dropdown, carousel, and gauge. Put the tag on the page with its inputs. Import the JS once. The element writes the inside.
 
 <Example
-  html={`<k-pagination class="k-pagination" count="12" page="5"></k-pagination>`}
-  ts={`import 'k-web-ui/js';`}
+  html={`<k-tabs
+  class="k-tabs"
+  label="Sections"
+  panels='[{"label":"Overview","content":"The first panel."},{"label":"Usage","content":"The second panel."},{"label":"API","content":"The third panel."}]'
+></k-tabs>`}
 >
-  <k-pagination class="k-pagination" count="12" page="5"></k-pagination>
+  <TabsDemo id="docs-getting-started-tabs" />
 </Example>
 
-Accordion, grid, modal, sidebar, spin, table, toast, and tooltip are CSS only. You write the markup and skip the JS import.
+A gauge bar can stay as `<progress class="k-gauge">`. Accordion, grid, modal, sidebar, spin, table, toast, and tooltip are CSS only. You write the markup and skip the JS import.

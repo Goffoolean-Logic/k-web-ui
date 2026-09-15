@@ -1,51 +1,62 @@
 import { describe, expect, it } from 'vitest';
-import { queryParts, setOpen } from './dom.js';
+import { buildDropdown, setOpen } from './dom.js';
 
-function markup(withClass = true): HTMLElement {
+const items = [{ label: 'Name' }, { label: 'Date' }];
+
+function built(id?: string) {
   const root = document.createElement('div');
-  root.innerHTML = `
-    <button type="button"${withClass ? ' class="k-dropdown__trigger"' : ''}>Sort</button>
-    <div class="k-dropdown__menu" hidden>
-      <button type="button" class="k-dropdown__item">Name</button>
-      <button type="button" class="k-dropdown__item">Date</button>
-    </div>
-  `;
-  return root;
+  if (id) {
+    root.id = id;
+  }
+  document.body.append(root);
+  return { root, parts: buildDropdown(root, { items, label: 'Sort' }) };
 }
 
-describe('queryParts', () => {
-  it('finds the trigger, menu, and items', () => {
-    const root = markup();
-    const parts = queryParts(root);
+describe('buildDropdown', () => {
+  it('throws when items is empty', () => {
+    const root = document.createElement('div');
+    expect(() => buildDropdown(root, { items: [] })).toThrow(
+      'KDropdown: at least one item is required',
+    );
+  });
+
+  it('builds the trigger, menu, and items from the host id', () => {
+    const { root, parts } = built('sort');
+    expect(parts.trigger.className).toContain('k-dropdown__trigger');
     expect(parts.trigger.textContent).toBe('Sort');
-    expect(parts.menu.classList.contains('k-dropdown__menu')).toBe(true);
+    expect(parts.trigger.getAttribute('aria-haspopup')).toBe('menu');
+    expect(parts.trigger.getAttribute('aria-controls')).toBe('sort-menu');
+    expect(parts.menu.id).toBe('sort-menu');
+    expect(parts.menu.getAttribute('role')).toBe('menu');
     expect(parts.items).toHaveLength(2);
+    expect(parts.items[0]?.textContent).toBe('Name');
+    expect(parts.items[0]?.getAttribute('role')).toBe('menuitem');
+    root.remove();
   });
 
-  it('falls back to the first button when the trigger class is missing', () => {
-    const root = markup(false);
-    expect(queryParts(root).trigger.tagName).toBe('BUTTON');
+  it('falls back to k-dropdown when the host has no id', () => {
+    const { root, parts } = built();
+    expect(parts.menu.id).toBe('k-dropdown-menu');
+    expect(parts.trigger.getAttribute('aria-controls')).toBe('k-dropdown-menu');
+    root.remove();
   });
 
-  it('throws when the trigger or menu is missing', () => {
-    const noMenu = document.createElement('div');
-    noMenu.innerHTML = `<button type="button" class="k-dropdown__trigger">Sort</button>`;
-    expect(() => queryParts(noMenu)).toThrow(
-      'KDropdown: expected a .k-dropdown__trigger and .k-dropdown__menu',
-    );
-
-    const noTrigger = document.createElement('div');
-    noTrigger.innerHTML = `<div class="k-dropdown__menu"></div>`;
-    expect(() => queryParts(noTrigger)).toThrow(
-      'KDropdown: expected a .k-dropdown__trigger and .k-dropdown__menu',
-    );
+  it('renders a link when an item has href', () => {
+    const root = document.createElement('div');
+    root.id = 'nav';
+    const parts = buildDropdown(root, {
+      label: 'More',
+      items: [{ label: 'Docs', href: '/docs' }],
+    });
+    expect(parts.items[0]?.tagName).toBe('A');
+    expect(parts.items[0]?.getAttribute('href')).toBe('/docs');
   });
 });
 
 describe('setOpen', () => {
   it('toggles hidden and aria-expanded', () => {
-    const root = markup();
-    const state = { ...queryParts(root), open: false };
+    const { root, parts } = built('sort');
+    const state = { ...parts, open: false };
     setOpen(state, true);
     expect(state.open).toBe(true);
     expect(state.menu.hidden).toBe(false);
@@ -54,5 +65,6 @@ describe('setOpen', () => {
     expect(state.open).toBe(false);
     expect(state.menu.hidden).toBe(true);
     expect(state.trigger.getAttribute('aria-expanded')).toBe('false');
+    root.remove();
   });
 });

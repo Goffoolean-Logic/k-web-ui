@@ -18,6 +18,7 @@ const PAGES = [
   'components/card.md',
   'components/carousel.md',
   'components/dropdown.md',
+  'components/gauge.md',
   'components/grid.md',
   'components/input.md',
   'components/link.md',

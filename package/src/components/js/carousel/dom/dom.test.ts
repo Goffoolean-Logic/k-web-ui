@@ -48,6 +48,7 @@ describe('paint', () => {
       index: 1,
       loop: true,
       keyboard: true,
+      autoscroll: false,
     };
     paint(state);
     expect(state.track.style.transform).toBe('translateX(-100%)');
@@ -65,6 +66,7 @@ describe('paint', () => {
       index: 0,
       loop: false,
       keyboard: true,
+      autoscroll: false,
     };
     paint(state);
     expect(state.prev.disabled).toBe(true);

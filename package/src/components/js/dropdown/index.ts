@@ -1,35 +1,48 @@
-import { defineElement } from '../root.js';
-import { queryParts, setOpen } from './dom/dom.js';
+import { defineElement, parseJsonList } from '../root.js';
+import { buildDropdown, setOpen } from './dom/dom.js';
 import { bindEvents } from './events/events.js';
 import { bindKeybinds } from './keybinds/keybinds.js';
-import type { KDropdownState } from './models/models.js';
+import type { KDropdownItem, KDropdownState } from './models/models.js';
+
+export type { KDropdownItem, KDropdownOptions } from './models/models.js';
+
+function parseOptions(raw: string | null): KDropdownItem[] {
+  const list = parseJsonList(raw, 'KDropdown');
+  const options: KDropdownItem[] = [];
+  for (const entry of list) {
+    if (
+      !entry ||
+      typeof entry !== 'object' ||
+      typeof (entry as { label?: unknown }).label !== 'string'
+    ) {
+      throw new Error('KDropdown: each option needs a label');
+    }
+    const item: KDropdownItem = { label: (entry as { label: string }).label };
+    if (typeof (entry as { href?: unknown }).href === 'string') {
+      item.href = (entry as { href: string }).href;
+    }
+    options.push(item);
+  }
+  return options;
+}
 
 /**
- * Dropdown. Markup is the host, a trigger, and a hidden menu. Importing the
- * JS registers `<k-dropdown>` and wires toggle, outside click, and keyboard.
+ * Dropdown. The host is `<k-dropdown class="k-dropdown">`. `label` and
+ * `options` are attributes. The element builds the trigger, menu, and ARIA.
  *
- *   <k-dropdown class="k-dropdown">
- *     <button type="button" class="k-dropdown__trigger">Sort</button>
- *     <div id="sort-menu" class="k-dropdown__menu" hidden>…</div>
- *   </k-dropdown>
+ *   <k-dropdown class="k-dropdown" label="Sort" options='[{"label":"Name"}]'></k-dropdown>
  */
 export class KDropdown extends HTMLElement {
   #state: KDropdownState | null = null;
   #abort = new AbortController();
 
+  static get observedAttributes(): string[] {
+    return ['label', 'options'];
+  }
+
   connectedCallback(): void {
     this.classList.add('k-dropdown');
-    const start = (): void => {
-      if (!this.isConnected) {
-        return;
-      }
-      this.#bind();
-    };
-    if (this.querySelector('.k-dropdown__menu')) {
-      start();
-      return;
-    }
-    queueMicrotask(start);
+    this.#connect();
   }
 
   disconnectedCallback(): void {
@@ -38,8 +51,22 @@ export class KDropdown extends HTMLElement {
     this.#state = null;
   }
 
+  attributeChangedCallback(): void {
+    if (this.isConnected) {
+      this.#connect();
+    }
+  }
+
   disconnect(): void {
     this.#abort.abort();
+  }
+
+  get options(): KDropdownItem[] {
+    return parseOptions(this.getAttribute('options'));
+  }
+
+  set options(value: KDropdownItem[]) {
+    this.setAttribute('options', JSON.stringify(value));
   }
 
   get open(): boolean {
@@ -53,21 +80,21 @@ export class KDropdown extends HTMLElement {
     setOpen(this.#state, open);
   }
 
-  #bind(): void {
+  #connect(): void {
+    const options = this.options;
+    if (options.length === 0) {
+      return;
+    }
+
     this.#abort.abort();
     this.#abort = new AbortController();
-    const parts = queryParts(this);
-    this.#state = { ...parts, open: false };
-    parts.trigger.classList.add('k-dropdown__trigger');
-    parts.trigger.setAttribute('aria-haspopup', 'menu');
-    parts.trigger.setAttribute('aria-expanded', 'false');
-    if (parts.menu.id) {
-      parts.trigger.setAttribute('aria-controls', parts.menu.id);
-    }
-    parts.menu.setAttribute('role', 'menu');
-    for (const item of parts.items) {
-      item.setAttribute('role', 'menuitem');
-    }
+    this.#state = {
+      ...buildDropdown(this, {
+        items: options,
+        label: this.getAttribute('label') ?? undefined,
+      }),
+      open: false,
+    };
     setOpen(this.#state, false);
     bindEvents(this.#state, this.#abort.signal);
     bindKeybinds(this.#state, this.#abort.signal);

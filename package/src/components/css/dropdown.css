@@ -1,5 +1,5 @@
 @layer components {
-  /* Requires <k-dropdown class="k-dropdown"> with a trigger button and a menu. */
+  /* Requires <k-dropdown class="k-dropdown">. JS builds the trigger and menu. */
   k-dropdown.k-dropdown {
     @apply relative inline-block;
   }

@@ -23,8 +23,9 @@ Every docs page has a markdown twin. Start here, or take [/llms-full.txt](/llms-
 - [Banner](/components/banner.md): div.k-banner with role="alert".
 - [Button](/components/button.md): button.k-btn. Variants, sizes, block.
 - [Card](/components/card.md): div.k-card with optional header, body, footer.
-- [Carousel](/components/carousel.md): k-carousel. Track, slides, and controls from items.
-- [Dropdown](/components/dropdown.md): k-dropdown. Trigger, menu, and keyboard.
+- [Carousel](/components/carousel.md): k-carousel. Track, slides, and controls from slides.
+- [Dropdown](/components/dropdown.md): k-dropdown. Trigger, menu, and keyboard from options.
+- [Gauge](/components/gauge.md): progress.k-gauge, or k-gauge for the square frame.
 - [Grid](/components/grid.md): div.k-grid or ul.k-grid. CSS only.
 - [Input](/components/input.md): k-field, k-label, k-input, k-hint.
 - [Link](/components/link.md): a.k-link.
@@ -33,6 +34,6 @@ Every docs page has a markdown twin. Start here, or take [/llms-full.txt](/llms-
 - [Sidebar](/components/sidebar.md): Checkbox-hack drawer. No JS.
 - [Spin](/components/spin.md): span.k-spin wraps an icon and rotates it.
 - [Table](/components/table.md): table.k-table.
-- [Tabs](/components/tabs.md): k-tabs. Tablist, panels, and ARIA from items.
+- [Tabs](/components/tabs.md): k-tabs. Tablist, panels, and ARIA from panels.
 - [Toast](/components/toast.md): div.k-toast wrapping banners. CSS only.
 - [Tooltip](/components/tooltip.md): span.k-tooltip with data-tip. No JS.

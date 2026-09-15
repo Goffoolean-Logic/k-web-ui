@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { buildCarousel, paint } from '../dom/dom.js';
 import type { KCarouselState } from '../models/models.js';
-import { bindEvents, goTo } from './events.js';
+import { AUTOSCROLL_MS, bindEvents, goTo } from './events.js';
 
 const items = [{ content: 'One' }, { content: 'Two' }, { content: 'Three' }];
 
@@ -17,6 +17,7 @@ function mounted(loop = true): {
     index: 0,
     loop,
     keyboard: true,
+    autoscroll: false,
   };
   paint(state);
   bindEvents(state, abort.signal);
@@ -73,5 +74,47 @@ describe('bindEvents', () => {
     expect(state.index).toBe(2);
     abort.abort();
     state.root.remove();
+  });
+});
+
+describe('autoscroll', () => {
+  it('advances on the interval when autoscroll is on', () => {
+    vi.useFakeTimers();
+    const { state, abort } = mounted(true);
+    state.autoscroll = true;
+    goTo(state, 0, { emit: false });
+    vi.advanceTimersByTime(AUTOSCROLL_MS);
+    expect(state.index).toBe(1);
+    vi.advanceTimersByTime(AUTOSCROLL_MS);
+    expect(state.index).toBe(2);
+    vi.advanceTimersByTime(AUTOSCROLL_MS);
+    expect(state.index).toBe(0);
+    abort.abort();
+    state.root.remove();
+    vi.useRealTimers();
+  });
+
+  it('does not advance after abort', () => {
+    vi.useFakeTimers();
+    const { state, abort } = mounted(true);
+    state.autoscroll = true;
+    goTo(state, 0, { emit: false });
+    abort.abort();
+    vi.advanceTimersByTime(AUTOSCROLL_MS * 2);
+    expect(state.index).toBe(0);
+    state.root.remove();
+    vi.useRealTimers();
+  });
+
+  it('stops at the end when loop is off', () => {
+    vi.useFakeTimers();
+    const { state, abort } = mounted(false);
+    state.autoscroll = true;
+    goTo(state, 2, { emit: false });
+    vi.advanceTimersByTime(AUTOSCROLL_MS * 2);
+    expect(state.index).toBe(2);
+    abort.abort();
+    state.root.remove();
+    vi.useRealTimers();
   });
 });

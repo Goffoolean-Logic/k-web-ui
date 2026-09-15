@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/html-vite';
+import { K_ICON_NAMES } from 'k-web-ui/js';
 
 const meta: Meta = {
   title: 'Components/Grid',
@@ -16,11 +17,17 @@ const cell = (name: string) => `
   </li>
 `;
 
+const card = (label: string) => `
+  <div class="k-card">
+    <div class="k-card__body"><p>${label}</p></div>
+  </div>
+`;
+
 /** Columns auto-fill. A list, because the cells are a set. */
 export const AutoFill: Story = {
   render: () => `
     <ul class="k-grid">
-      ${['info', 'success', 'warning', 'danger', 'close', 'loading'].map(cell).join('')}
+      ${K_ICON_NAMES.map(cell).join('')}
     </ul>
   `,
 };
@@ -29,15 +36,7 @@ export const AutoFill: Story = {
 export const FixedColumns: Story = {
   render: () => `
     <div class="k-grid k-grid--3">
-      <div class="k-card">
-        <div class="k-card__body"><p>Deploy</p></div>
-      </div>
-      <div class="k-card">
-        <div class="k-card__body"><p>Checks</p></div>
-      </div>
-      <div class="k-card">
-        <div class="k-card__body"><p>Preview</p></div>
-      </div>
+      ${['Deploy', 'Checks', 'Preview', 'Build', 'Review', 'Ship'].map(card).join('')}
     </div>
   `,
 };
@@ -46,7 +45,7 @@ export const FixedColumns: Story = {
 export const Tight: Story = {
   render: () => `
     <ul class="k-grid k-grid--tight">
-      ${['chevron-left', 'chevron-right', 'chevron-down', 'chevron-first', 'chevron-last'].map(cell).join('')}
+      ${K_ICON_NAMES.map(cell).join('')}
     </ul>
   `,
 };

@@ -41,30 +41,41 @@ const id = `docs-snippet-${crypto.randomUUID()}`;
 <script>
   import { KTabs } from 'k-web-ui/js';
 
+  function asTabs(el: Element | null): KTabs | null {
+    if (el instanceof HTMLElement && el.localName === 'k-tabs') {
+      return el as KTabs;
+    }
+    return null;
+  }
+
   function wire(example: Element): void {
     if (!(example instanceof HTMLElement) || example.dataset.wired === 'true') {
       return;
     }
 
-    const host = example.querySelector('.k-example__tabs');
+    const host = asTabs(example.querySelector('.k-example__tabs'));
     const htmlPanel = example.querySelector('[data-code-panel="html"]');
     const tsPanel = example.querySelector('[data-code-panel="ts"]');
-    if (!(host instanceof KTabs) || !(htmlPanel instanceof HTMLElement)) {
+    if (!host || !(htmlPanel instanceof HTMLElement)) {
       return;
     }
 
-    const items = [{ label: 'HTML', content: htmlPanel }];
+    const panels = [{ label: 'HTML', content: htmlPanel }];
     if (tsPanel instanceof HTMLElement) {
-      items.push({ label: 'TS', content: tsPanel });
+      panels.push({ label: 'TS', content: tsPanel });
     }
-    host.items = items;
+    host.panels = panels;
     example.dataset.wired = 'true';
   }
 
-  function wireAll(): void {
+  async function wireAll(): Promise<void> {
+    await customElements.whenDefined('k-tabs');
     document.querySelectorAll('.k-example').forEach(wire);
   }
 
   wireAll();
-  document.addEventListener('astro:page-load', wireAll);
+  document.addEventListener('astro:page-load', () => {
+    void wireAll();
+  });
 </script>
+

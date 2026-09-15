@@ -54,6 +54,7 @@ export default defineConfig({
             { label: 'Card', slug: 'components/card' },
             { label: 'Carousel', slug: 'components/carousel' },
             { label: 'Dropdown', slug: 'components/dropdown' },
+            { label: 'Gauge', slug: 'components/gauge' },
             { label: 'Grid', slug: 'components/grid' },
             { label: 'Input', slug: 'components/input' },
             { label: 'Link', slug: 'components/link' },
