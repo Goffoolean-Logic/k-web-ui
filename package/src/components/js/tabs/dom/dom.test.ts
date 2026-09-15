@@ -139,4 +139,14 @@ describe('buildTabs', () => {
     expect(current.tabs[0]?.textContent).toBe('Usage');
     current.root.remove();
   });
+
+  it('omits text when the item has no label', () => {
+    const current = state('icon-only');
+    buildTabs(current, {
+      items: [{ icon: 'info', content: 'First' }],
+    });
+    expect(current.tabs[0]?.querySelector('.k-icon')).not.toBeNull();
+    expect(current.tabs[0]?.textContent).toBe('');
+    current.root.remove();
+  });
 });

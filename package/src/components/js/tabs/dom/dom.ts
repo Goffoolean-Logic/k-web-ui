@@ -61,5 +61,7 @@ function paintTab(tab: HTMLElement, item: KTabItem): void {
       typeof item.icon === 'string' ? createIcon(item.icon) : item.icon,
     );
   }
-  tab.append(item.label);
+  if (item.label !== undefined) {
+    tab.append(item.label);
+  }
 }
