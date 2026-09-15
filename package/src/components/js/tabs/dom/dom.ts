@@ -1,25 +1,6 @@
-import type { KTabsOptions, KTabsState } from './models.js';
-
-export function resolveRoot(target: string | HTMLElement): HTMLElement {
-  if (typeof target !== 'string') {
-    return target;
-  }
-
-  const id = target.startsWith('#') ? target.slice(1) : target;
-  const el = document.getElementById(id);
-  if (!el) {
-    throw new Error(`KTabs: no element with id "${id}"`);
-  }
-  return el;
-}
-
-function fill(node: HTMLElement, content: string | Node): void {
-  if (typeof content === 'string') {
-    node.textContent = content;
-    return;
-  }
-  node.replaceChildren(content);
-}
+import { createIcon } from '../../icon.js';
+import { fill } from '../../root.js';
+import type { KTabItem, KTabsOptions, KTabsState } from '../models/models.js';
 
 export function tabFromEvent(
   root: HTMLElement,
@@ -55,7 +36,7 @@ export function buildTabs(state: KTabsState, options: KTabsOptions): void {
     tab.setAttribute('role', 'tab');
     tab.id = `${hostId}-tab-${i}`;
     tab.setAttribute('aria-controls', `${hostId}-panel-${i}`);
-    tab.textContent = item.label;
+    paintTab(tab, item);
 
     const panel = document.createElement('div');
     panel.className = 'k-tabs__panel';
@@ -72,4 +53,15 @@ export function buildTabs(state: KTabsState, options: KTabsOptions): void {
   state.tabs = tabs;
   state.panels = panels;
   state.root.replaceChildren(list, ...panels);
+}
+
+function paintTab(tab: HTMLElement, item: KTabItem): void {
+  if (item.icon !== undefined) {
+    tab.append(
+      typeof item.icon === 'string' ? createIcon(item.icon) : item.icon,
+    );
+  }
+  if (item.label !== undefined) {
+    tab.append(item.label);
+  }
 }

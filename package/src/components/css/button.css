@@ -1,68 +1,68 @@
 @layer components {
-  /* Requires <button class="k-btn">. */
-  button.k-btn {
+  /* Requires <button class="k-btn"> or <a class="k-btn"> for a destination. */
+  :is(button, a).k-btn {
     @apply inline-flex cursor-pointer items-center justify-center gap-2
       rounded-k border border-transparent px-5 py-2.5
       text-sm leading-tight font-medium no-underline
       transition-colors duration-150;
   }
 
-  button.k-btn:disabled,
-  button.k-btn[aria-disabled='true'] {
-    @apply cursor-not-allowed opacity-50;
+  :is(button, a).k-btn:disabled,
+  :is(button, a).k-btn[aria-disabled='true'] {
+    @apply pointer-events-none cursor-not-allowed opacity-50;
   }
 
   /* Variants */
-  button.k-btn--primary {
+  :is(button, a).k-btn--primary {
     @apply bg-k-primary text-k-primary-fg;
   }
 
-  button.k-btn--primary:hover:not(:disabled):not([aria-disabled='true']) {
+  :is(button, a).k-btn--primary:hover:not(:disabled):not([aria-disabled='true']) {
     @apply bg-k-primary-hover;
   }
 
-  button.k-btn--secondary {
+  :is(button, a).k-btn--secondary {
     @apply border-k-border bg-k-surface text-k-fg;
   }
 
-  button.k-btn--secondary:hover:not(:disabled):not([aria-disabled='true']) {
-    @apply bg-k-surface-raised;
+  :is(button, a).k-btn--secondary:hover:not(:disabled):not([aria-disabled='true']) {
+    background-color: color-mix(in oklab, var(--k-fg) 10%, var(--k-surface));
   }
 
-  button.k-btn--ghost {
+  :is(button, a).k-btn--ghost {
     @apply bg-transparent text-k-fg;
   }
 
-  button.k-btn--ghost:hover:not(:disabled):not([aria-disabled='true']) {
-    @apply bg-k-surface-raised;
+  :is(button, a).k-btn--ghost:hover:not(:disabled):not([aria-disabled='true']) {
+    background-color: color-mix(in oklab, var(--k-fg) 12%, transparent);
   }
 
-  button.k-btn--accent {
+  :is(button, a).k-btn--accent {
     @apply bg-k-accent text-k-accent-fg;
   }
 
-  button.k-btn--accent:hover:not(:disabled):not([aria-disabled='true']) {
+  :is(button, a).k-btn--accent:hover:not(:disabled):not([aria-disabled='true']) {
     @apply bg-k-accent-hover;
   }
 
-  button.k-btn--danger {
+  :is(button, a).k-btn--danger {
     @apply bg-k-danger text-k-danger-fg;
   }
 
-  button.k-btn--danger:hover:not(:disabled):not([aria-disabled='true']) {
+  :is(button, a).k-btn--danger:hover:not(:disabled):not([aria-disabled='true']) {
     @apply brightness-110;
   }
 
   /* Sizes */
-  button.k-btn--sm {
+  :is(button, a).k-btn--sm {
     @apply px-3 py-1.5 text-xs;
   }
 
-  button.k-btn--lg {
+  :is(button, a).k-btn--lg {
     @apply px-10 py-3.5 text-base;
   }
 
-  button.k-btn--block {
+  :is(button, a).k-btn--block {
     @apply flex w-full;
   }
 }

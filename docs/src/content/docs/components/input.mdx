@@ -3,7 +3,7 @@ title: Input
 description: k-field, k-label, k-input, k-hint.
 ---
 
-import Preview from '../../../components/Preview.astro';
+import Example from '../../../components/Example.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
 These classes style one form field: a label, a text input, and optional helper text. Use them for short values such as email, a name, or a search box. They do not wrap `<select>` or `<textarea>`.
@@ -30,25 +30,33 @@ These classes style one form field: a label, a text input, and optional helper t
 
 A complete field. The hint is extra context, not an error.
 
-<Preview stack>
+<Example stack html={`<div class="k-field">
+  <label class="k-label" for="email">Email</label>
+  <input class="k-input" id="email" type="text" placeholder="you@example.com" />
+  <p class="k-hint">We'll never share it.</p>
+</div>`}>
   <div class="k-field">
     <label class="k-label" for="docs-email">Email</label>
     <input class="k-input" id="docs-email" type="text" placeholder="you@example.com" />
     <p class="k-hint">We'll never share it.</p>
   </div>
-</Preview>
+</Example>
 
 ### Invalid
 
 `aria-invalid="true"` paints the danger border. `.k-error` is the message.
 
-<Preview stack>
+<Example stack html={`<div class="k-field">
+  <label class="k-label" for="email">Email</label>
+  <input class="k-input" id="email" type="text" value="not-an-email" aria-invalid="true" />
+  <p class="k-error">Enter a valid email.</p>
+</div>`}>
   <div class="k-field">
     <label class="k-label" for="docs-email-invalid">Email</label>
     <input class="k-input" id="docs-email-invalid" type="text" value="not-an-email" aria-invalid="true" />
     <p class="k-error">Enter a valid email.</p>
   </div>
-</Preview>
+</Example>
 
 ## Accessibility
 

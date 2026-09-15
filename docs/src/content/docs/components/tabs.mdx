@@ -1,23 +1,24 @@
 ---
 title: Tabs
-description: KTabs.mount on an empty .k-tabs element.
+description: k-tabs. Tablist, panels, and ARIA from items.
 ---
 
-import Preview from '../../../components/Preview.astro';
+import Example from '../../../components/Example.astro';
 import TabsDemo from '../../../components/TabsDemo.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
 Tabs switch related panels in place, such as overview / usage / API, or three views of the same object. Do not use them for wizard steps or for a sequence the reader has to walk in order.
 
-Put an id and `.k-tabs` on an empty element. `KTabs.mount` builds the tablist, tabs, panels, and ARIA from `items`. Each item is a `label` and `content` (a string or a node). `selected` is the starting index. `label` names the tablist. `keyboard` (default true) is arrow / Home / End.
+Put `<k-tabs class="k-tabs">` on the page and set `items`. The element builds the tablist, tabs, panels, and ARIA. Each item is a `label` and `content` (a string or a node). `icon` is optional: a kit icon name or a node. `selected` is the starting index. `label` names the tablist. `keyboard` (default true) is arrow / Home / End.
 
-The selected tab gets the orange underline. Hidden panels use `[hidden]`. If the element is wiped and you call `mount` again, it rebuilds.
+The selected tab gets an orange background. Hidden panels use `[hidden]`. Setting `items` again rebuilds the tablist. `--lg` is a fixed 10rem tab, larger type and padding.
 
 ## Classes
 
 <ClassTable
   rows={[
     { name: 'k-tabs', type: 'component' },
+    { name: 'k-tabs--lg', type: 'modifier' },
     { name: 'k-tabs__list', type: 'part' },
     { name: 'k-tabs__tab', type: 'part' },
     { name: 'k-tabs__panel', type: 'part' },
@@ -28,24 +29,95 @@ The selected tab gets the orange underline. Hidden panels use `[hidden]`. If the
 
 ### Three panels
 
-A mounted example. Click a tab or move with the arrow keys once one is focused.
+Click a tab or move with the arrow keys once one is focused.
 
-<Preview stack>
+<Example
+  stack
+  html={`<k-tabs id="docs-tabs" class="k-tabs"></k-tabs>`}
+  ts={`import { KTabs } from 'k-web-ui/js';
+
+const tabs = document.getElementById('docs-tabs');
+if (tabs instanceof KTabs) {
+  tabs.items = [
+    { label: 'Overview', content: 'The first panel.' },
+    { label: 'Usage', content: 'The second panel.' },
+    { label: 'API', content: 'The third panel.' },
+  ];
+}`}
+>
   <TabsDemo />
-</Preview>
+</Example>
+
+### With icons
+
+`icon` is a kit name such as `info`. The glyph sits before the label and shrinks to `1em`. You can also pass a node.
+
+<Example
+  stack
+  html={`<k-tabs id="docs-tabs-icons" class="k-tabs"></k-tabs>`}
+  ts={`import { KTabs } from 'k-web-ui/js';
+
+const tabs = document.getElementById('docs-tabs-icons');
+if (tabs instanceof KTabs) {
+  tabs.items = [
+    { label: 'Overview', icon: 'info', content: 'The first panel.' },
+    { label: 'Usage', icon: 'success', content: 'The second panel.' },
+    { label: 'API', icon: 'warning', content: 'The third panel.' },
+  ];
+}`}
+>
+  <TabsDemo
+    id="docs-tabs-icons"
+    items={[
+      { label: 'Overview', icon: 'info', content: 'The first panel.' },
+      { label: 'Usage', icon: 'success', content: 'The second panel.' },
+      { label: 'API', icon: 'warning', content: 'The third panel.' },
+    ]}
+  />
+</Example>
+
+### Large
+
+`--lg` makes every tab a fixed 10rem wide, with larger padding and type.
+
+<Example
+  stack
+  html={`<k-tabs id="docs-tabs-lg" class="k-tabs k-tabs--lg"></k-tabs>`}
+  ts={`import { KTabs } from 'k-web-ui/js';
+
+const tabs = document.getElementById('docs-tabs-lg');
+if (tabs instanceof KTabs) {
+  tabs.items = [
+    { label: 'Overview', icon: 'info', content: 'The first panel.' },
+    { label: 'Usage', icon: 'success', content: 'The second panel.' },
+    { label: 'API', icon: 'warning', content: 'The third panel.' },
+  ];
+}`}
+>
+  <TabsDemo
+    id="docs-tabs-lg"
+    large
+    items={[
+      { label: 'Overview', icon: 'info', content: 'The first panel.' },
+      { label: 'Usage', icon: 'success', content: 'The second panel.' },
+      { label: 'API', icon: 'warning', content: 'The third panel.' },
+    ]}
+  />
+</Example>
 
 ## Accessibility
 
-`KTabs.mount` builds `role="tablist"`, `role="tab"`, and `role="tabpanel"`. Tabs get `aria-selected`, `aria-controls`, and matching `aria-labelledby` on the panel. Hidden panels use `[hidden]`. Arrow keys, Home, and End move between tabs when `keyboard` is true (the default). Pass `label` to name the tablist. The kit focus ring applies to the tab buttons.
+`k-tabs` builds `role="tablist"`, `role="tab"`, and `role="tabpanel"`. Tabs get `aria-selected`, `aria-controls`, and matching `aria-labelledby` on the panel. Hidden panels use `[hidden]`. Arrow keys, Home, and End move between tabs when `keyboard` is true (the default). Pass `label` to name the tablist. The kit focus ring applies to the tab buttons. Decorative icons are `aria-hidden`; keep the name in the tab text.
 
 ## Dos and don'ts
 
 **Do**
-- Mount on an empty element with an id and `.k-tabs`.
-- Pass `items` with a `label` and `content`.
+- Use `<k-tabs class="k-tabs">` and set `items`.
+- Pass `items` with a `label` and `content`. `icon` is optional.
 - Use tabs for related views of the same object.
 
 **Don't**
 - Use tabs as wizard steps.
-- Hand-write the tablist. `mount` builds it.
+- Hand-write the tablist. The element builds it.
 - Hide required content in a panel the reader may never open.
+- Rely on the icon alone for the tab name.

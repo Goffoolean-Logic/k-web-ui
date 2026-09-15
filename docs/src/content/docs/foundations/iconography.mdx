@@ -4,20 +4,20 @@ description: Eleven UI icons. CSS masks. Recolor with bg-k-*.
 ---
 
 import Preview from '../../../components/Preview.astro';
+import Example from '../../../components/Example.astro';
 
 The kit ships a small set of UI icons: chevrons, status, close, and loading. It is not a general icon library. If you need a product illustration, drop in your own SVG.
 
 Put `.k-icon` and a name on a `span`. The glyph is a CSS mask. The painted part is `background-color`, which defaults to `currentColor`, so you do not have to inline a path.
 
-```html
-<span class="k-icon k-icon--info" aria-hidden="true"></span>
-```
+<Example
+  html={`<span class="k-icon k-icon--info" aria-hidden="true"></span>`}
+  ts={`import { createIcon } from 'k-web-ui/js';
 
-```js
-import { createIcon } from 'k-web-ui/js';
-
-button.append(createIcon('chevron-left'));
-```
+button.append(createIcon('chevron-left'));`}
+>
+  <span class="k-icon k-icon--info" aria-hidden="true"></span>
+</Example>
 
 Inline `<svg class="k-icon">` still works if you bring your own path.
 
@@ -27,19 +27,19 @@ Inline `<svg class="k-icon">` still works if you bring your own path.
 
 Add a `bg-k-*` class to change the fill. The mask keeps the shape. Only the background color shows through.
 
-<Preview>
+<Example html={`<span class="k-icon k-icon--info k-icon--sm" aria-hidden="true"></span>
+<span class="k-icon k-icon--info k-icon--sm bg-k-primary" aria-hidden="true"></span>
+<span class="k-icon k-icon--success k-icon--sm bg-k-success" aria-hidden="true"></span>
+<span class="k-icon k-icon--warning k-icon--sm bg-k-warning" aria-hidden="true"></span>
+<span class="k-icon k-icon--danger k-icon--sm bg-k-danger" aria-hidden="true"></span>
+<span class="k-icon k-icon--info k-icon--sm bg-k-info" aria-hidden="true"></span>`}>
   <span class="k-icon k-icon--info k-icon--sm" aria-hidden="true"></span>
   <span class="k-icon k-icon--info k-icon--sm bg-k-primary" aria-hidden="true"></span>
   <span class="k-icon k-icon--success k-icon--sm bg-k-success" aria-hidden="true"></span>
   <span class="k-icon k-icon--warning k-icon--sm bg-k-warning" aria-hidden="true"></span>
   <span class="k-icon k-icon--danger k-icon--sm bg-k-danger" aria-hidden="true"></span>
   <span class="k-icon k-icon--info k-icon--sm bg-k-info" aria-hidden="true"></span>
-</Preview>
-
-```html
-<span class="k-icon k-icon--info bg-k-primary" aria-hidden="true"></span>
-<span class="k-icon k-icon--danger bg-k-danger" aria-hidden="true"></span>
-```
+</Example>
 
 The first icon in the preview has no `bg-k-*` class, so it follows the surrounding text color. `text-k-*` on the icon or a parent does the same thing, because the default fill is `currentColor`.
 
@@ -105,9 +105,12 @@ The first icon in the preview has no `bg-k-*` class, so it follows the surroundi
 
 Inside a button, a pagination control, or a carousel arrow they shrink to `1em` so they follow the type.
 
-<Preview>
+<Example html={`<span class="k-icon k-icon--info k-icon--xs" aria-hidden="true"></span>
+<span class="k-icon k-icon--info k-icon--sm" aria-hidden="true"></span>
+<span class="k-icon k-icon--info" aria-hidden="true"></span>
+<span class="k-icon k-icon--info k-icon--lg" aria-hidden="true"></span>`}>
   <span class="k-icon k-icon--info k-icon--xs" aria-hidden="true"></span>
   <span class="k-icon k-icon--info k-icon--sm" aria-hidden="true"></span>
   <span class="k-icon k-icon--info" aria-hidden="true"></span>
   <span class="k-icon k-icon--info k-icon--lg" aria-hidden="true"></span>
-</Preview>
+</Example>

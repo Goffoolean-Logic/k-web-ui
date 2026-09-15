@@ -3,7 +3,7 @@ title: Toast
 description: div.k-toast wrapping banners. CSS only.
 ---
 
-import Preview from '../../../components/Preview.astro';
+import Example from '../../../components/Example.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
 A toast is a stack of [banners](/components/banner/) pinned to a corner of the page. Use it for short outcomes that should not push the rest of the layout: saved, sent, failed. It does not auto-dismiss. You add and remove the banners yourself.
@@ -31,7 +31,11 @@ This preview keeps the toast inside the example box so it does not cover the doc
 
 Bottom-end, the default. Two banners would stack upward from this corner.
 
-<Preview stack>
+<Example stack html={`<div class="k-toast">
+  <div role="alert" class="k-banner k-banner--success k-banner--soft">
+    <span>Changes saved.</span>
+  </div>
+</div>`}>
   <div class="k-toast-demo">
     <div class="k-toast">
       <div role="alert" class="k-banner k-banner--success k-banner--soft">
@@ -39,7 +43,7 @@ Bottom-end, the default. Two banners would stack upward from this corner.
       </div>
     </div>
   </div>
-</Preview>
+</Example>
 
 ## Accessibility
 

@@ -19,6 +19,7 @@ export default defineConfig({
       description: 'Designed to feel warm and engineered to run hot.',
       favicon: '/logo.png',
       components: {
+        Head: './src/components/Head.astro',
         SiteTitle: './src/components/SiteTitle.astro',
         Hero: './src/components/Hero.astro',
         PageTitle: './src/components/PageTitle.astro',
@@ -32,7 +33,8 @@ export default defineConfig({
       ],
       customCss: ['./src/styles/docs.css'],
       sidebar: [
-        { label: 'Getting started', link: '/getting-started/' },
+        { label: 'Getting started', slug: 'getting-started' },
+        { label: 'Theme playground', slug: 'theme-playground' },
         {
           label: 'Foundations',
           items: [

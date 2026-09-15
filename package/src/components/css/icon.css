@@ -90,11 +90,13 @@
     }
   }
 
-  button.k-btn > :is(span.k-icon, svg.k-icon),
-  button.k-btn > span.k-spin > :is(span.k-icon, svg.k-icon),
+  :is(button, a).k-btn > :is(span.k-icon, svg.k-icon),
+  :is(button, a).k-btn > span.k-spin > :is(span.k-icon, svg.k-icon),
   button.k-pagination__btn > :is(span.k-icon, svg.k-icon),
   button.k-carousel__prev > :is(span.k-icon, svg.k-icon),
-  button.k-carousel__next > :is(span.k-icon, svg.k-icon) {
+  button.k-carousel__next > :is(span.k-icon, svg.k-icon),
+  button.k-tabs__tab > :is(span.k-icon, svg.k-icon),
+  button.k-tabs__tab > span.k-spin > :is(span.k-icon, svg.k-icon) {
     width: 1em;
     height: 1em;
   }

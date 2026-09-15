@@ -1,5 +1,5 @@
-import { createIcon, type KIconName } from '../icon.js';
-import type { KPaginationState } from './models.js';
+import { createIcon, type KIconName } from '../../icon.js';
+import type { KPaginationState } from '../models/models.js';
 
 /** At or below this, every page is listed and first/last are omitted. */
 const FEW_PAGES = 5;

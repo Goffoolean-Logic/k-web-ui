@@ -1,0 +1,14 @@
+---
+import Default from '@astrojs/starlight/components/Head.astro';
+import outfit from 'k-web-ui/source/base/fonts/outfit-latin.woff2?url';
+---
+
+<link
+  rel="preload"
+  href={outfit}
+  as="font"
+  type="font/woff2"
+  crossorigin
+  fetchpriority="high"
+/>
+<Default><slot /></Default>

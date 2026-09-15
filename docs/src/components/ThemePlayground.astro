@@ -1,0 +1,536 @@
+---
+---
+
+<div class="k-playground not-content">
+  <p class="k-playground__lede">
+    Edits stay on this stage. Copy the CSS into your project after the kit
+    import.
+  </p>
+
+  <div class="k-playground__stage" data-theme="light">
+    <div class="k-playground__themes" role="group" aria-label="Preview theme">
+      <button
+        type="button"
+        class="k-btn k-btn--primary k-btn--sm"
+        data-playground-theme="light"
+        aria-pressed="true"
+      >
+        Light
+      </button>
+      <button
+        type="button"
+        class="k-btn k-btn--ghost k-btn--sm"
+        data-playground-theme="dark"
+        aria-pressed="false"
+      >
+        Dark
+      </button>
+    </div>
+    <k-tabs id="playground-scenes" class="k-tabs" label="Theme examples"></k-tabs>
+    <div class="k-playground__sources" hidden>
+      <div data-playground-panel="controls">
+        <div class="k-playground__scene">
+          <div class="k-playground__row">
+            <button type="button" class="k-btn k-btn--primary">Save</button>
+            <button type="button" class="k-btn k-btn--secondary">Cancel</button>
+            <button type="button" class="k-btn k-btn--ghost">Ghost</button>
+            <button type="button" class="k-btn k-btn--danger">Delete</button>
+          </div>
+          <div class="k-field">
+            <label class="k-label" for="playground-email">Email</label>
+            <input
+              class="k-input"
+              id="playground-email"
+              type="text"
+              placeholder="you@example.com"
+            />
+            <p class="k-hint">Hint text uses muted foreground.</p>
+          </div>
+          <p>
+            A <span class="k-tooltip" data-tip="Last saved 4 minutes ago"><a class="k-link" href="#">link</a></span> with extra context.
+          </p>
+          <k-dropdown id="playground-sort" class="k-dropdown">
+            <button type="button" class="k-btn k-btn--secondary k-dropdown__trigger">
+              Sort
+            </button>
+            <div id="playground-sort-menu" class="k-dropdown__menu" hidden>
+              <button type="button" class="k-dropdown__item">Name</button>
+              <button type="button" class="k-dropdown__item">Date</button>
+              <button type="button" class="k-dropdown__item">Size</button>
+            </div>
+          </k-dropdown>
+          <k-pagination
+            id="playground-pages"
+            class="k-pagination"
+            count="4"
+            page="1"></k-pagination>
+        </div>
+      </div>
+      <div data-playground-panel="content">
+        <div class="k-playground__scene">
+          <div class="k-card">
+            <div class="k-card__header">
+              <h3 class="k-card__title">Deployment</h3>
+              <p class="k-card__subtitle">Last run 4 minutes ago</p>
+            </div>
+            <div class="k-card__body">
+              <p>Every check passed on the latest commit.</p>
+            </div>
+            <div class="k-card__footer">
+              <button type="button" class="k-btn k-btn--secondary k-btn--sm">
+                Logs
+              </button>
+            </div>
+          </div>
+          <table class="k-table k-table--sm">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Deploy</td>
+                <td>Ready</td>
+              </tr>
+              <tr>
+                <td>Build</td>
+                <td>Queued</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="k-accordion">
+            <details class="k-accordion__item" name="playground-faq" open>
+              <summary class="k-accordion__trigger">What is a token?</summary>
+              <div class="k-accordion__panel">
+                A CSS variable the components already read.
+              </div>
+            </details>
+            <details class="k-accordion__item" name="playground-faq">
+              <summary class="k-accordion__trigger">Where does this CSS go?</summary>
+              <div class="k-accordion__panel">
+                After the kit stylesheet, on the document that sets data-theme.
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+      <div data-playground-panel="feedback">
+        <div class="k-playground__scene">
+          <div class="k-playground__row">
+            <span class="k-badge k-badge--primary">Primary</span>
+            <span class="k-badge k-badge--info">Info</span>
+            <span class="k-badge k-badge--success">Success</span>
+            <span class="k-badge k-badge--warning">Warning</span>
+            <span class="k-badge k-badge--danger">Danger</span>
+          </div>
+          <div role="alert" class="k-banner k-banner--info k-banner--soft">
+            <span class="k-icon k-icon--info" aria-hidden="true"></span>
+            <span>A notice that uses the info tokens.</span>
+          </div>
+          <div class="k-toast k-playground__toast">
+            <div role="alert" class="k-banner k-banner--success k-banner--soft">
+              <span>Changes saved.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="k-playground__editor">
+    <div class="k-playground__editor-actions">
+      <button type="button" class="k-btn k-btn--ghost k-btn--sm" data-playground-reset>
+        Reset
+      </button>
+      <button type="button" class="k-btn k-btn--primary k-btn--sm" data-playground-copy>
+        Copy
+      </button>
+    </div>
+    <k-tabs
+      id="playground-editor-panes"
+      class="k-tabs k-playground__editor-tabs"
+      label="Theme editor"></k-tabs>
+    <div class="k-playground__sources" hidden>
+      <div data-editor-panel="colors">
+        <div class="k-playground__colors">
+          <div class="k-playground__picker">
+            <hex-color-picker data-playground-picker></hex-color-picker>
+            <div class="k-playground__picker-meta">
+              <code data-playground-token-name></code>
+              <hex-input prefixed data-playground-hex></hex-input>
+            </div>
+          </div>
+          <div class="k-playground__token-list" data-playground-token-list></div>
+        </div>
+      </div>
+      <div data-editor-panel="css" class="k-playground__code-panel">
+        <textarea
+          class="k-playground__code"
+          data-playground-code
+          spellcheck="false"
+          autocomplete="off"
+          autocapitalize="off"
+          aria-label="Theme CSS"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { KTabs, type KIconName, type KTabItem } from 'k-web-ui/js';
+  import 'k-web-ui/js';
+  import { HexColorPicker } from 'vanilla-colorful/hex-color-picker.js';
+  import { HexInput } from 'vanilla-colorful/hex-input.js';
+  import {
+    STARTER_THEME_CSS,
+    readColorTokens,
+    scopeThemeCss,
+    setColorToken,
+    type ColorToken,
+    type TokenScope,
+  } from '../lib/themePlayground.ts';
+
+  const STORAGE_KEY = 'k-web-ui-theme-playground';
+  const SCOPE_LABEL: Record<TokenScope, string> = {
+    shared: 'Shared',
+    light: 'Light',
+    dark: 'Dark',
+  };
+
+  function liveStyle(): HTMLStyleElement {
+    const existing = document.getElementById('k-playground-live');
+    if (existing instanceof HTMLStyleElement) {
+      return existing;
+    }
+    const style = document.createElement('style');
+    style.id = 'k-playground-live';
+    document.head.append(style);
+    return style;
+  }
+
+  function applyCss(css: string): void {
+    liveStyle().textContent = scopeThemeCss(css);
+  }
+
+  function colorFromEvent(event: Event): string | null {
+    if (!(event instanceof CustomEvent)) {
+      return null;
+    }
+    const value = (event.detail as { value?: unknown } | undefined)?.value;
+    return typeof value === 'string' ? value : null;
+  }
+
+  function paintTabs(
+    host: Element | null,
+    items: { label: string; icon?: KIconName; content: Element | null }[],
+  ): void {
+    if (!(host instanceof KTabs) || host.dataset.wired === 'true') {
+      return;
+    }
+    const next: KTabItem[] = [];
+    for (const item of items) {
+      if (!(item.content instanceof HTMLElement)) {
+        return;
+      }
+      const tab: KTabItem = { label: item.label, content: item.content };
+      if (item.icon) {
+        tab.icon = item.icon;
+      }
+      next.push(tab);
+    }
+    host.items = next;
+    host.dataset.wired = 'true';
+  }
+
+  function wireScenes(root: Element): void {
+    paintTabs(root.querySelector('#playground-scenes'), [
+      {
+        label: 'Controls',
+        icon: 'info',
+        content: root.querySelector('[data-playground-panel="controls"]'),
+      },
+      {
+        label: 'Content',
+        icon: 'success',
+        content: root.querySelector('[data-playground-panel="content"]'),
+      },
+      {
+        label: 'Feedback',
+        icon: 'warning',
+        content: root.querySelector('[data-playground-panel="feedback"]'),
+      },
+    ]);
+  }
+
+  function wireEditorPanes(root: Element): void {
+    paintTabs(root.querySelector('#playground-editor-panes'), [
+      {
+        label: 'Colors',
+        content: root.querySelector('[data-editor-panel="colors"]'),
+      },
+      {
+        label: 'CSS',
+        content: root.querySelector('[data-editor-panel="css"]'),
+      },
+    ]);
+  }
+
+  function setPreviewTheme(root: Element, theme: 'light' | 'dark'): void {
+    const stage = root.querySelector('.k-playground__stage');
+    if (!(stage instanceof HTMLElement)) {
+      return;
+    }
+    stage.setAttribute('data-theme', theme);
+    for (const btn of root.querySelectorAll('[data-playground-theme]')) {
+      if (!(btn instanceof HTMLButtonElement)) {
+        continue;
+      }
+      const on = btn.dataset.playgroundTheme === theme;
+      btn.setAttribute('aria-pressed', String(on));
+      btn.classList.toggle('k-btn--primary', on);
+      btn.classList.toggle('k-btn--ghost', !on);
+    }
+  }
+
+  function wire(root: Element): void {
+    if (!(root instanceof HTMLElement) || root.dataset.wired === 'true') {
+      return;
+    }
+
+    const code = root.querySelector('[data-playground-code]');
+    const copyBtn = root.querySelector('[data-playground-copy]');
+    const resetBtn = root.querySelector('[data-playground-reset]');
+    const picker = root.querySelector('[data-playground-picker]');
+    const hexInput = root.querySelector('[data-playground-hex]');
+    const tokenName = root.querySelector('[data-playground-token-name]');
+    const tokenList = root.querySelector('[data-playground-token-list]');
+    if (
+      !(code instanceof HTMLTextAreaElement) ||
+      !(copyBtn instanceof HTMLButtonElement) ||
+      !(resetBtn instanceof HTMLButtonElement) ||
+      !(picker instanceof HexColorPicker) ||
+      !(hexInput instanceof HexInput) ||
+      !(tokenName instanceof HTMLElement) ||
+      !(tokenList instanceof HTMLElement)
+    ) {
+      return;
+    }
+
+    const stored = localStorage.getItem(STORAGE_KEY);
+    code.value = stored && stored.trim() !== '' ? stored : STARTER_THEME_CSS;
+    applyCss(code.value);
+
+    let selected: ColorToken | null = null;
+    let syncingPicker = false;
+    let saveTimer = 0;
+
+    function persist(css: string): void {
+      window.clearTimeout(saveTimer);
+      saveTimer = window.setTimeout(() => {
+        localStorage.setItem(STORAGE_KEY, css);
+      }, 300);
+    }
+
+    function currentTokens(): ColorToken[] {
+      return readColorTokens(code.value);
+    }
+
+    function selectToken(token: ColorToken): void {
+      selected = token;
+      tokenName.textContent = `${token.name} · ${SCOPE_LABEL[token.scope]}`;
+      syncingPicker = true;
+      picker.color = token.value;
+      hexInput.color = token.value;
+      syncingPicker = false;
+      paintTokenList();
+    }
+
+    function paintTokenList(): void {
+      const tokens = currentTokens();
+      const groups: Record<TokenScope, ColorToken[]> = {
+        shared: [],
+        light: [],
+        dark: [],
+      };
+      for (const token of tokens) {
+        groups[token.scope].push(token);
+      }
+      tokenList.replaceChildren();
+      for (const scope of ['shared', 'light', 'dark'] as const) {
+        if (groups[scope].length === 0) {
+          continue;
+        }
+        const heading = document.createElement('p');
+        heading.className = 'k-playground__token-heading';
+        heading.textContent = SCOPE_LABEL[scope];
+        tokenList.append(heading);
+        const group = document.createElement('div');
+        group.className = 'k-playground__token-group';
+        for (const token of groups[scope]) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'k-playground__token';
+          const on =
+            selected?.scope === token.scope && selected.name === token.name;
+          if (on) {
+            btn.setAttribute('aria-current', 'true');
+          }
+          btn.setAttribute(
+            'aria-label',
+            `${token.name}, ${SCOPE_LABEL[token.scope]}`,
+          );
+          const swatch = document.createElement('span');
+          swatch.className = 'k-playground__swatch';
+          swatch.style.backgroundColor = token.value;
+          const label = document.createElement('code');
+          label.textContent = token.name;
+          btn.append(swatch, label);
+          btn.addEventListener('click', () => {
+            selectToken(token);
+          });
+          group.append(btn);
+        }
+        tokenList.append(group);
+      }
+    }
+
+    function applyFromPicker(value: string): void {
+      if (syncingPicker || !selected) {
+        return;
+      }
+      const next = setColorToken(
+        code.value,
+        selected.scope,
+        selected.name,
+        value,
+      );
+      if (next === code.value) {
+        return;
+      }
+      code.value = next;
+      applyCss(next);
+      persist(next);
+      const match = currentTokens().find(
+        (token) =>
+          token.scope === selected?.scope && token.name === selected.name,
+      );
+      if (match) {
+        selected = match;
+      }
+      paintTokenList();
+    }
+
+    function refreshFromCss(save = false): void {
+      applyCss(code.value);
+      if (save) {
+        persist(code.value);
+      }
+      const tokens = currentTokens();
+      const match = selected
+        ? tokens.find(
+            (token) =>
+              token.scope === selected?.scope && token.name === selected.name,
+          )
+        : undefined;
+      selectToken(
+        match ??
+          tokens.find(
+            (token) =>
+              token.scope === 'shared' && token.name === '--k-primary',
+          ) ??
+          tokens[0] ?? {
+            scope: 'shared',
+            name: '--k-primary',
+            value: '#c2410c',
+          },
+      );
+    }
+
+    refreshFromCss();
+
+    picker.addEventListener('color-changed', (event) => {
+      const value = colorFromEvent(event);
+      if (value) {
+        applyFromPicker(value);
+      }
+    });
+    hexInput.addEventListener('color-changed', (event) => {
+      const value = colorFromEvent(event);
+      if (value) {
+        applyFromPicker(value);
+      }
+    });
+
+    code.addEventListener('input', () => {
+      refreshFromCss(true);
+    });
+
+    code.addEventListener('keydown', (event) => {
+      if (event.key !== 'Tab') {
+        return;
+      }
+      event.preventDefault();
+      const start = code.selectionStart;
+      const end = code.selectionEnd;
+      code.setRangeText('  ', start, end, 'end');
+      refreshFromCss(true);
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(code.value);
+        const prior = copyBtn.textContent;
+        copyBtn.textContent = 'Copied';
+        window.setTimeout(() => {
+          copyBtn.textContent = prior;
+        }, 1600);
+      } catch {
+        code.select();
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      code.value = STARTER_THEME_CSS;
+      localStorage.removeItem(STORAGE_KEY);
+      selected = null;
+      refreshFromCss();
+    });
+
+    for (const btn of root.querySelectorAll('[data-playground-theme]')) {
+      btn.addEventListener('click', () => {
+        const theme = btn.getAttribute('data-playground-theme');
+        if (theme !== 'light' && theme !== 'dark') {
+          return;
+        }
+        setPreviewTheme(root, theme);
+        if (
+          selected &&
+          (selected.scope === 'light' || selected.scope === 'dark')
+        ) {
+          const nextScope: TokenScope = theme === 'dark' ? 'dark' : 'light';
+          const match = currentTokens().find(
+            (token) => token.scope === nextScope && token.name === selected?.name,
+          );
+          if (match) {
+            selectToken(match);
+          }
+        }
+      });
+    }
+
+    root.dataset.wired = 'true';
+  }
+
+  function wireAll(): void {
+    for (const root of document.querySelectorAll('.k-playground')) {
+      wireScenes(root);
+      wireEditorPanes(root);
+      wire(root);
+    }
+  }
+
+  wireAll();
+  document.addEventListener('astro:page-load', wireAll);
+</script>

@@ -3,7 +3,7 @@ title: Accordion
 description: details.k-accordion__item. CSS only.
 ---
 
-import Preview from '../../../components/Preview.astro';
+import Example from '../../../components/Example.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
 An accordion is a list of sections the reader can open, such as an FAQ or a settings group. Each item is a `<details>` element. The browser owns open state, so there is nothing to `mount`.
@@ -29,7 +29,16 @@ The chevron is a CSS `::after` on the trigger. It flips when the item is open.
 
 Same `name` on both items. Opening the second closes the first. The first starts open.
 
-<Preview stack>
+<Example stack html={`<div class="k-accordion">
+  <details class="k-accordion__item" name="faq" open>
+    <summary class="k-accordion__trigger">What is the kit?</summary>
+    <div class="k-accordion__panel">CSS chrome plus a small JS behavior layer.</div>
+  </details>
+  <details class="k-accordion__item" name="faq">
+    <summary class="k-accordion__trigger">Does it need a framework?</summary>
+    <div class="k-accordion__panel">No. Write HTML.</div>
+  </details>
+</div>`}>
   <div class="k-accordion">
     <details class="k-accordion__item" name="docs-acc" open>
       <summary class="k-accordion__trigger">What is the kit?</summary>
@@ -40,7 +49,7 @@ Same `name` on both items. Opening the second closes the first. The first starts
       <div class="k-accordion__panel">No. Write HTML.</div>
     </details>
   </div>
-</Preview>
+</Example>
 
 ## Accessibility
 

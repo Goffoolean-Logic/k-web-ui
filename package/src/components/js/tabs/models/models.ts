@@ -1,6 +1,10 @@
+import type { KIconName } from '../../icon.js';
+
 export type KTabItem = {
-  label: string;
   content: string | Node;
+  label?: string;
+  /** Kit icon name, or a node such as a `.k-icon` span. */
+  icon?: KIconName | Node;
 };
 
 export type KTabsOptions = {

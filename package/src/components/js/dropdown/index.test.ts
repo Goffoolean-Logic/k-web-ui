@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { KDropdown } from './index.js';
+import type { KDropdown } from './index.js';
+import './index.js';
 
-function host(): HTMLElement {
-  const el = document.createElement('div');
+function host(): KDropdown {
+  const el = document.createElement('k-dropdown');
   el.id = 'sort';
   el.className = 'k-dropdown';
   el.innerHTML = `
@@ -16,25 +17,23 @@ function host(): HTMLElement {
   return el;
 }
 
-describe('KDropdown.mount', () => {
+describe('k-dropdown', () => {
   it('sets menu ARIA on the trigger', () => {
-    const root = host();
-    const dropdown = KDropdown.mount(root);
-    const trigger = root.querySelector('.k-dropdown__trigger');
+    const dropdown = host();
+    const trigger = dropdown.querySelector('.k-dropdown__trigger');
     expect(trigger?.getAttribute('aria-haspopup')).toBe('menu');
     expect(trigger?.getAttribute('aria-expanded')).toBe('false');
     expect(trigger?.getAttribute('aria-controls')).toBe('sort-menu');
-    expect(root.querySelector('.k-dropdown__menu')?.getAttribute('role')).toBe(
-      'menu',
-    );
+    expect(
+      dropdown.querySelector('.k-dropdown__menu')?.getAttribute('role'),
+    ).toBe('menu');
     expect(dropdown.open).toBe(false);
-    root.remove();
+    dropdown.remove();
   });
 
   it('opens and closes from the trigger', () => {
-    const root = host();
-    const dropdown = KDropdown.mount(root);
-    const trigger = root.querySelector<HTMLButtonElement>(
+    const dropdown = host();
+    const trigger = dropdown.querySelector<HTMLButtonElement>(
       '.k-dropdown__trigger',
     );
     trigger?.click();
@@ -42,13 +41,12 @@ describe('KDropdown.mount', () => {
     expect(trigger?.getAttribute('aria-expanded')).toBe('true');
     trigger?.click();
     expect(dropdown.open).toBe(false);
-    root.remove();
+    dropdown.remove();
   });
 
   it('closes on outside click and Escape', () => {
-    const root = host();
-    const dropdown = KDropdown.mount(root);
-    const trigger = root.querySelector<HTMLButtonElement>(
+    const dropdown = host();
+    const trigger = dropdown.querySelector<HTMLButtonElement>(
       '.k-dropdown__trigger',
     );
     trigger?.click();
@@ -58,10 +56,10 @@ describe('KDropdown.mount', () => {
     expect(dropdown.open).toBe(false);
 
     trigger?.click();
-    root.dispatchEvent(
+    dropdown.dispatchEvent(
       new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
     );
     expect(dropdown.open).toBe(false);
-    root.remove();
+    dropdown.remove();
   });
 });

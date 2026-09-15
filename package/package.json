@@ -9,7 +9,9 @@
   },
   "type": "module",
   "sideEffects": [
-    "*.css"
+    "*.css",
+    "./dist/js/index.js",
+    "./src/components/js/**/*.ts"
   ],
   "files": [
     "dist",
@@ -22,6 +24,7 @@
     "./base": "./dist/base/index.css",
     "./components": "./dist/components/index.css",
     "./utilities": "./dist/utilities/index.css",
+    "./fonts": "./dist/fonts.css",
     "./fonts/*": "./dist/fonts/*",
     "./icons/*": "./dist/icons/*",
     "./js": {

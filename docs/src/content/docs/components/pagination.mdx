@@ -1,17 +1,17 @@
 ---
 title: Pagination
-description: KPagination.mount. Page window and first/last jumps.
+description: k-pagination. Page window and first/last jumps.
 ---
 
-import Preview from '../../../components/Preview.astro';
+import Example from '../../../components/Example.astro';
 import PaginationDemo from '../../../components/PaginationDemo.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
-Pagination walks a numbered list of pages. Use it under a table or a result set when you already know the page count. Put an id and `.k-pagination` on an empty element. `KPagination.mount` builds the buttons.
+Pagination walks a numbered list of pages. Use it under a table or a result set when you already know the page count. Put `<k-pagination class="k-pagination">` on the page with `count` and optional `page`. The element builds the buttons.
 
 Five or fewer pages list every number and drop first/last. More than five keep first and last and a sliding three-page window. The window clamps at the ends: page 1 shows 1 2 3, the last page shows n-2 n-1 n. The current page (`aria-current="page"`) does not pick up the hover fill.
 
-Arrow keys step. Home and End jump to the ends even when first/last are omitted. Pass `count`, optional `page`, and optional `onChange`.
+Arrow keys step. Home and End jump to the ends even when first/last are omitted. Page changes dispatch `k-change` with `{ page }`.
 
 ## Classes
 
@@ -29,30 +29,36 @@ Arrow keys step. Home and End jump to the ends even when first/last are omitted.
 
 Twelve pages, starting on 5. First and last stay; the window is 4 5 6.
 
-<Preview>
+<Example
+  html={`<k-pagination class="k-pagination" count="12" page="5"></k-pagination>`}
+  ts={`import 'k-web-ui/js';`}
+>
   <PaginationDemo id="docs-pagination" count={12} page={5} />
-</Preview>
+</Example>
 
 ### Few pages
 
 Four pages. Every number is listed. First and last are omitted; Home and End still jump.
 
-<Preview>
+<Example
+  html={`<k-pagination class="k-pagination" count="4" page="1"></k-pagination>`}
+  ts={`import 'k-web-ui/js';`}
+>
   <PaginationDemo id="docs-pagination-few" count={4} page={1} />
-</Preview>
+</Example>
 
 ## Accessibility
 
-`mount` sets `aria-label="Pagination"` on the element. Each control is a `<button>` with an `aria-label` (`Page 5 of 12`, First, Previous, and so on). The current page is `aria-current="page"`. Arrow keys step. Home and End jump. First/last may be omitted from the DOM on short lists. The keys still work. Disabled ends use the `disabled` attribute.
+The element sets `aria-label="Pagination"`. Each control is a `<button>` with an `aria-label` (`Page 5 of 12`, First, Previous, and so on). The current page is `aria-current="page"`. Arrow keys step. Home and End jump. First/last may be omitted from the DOM on short lists. The keys still work. Disabled ends use the `disabled` attribute.
 
 ## Dos and don'ts
 
 **Do**
-- Mount on an empty element with an id and `.k-pagination`.
-- Pass `count` and handle `onChange`.
+- Use `<k-pagination class="k-pagination">` with `count`.
+- Listen for `k-change` when the page matters to the rest of the UI.
 - Pair it with a [table](/components/table/) or a result list.
 
 **Don't**
-- Hand-write the page buttons. `mount` builds them.
+- Hand-write the page buttons. The element builds them.
 - Paginate a list that already fits on one screen.
 - Style the current page as a hover fill. The kit already marks it.

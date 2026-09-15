@@ -1,6 +1,6 @@
 @layer components {
-  /* Requires <div class="k-pagination"> or <nav class="k-pagination">. */
-  :is(div.k-pagination, nav.k-pagination) {
+  /* Requires <k-pagination class="k-pagination">. */
+  k-pagination.k-pagination {
     @apply flex items-center gap-1;
   }
 

@@ -3,7 +3,7 @@ title: Getting started
 description: Install the kit and put a class on a button.
 ---
 
-import Preview from '../../components/Preview.astro';
+import Example from '../../components/Example.astro';
 
 You write the HTML. Classes that start with `k-` get the kit look. JavaScript is only there for widgets CSS cannot do, such as tabs and pagination. If an element has no `k-` class, the kit leaves it alone.
 
@@ -17,11 +17,20 @@ pnpm add k-web-ui
 
 ## CSS
 
-This one import is the full prebuilt stylesheet. You do not need Tailwind for it:
+This one import is the full prebuilt stylesheet. You do not need Tailwind for it. `@font-face` is at the top of that file so the browser can start Outfit and Plex while the rest of the sheet still parses:
 
 ```js
 import 'k-web-ui';
 ```
+
+To start the faces even earlier, load them as their own sheet first:
+
+```js
+import 'k-web-ui/fonts';
+import 'k-web-ui';
+```
+
+The Outfit file is `k-web-ui/fonts/outfit-latin.woff2` if you want to preload it from HTML.
 
 Or pull the layers in separately:
 
@@ -43,14 +52,11 @@ import 'k-web-ui/source';
 
 Classes are tied to the element. A button is a `<button>` with `.k-btn`, not a `div` you styled to look like one.
 
-<Preview>
+<Example html={`<button type="button" class="k-btn k-btn--primary">Save</button>
+<button type="button" class="k-btn k-btn--secondary">Cancel</button>`}>
   <button type="button" class="k-btn k-btn--primary">Save</button>
   <button type="button" class="k-btn k-btn--secondary">Cancel</button>
-</Preview>
-
-```html
-<button type="button" class="k-btn k-btn--primary">Save</button>
-```
+</Example>
 
 ## Theme
 
@@ -60,20 +66,17 @@ One attribute on the document root:
 <html data-theme="light">
 ```
 
-`light`, `dark`, or `auto` (follows the OS). The orange on buttons and fields stays the same. The page background and text change.
+`light`, `dark`, or `auto` (follows the OS). The orange on buttons and fields stays the same. The page background and text change. Try it in the [Theme playground](/theme-playground/).
 
 ## JavaScript
 
-A few widgets need you to leave an empty element on the page and call `mount`:
+Four widgets are custom elements: tabs, pagination, dropdown, and carousel. Import the JS once and the tags upgrade. Pagination is attributes on the host:
 
-```html
-<div id="pages" class="k-pagination"></div>
-```
+<Example
+  html={`<k-pagination class="k-pagination" count="12" page="5"></k-pagination>`}
+  ts={`import 'k-web-ui/js';`}
+>
+  <k-pagination class="k-pagination" count="12" page="5"></k-pagination>
+</Example>
 
-```js
-import { KPagination } from 'k-web-ui/js';
-
-KPagination.mount('pages', { count: 12, page: 5 });
-```
-
-Accordion, grid, modal, sidebar, spin, table, toast, and tooltip are CSS only. You write the markup and skip `mount`.
+Accordion, grid, modal, sidebar, spin, table, toast, and tooltip are CSS only. You write the markup and skip the JS import.

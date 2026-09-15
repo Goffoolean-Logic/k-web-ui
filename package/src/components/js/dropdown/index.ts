@@ -1,38 +1,63 @@
-import { resolveRoot } from '../root.js';
-import { queryParts, setOpen } from './dom.js';
-import { bindEvents } from './events.js';
-import { bindKeybinds } from './keybinds.js';
-import type { KDropdownState } from './models.js';
-
-const instances = new WeakMap<HTMLElement, KDropdown>();
+import { defineElement } from '../root.js';
+import { queryParts, setOpen } from './dom/dom.js';
+import { bindEvents } from './events/events.js';
+import { bindKeybinds } from './keybinds/keybinds.js';
+import type { KDropdownState } from './models/models.js';
 
 /**
- * Dropdown. Markup is a host, a trigger, and a hidden menu. This class
- * toggles open state, outside click, and keyboard movement.
+ * Dropdown. Markup is the host, a trigger, and a hidden menu. Importing the
+ * JS registers `<k-dropdown>` and wires toggle, outside click, and keyboard.
  *
- *   <div id="sort" class="k-dropdown">…</div>
- *   KDropdown.mount('sort');
+ *   <k-dropdown class="k-dropdown">
+ *     <button type="button" class="k-dropdown__trigger">Sort</button>
+ *     <div id="sort-menu" class="k-dropdown__menu" hidden>…</div>
+ *   </k-dropdown>
  */
-export class KDropdown {
-  readonly #state: KDropdownState;
-  readonly #abort = new AbortController();
+export class KDropdown extends HTMLElement {
+  #state: KDropdownState | null = null;
+  #abort = new AbortController();
 
-  static mount(target: string | HTMLElement): KDropdown {
-    const root = resolveRoot(target, 'KDropdown');
-    const existing = instances.get(root);
-    if (existing && root.querySelector('.k-dropdown__menu')) {
-      return existing;
+  connectedCallback(): void {
+    this.classList.add('k-dropdown');
+    const start = (): void => {
+      if (!this.isConnected) {
+        return;
+      }
+      this.#bind();
+    };
+    if (this.querySelector('.k-dropdown__menu')) {
+      start();
+      return;
     }
-    existing?.disconnect();
-    return new KDropdown(root);
+    queueMicrotask(start);
   }
 
-  constructor(target: string | HTMLElement) {
-    const root = resolveRoot(target, 'KDropdown');
-    const parts = queryParts(root);
+  disconnectedCallback(): void {
+    this.disconnect();
+    this.#abort = new AbortController();
+    this.#state = null;
+  }
+
+  disconnect(): void {
+    this.#abort.abort();
+  }
+
+  get open(): boolean {
+    return this.#state?.open ?? false;
+  }
+
+  toggle(open = !this.open): void {
+    if (!this.#state) {
+      return;
+    }
+    setOpen(this.#state, open);
+  }
+
+  #bind(): void {
+    this.#abort.abort();
+    this.#abort = new AbortController();
+    const parts = queryParts(this);
     this.#state = { ...parts, open: false };
-    instances.set(root, this);
-    root.classList.add('k-dropdown');
     parts.trigger.classList.add('k-dropdown__trigger');
     parts.trigger.setAttribute('aria-haspopup', 'menu');
     parts.trigger.setAttribute('aria-expanded', 'false');
@@ -47,20 +72,12 @@ export class KDropdown {
     bindEvents(this.#state, this.#abort.signal);
     bindKeybinds(this.#state, this.#abort.signal);
   }
+}
 
-  disconnect(): void {
-    this.#abort.abort();
-  }
+defineElement('k-dropdown', KDropdown);
 
-  get root(): HTMLElement {
-    return this.#state.root;
-  }
-
-  get open(): boolean {
-    return this.#state.open;
-  }
-
-  toggle(open = !this.#state.open): void {
-    setOpen(this.#state, open);
+declare global {
+  interface HTMLElementTagNameMap {
+    'k-dropdown': KDropdown;
   }
 }

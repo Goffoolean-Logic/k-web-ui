@@ -1,68 +1,114 @@
-import { buildTabs, resolveRoot } from './dom.js';
-import { bindEvents, selectTab } from './events.js';
-import { bindKeybinds } from './keybinds.js';
-import type { KTabsOptions, KTabsState } from './models.js';
+import { defineElement } from '../root.js';
+import { buildTabs } from './dom/dom.js';
+import { bindEvents, selectTab } from './events/events.js';
+import { bindKeybinds } from './keybinds/keybinds.js';
+import type { KTabItem, KTabsState } from './models/models.js';
 
-export type { KTabItem, KTabsOptions } from './models.js';
-
-const instances = new WeakMap<HTMLElement, KTabs>();
+export type { KTabItem, KTabsOptions } from './models/models.js';
 
 /**
- * Tabs. Markup is a host with an id and `.k-tabs`. This class builds the
- * tablist, tabs, panels, and ARIA from `items`.
+ * Tabs. The host is `<k-tabs class="k-tabs">`. Set `items` and the element
+ * builds the tablist, tabs, panels, and ARIA. `label`, `selected`, and
+ * `keyboard` are attributes.
  *
- *   <div id="sections" class="k-tabs"></div>
- *   KTabs.mount('sections', { items: [{ label: 'Overview', content: '…' }] });
+ *   <k-tabs id="sections" class="k-tabs" label="Sections"></k-tabs>
+ *   document.getElementById('sections').items = [
+ *     { label: 'Overview', icon: 'info', content: '…' },
+ *   ];
  */
-export class KTabs {
-  readonly #state: KTabsState;
-  readonly #abort = new AbortController();
+export class KTabs extends HTMLElement {
+  #state: KTabsState | null = null;
+  #abort = new AbortController();
+  #items: KTabItem[] = [];
 
-  static mount(target: string | HTMLElement, options: KTabsOptions): KTabs {
-    const root = resolveRoot(target);
-    const existing = instances.get(root);
-    if (existing && root.querySelector('[role="tablist"]')) {
-      return existing;
-    }
-    existing?.disconnect();
-    return new KTabs(root, options);
+  static get observedAttributes(): string[] {
+    return ['label', 'selected', 'keyboard'];
   }
 
-  constructor(target: string | HTMLElement, options: KTabsOptions) {
-    const root = resolveRoot(target);
-    this.#state = {
-      root,
-      tabs: [],
-      panels: [],
-      keyboard: options.keyboard ?? true,
-    };
-    instances.set(root, this);
-    root.classList.add('k-tabs');
-    buildTabs(this.#state, options);
-    bindEvents(this.#state, this.#abort.signal);
-    bindKeybinds(this.#state, this.#abort.signal);
-    this.select(options.selected ?? 0);
+  connectedCallback(): void {
+    this.classList.add('k-tabs');
+    this.#connect();
+  }
+
+  disconnectedCallback(): void {
+    this.disconnect();
+    this.#abort = new AbortController();
+    this.#state = null;
+  }
+
+  attributeChangedCallback(): void {
+    if (this.isConnected) {
+      this.#connect();
+    }
   }
 
   disconnect(): void {
     this.#abort.abort();
   }
 
-  get root(): HTMLElement {
-    return this.#state.root;
+  get items(): KTabItem[] {
+    return this.#items;
+  }
+
+  set items(value: KTabItem[]) {
+    this.#items = value;
+    if (this.isConnected) {
+      this.#connect();
+    }
   }
 
   get tabs(): HTMLElement[] {
-    return [...this.#state.tabs];
+    return this.#state ? [...this.#state.tabs] : [];
   }
 
   get selectedIndex(): number {
+    if (!this.#state) {
+      return -1;
+    }
     return this.#state.tabs.findIndex(
       (tab) => tab.getAttribute('aria-selected') === 'true',
     );
   }
 
   select(index: number, { focus = false } = {}): void {
+    if (!this.#state) {
+      return;
+    }
     selectTab(this.#state, index, { focus });
+  }
+
+  #connect(): void {
+    if (this.#items.length === 0) {
+      return;
+    }
+
+    this.#abort.abort();
+    this.#abort = new AbortController();
+    this.#state = {
+      root: this,
+      tabs: [],
+      panels: [],
+      keyboard: this.getAttribute('keyboard') !== 'false',
+    };
+
+    const selected = Number(this.getAttribute('selected') ?? 0);
+    buildTabs(this.#state, {
+      items: this.#items,
+      label: this.getAttribute('label') ?? undefined,
+      keyboard: this.#state.keyboard,
+    });
+    bindEvents(this.#state, this.#abort.signal);
+    bindKeybinds(this.#state, this.#abort.signal);
+    selectTab(this.#state, Number.isFinite(selected) ? selected : 0, {
+      emit: false,
+    });
+  }
+}
+
+defineElement('k-tabs', KTabs);
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'k-tabs': KTabs;
   }
 }

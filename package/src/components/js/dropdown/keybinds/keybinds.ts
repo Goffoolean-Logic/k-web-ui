@@ -1,5 +1,5 @@
-import { setOpen } from './dom.js';
-import type { KDropdownState } from './models.js';
+import { setOpen } from '../dom/dom.js';
+import type { KDropdownState } from '../models/models.js';
 
 export function bindKeybinds(state: KDropdownState, signal: AbortSignal): void {
   state.root.addEventListener(

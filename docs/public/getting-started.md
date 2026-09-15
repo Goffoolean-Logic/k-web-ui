@@ -14,11 +14,20 @@ pnpm add k-web-ui
 
 ## CSS
 
-This one import is the full prebuilt stylesheet. You do not need Tailwind for it:
+This one import is the full prebuilt stylesheet. You do not need Tailwind for it. `@font-face` is at the top of that file so the browser can start Outfit and Plex while the rest of the sheet still parses:
 
 ```js
 import 'k-web-ui';
 ```
+
+To start the faces even earlier, load them as their own sheet first:
+
+```js
+import 'k-web-ui/fonts';
+import 'k-web-ui';
+```
+
+The Outfit file is `k-web-ui/fonts/outfit-latin.woff2` if you want to preload it from HTML.
 
 Or pull the layers in separately:
 
@@ -53,20 +62,18 @@ One attribute on the document root:
 <html data-theme="light">
 ```
 
-`light`, `dark`, or `auto` (follows the OS). The orange on buttons and fields stays the same. The page background and text change.
+`light`, `dark`, or `auto` (follows the OS). The orange on buttons and fields stays the same. The page background and text change. Try it in the [Theme playground](/theme-playground/).
 
 ## JavaScript
 
-A few widgets need you to leave an empty element on the page and call `mount`:
+Four widgets are custom elements: tabs, pagination, dropdown, and carousel. Import the JS once and the tags upgrade. Pagination is attributes on the host:
 
 ```html
-<div id="pages" class="k-pagination"></div>
+<k-pagination class="k-pagination" count="12" page="5"></k-pagination>
 ```
 
 ```js
-import { KPagination } from 'k-web-ui/js';
-
-KPagination.mount('pages', { count: 12, page: 5 });
+import 'k-web-ui/js';
 ```
 
-Accordion, grid, modal, sidebar, spin, table, toast, and tooltip are CSS only. You write the markup and skip `mount`.
+Accordion, grid, modal, sidebar, spin, table, toast, and tooltip are CSS only. You write the markup and skip the JS import.

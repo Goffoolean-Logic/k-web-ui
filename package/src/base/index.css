@@ -7,6 +7,8 @@
 
 @layer theme, base;
 
+@import './faces.css';
+
 @import 'tailwindcss/theme.css' layer(theme);
 
 @import './tokens.css';

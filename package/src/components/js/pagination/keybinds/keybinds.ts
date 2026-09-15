@@ -1,28 +1,24 @@
-import { goTo } from './events.js';
-import type { KCarouselState } from './models.js';
+import { goTo } from '../events/events.js';
+import type { KPaginationState } from '../models/models.js';
 
-export function bindKeybinds(state: KCarouselState, signal: AbortSignal): void {
-  if (!state.keyboard) {
-    return;
-  }
-
+export function bindKeybinds(state: KPaginationState): void {
   state.root.addEventListener(
     'keydown',
     (event) => {
       if (event.key === 'ArrowLeft') {
         event.preventDefault();
-        goTo(state, state.index - 1);
+        goTo(state, state.page - 1);
       } else if (event.key === 'ArrowRight') {
         event.preventDefault();
-        goTo(state, state.index + 1);
+        goTo(state, state.page + 1);
       } else if (event.key === 'Home') {
         event.preventDefault();
-        goTo(state, 0);
+        goTo(state, 1);
       } else if (event.key === 'End') {
         event.preventDefault();
-        goTo(state, state.slides.length - 1);
+        goTo(state, state.count);
       }
     },
-    { signal },
+    { signal: state.signal },
   );
 }

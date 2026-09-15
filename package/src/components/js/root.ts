@@ -21,3 +21,24 @@ export function fill(node: HTMLElement, content: string | Node): void {
   }
   node.replaceChildren(content);
 }
+
+export function defineElement(
+  name: `${string}-${string}`,
+  ctor: CustomElementConstructor,
+): void {
+  if (customElements.get(name) === undefined) {
+    customElements.define(name, ctor);
+  }
+}
+
+export function emitKChange(
+  host: EventTarget,
+  detail: Record<string, unknown>,
+): void {
+  host.dispatchEvent(
+    new CustomEvent('k-change', {
+      bubbles: true,
+      detail,
+    }),
+  );
+}
