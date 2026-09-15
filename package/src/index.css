@@ -33,10 +33,12 @@
 @import './components/css/modal.css';
 @import './components/css/dropdown.css';
 @import './components/css/grid.css';
+@import './components/css/gauge.css';
 @import './components/css/tooltip.css';
 @import './components/css/accordion.css';
 @import './components/css/table.css';
 @import './components/css/pagination.css';
+@import './components/css/progress.css';
 @import './components/css/toast.css';
 @import './components/css/sidebar.css';
 @import './components/css/carousel.css';

@@ -5,7 +5,15 @@ import type { KCarouselOptions, KCarouselState } from '../models/models.js';
 export function buildCarousel(
   root: HTMLElement,
   options: KCarouselOptions,
-): Omit<KCarouselState, 'index' | 'loop' | 'keyboard'> {
+): Omit<
+  KCarouselState,
+  | 'index'
+  | 'loop'
+  | 'keyboard'
+  | 'autoscroll'
+  | 'autoscrollPaused'
+  | 'autoscrollTimer'
+> {
   if (options.items.length === 0) {
     throw new Error('KCarousel: at least one item is required');
   }

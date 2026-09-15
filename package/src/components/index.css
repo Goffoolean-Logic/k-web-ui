@@ -21,10 +21,12 @@
 @import './css/modal.css';
 @import './css/dropdown.css';
 @import './css/grid.css';
+@import './css/gauge.css';
 @import './css/tooltip.css';
 @import './css/accordion.css';
 @import './css/table.css';
 @import './css/pagination.css';
+@import './css/progress.css';
 @import './css/toast.css';
 @import './css/sidebar.css';
 @import './css/carousel.css';

@@ -14,6 +14,22 @@ export function resolveRoot(
   return el;
 }
 
+export function parseJsonList(raw: string | null, name: string): unknown[] {
+  if (raw === null || raw.trim() === '') {
+    return [];
+  }
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    throw new Error(`${name}: invalid JSON`);
+  }
+  if (!Array.isArray(parsed)) {
+    throw new Error(`${name}: expected a JSON array`);
+  }
+  return parsed;
+}
+
 export function fill(node: HTMLElement, content: string | Node): void {
   if (typeof content === 'string') {
     node.textContent = content;

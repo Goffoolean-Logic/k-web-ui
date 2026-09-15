@@ -1,26 +1,84 @@
-import { defineElement } from '../root.js';
+import { defineElement, parseJsonList } from '../root.js';
 import { buildCarousel } from './dom/dom.js';
 import { bindEvents, goTo } from './events/events.js';
 import { bindKeybinds } from './keybinds/keybinds.js';
-import type { KCarouselItem, KCarouselState } from './models/models.js';
+import type { KCarouselSlide, KCarouselState } from './models/models.js';
 
-export type { KCarouselItem, KCarouselOptions } from './models/models.js';
+export type { KCarouselOptions, KCarouselSlide } from './models/models.js';
+
+function isNode(value: unknown): value is Node {
+  return value instanceof Node;
+}
+
+function parseSlides(raw: string | null): KCarouselSlide[] {
+  const list = parseJsonList(raw, 'KCarousel');
+  const slides: KCarouselSlide[] = [];
+  for (const entry of list) {
+    if (!entry || typeof entry !== 'object') {
+      throw new Error('KCarousel: each slide is an object');
+    }
+    const rec = entry as { src?: unknown; alt?: unknown; content?: unknown };
+    const slide: KCarouselSlide = {};
+    if (typeof rec.src === 'string') {
+      slide.src = rec.src;
+    }
+    if (typeof rec.alt === 'string') {
+      slide.alt = rec.alt;
+    }
+    if (typeof rec.content === 'string') {
+      slide.content = rec.content;
+    }
+    slides.push(slide);
+  }
+  return slides;
+}
+
+function serializeSlides(slides: KCarouselSlide[]): string | null {
+  const json: Array<Record<string, string>> = [];
+  for (const slide of slides) {
+    if (isNode(slide.content)) {
+      return null;
+    }
+    const entry: Record<string, string> = {};
+    if (slide.src) {
+      entry.src = slide.src;
+    }
+    if (slide.alt) {
+      entry.alt = slide.alt;
+    }
+    if (typeof slide.content === 'string') {
+      entry.content = slide.content;
+    }
+    json.push(entry);
+  }
+  return JSON.stringify(json);
+}
+
+function resolveSlide(slide: KCarouselSlide): string | Node {
+  if (slide.src) {
+    const img = document.createElement('img');
+    img.src = slide.src;
+    img.alt = slide.alt ?? '';
+    return img;
+  }
+  return slide.content ?? '';
+}
 
 /**
- * Carousel. The host is `<k-carousel class="k-carousel">`. Set `items` and
- * the element builds the track, slides, and controls. `loop`, `index`, and
- * `keyboard` are attributes.
+ * Carousel. The host is `<k-carousel class="k-carousel">`. `slides`, `loop`,
+ * `autoscroll`, `index`, and `keyboard` are attributes. The element builds
+ * the track, slides, and controls.
  *
- *   <k-carousel id="shots" class="k-carousel"></k-carousel>
- *   document.getElementById('shots').items = [{ content: 'One' }];
+ *   <k-carousel class="k-carousel" slides='[{"content":"One"}]'></k-carousel>
  */
 export class KCarousel extends HTMLElement {
   #state: KCarouselState | null = null;
   #abort = new AbortController();
-  #items: KCarouselItem[] = [];
+  #slides: KCarouselSlide[] | null = null;
+  #reflecting = false;
 
   static get observedAttributes(): string[] {
-    return ['index', 'loop', 'keyboard'];
+    return ['index', 'loop', 'keyboard', 'autoscroll', 'slides'];
   }
 
   connectedCallback(): void {
@@ -34,7 +92,13 @@ export class KCarousel extends HTMLElement {
     this.#state = null;
   }
 
-  attributeChangedCallback(): void {
+  attributeChangedCallback(name: string): void {
+    if (this.#reflecting) {
+      return;
+    }
+    if (name === 'slides') {
+      this.#slides = null;
+    }
     if (this.isConnected) {
       this.#connect();
     }
@@ -44,12 +108,18 @@ export class KCarousel extends HTMLElement {
     this.#abort.abort();
   }
 
-  get items(): KCarouselItem[] {
-    return this.#items;
+  get slides(): KCarouselSlide[] {
+    return this.#slides ?? parseSlides(this.getAttribute('slides'));
   }
 
-  set items(value: KCarouselItem[]) {
-    this.#items = value;
+  set slides(value: KCarouselSlide[]) {
+    this.#slides = value;
+    const json = serializeSlides(value);
+    if (json !== null) {
+      this.#reflecting = true;
+      this.setAttribute('slides', json);
+      this.#reflecting = false;
+    }
     if (this.isConnected) {
       this.#connect();
     }
@@ -67,19 +137,23 @@ export class KCarousel extends HTMLElement {
   }
 
   #connect(): void {
-    if (this.#items.length === 0) {
+    const slides = this.slides;
+    if (slides.length === 0) {
       return;
     }
 
     this.#abort.abort();
     this.#abort = new AbortController();
     const index = Number(this.getAttribute('index') ?? 0);
-    const parts = buildCarousel(this, { items: this.#items });
+    const parts = buildCarousel(this, {
+      items: slides.map((slide) => ({ content: resolveSlide(slide) })),
+    });
     this.#state = {
       ...parts,
       index: Number.isFinite(index) ? index : 0,
       loop: this.getAttribute('loop') !== 'false',
       keyboard: this.getAttribute('keyboard') !== 'false',
+      autoscroll: this.getAttribute('autoscroll') !== 'false',
     };
     this.setAttribute('aria-roledescription', 'carousel');
     this.tabIndex = 0;

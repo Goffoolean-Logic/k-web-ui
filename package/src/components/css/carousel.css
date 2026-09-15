@@ -11,7 +11,7 @@
 
   div.k-carousel__track {
     @apply flex;
-    transition: transform 200ms ease;
+    transition: transform 600ms ease;
   }
 
   div.k-carousel__slide {
@@ -19,11 +19,23 @@
     @apply box-border px-14 pt-8 pb-12 text-center text-sm text-k-fg;
   }
 
+  div.k-carousel__slide:has(> img) {
+    padding: 0;
+  }
+
+  div.k-carousel__slide > img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
   button.k-carousel__prev,
   button.k-carousel__next {
     @apply absolute z-10 inline-flex h-8 w-8
-      cursor-pointer items-center justify-center rounded-full border
+      cursor-pointer items-center justify-center border
       border-k-border bg-k-surface text-sm text-k-fg;
+    border-radius: var(--k-radius);
     top: 50%;
     translate: 0 -50%;
   }

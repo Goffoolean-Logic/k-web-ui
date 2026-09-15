@@ -26,6 +26,11 @@ export function buildTabs(state: KTabsState, options: KTabsOptions): void {
     list.setAttribute('aria-label', options.label);
   }
 
+  const ink = document.createElement('span');
+  ink.className = 'k-tabs__ink';
+  ink.setAttribute('aria-hidden', 'true');
+  list.append(ink);
+
   const tabs: HTMLElement[] = [];
   const panels: HTMLElement[] = [];
 
@@ -52,6 +57,7 @@ export function buildTabs(state: KTabsState, options: KTabsOptions): void {
 
   state.tabs = tabs;
   state.panels = panels;
+  state.ink = ink;
   state.root.replaceChildren(list, ...panels);
 }
 

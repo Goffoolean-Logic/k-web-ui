@@ -1,20 +1,19 @@
 import { describe, expect, it } from 'vitest';
-import { queryParts, setOpen } from '../dom/dom.js';
+import { buildDropdown, setOpen } from '../dom/dom.js';
 import type { KDropdownState } from '../models/models.js';
 import { bindEvents } from './events.js';
 
+const items = [{ label: 'Name' }, { label: 'Date' }];
+
 function mounted(): { state: KDropdownState; abort: AbortController } {
   const root = document.createElement('div');
-  root.innerHTML = `
-    <button type="button" class="k-dropdown__trigger">Sort</button>
-    <div class="k-dropdown__menu" hidden>
-      <button type="button" class="k-dropdown__item">Name</button>
-      <button type="button" class="k-dropdown__item">Date</button>
-    </div>
-  `;
+  root.id = 'sort';
   document.body.append(root);
   const abort = new AbortController();
-  const state: KDropdownState = { ...queryParts(root), open: false };
+  const state: KDropdownState = {
+    ...buildDropdown(root, { items, label: 'Sort' }),
+    open: false,
+  };
   setOpen(state, false);
   bindEvents(state, abort.signal);
   return { state, abort };

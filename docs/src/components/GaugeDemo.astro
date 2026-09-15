@@ -1,0 +1,38 @@
+---
+interface Props {
+  id?: string;
+  variant?: string;
+  size?: string;
+  indeterminate?: boolean;
+  value?: string;
+  max?: string;
+  label?: string;
+  text?: string;
+}
+
+const {
+  id,
+  variant,
+  size,
+  indeterminate = false,
+  value,
+  max = '100',
+  label,
+  text,
+} = Astro.props;
+---
+
+<k-gauge
+  id={id}
+  class="k-gauge"
+  variant={variant}
+  size={size}
+  indeterminate={indeterminate ? '' : undefined}
+  value={value}
+  max={max}
+  label={label}
+  text={text}></k-gauge>
+
+<script>
+  import 'k-web-ui/js';
+</script>

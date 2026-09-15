@@ -1,0 +1,213 @@
+@property --k-gauge {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 0%;
+}
+
+@property --k-gauge-head {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 0%;
+}
+
+@property --k-gauge-amount {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 0%;
+}
+
+@layer components {
+  /*
+   * <k-gauge class="k-gauge">. The tag writes a hidden progress, the
+   * frame, .k-gauge__value, and .k-gauge__label. --k-gauge is how far
+   * the fill has gone along the three sides. `indeterminate` opts into
+   * the empty-state motion.
+   */
+  .k-gauge {
+    --k-gauge-color: var(--k-primary);
+    --k-gauge-track: var(--k-surface-hard);
+    --k-gauge-size: 6.5rem;
+    --k-gauge-thickness: 0.55rem;
+    --k-gauge-amount: var(--k-gauge, 0%);
+    --k-gauge-left: min(calc(var(--k-gauge-amount) * 3), 100%);
+    --k-gauge-across: min(max(calc(var(--k-gauge-amount) * 3 - 100%), 0%), 100%);
+    --k-gauge-down: min(max(calc(var(--k-gauge-amount) * 3 - 200%), 0%), 100%);
+    transition: --k-gauge 200ms ease;
+  }
+
+  k-gauge.k-gauge {
+    @apply relative inline-grid justify-items-center align-middle;
+    width: var(--k-gauge-size, 6.5rem);
+    height: var(--k-gauge-size, 6.5rem);
+    container-type: inline-size;
+    container-name: k-gauge;
+  }
+
+  k-gauge[variant='info'] {
+    --k-gauge-color: var(--k-info);
+  }
+
+  k-gauge[variant='success'] {
+    --k-gauge-color: var(--k-success);
+  }
+
+  k-gauge[variant='warning'] {
+    --k-gauge-color: var(--k-warning);
+  }
+
+  k-gauge[variant='danger'] {
+    --k-gauge-color: var(--k-danger);
+  }
+
+  k-gauge[size='sm'] {
+    --k-gauge-size: 4rem;
+    --k-gauge-thickness: 0.4rem;
+    width: 4rem;
+    height: 4rem;
+  }
+
+  k-gauge[size='lg'] {
+    --k-gauge-size: 7.5rem;
+    --k-gauge-thickness: 0.7rem;
+    width: 7.5rem;
+    height: 7.5rem;
+  }
+
+  k-gauge[indeterminate]:has(progress:indeterminate) {
+    --k-gauge-amount: var(--k-gauge-head);
+    animation: k-gauge-head 1.4s ease-in-out infinite alternate;
+  }
+
+  k-gauge.k-gauge > :is(progress, .k-gauge__frame, .k-gauge__value) {
+    grid-area: 1 / 1;
+  }
+
+  k-gauge.k-gauge > progress {
+    position: relative;
+    box-sizing: border-box;
+    width: var(--k-gauge-size);
+    height: var(--k-gauge-size);
+    overflow: hidden;
+    color: transparent;
+    accent-color: transparent;
+    background: none;
+    border: none;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .k-gauge__frame {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .k-gauge__seg {
+    position: absolute;
+    box-sizing: border-box;
+    border-radius: var(--k-radius);
+  }
+
+  .k-gauge__seg--track {
+    background-color: var(--k-gauge-track);
+  }
+
+  .k-gauge__seg--fill {
+    background-color: var(--k-gauge-color);
+  }
+
+  .k-gauge__seg--left {
+    left: 0;
+    bottom: 0;
+    width: var(--k-gauge-thickness);
+  }
+
+  .k-gauge__seg--top {
+    top: 0;
+    left: 0;
+    height: var(--k-gauge-thickness);
+  }
+
+  .k-gauge__seg--right {
+    right: 0;
+    top: 0;
+    width: var(--k-gauge-thickness);
+  }
+
+  .k-gauge__seg--track.k-gauge__seg--left,
+  .k-gauge__seg--track.k-gauge__seg--right {
+    height: 100%;
+  }
+
+  .k-gauge__seg--track.k-gauge__seg--top {
+    width: 100%;
+  }
+
+  .k-gauge__seg--fill.k-gauge__seg--left {
+    height: var(--k-gauge-left, 0%);
+  }
+
+  .k-gauge__seg--fill.k-gauge__seg--top {
+    width: var(--k-gauge-across, 0%);
+  }
+
+  .k-gauge__seg--fill.k-gauge__seg--right {
+    height: var(--k-gauge-down, 0%);
+  }
+
+  k-gauge.k-gauge > .k-gauge__label {
+    grid-area: 1 / 1;
+    align-self: end;
+    z-index: 1;
+    @apply px-1 pb-1.5 text-center leading-snug font-medium text-k-fg-muted;
+    max-width: 100%;
+    font-size: 0.6875rem;
+    overflow-wrap: break-word;
+  }
+
+  k-gauge.k-gauge > .k-gauge__label:empty {
+    @apply hidden;
+  }
+
+  .k-gauge__value {
+    @apply self-center text-center font-medium text-k-fg;
+    z-index: 1;
+    max-width: 70%;
+    font-size: clamp(0.6rem, 20cqi, 1.65rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    overflow-wrap: break-word;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  k-gauge[size='sm'] > .k-gauge__label {
+    @apply text-[0.625rem];
+  }
+
+  k-gauge[size='lg'] > .k-gauge__label {
+    @apply text-sm;
+  }
+
+  @keyframes k-gauge-head {
+    0% {
+      --k-gauge-head: 0%;
+    }
+
+    100% {
+      --k-gauge-head: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .k-gauge {
+      transition: none;
+    }
+
+    k-gauge[indeterminate]:has(progress:indeterminate) {
+      animation: none;
+      --k-gauge-head: 40%;
+    }
+  }
+}

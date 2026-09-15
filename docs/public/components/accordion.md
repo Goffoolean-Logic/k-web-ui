@@ -6,7 +6,7 @@ An accordion is a list of sections the reader can open, such as an FAQ or a sett
 
 Wrap them in `<div class="k-accordion">`. Each item is `<details class="k-accordion__item">`. The summary is `.k-accordion__trigger`. The open content is `.k-accordion__panel`. Put the same `name` on every details in the group if opening one should close the others. Leave `name` off if several can stay open. `open` on a details starts that one expanded.
 
-The chevron is a CSS `::after` on the trigger. It flips when the item is open.
+The chevron is a CSS `::after` on the trigger. It flips when the item is open. The panel height eases open. Reduced motion drops the motion.
 
 ## Classes
 

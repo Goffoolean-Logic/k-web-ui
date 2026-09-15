@@ -85,6 +85,8 @@ describe('buildTabs', () => {
       'sections-tab-0',
     );
     expect(current.panels[0]?.textContent).toBe('First');
+    expect(current.ink?.className).toBe('k-tabs__ink');
+    expect(current.ink?.getAttribute('aria-hidden')).toBe('true');
     current.root.remove();
   });
 

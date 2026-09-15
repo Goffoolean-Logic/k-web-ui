@@ -10,7 +10,7 @@ export type { KPaginationOptions } from './models/models.js';
  * Pagination. The host is `<k-pagination class="k-pagination">`. `count` and
  * `page` are attributes. Page changes dispatch `k-change` with `{ page }`.
  *
- *   <k-pagination class="k-pagination" count="12" page="5"></k-pagination>
+ *   <k-pagination id="pages" class="k-pagination" count="12" page="5"></k-pagination>
  */
 export class KPagination extends HTMLElement {
   #state: KPaginationState | null = null;

@@ -66,14 +66,14 @@ One attribute on the document root:
 
 ## JavaScript
 
-Four widgets are custom elements: tabs, pagination, dropdown, and carousel. Import the JS once and the tags upgrade. Pagination is attributes on the host:
+Five widgets are custom elements: tabs, pagination, dropdown, carousel, and gauge. Put the tag on the page with its inputs. Import the JS once. The element writes the inside.
 
 ```html
-<k-pagination class="k-pagination" count="12" page="5"></k-pagination>
+<k-tabs
+  class="k-tabs"
+  label="Sections"
+  panels='[{"label":"Overview","content":"The first panel."},{"label":"Usage","content":"The second panel."},{"label":"API","content":"The third panel."}]'
+></k-tabs>
 ```
 
-```js
-import 'k-web-ui/js';
-```
-
-Accordion, grid, modal, sidebar, spin, table, toast, and tooltip are CSS only. You write the markup and skip the JS import.
+A progress bar is `<progress class="k-progress">`. Accordion, grid, modal, sidebar, spin, table, toast, and tooltip are CSS only. You write the markup and skip the JS import.

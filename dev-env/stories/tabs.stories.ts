@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/html-vite';
 import type { KTabItem, KTabs } from 'k-web-ui/js';
 import 'k-web-ui/js';
 
-const ITEMS = [
+const PANELS: KTabItem[] = [
   {
     label: 'Overview',
     content: 'Project home, recent activity, and pinned files.',
@@ -17,20 +17,20 @@ const ITEMS = [
   },
 ];
 
-const ICON_ITEMS = [
+const ICON_PANELS: KTabItem[] = [
   {
     label: 'Overview',
-    icon: 'info' as const,
+    icon: 'info',
     content: 'Project home, recent activity, and pinned files.',
   },
   {
     label: 'Activity',
-    icon: 'success' as const,
+    icon: 'success',
     content: 'Comments and status changes from the last 7 days.',
   },
   {
     label: 'Settings',
-    icon: 'warning' as const,
+    icon: 'warning',
     content: 'Members, billing, and notification defaults.',
   },
 ];
@@ -46,33 +46,34 @@ type Story = StoryObj;
 
 function paintTabs(
   root: KTabs,
-  items: KTabItem[] = ITEMS,
+  panels: KTabItem[] = PANELS,
   selected?: number,
 ): void {
   root.setAttribute('label', 'Sections');
   if (selected != null) {
     root.setAttribute('selected', String(selected));
   }
-  root.items = items;
+  root.setAttribute('panels', JSON.stringify(panels));
 }
 
 function tabsRoot(
   id: string,
   {
     selected,
-    items = ITEMS,
+    panels = PANELS,
     large = false,
-  }: { selected?: number; items?: KTabItem[]; large?: boolean } = {},
+  }: { selected?: number; panels?: KTabItem[]; large?: boolean } = {},
 ): KTabs {
   const root = document.createElement('k-tabs');
   root.id = id;
   root.className = large ? 'k-tabs k-tabs--lg' : 'k-tabs';
-  paintTabs(root, items, selected);
+  paintTabs(root, panels, selected);
   return root;
 }
 
 /**
- * Empty `<k-tabs class="k-tabs">`. Set `items` and the element builds the rest.
+ * Empty `<k-tabs class="k-tabs">`. `panels` is an attribute. The element
+ * builds the rest.
  */
 export const Default: Story = {
   render: () => tabsRoot('section-tabs'),
@@ -89,27 +90,28 @@ export const SecondSelected: Story = {
   play: ({ canvasElement }) => {
     const root = canvasElement.querySelector<KTabs>('#section-tabs-second');
     if (root) {
-      paintTabs(root, ITEMS, 1);
+      paintTabs(root, PANELS, 1);
     }
   },
 };
 
 export const WithIcons: Story = {
-  render: () => tabsRoot('section-tabs-icons', { items: ICON_ITEMS }),
+  render: () => tabsRoot('section-tabs-icons', { panels: ICON_PANELS }),
   play: ({ canvasElement }) => {
     const root = canvasElement.querySelector<KTabs>('#section-tabs-icons');
     if (root) {
-      paintTabs(root, ICON_ITEMS);
+      paintTabs(root, ICON_PANELS);
     }
   },
 };
 
 export const Large: Story = {
-  render: () => tabsRoot('section-tabs-lg', { items: ICON_ITEMS, large: true }),
+  render: () =>
+    tabsRoot('section-tabs-lg', { panels: ICON_PANELS, large: true }),
   play: ({ canvasElement }) => {
     const root = canvasElement.querySelector<KTabs>('#section-tabs-lg');
     if (root) {
-      paintTabs(root, ICON_ITEMS);
+      paintTabs(root, ICON_PANELS);
     }
   },
 };

@@ -26,10 +26,6 @@ Twelve pages, starting on 5. First and last stay; the window is 4 5 6.
 <k-pagination id="docs-pagination" class="k-pagination" count="12" page="5"></k-pagination>
 ```
 
-```js
-import 'k-web-ui/js';
-```
-
 ### Few pages
 
 Four pages. Every number is listed. First and last are omitted; Home and End still jump.

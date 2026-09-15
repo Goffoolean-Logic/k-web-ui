@@ -18,6 +18,7 @@ function mounted(keyboard = true): {
     index: 1,
     loop: true,
     keyboard,
+    autoscroll: false,
   };
   paint(state);
   bindEvents(state, abort.signal);

@@ -25,27 +25,8 @@ const {
 <k-tabs
   id={id}
   class:list={['k-tabs', large && 'k-tabs--lg']}
-  data-tabs-demo={JSON.stringify(items)}></k-tabs>
+  panels={JSON.stringify(items)}></k-tabs>
 
 <script>
-  import { KTabs } from 'k-web-ui/js';
-
-  function paint(host: Element): void {
-    if (!(host instanceof KTabs)) {
-      return;
-    }
-    const raw = host.getAttribute('data-tabs-demo');
-    if (!raw) {
-      return;
-    }
-    host.items = JSON.parse(raw);
-    host.removeAttribute('data-tabs-demo');
-  }
-
-  function paintAll(): void {
-    document.querySelectorAll('k-tabs[data-tabs-demo]').forEach(paint);
-  }
-
-  paintAll();
-  document.addEventListener('astro:page-load', paintAll);
+  import 'k-web-ui/js';
 </script>

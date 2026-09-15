@@ -1,4 +1,4 @@
-import { defineElement } from '../root.js';
+import { defineElement, parseJsonList } from '../root.js';
 import { buildTabs } from './dom/dom.js';
 import { bindEvents, selectTab } from './events/events.js';
 import { bindKeybinds } from './keybinds/keybinds.js';
@@ -6,23 +6,72 @@ import type { KTabItem, KTabsState } from './models/models.js';
 
 export type { KTabItem, KTabsOptions } from './models/models.js';
 
+function isNode(value: unknown): value is Node {
+  return value instanceof Node;
+}
+
+function parsePanels(raw: string | null): KTabItem[] {
+  const list = parseJsonList(raw, 'KTabs');
+  const panels: KTabItem[] = [];
+  for (const entry of list) {
+    if (!entry || typeof entry !== 'object') {
+      throw new Error('KTabs: each panel is an object');
+    }
+    const rec = entry as {
+      label?: unknown;
+      icon?: unknown;
+      content?: unknown;
+    };
+    const panel: KTabItem = {
+      content: typeof rec.content === 'string' ? rec.content : '',
+    };
+    if (typeof rec.label === 'string') {
+      panel.label = rec.label;
+    }
+    if (typeof rec.icon === 'string') {
+      panel.icon = rec.icon as KTabItem['icon'];
+    }
+    panels.push(panel);
+  }
+  return panels;
+}
+
+function serializePanels(panels: KTabItem[]): string | null {
+  const json: Array<Record<string, string>> = [];
+  for (const panel of panels) {
+    if (isNode(panel.content) || isNode(panel.icon)) {
+      return null;
+    }
+    const entry: Record<string, string> = {};
+    if (panel.label !== undefined) {
+      entry.label = panel.label;
+    }
+    if (typeof panel.icon === 'string') {
+      entry.icon = panel.icon;
+    }
+    if (typeof panel.content === 'string') {
+      entry.content = panel.content;
+    }
+    json.push(entry);
+  }
+  return JSON.stringify(json);
+}
+
 /**
- * Tabs. The host is `<k-tabs class="k-tabs">`. Set `items` and the element
- * builds the tablist, tabs, panels, and ARIA. `label`, `selected`, and
- * `keyboard` are attributes.
+ * Tabs. The host is `<k-tabs class="k-tabs">`. `label`, `selected`,
+ * `keyboard`, and `panels` are attributes. The element builds the tablist,
+ * tabs, panels, and ARIA.
  *
- *   <k-tabs id="sections" class="k-tabs" label="Sections"></k-tabs>
- *   document.getElementById('sections').items = [
- *     { label: 'Overview', icon: 'info', content: '…' },
- *   ];
+ *   <k-tabs class="k-tabs" label="Sections" panels='[{"label":"Overview","content":"…"}]'></k-tabs>
  */
 export class KTabs extends HTMLElement {
   #state: KTabsState | null = null;
   #abort = new AbortController();
-  #items: KTabItem[] = [];
+  #panels: KTabItem[] | null = null;
+  #reflecting = false;
 
   static get observedAttributes(): string[] {
-    return ['label', 'selected', 'keyboard'];
+    return ['label', 'selected', 'keyboard', 'panels'];
   }
 
   connectedCallback(): void {
@@ -36,7 +85,13 @@ export class KTabs extends HTMLElement {
     this.#state = null;
   }
 
-  attributeChangedCallback(): void {
+  attributeChangedCallback(name: string): void {
+    if (this.#reflecting) {
+      return;
+    }
+    if (name === 'panels') {
+      this.#panels = null;
+    }
     if (this.isConnected) {
       this.#connect();
     }
@@ -46,12 +101,18 @@ export class KTabs extends HTMLElement {
     this.#abort.abort();
   }
 
-  get items(): KTabItem[] {
-    return this.#items;
+  get panels(): KTabItem[] {
+    return this.#panels ?? parsePanels(this.getAttribute('panels'));
   }
 
-  set items(value: KTabItem[]) {
-    this.#items = value;
+  set panels(value: KTabItem[]) {
+    this.#panels = value;
+    const json = serializePanels(value);
+    if (json !== null) {
+      this.#reflecting = true;
+      this.setAttribute('panels', json);
+      this.#reflecting = false;
+    }
     if (this.isConnected) {
       this.#connect();
     }
@@ -78,7 +139,8 @@ export class KTabs extends HTMLElement {
   }
 
   #connect(): void {
-    if (this.#items.length === 0) {
+    const panels = this.panels;
+    if (panels.length === 0) {
       return;
     }
 
@@ -93,7 +155,7 @@ export class KTabs extends HTMLElement {
 
     const selected = Number(this.getAttribute('selected') ?? 0);
     buildTabs(this.#state, {
-      items: this.#items,
+      items: panels,
       label: this.getAttribute('label') ?? undefined,
       keyboard: this.#state.keyboard,
     });

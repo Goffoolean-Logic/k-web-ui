@@ -49,16 +49,11 @@
           <p>
             A <span class="k-tooltip" data-tip="Last saved 4 minutes ago"><a class="k-link" href="#">link</a></span> with extra context.
           </p>
-          <k-dropdown id="playground-sort" class="k-dropdown">
-            <button type="button" class="k-btn k-btn--secondary k-dropdown__trigger">
-              Sort
-            </button>
-            <div id="playground-sort-menu" class="k-dropdown__menu" hidden>
-              <button type="button" class="k-dropdown__item">Name</button>
-              <button type="button" class="k-dropdown__item">Date</button>
-              <button type="button" class="k-dropdown__item">Size</button>
-            </div>
-          </k-dropdown>
+          <k-dropdown
+            id="playground-sort"
+            class="k-dropdown"
+            label="Sort"
+            options='[{"label":"Name"},{"label":"Date"},{"label":"Size"}]'></k-dropdown>
           <k-pagination
             id="playground-pages"
             class="k-pagination"
@@ -226,9 +221,14 @@
     host: Element | null,
     items: { label: string; icon?: KIconName; content: Element | null }[],
   ): void {
-    if (!(host instanceof KTabs) || host.dataset.wired === 'true') {
+    if (
+      !(host instanceof HTMLElement) ||
+      host.localName !== 'k-tabs' ||
+      host.dataset.wired === 'true'
+    ) {
       return;
     }
+    const tabs = host as KTabs;
     const next: KTabItem[] = [];
     for (const item of items) {
       if (!(item.content instanceof HTMLElement)) {
@@ -240,8 +240,8 @@
       }
       next.push(tab);
     }
-    host.items = next;
-    host.dataset.wired = 'true';
+    tabs.panels = next;
+    tabs.dataset.wired = 'true';
   }
 
   function wireScenes(root: Element): void {

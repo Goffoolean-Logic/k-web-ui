@@ -1,11 +1,28 @@
-<k-dropdown id="docs-dropdown" class="k-dropdown">
-  <button type="button" class="k-btn k-btn--secondary k-dropdown__trigger">Sort</button>
-  <div id="docs-dropdown-menu" class="k-dropdown__menu" hidden>
-    <button type="button" class="k-dropdown__item">Name</button>
-    <button type="button" class="k-dropdown__item">Date</button>
-    <button type="button" class="k-dropdown__item">Size</button>
-  </div>
-</k-dropdown>
+---
+interface Props {
+  id?: string;
+  label?: string;
+  end?: boolean;
+}
+
+const {
+  id = 'docs-dropdown',
+  label = 'Sort',
+  end = false,
+} = Astro.props;
+
+const options = JSON.stringify([
+  { label: 'Name' },
+  { label: 'Date' },
+  { label: 'Size' },
+]);
+---
+
+<k-dropdown
+  id={id}
+  class:list={['k-dropdown', end && 'k-dropdown--end']}
+  label={label}
+  options={options}></k-dropdown>
 
 <script>
   import 'k-web-ui/js';

@@ -9,10 +9,29 @@
 
   details.k-accordion__item {
     @apply border-b border-k-border bg-k-surface-raised;
+    interpolate-size: allow-keywords;
   }
 
   details.k-accordion__item:last-child {
     @apply border-b-0;
+  }
+
+  details.k-accordion__item::details-content {
+    height: 0;
+    overflow: hidden;
+    transition:
+      height 200ms ease,
+      content-visibility 200ms allow-discrete;
+  }
+
+  details.k-accordion__item[open]::details-content {
+    height: auto;
+  }
+
+  @starting-style {
+    details.k-accordion__item[open]::details-content {
+      height: 0;
+    }
   }
 
   summary.k-accordion__trigger {
@@ -32,6 +51,7 @@
     border-inline-end: 2px solid var(--k-fg);
     border-bottom: 2px solid var(--k-fg);
     transform: rotate(45deg);
+    transition: transform 200ms ease;
   }
 
   details.k-accordion__item[open] > summary.k-accordion__trigger::after {
@@ -40,5 +60,12 @@
 
   div.k-accordion__panel {
     @apply px-4 pb-4 text-sm text-k-fg;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    details.k-accordion__item::details-content,
+    summary.k-accordion__trigger::after {
+      transition: none;
+    }
   }
 }
