@@ -1,14 +1,51 @@
-<k-tabs id="docs-tabs" class="k-tabs"></k-tabs>
+---
+interface Item {
+  label: string;
+  content: string;
+  icon?: string;
+}
+
+interface Props {
+  id?: string;
+  large?: boolean;
+  items?: Item[];
+}
+
+const {
+  id = 'docs-tabs',
+  large = false,
+  items = [
+    { label: 'Overview', content: 'The first panel.' },
+    { label: 'Usage', content: 'The second panel.' },
+    { label: 'API', content: 'The third panel.' },
+  ],
+} = Astro.props;
+---
+
+<k-tabs
+  id={id}
+  class:list={['k-tabs', large && 'k-tabs--lg']}
+  data-tabs-demo={JSON.stringify(items)}></k-tabs>
 
 <script>
   import { KTabs } from 'k-web-ui/js';
 
-  const tabs = document.getElementById('docs-tabs');
-  if (tabs instanceof KTabs) {
-    tabs.items = [
-      { label: 'Overview', content: 'The first panel.' },
-      { label: 'Usage', content: 'The second panel.' },
-      { label: 'API', content: 'The third panel.' },
-    ];
+  function paint(host: Element): void {
+    if (!(host instanceof KTabs)) {
+      return;
+    }
+    const raw = host.getAttribute('data-tabs-demo');
+    if (!raw) {
+      return;
+    }
+    host.items = JSON.parse(raw);
+    host.removeAttribute('data-tabs-demo');
   }
+
+  function paintAll(): void {
+    document.querySelectorAll('k-tabs[data-tabs-demo]').forEach(paint);
+  }
+
+  paintAll();
+  document.addEventListener('astro:page-load', paintAll);
 </script>

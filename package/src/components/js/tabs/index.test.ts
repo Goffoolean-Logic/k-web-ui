@@ -63,4 +63,12 @@ describe('k-tabs', () => {
     expect(tabs.querySelectorAll('[role="tab"]')).toHaveLength(2);
     tabs.remove();
   });
+
+  it('renders a kit icon on the tab', () => {
+    const tabs = host();
+    tabs.items = [{ label: 'Overview', icon: 'info', content: 'First' }];
+    document.body.append(tabs);
+    expect(tabs.tabs[0]?.querySelector('.k-icon--info')).toBeTruthy();
+    tabs.remove();
+  });
 });

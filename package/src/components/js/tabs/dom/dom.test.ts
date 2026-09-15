@@ -115,4 +115,28 @@ describe('buildTabs', () => {
     expect(current.panels[0]?.firstElementChild).toBe(child);
     current.root.remove();
   });
+
+  it('places a named icon before the label', () => {
+    const current = state('icons');
+    buildTabs(current, {
+      items: [{ label: 'Overview', icon: 'info', content: 'First' }],
+    });
+    const icon = current.tabs[0]?.querySelector('.k-icon');
+    expect(icon?.className).toBe('k-icon k-icon--info');
+    expect(icon?.getAttribute('aria-hidden')).toBe('true');
+    expect(current.tabs[0]?.textContent).toBe('Overview');
+    current.root.remove();
+  });
+
+  it('accepts a Node as the tab icon', () => {
+    const current = state('icon-node');
+    const mark = document.createElement('span');
+    mark.className = 'k-icon k-icon--success';
+    buildTabs(current, {
+      items: [{ label: 'Usage', icon: mark, content: 'Second' }],
+    });
+    expect(current.tabs[0]?.firstElementChild).toBe(mark);
+    expect(current.tabs[0]?.textContent).toBe('Usage');
+    current.root.remove();
+  });
 });

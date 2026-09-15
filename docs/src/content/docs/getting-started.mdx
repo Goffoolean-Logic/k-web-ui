@@ -17,11 +17,20 @@ pnpm add k-web-ui
 
 ## CSS
 
-This one import is the full prebuilt stylesheet. You do not need Tailwind for it:
+This one import is the full prebuilt stylesheet. You do not need Tailwind for it. `@font-face` is at the top of that file so the browser can start Outfit and Plex while the rest of the sheet still parses:
 
 ```js
 import 'k-web-ui';
 ```
+
+To start the faces even earlier, load them as their own sheet first:
+
+```js
+import 'k-web-ui/fonts';
+import 'k-web-ui';
+```
+
+The Outfit file is `k-web-ui/fonts/outfit-latin.woff2` if you want to preload it from HTML.
 
 Or pull the layers in separately:
 
@@ -57,7 +66,7 @@ One attribute on the document root:
 <html data-theme="light">
 ```
 
-`light`, `dark`, or `auto` (follows the OS). The orange on buttons and fields stays the same. The page background and text change.
+`light`, `dark`, or `auto` (follows the OS). The orange on buttons and fields stays the same. The page background and text change. Try it in the [Theme playground](/theme-playground/).
 
 ## JavaScript
 

@@ -9,3 +9,6 @@ for (const dest of [join(root, 'dist/fonts'), join(root, 'dist/base/fonts')]) {
   mkdirSync(dest, { recursive: true });
   cpSync(src, dest, { recursive: true });
 }
+
+mkdirSync(join(root, 'dist'), { recursive: true });
+cpSync(join(root, 'src/base/faces.css'), join(root, 'dist/fonts.css'));

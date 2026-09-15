@@ -1,5 +1,6 @@
+import { createIcon } from '../../icon.js';
 import { fill } from '../../root.js';
-import type { KTabsOptions, KTabsState } from '../models/models.js';
+import type { KTabItem, KTabsOptions, KTabsState } from '../models/models.js';
 
 export function tabFromEvent(
   root: HTMLElement,
@@ -35,7 +36,7 @@ export function buildTabs(state: KTabsState, options: KTabsOptions): void {
     tab.setAttribute('role', 'tab');
     tab.id = `${hostId}-tab-${i}`;
     tab.setAttribute('aria-controls', `${hostId}-panel-${i}`);
-    tab.textContent = item.label;
+    paintTab(tab, item);
 
     const panel = document.createElement('div');
     panel.className = 'k-tabs__panel';
@@ -52,4 +53,13 @@ export function buildTabs(state: KTabsState, options: KTabsOptions): void {
   state.tabs = tabs;
   state.panels = panels;
   state.root.replaceChildren(list, ...panels);
+}
+
+function paintTab(tab: HTMLElement, item: KTabItem): void {
+  if (item.icon !== undefined) {
+    tab.append(
+      typeof item.icon === 'string' ? createIcon(item.icon) : item.icon,
+    );
+  }
+  tab.append(item.label);
 }

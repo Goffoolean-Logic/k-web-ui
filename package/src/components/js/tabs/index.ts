@@ -13,7 +13,7 @@ export type { KTabItem, KTabsOptions } from './models/models.js';
  *
  *   <k-tabs id="sections" class="k-tabs" label="Sections"></k-tabs>
  *   document.getElementById('sections').items = [
- *     { label: 'Overview', content: '…' },
+ *     { label: 'Overview', icon: 'info', content: '…' },
  *   ];
  */
 export class KTabs extends HTMLElement {

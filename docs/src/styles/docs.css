@@ -98,7 +98,7 @@
 
 .k-example__tabs .k-tabs__list {
   width: 100%;
-  padding-inline: 0.75rem;
+  padding: 0.5rem 0.75rem;
 }
 
 .k-example__tabs:not(:has(.k-tabs__tab:nth-of-type(2))) .k-tabs__list {
@@ -431,32 +431,14 @@ html:has(.hero-island) {
   }
 }
 
-.hero a.k-btn {
-  @apply inline-flex cursor-pointer items-center justify-center gap-2
-    rounded-k border border-transparent px-5 py-2.5
-    text-sm leading-tight font-medium no-underline
-    transition-colors duration-150;
+starlight-theme-select label {
+  border-radius: var(--k-radius);
 }
 
-.hero a.k-btn > .k-icon {
-  width: 1em;
-  height: 1em;
-}
-
-.hero a.k-btn--primary {
-  @apply bg-k-primary text-k-primary-fg;
-}
-
-.hero a.k-btn--primary:hover {
-  @apply bg-k-primary-hover;
-}
-
-.hero a.k-btn--secondary {
-  @apply border-k-border bg-k-surface text-k-fg;
-}
-
-.hero a.k-btn--secondary:hover {
-  @apply bg-k-surface-raised;
+starlight-theme-select label:hover,
+starlight-theme-select label:focus-within {
+  color: var(--sl-color-white);
+  background-color: color-mix(in oklab, var(--k-fg) 12%, transparent);
 }
 
 .splash {
@@ -524,6 +506,10 @@ html:has(.hero-island) {
   flex: 1 1 auto;
 }
 
+.splash-cards .k-card__body .k-btn {
+  align-self: start;
+}
+
 .splash-cards .k-card__title,
 .splash-cards .k-card__body p {
   margin: 0;
@@ -548,5 +534,263 @@ main:has(.hero) .content-panel:has(.splash-lower) {
   .splash-band,
   .splash-cards.k-grid--2 {
     grid-template-columns: 1fr;
+  }
+}
+
+.k-playground {
+  display: grid;
+  gap: 1rem;
+  margin-block: 1.25rem 2rem;
+}
+
+:root:has(.k-playground),
+html:has(.k-playground) {
+  --sl-content-width: 90rem;
+}
+
+.k-playground__lede {
+  margin: 0;
+  max-width: 40rem;
+  color: var(--k-fg-muted);
+  font-size: 0.875rem;
+}
+
+.k-playground__themes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.25rem;
+}
+
+.k-playground__stage {
+  display: flex;
+  min-height: 28rem;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  overflow: visible;
+  border: 1px solid var(--k-border);
+  border-radius: var(--k-radius-lg);
+  background-color: var(--k-surface);
+  color: var(--k-fg);
+}
+
+.k-playground__stage .k-tabs__panel {
+  padding-inline: 0;
+}
+
+.k-playground__scene {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.k-playground__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.k-playground__stage .k-field,
+.k-playground__stage .k-card,
+.k-playground__stage .k-table,
+.k-playground__stage .k-accordion,
+.k-playground__stage .k-banner {
+  width: 100%;
+  max-width: 28rem;
+}
+
+.k-playground__toast {
+  position: relative;
+  inset: auto;
+  min-height: 0;
+  width: 100%;
+  max-width: 28rem;
+  padding: 0;
+  pointer-events: auto;
+}
+
+.k-playground__editor {
+  position: relative;
+  display: flex;
+  min-height: 28rem;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--k-border);
+  border-radius: var(--k-radius-lg);
+  background-color: var(--k-surface);
+}
+
+.k-playground__editor-actions {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  z-index: 1;
+  display: flex;
+  gap: 0.25rem;
+}
+
+.k-playground__editor-tabs {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.k-playground__editor-tabs .k-tabs__list {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  padding-right: 8.5rem;
+}
+
+.k-playground__editor-tabs .k-tabs__panel {
+  box-sizing: border-box;
+  min-height: 0;
+  overflow: auto;
+  padding: 0.75rem;
+}
+
+.k-playground__editor-tabs .k-tabs__panel:has([data-playground-code]):not([hidden]) {
+  display: flex;
+  padding: 0;
+}
+
+.k-playground__colors {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.k-playground__picker {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.k-playground__picker hex-color-picker {
+  width: 100%;
+  height: 12rem;
+}
+
+.k-playground__picker-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.k-playground__picker-meta code {
+  font-size: 0.75rem;
+  color: var(--k-fg-muted);
+}
+
+.k-playground__picker hex-input {
+  display: inline-block;
+  min-width: 7.5rem;
+}
+
+.k-playground__picker hex-input::part(input) {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--k-border);
+  border-radius: var(--k-radius);
+  background: var(--k-field);
+  color: var(--k-field-fg);
+  font-family: var(--k-font-mono);
+  font-size: 0.8125rem;
+}
+
+.k-playground__token-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.k-playground__token-heading {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--k-fg-muted);
+}
+
+.k-playground__token-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: 0.25rem;
+}
+
+.k-playground__token {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.35rem 0.4rem;
+  border: 0;
+  border-radius: var(--k-radius);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: start;
+}
+
+.k-playground__token:hover {
+  background: var(--k-surface-raised);
+}
+
+.k-playground__token[aria-current='true'] {
+  background: var(--k-surface-raised);
+  box-shadow: inset 0 0 0 1px var(--k-border);
+}
+
+.k-playground__token code {
+  overflow: hidden;
+  font-size: 0.7rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.k-playground__swatch {
+  flex: 0 0 auto;
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 1px solid var(--k-border);
+  border-radius: var(--k-radius);
+}
+
+.k-playground__code-panel {
+  @apply w-full;
+}
+
+.k-playground__code {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 24rem;
+  margin: 0;
+  padding: 0.875rem 1rem;
+  border: 0;
+  resize: vertical;
+  background: transparent;
+  color: var(--k-fg);
+  font-family: var(--k-font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  tab-size: 2;
+}
+
+.k-playground__code:focus-visible {
+  outline: var(--k-focus-ring-width) solid var(--k-focus-ring-color);
+  outline-offset: calc(-1 * var(--k-focus-ring-offset));
+}
+
+@media (min-width: 72rem) {
+  .k-playground {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .k-playground__lede {
+    grid-column: 1 / -1;
   }
 }

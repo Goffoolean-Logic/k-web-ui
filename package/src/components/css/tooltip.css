@@ -39,4 +39,45 @@
     left: calc(100% + 0.4rem);
     transform: translateY(-50%);
   }
+
+  /* Fixed + implicit anchor paints above overflow:hidden/auto ancestors. */
+  @supports (position-anchor: auto) {
+    span.k-tooltip[data-tip]::before {
+      position: fixed;
+      position-anchor: auto;
+      inset: auto;
+      transform: none;
+      left: anchor(center);
+      bottom: anchor(top);
+      margin-bottom: 0.4rem;
+      translate: -50% 0;
+    }
+
+    span.k-tooltip--bottom[data-tip]::before {
+      top: anchor(bottom);
+      bottom: auto;
+      left: anchor(center);
+      right: auto;
+      margin: 0.4rem 0 0;
+      translate: -50% 0;
+    }
+
+    span.k-tooltip--left[data-tip]::before {
+      top: anchor(center);
+      bottom: auto;
+      left: auto;
+      right: anchor(left);
+      margin: 0 0.4rem 0 0;
+      translate: 0 -50%;
+    }
+
+    span.k-tooltip--right[data-tip]::before {
+      top: anchor(center);
+      bottom: auto;
+      left: anchor(right);
+      right: auto;
+      margin: 0 0 0 0.4rem;
+      translate: 0 -50%;
+    }
+  }
 }

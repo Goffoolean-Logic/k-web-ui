@@ -7,6 +7,7 @@ Every docs page has a markdown twin. Start here, or take [/llms-full.txt](/llms-
 ## Getting started
 
 - [Getting started](/getting-started.md): Install the kit and put a class on a button.
+- [Theme playground](/theme-playground.md): Override kit tokens and copy a theme into your project.
 
 ## Foundations
 
