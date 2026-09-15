@@ -1,7 +1,4 @@
-import type {
-  KDropdownOptions,
-  KDropdownState,
-} from '../models/models.js';
+import type { KDropdownOptions, KDropdownState } from '../models/models.js';
 
 export function buildDropdown(
   root: HTMLElement,

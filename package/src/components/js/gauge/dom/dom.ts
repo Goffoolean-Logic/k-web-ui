@@ -1,5 +1,3 @@
-import type { KGaugeOptions } from '../models/models.js';
-
 function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
@@ -29,14 +27,14 @@ function asProgress(el: HTMLElement): HTMLProgressElement | null {
   if (el instanceof HTMLProgressElement) {
     return el;
   }
-  return el.querySelector(':scope > progress.k-gauge');
+  return el.querySelector(':scope > progress');
 }
 
 function groupFor(el: HTMLElement): HTMLElement | null {
-  if (el.tagName === 'K-GAUGE' || el.classList.contains('k-gauge-group')) {
+  if (el.tagName === 'K-GAUGE') {
     return el;
   }
-  return el.closest('k-gauge, .k-gauge-group');
+  return el.closest('k-gauge');
 }
 
 function readoutFor(el: HTMLElement): HTMLElement | null {
@@ -119,89 +117,51 @@ function ensurePart(
   return part;
 }
 
-function progressClassNames(host: HTMLElement): string {
-  const names = ['k-gauge'];
-  for (const name of host.classList) {
+function stripHostModifiers(host: HTMLElement): void {
+  host.classList.add('k-gauge');
+  for (const name of [...host.classList]) {
     if (name.startsWith('k-gauge--')) {
-      names.push(name);
+      host.classList.remove(name);
     }
   }
-  return names.join(' ');
-}
-
-export function classNames(options: KGaugeOptions): string {
-  const names = ['k-gauge'];
-  if (options.block) {
-    names.push('k-gauge--block');
-  }
-  if (options.indeterminate) {
-    names.push('k-gauge--indeterminate');
-  }
-  if (options.size) {
-    names.push(`k-gauge--${options.size}`);
-  }
-  if (options.variant) {
-    names.push(`k-gauge--${options.variant}`);
-  }
-  return names.join(' ');
 }
 
 export function paint(host: HTMLElement): void {
-  const ring =
-    host.tagName === 'K-GAUGE' || host.classList.contains('k-gauge--ring');
-  host.classList.toggle('k-gauge--ring', ring);
-  host.classList.toggle('k-gauge-group', ring);
+  stripHostModifiers(host);
 
   let progress = asProgress(host);
   if (!progress) {
     progress = document.createElement('progress');
     host.prepend(progress);
   }
-  progress.className = progressClassNames(host);
 
-  if (ring) {
-    ensureFrame(host, progress);
-    const frame = host.querySelector(':scope > .k-gauge__frame') ?? progress;
-    const readout = ensurePart(
+  ensureFrame(host, progress);
+  const frame = host.querySelector(':scope > .k-gauge__frame') ?? progress;
+  const readout = ensurePart(host, '.k-gauge__value', 'k-gauge__value', frame);
+  readout.setAttribute('aria-hidden', 'true');
+
+  const label = host.getAttribute('label') ?? '';
+  if (label) {
+    const caption = ensurePart(
       host,
-      '.k-gauge__value',
-      'k-gauge__value',
-      frame,
+      '.k-gauge__label',
+      'k-gauge__label',
+      readout,
     );
-    readout.setAttribute('aria-hidden', 'true');
-
-    const label = host.getAttribute('label') ?? '';
-    if (label) {
-      const caption = ensurePart(
-        host,
-        '.k-gauge__label',
-        'k-gauge__label',
-        readout,
-      );
-      caption.textContent = label;
-      caption.id = `${host.id || 'k-gauge'}-label`;
-      progress.setAttribute('aria-labelledby', caption.id);
-      progress.removeAttribute('aria-label');
-    } else {
-      captionFor(host)?.remove();
-      progress.removeAttribute('aria-labelledby');
-    }
+    caption.textContent = label;
+    caption.id = `${host.id || 'k-gauge'}-label`;
+    progress.setAttribute('aria-labelledby', caption.id);
+    progress.removeAttribute('aria-label');
   } else {
-    host.querySelector(':scope > .k-gauge__frame')?.remove();
-    readoutFor(host)?.remove();
     captionFor(host)?.remove();
-    const label = host.getAttribute('label') ?? '';
-    if (label) {
-      progress.setAttribute('aria-label', label);
-    } else {
-      progress.removeAttribute('aria-label');
-    }
+    progress.removeAttribute('aria-labelledby');
   }
 
-  const busy = host.classList.contains('k-gauge--indeterminate');
   applyProgress(
     progress,
-    busy ? undefined : parseNumber(host.getAttribute('value')),
+    host.hasAttribute('indeterminate')
+      ? undefined
+      : parseNumber(host.getAttribute('value')),
     parseNumber(host.getAttribute('max')) ?? 1,
     host.getAttribute('text') || undefined,
   );

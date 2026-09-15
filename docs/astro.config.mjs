@@ -60,6 +60,7 @@ export default defineConfig({
             { label: 'Link', slug: 'components/link' },
             { label: 'Modal', slug: 'components/modal' },
             { label: 'Pagination', slug: 'components/pagination' },
+            { label: 'Progress', slug: 'components/progress' },
             { label: 'Sidebar', slug: 'components/sidebar' },
             { label: 'Spin', slug: 'components/spin' },
             { label: 'Table', slug: 'components/table' },

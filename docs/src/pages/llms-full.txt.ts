@@ -24,6 +24,7 @@ const PAGES = [
   'components/link.md',
   'components/modal.md',
   'components/pagination.md',
+  'components/progress.md',
   'components/sidebar.md',
   'components/spin.md',
   'components/table.md',

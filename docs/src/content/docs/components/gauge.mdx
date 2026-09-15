@@ -1,55 +1,35 @@
 ---
 title: Gauge
-description: progress.k-gauge, or k-gauge for the square frame.
+description: k-gauge. Square frame with a reading and a caption.
 ---
 
 import Example from '../../../components/Example.astro';
 import GaugeDemo from '../../../components/GaugeDemo.astro';
 import ClassTable from '../../../components/ClassTable.astro';
 
-A gauge shows how far a task has gone. Use a [spin](/components/spin/) when you do not know the percent yet and the mark sits next to a label. Use this when you have a value, such as an upload or a remaining quota.
+A gauge shows how far a task has gone as a square frame with a number in the middle and a caption in the open bottom. Use a [spin](/components/spin/) when you do not know the percent yet and the mark sits next to a label. Use [progress](/components/progress/) for a linear bar.
 
-A bar is `<progress class="k-gauge">`. `value` and `max` are the native attributes. The ring is `<k-gauge class="k-gauge">`. Put an `id` on the host. `value`, `max`, `label`, and `text` are attributes. Import the JS once and the tag writes `--ring`, the reading in the middle, and the caption in the open bottom. `label` is the caption. `text` is the visible number if you do not want the raw value. `setGauge()` keeps `--k-gauge` in step when the value changes. The fill eases when the value changes. Reduced motion drops the motion.
+Put `<k-gauge class="k-gauge">` on the page. Put an `id` on the host. `value`, `max`, `label`, `text`, `variant`, `size`, and `indeterminate` are attributes. Import the JS once. The tag writes a hidden progress, the reading, and the caption. `label` is the caption. `text` is the visible number if you do not want the raw value. `setGauge()` keeps `--k-gauge` in step when the value changes. The fill eases when the value changes. Reduced motion drops the motion.
 
 The reading is yours to write: 8, 64%, 1,024, 12.4k. The type shrinks to fit the dial. Overflow wraps.
 
-`--block` stretches a bar to the width of its parent. Sizes are `--sm` and `--lg`. Color variants are info, success, warning, and danger. Primary (the orange chrome) is the default.
+Sizes are `size="sm"` and `size="lg"`. Color variants are info, success, warning, and danger. Primary (the orange chrome) is the default.
 
-No `value` is an empty gauge, not a loading state. Add `--indeterminate` when you want the motion.
+No `value` is an empty gauge, not a loading state. Add `indeterminate` when you want the motion.
 
 ## Classes
 
 <ClassTable
   rows={[
     { name: 'k-gauge', type: 'component' },
-    { name: 'k-gauge-group', type: 'component' },
     { name: 'k-gauge__value', type: 'part' },
     { name: 'k-gauge__label', type: 'part' },
-    { name: 'k-gauge--info', type: 'variant' },
-    { name: 'k-gauge--success', type: 'variant' },
-    { name: 'k-gauge--warning', type: 'variant' },
-    { name: 'k-gauge--danger', type: 'variant' },
-    { name: 'k-gauge--ring', type: 'modifier' },
-    { name: 'k-gauge--indeterminate', type: 'modifier' },
-    { name: 'k-gauge--block', type: 'modifier' },
-    { name: 'k-gauge--sm', type: 'modifier' },
-    { name: 'k-gauge--lg', type: 'modifier' },
   ]}
 />
 
 ## Examples
 
-### Bar
-
-`value` and `max` drive the fill. Name the task with `aria-label` if there is no visible label.
-
-<Example
-  html={`<progress class="k-gauge" value="64" max="100" style="--k-gauge: 64%" aria-label="Upload">64%</progress>`}
->
-  <progress class="k-gauge" value="64" max="100" style="--k-gauge: 64%" aria-label="Upload">64%</progress>
-</Example>
-
-### Ring
+### Frame
 
 The tag writes the number and the caption. `--k-gauge` is how far the fill has gone along the three sides.
 
@@ -61,44 +41,41 @@ The tag writes the number and the caption. `--k-gauge` is how far the fill has g
 
 ### Numbers
 
-You write the text; the fill still comes from `value` / `max`.
+You write the text; the fill still comes from `value` / `max`. `variant` is the color.
 
 <Example html={`<k-gauge id="docs-gauge-open" class="k-gauge" value="8" max="100" label="Open" text="8"></k-gauge>
-<k-gauge id="docs-gauge-requests" class="k-gauge k-gauge--success" value="1024" max="5000" label="Requests" text="1,024"></k-gauge>
-<k-gauge id="docs-gauge-bandwidth" class="k-gauge k-gauge--info" value="12400" max="20000" label="Bandwidth" text="12.4k"></k-gauge>
-<k-gauge id="docs-gauge-uptime" class="k-gauge k-gauge--warning" value="99.99" max="100" label="Uptime" text="99.99%"></k-gauge>`}>
+<k-gauge id="docs-gauge-requests" class="k-gauge" variant="success" value="1024" max="5000" label="Requests" text="1,024"></k-gauge>
+<k-gauge id="docs-gauge-bandwidth" class="k-gauge" variant="info" value="12400" max="20000" label="Bandwidth" text="12.4k"></k-gauge>
+<k-gauge id="docs-gauge-uptime" class="k-gauge" variant="warning" value="99.99" max="100" label="Uptime" text="99.99%"></k-gauge>`}>
   <GaugeDemo id="docs-gauge-open" value="8" label="Open" text="8" />
-  <GaugeDemo id="docs-gauge-requests" extras="k-gauge--success" value="1024" max="5000" label="Requests" text="1,024" />
-  <GaugeDemo id="docs-gauge-bandwidth" extras="k-gauge--info" value="12400" max="20000" label="Bandwidth" text="12.4k" />
-  <GaugeDemo id="docs-gauge-uptime" extras="k-gauge--warning" value="99.99" label="Uptime" text="99.99%" />
+  <GaugeDemo id="docs-gauge-requests" variant="success" value="1024" max="5000" label="Requests" text="1,024" />
+  <GaugeDemo id="docs-gauge-bandwidth" variant="info" value="12400" max="20000" label="Bandwidth" text="12.4k" />
+  <GaugeDemo id="docs-gauge-uptime" variant="warning" value="99.99" label="Uptime" text="99.99%" />
 </Example>
 
 ### Empty and indeterminate
 
-No `value` is an empty track. `--indeterminate` is the busy sweep. `prefers-reduced-motion: reduce` stops the motion.
+No `value` is an empty track. `indeterminate` is the busy sweep. `prefers-reduced-motion: reduce` stops the motion.
 
 <Example html={`<k-gauge id="docs-gauge-waiting" class="k-gauge" label="Waiting"></k-gauge>
-<k-gauge id="docs-gauge-syncing" class="k-gauge k-gauge--indeterminate" label="Syncing"></k-gauge>
-<progress class="k-gauge" aria-label="Waiting"></progress>
-<progress class="k-gauge k-gauge--indeterminate" aria-label="Loading"></progress>`}>
+<k-gauge id="docs-gauge-syncing" class="k-gauge" indeterminate label="Syncing"></k-gauge>`}>
   <GaugeDemo id="docs-gauge-waiting" label="Waiting" />
-  <GaugeDemo id="docs-gauge-syncing" extras="k-gauge--indeterminate" label="Syncing" />
-  <progress class="k-gauge" aria-label="Waiting"></progress>
-  <progress class="k-gauge k-gauge--indeterminate" aria-label="Loading"></progress>
+  <GaugeDemo id="docs-gauge-syncing" indeterminate label="Syncing" />
 </Example>
 
 ## Accessibility
 
-`<progress>` is already a progressbar. Do not add `role="progressbar"`. The tag points `aria-labelledby` at the caption it writes. Hide `.k-gauge__value` with `aria-hidden="true"` so the number is not read twice. The text inside the progress tag is a fallback, not a visible label. `prefers-reduced-motion: reduce` stops `--indeterminate`.
+The tag points `aria-labelledby` at the caption it writes. Hide `.k-gauge__value` with `aria-hidden="true"` so the number is not read twice. The hidden `<progress>` is already a progressbar. Do not add `role="progressbar"`. `prefers-reduced-motion: reduce` stops `indeterminate`.
 
 ## Dos and don'ts
 
 **Do**
-- Put `.k-gauge` on a `<progress>` for a bar.
 - Use `<k-gauge id="upload" class="k-gauge">` so the JS can write the reading and the caption.
-- Add `--indeterminate` only when you want the empty-state motion.
+- Pass `variant`, `size`, and `indeterminate` on the tag.
 
 **Don't**
 - Use this when you only have a busy icon. That is [spin](/components/spin/).
+- Use this for a linear bar. That is [progress](/components/progress/).
 - Style a `div` to look like a gauge.
 - Write `.k-gauge__value` and `.k-gauge__label` by hand.
+- Put `k-gauge--success` on the host. That is `variant="success"`.

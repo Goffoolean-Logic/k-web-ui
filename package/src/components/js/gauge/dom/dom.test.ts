@@ -1,13 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { applyProgress, classNames, paint } from './dom.js';
-
-describe('classNames', () => {
-  it('adds size and variant modifiers', () => {
-    expect(classNames({ ring: true, size: 'sm', variant: 'success' })).toBe(
-      'k-gauge k-gauge--sm k-gauge--success',
-    );
-  });
-});
+import { applyProgress, paint } from './dom.js';
 
 describe('applyProgress', () => {
   it('clamps the value and writes --k-gauge', () => {
@@ -28,14 +20,14 @@ describe('applyProgress', () => {
 
 describe('paint', () => {
   it('builds the ring frame, reading, and caption', () => {
-    const host = document.createElement('div');
-    host.className = 'k-gauge k-gauge--ring';
+    const host = document.createElement('k-gauge');
+    host.className = 'k-gauge';
     host.setAttribute('value', '64');
     host.setAttribute('max', '100');
     host.setAttribute('label', 'Upload');
     host.setAttribute('text', '64%');
     paint(host);
-    expect(host.classList.contains('k-gauge-group')).toBe(true);
+    expect(host.className).toBe('k-gauge');
     expect(host.querySelector('.k-gauge__frame')).toBeTruthy();
     expect(host.querySelectorAll('.k-gauge__seg')).toHaveLength(6);
     expect(host.querySelector('.k-gauge__value')?.textContent).toBe('64%');
@@ -59,16 +51,17 @@ describe('paint', () => {
     ).toBe('upload-label');
   });
 
-  it('treats k-gauge as a ring without --ring in the markup', () => {
+  it('keeps modifiers off the host and the inner progress', () => {
     const host = document.createElement('k-gauge');
     host.className = 'k-gauge';
-    host.setAttribute('value', '64');
-    host.setAttribute('max', '100');
-    host.setAttribute('label', 'Upload');
+    host.setAttribute('variant', 'success');
+    host.setAttribute('size', 'sm');
+    host.setAttribute('indeterminate', '');
+    host.setAttribute('label', 'Syncing');
     paint(host);
-    expect(host.classList.contains('k-gauge--ring')).toBe(true);
-    expect(host.classList.contains('k-gauge-group')).toBe(true);
-    expect(host.querySelector('.k-gauge__frame')).toBeTruthy();
-    expect(host.querySelector('.k-gauge__label')?.textContent).toBe('Upload');
+    expect(host.className).toBe('k-gauge');
+    const progress = host.querySelector('progress');
+    expect(progress?.className).toBe('');
+    expect(progress?.hasAttribute('value')).toBe(false);
   });
 });

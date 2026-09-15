@@ -10,12 +10,6 @@ Put `.k-icon` and a name on a `span`. The glyph is a CSS mask. The painted part 
 <span class="k-icon k-icon--info" aria-hidden="true"></span>
 ```
 
-```js
-import { createIcon } from 'k-web-ui/js';
-
-button.append(createIcon('chevron-left'));
-```
-
 Inline `<svg class="k-icon">` still works if you bring your own path.
 
 `k-icon--loading` is orange on a light background and white in dark mode. It sits still until you wrap it in [Spin](/components/spin/). The icon is the mark. Spin is the motion.

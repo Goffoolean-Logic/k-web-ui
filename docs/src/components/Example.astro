@@ -3,13 +3,11 @@ import { Code } from '@astrojs/starlight/components';
 
 interface Props {
   html: string;
-  ts?: string;
   stack?: boolean;
   lift?: boolean;
 }
 
-const { html, ts, stack = false, lift = false } = Astro.props;
-const id = `docs-snippet-${crypto.randomUUID()}`;
+const { html, stack = false, lift = false } = Astro.props;
 ---
 
 <div class="k-example not-content">
@@ -22,60 +20,7 @@ const id = `docs-snippet-${crypto.randomUUID()}`;
   >
     <slot />
   </div>
-
-  <k-tabs id={id} class="k-tabs k-example__tabs" label="Implementation"></k-tabs>
-  <div class="k-example__source" hidden>
-    <div data-code-panel="html">
-      <Code code={html} lang="html" />
-    </div>
-    {
-      ts && (
-        <div data-code-panel="ts">
-          <Code code={ts} lang="ts" />
-        </div>
-      )
-    }
+  <div class="k-example__source">
+    <Code code={html} lang="html" />
   </div>
 </div>
-
-<script>
-  import { KTabs } from 'k-web-ui/js';
-
-  function asTabs(el: Element | null): KTabs | null {
-    if (el instanceof HTMLElement && el.localName === 'k-tabs') {
-      return el as KTabs;
-    }
-    return null;
-  }
-
-  function wire(example: Element): void {
-    if (!(example instanceof HTMLElement) || example.dataset.wired === 'true') {
-      return;
-    }
-
-    const host = asTabs(example.querySelector('.k-example__tabs'));
-    const htmlPanel = example.querySelector('[data-code-panel="html"]');
-    const tsPanel = example.querySelector('[data-code-panel="ts"]');
-    if (!host || !(htmlPanel instanceof HTMLElement)) {
-      return;
-    }
-
-    const panels = [{ label: 'HTML', content: htmlPanel }];
-    if (tsPanel instanceof HTMLElement) {
-      panels.push({ label: 'TS', content: tsPanel });
-    }
-    host.panels = panels;
-    example.dataset.wired = 'true';
-  }
-
-  async function wireAll(): Promise<void> {
-    await customElements.whenDefined('k-tabs');
-    document.querySelectorAll('.k-example').forEach(wire);
-  }
-
-  wireAll();
-  document.addEventListener('astro:page-load', () => {
-    void wireAll();
-  });
-</script>
-

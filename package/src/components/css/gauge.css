@@ -18,167 +18,24 @@
 
 @layer components {
   /*
-   * Bar: <progress class="k-gauge">. Ring: <k-gauge class="k-gauge">.
-   * The tag writes --ring, .k-gauge__value, and .k-gauge__label. --ring
-   * paints the left, top, and right of a square. --indeterminate opts
-   * into the empty-state motion.
+   * <k-gauge class="k-gauge">. The tag writes a hidden progress, the
+   * frame, .k-gauge__value, and .k-gauge__label. --k-gauge is how far
+   * the fill has gone along the three sides. `indeterminate` opts into
+   * the empty-state motion.
    */
   .k-gauge {
     --k-gauge-color: var(--k-primary);
     --k-gauge-track: var(--k-surface-hard);
     --k-gauge-size: 6.5rem;
     --k-gauge-thickness: 0.55rem;
-    --k-gauge-bar-size: 0.5rem;
-    transition: --k-gauge 200ms ease;
-  }
-
-  progress.k-gauge {
-    -webkit-appearance: none;
-    appearance: none;
-    @apply m-0 inline-block shrink-0 overflow-hidden border-none align-middle;
-    width: 12rem;
-    height: var(--k-gauge-bar-size);
-    border-radius: var(--k-radius);
-    background-color: var(--k-gauge-track);
-    background-image: linear-gradient(
-      var(--k-gauge-color),
-      var(--k-gauge-color)
-    );
-    background-repeat: no-repeat;
-    background-size: var(--k-gauge, 0%) 100%;
-    accent-color: var(--k-gauge-color);
-  }
-
-  progress.k-gauge::-webkit-progress-bar {
-    background-color: transparent;
-    border-radius: inherit;
-  }
-
-  progress.k-gauge::-webkit-progress-value {
-    background-color: transparent;
-  }
-
-  progress.k-gauge::-moz-progress-bar {
-    background-color: transparent;
-  }
-
-  .k-gauge--info {
-    --k-gauge-color: var(--k-info);
-  }
-
-  .k-gauge--success {
-    --k-gauge-color: var(--k-success);
-  }
-
-  .k-gauge--warning {
-    --k-gauge-color: var(--k-warning);
-  }
-
-  .k-gauge--danger {
-    --k-gauge-color: var(--k-danger);
-  }
-
-  .k-gauge--sm {
-    --k-gauge-size: 4rem;
-    --k-gauge-thickness: 0.4rem;
-    --k-gauge-bar-size: 0.25rem;
-  }
-
-  .k-gauge--lg {
-    --k-gauge-size: 7.5rem;
-    --k-gauge-thickness: 0.7rem;
-    --k-gauge-bar-size: 0.75rem;
-  }
-
-  progress.k-gauge--block:not(.k-gauge--ring) {
-    @apply w-full;
-  }
-
-  .k-gauge--ring {
     --k-gauge-amount: var(--k-gauge, 0%);
     --k-gauge-left: min(calc(var(--k-gauge-amount) * 3), 100%);
     --k-gauge-across: min(max(calc(var(--k-gauge-amount) * 3 - 100%), 0%), 100%);
     --k-gauge-down: min(max(calc(var(--k-gauge-amount) * 3 - 200%), 0%), 100%);
+    transition: --k-gauge 200ms ease;
   }
 
-  progress.k-gauge--ring {
-    position: relative;
-    box-sizing: border-box;
-    width: var(--k-gauge-size);
-    height: var(--k-gauge-size);
-    overflow: hidden;
-    color: transparent;
-    accent-color: transparent;
-    background-color: transparent;
-    background-image: none;
-    border: none;
-    opacity: 0;
-  }
-
-  progress.k-gauge--ring::-webkit-progress-inner-element {
-    display: none;
-  }
-
-  progress.k-gauge--ring::-webkit-progress-bar {
-    background-color: transparent;
-  }
-
-  progress.k-gauge--ring::-webkit-progress-value {
-    background-color: transparent;
-  }
-
-  progress.k-gauge--ring::-moz-progress-bar {
-    background-color: transparent;
-  }
-
-  progress.k-gauge:indeterminate:not(.k-gauge--indeterminate)::-webkit-progress-bar {
-    background-color: var(--k-gauge-track);
-  }
-
-  progress.k-gauge:indeterminate:not(.k-gauge--indeterminate)::-webkit-progress-value {
-    background-color: transparent;
-  }
-
-  progress.k-gauge:indeterminate:not(.k-gauge--indeterminate)::-moz-progress-bar {
-    background-color: transparent;
-  }
-
-  progress.k-gauge--indeterminate:not(.k-gauge--ring):indeterminate {
-    background-image: linear-gradient(
-      90deg,
-      transparent 0%,
-      var(--k-gauge-color) 50%,
-      transparent 100%
-    );
-    background-repeat: no-repeat;
-    background-size: 40% 100%;
-    animation: k-gauge-slide 1.2s ease-in-out infinite;
-  }
-
-  progress.k-gauge--indeterminate:not(
-      .k-gauge--ring
-    ):indeterminate::-webkit-progress-bar {
-    background-color: transparent;
-  }
-
-  progress.k-gauge--indeterminate:not(
-      .k-gauge--ring
-    ):indeterminate::-webkit-progress-value {
-    background-color: transparent;
-  }
-
-  progress.k-gauge--indeterminate:not(
-      .k-gauge--ring
-    ):indeterminate::-moz-progress-bar {
-    background-color: transparent;
-  }
-
-  .k-gauge--ring.k-gauge--indeterminate:has(progress:indeterminate) {
-    --k-gauge-amount: var(--k-gauge-head);
-    animation: k-gauge-head 1.4s ease-in-out infinite alternate;
-  }
-
-  .k-gauge-group {
+  k-gauge.k-gauge {
     @apply relative inline-grid justify-items-center align-middle;
     width: var(--k-gauge-size, 6.5rem);
     height: var(--k-gauge-size, 6.5rem);
@@ -186,21 +43,57 @@
     container-name: k-gauge;
   }
 
-  .k-gauge-group:has(progress.k-gauge--sm),
-  .k-gauge-group.k-gauge--sm {
+  k-gauge[variant='info'] {
+    --k-gauge-color: var(--k-info);
+  }
+
+  k-gauge[variant='success'] {
+    --k-gauge-color: var(--k-success);
+  }
+
+  k-gauge[variant='warning'] {
+    --k-gauge-color: var(--k-warning);
+  }
+
+  k-gauge[variant='danger'] {
+    --k-gauge-color: var(--k-danger);
+  }
+
+  k-gauge[size='sm'] {
+    --k-gauge-size: 4rem;
+    --k-gauge-thickness: 0.4rem;
     width: 4rem;
     height: 4rem;
   }
 
-  .k-gauge-group:has(progress.k-gauge--lg),
-  .k-gauge-group.k-gauge--lg {
+  k-gauge[size='lg'] {
+    --k-gauge-size: 7.5rem;
+    --k-gauge-thickness: 0.7rem;
     width: 7.5rem;
     height: 7.5rem;
   }
 
-  .k-gauge-group
-    > :is(progress.k-gauge--ring, .k-gauge__frame, .k-gauge__value) {
+  k-gauge[indeterminate]:has(progress:indeterminate) {
+    --k-gauge-amount: var(--k-gauge-head);
+    animation: k-gauge-head 1.4s ease-in-out infinite alternate;
+  }
+
+  k-gauge.k-gauge > :is(progress, .k-gauge__frame, .k-gauge__value) {
     grid-area: 1 / 1;
+  }
+
+  k-gauge.k-gauge > progress {
+    position: relative;
+    box-sizing: border-box;
+    width: var(--k-gauge-size);
+    height: var(--k-gauge-size);
+    overflow: hidden;
+    color: transparent;
+    accent-color: transparent;
+    background: none;
+    border: none;
+    opacity: 0;
+    pointer-events: none;
   }
 
   .k-gauge__frame {
@@ -264,7 +157,7 @@
     height: var(--k-gauge-down, 0%);
   }
 
-  .k-gauge-group > .k-gauge__label {
+  k-gauge.k-gauge > .k-gauge__label {
     grid-area: 1 / 1;
     align-self: end;
     z-index: 1;
@@ -274,7 +167,7 @@
     overflow-wrap: break-word;
   }
 
-  .k-gauge-group > .k-gauge__label:empty {
+  k-gauge.k-gauge > .k-gauge__label:empty {
     @apply hidden;
   }
 
@@ -289,24 +182,12 @@
     font-variant-numeric: tabular-nums lining-nums;
   }
 
-  .k-gauge-group:has(progress.k-gauge--sm) > .k-gauge__label,
-  .k-gauge-group.k-gauge--sm > .k-gauge__label {
+  k-gauge[size='sm'] > .k-gauge__label {
     @apply text-[0.625rem];
   }
 
-  .k-gauge-group:has(progress.k-gauge--lg) > .k-gauge__label,
-  .k-gauge-group.k-gauge--lg > .k-gauge__label {
+  k-gauge[size='lg'] > .k-gauge__label {
     @apply text-sm;
-  }
-
-  @keyframes k-gauge-slide {
-    0% {
-      background-position: -40% 0;
-    }
-
-    100% {
-      background-position: 140% 0;
-    }
   }
 
   @keyframes k-gauge-head {
@@ -324,18 +205,7 @@
       transition: none;
     }
 
-    progress.k-gauge.k-gauge--indeterminate:indeterminate {
-      animation: none;
-    }
-
-    progress.k-gauge--indeterminate:not(
-        .k-gauge--ring
-      ):indeterminate {
-      background-size: 50% 100%;
-      background-position: center;
-    }
-
-    .k-gauge--ring.k-gauge--indeterminate:has(progress:indeterminate) {
+    k-gauge[indeterminate]:has(progress:indeterminate) {
       animation: none;
       --k-gauge-head: 40%;
     }

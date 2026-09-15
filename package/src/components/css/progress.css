@@ -1,0 +1,143 @@
+@property --k-progress {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 0%;
+}
+
+@layer components {
+  /*
+   * <progress class="k-progress">. value and max are native. --k-progress
+   * is the fill. --indeterminate opts into the empty-state motion.
+   */
+  .k-progress {
+    --k-progress-color: var(--k-primary);
+    --k-progress-track: var(--k-surface-hard);
+    --k-progress-size: 0.5rem;
+    transition: --k-progress 200ms ease;
+  }
+
+  progress.k-progress {
+    -webkit-appearance: none;
+    appearance: none;
+    @apply m-0 inline-block shrink-0 overflow-hidden border-none align-middle;
+    width: 12rem;
+    height: var(--k-progress-size);
+    border-radius: var(--k-radius);
+    background-color: var(--k-progress-track);
+    background-image: linear-gradient(
+      var(--k-progress-color),
+      var(--k-progress-color)
+    );
+    background-repeat: no-repeat;
+    background-size: var(--k-progress, 0%) 100%;
+    accent-color: var(--k-progress-color);
+  }
+
+  progress.k-progress::-webkit-progress-bar {
+    background-color: transparent;
+    border-radius: inherit;
+  }
+
+  progress.k-progress::-webkit-progress-value {
+    background-color: transparent;
+  }
+
+  progress.k-progress::-moz-progress-bar {
+    background-color: transparent;
+  }
+
+  .k-progress--info {
+    --k-progress-color: var(--k-info);
+  }
+
+  .k-progress--success {
+    --k-progress-color: var(--k-success);
+  }
+
+  .k-progress--warning {
+    --k-progress-color: var(--k-warning);
+  }
+
+  .k-progress--danger {
+    --k-progress-color: var(--k-danger);
+  }
+
+  .k-progress--sm {
+    --k-progress-size: 0.25rem;
+  }
+
+  .k-progress--lg {
+    --k-progress-size: 0.75rem;
+  }
+
+  progress.k-progress--block {
+    @apply w-full;
+  }
+
+  progress.k-progress:indeterminate:not(
+      .k-progress--indeterminate
+    )::-webkit-progress-bar {
+    background-color: var(--k-progress-track);
+  }
+
+  progress.k-progress:indeterminate:not(
+      .k-progress--indeterminate
+    )::-webkit-progress-value {
+    background-color: transparent;
+  }
+
+  progress.k-progress:indeterminate:not(
+      .k-progress--indeterminate
+    )::-moz-progress-bar {
+    background-color: transparent;
+  }
+
+  progress.k-progress--indeterminate:indeterminate {
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--k-progress-color) 50%,
+      transparent 100%
+    );
+    background-repeat: no-repeat;
+    background-size: 40% 100%;
+    animation: k-progress-slide 1.2s ease-in-out infinite;
+  }
+
+  progress.k-progress--indeterminate:indeterminate::-webkit-progress-bar {
+    background-color: transparent;
+  }
+
+  progress.k-progress--indeterminate:indeterminate::-webkit-progress-value {
+    background-color: transparent;
+  }
+
+  progress.k-progress--indeterminate:indeterminate::-moz-progress-bar {
+    background-color: transparent;
+  }
+
+  @keyframes k-progress-slide {
+    0% {
+      background-position: -40% 0;
+    }
+
+    100% {
+      background-position: 140% 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .k-progress {
+      transition: none;
+    }
+
+    progress.k-progress.k-progress--indeterminate:indeterminate {
+      animation: none;
+    }
+
+    progress.k-progress--indeterminate:indeterminate {
+      background-size: 50% 100%;
+      background-position: center;
+    }
+  }
+}

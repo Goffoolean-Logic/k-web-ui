@@ -1,7 +1,9 @@
 ---
 interface Props {
   id?: string;
-  extras?: string;
+  variant?: string;
+  size?: string;
+  indeterminate?: boolean;
   value?: string;
   max?: string;
   label?: string;
@@ -10,7 +12,9 @@ interface Props {
 
 const {
   id,
-  extras = '',
+  variant,
+  size,
+  indeterminate = false,
   value,
   max = '100',
   label,
@@ -20,7 +24,10 @@ const {
 
 <k-gauge
   id={id}
-  class:list={['k-gauge', extras]}
+  class="k-gauge"
+  variant={variant}
+  size={size}
+  indeterminate={indeterminate ? '' : undefined}
   value={value}
   max={max}
   label={label}

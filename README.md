@@ -30,7 +30,7 @@ For pagination, tabs, dropdowns, the carousel, and the gauge frame, import the J
 ></k-tabs>
 ```
 
-A gauge bar can stay as `<progress class="k-gauge">`. Accordion, grid, modal, sidebar, spin, table, toast, and tooltip are CSS only. You write the markup and skip the JS import.
+A progress bar is `<progress class="k-progress">`. Accordion, grid, modal, sidebar, spin, table, toast, and tooltip are CSS only. You write the markup and skip the JS import.
 
 `import 'k-web-ui'` is the full prebuilt stylesheet. `@font-face` sits at the top of that file so the faces can start while the rest parses. `k-web-ui/fonts` is the faces alone if you want that sheet even earlier. If you already run Tailwind, `k-web-ui/source` lets the compiler omit classes you never used. You can also import `/base`, `/components`, and `/utilities` separately.
 

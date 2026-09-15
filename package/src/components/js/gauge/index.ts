@@ -1,6 +1,12 @@
 import { defineElement } from '../root.js';
-import { applyProgress, classNames, paint } from './dom/dom.js';
-import type { KGaugeOptions } from './models/models.js';
+import { paint } from './dom/dom.js';
+import {
+  isGaugeSize,
+  isGaugeVariant,
+  type KGaugeOptions,
+  type KGaugeSize,
+  type KGaugeVariant,
+} from './models/models.js';
 
 export type {
   KGaugeOptions,
@@ -16,43 +22,86 @@ function parseNumber(raw: string | null): number | undefined {
   return Number.isFinite(next) ? next : undefined;
 }
 
+function setBooleanAttribute(
+  el: HTMLElement,
+  name: string,
+  next: boolean,
+): void {
+  if (next) {
+    el.setAttribute(name, '');
+    return;
+  }
+  el.removeAttribute(name);
+}
+
+function applyGaugeAttributes(el: HTMLElement, options: KGaugeOptions): void {
+  if (options.max !== undefined) {
+    el.setAttribute('max', String(options.max));
+  }
+  if (
+    !options.indeterminate &&
+    options.value !== undefined &&
+    Number.isFinite(options.value)
+  ) {
+    el.setAttribute('value', String(options.value));
+  }
+  if (options.label) {
+    el.setAttribute('label', options.label);
+  }
+  if (options.text) {
+    el.setAttribute('text', options.text);
+  }
+  if (options.size) {
+    el.setAttribute('size', options.size);
+  }
+  if (options.variant) {
+    el.setAttribute('variant', options.variant);
+  }
+  if (options.indeterminate) {
+    el.setAttribute('indeterminate', '');
+  }
+}
+
 /**
  * Keep `value` / `max` and `--k-gauge` in step. Omit `value` for an empty
- * gauge. Pass `text` to control the visible reading in a ring group.
+ * gauge. Pass `text` to control the visible reading.
  *
  *   setGauge(el, 64, 100);
  */
 export function setGauge(
-  el: HTMLProgressElement | KGauge,
+  el: KGauge,
   value?: number,
   max: number = el.max || 1,
   text?: string,
 ): void {
-  if (el instanceof KGauge) {
-    el.max = max;
-    if (text !== undefined) {
-      el.text = text;
-    }
-    el.value = value;
-    if (!el.isConnected) {
-      paint(el);
-    }
-    return;
+  el.max = max;
+  if (text !== undefined) {
+    el.text = text;
   }
-
-  applyProgress(el, value, max, text);
+  el.value = value;
+  if (!el.isConnected) {
+    paint(el);
+  }
 }
 
 /**
  * Gauge frame. The host is `<k-gauge class="k-gauge">`. `value`, `max`,
- * `label`, and `text` are attributes. The tag writes `--ring`, the reading,
- * and the caption.
+ * `label`, `text`, `variant`, `size`, and `indeterminate` are attributes.
+ * The tag writes a hidden progress, the reading, and the caption.
  *
  *   <k-gauge id="upload" class="k-gauge" value="64" max="100" label="Upload"></k-gauge>
  */
 export class KGauge extends HTMLElement {
   static get observedAttributes(): string[] {
-    return ['value', 'max', 'label', 'text'];
+    return [
+      'value',
+      'max',
+      'label',
+      'text',
+      'variant',
+      'size',
+      'indeterminate',
+    ];
   }
 
   connectedCallback(): void {
@@ -109,6 +158,40 @@ export class KGauge extends HTMLElement {
     }
     this.removeAttribute('text');
   }
+
+  get variant(): KGaugeVariant | undefined {
+    const raw = this.getAttribute('variant');
+    return isGaugeVariant(raw) ? raw : undefined;
+  }
+
+  set variant(next: KGaugeVariant | undefined) {
+    if (next && isGaugeVariant(next)) {
+      this.setAttribute('variant', next);
+      return;
+    }
+    this.removeAttribute('variant');
+  }
+
+  get size(): KGaugeSize | undefined {
+    const raw = this.getAttribute('size');
+    return isGaugeSize(raw) ? raw : undefined;
+  }
+
+  set size(next: KGaugeSize | undefined) {
+    if (next && isGaugeSize(next)) {
+      this.setAttribute('size', next);
+      return;
+    }
+    this.removeAttribute('size');
+  }
+
+  get indeterminate(): boolean {
+    return this.hasAttribute('indeterminate');
+  }
+
+  set indeterminate(next: boolean) {
+    setBooleanAttribute(this, 'indeterminate', next);
+  }
 }
 
 defineElement('k-gauge', KGauge);
@@ -120,40 +203,14 @@ declare global {
 }
 
 /**
- * Native `<progress class="k-gauge">` for a bar. Prefer an empty
- * `<k-gauge id="upload" class="k-gauge">` with attributes for the ring.
- * `indeterminate: true` turns on the empty-state animation.
+ * Empty `<k-gauge class="k-gauge">` with attributes. The tag writes the
+ * reading and the caption. `indeterminate: true` turns on the empty-state
+ * animation.
  */
-export function createGauge(options: KGaugeOptions = {}): HTMLElement {
-  if (options.ring) {
-    const el = document.createElement('k-gauge');
-    el.className = classNames(options);
-    if (options.max !== undefined) {
-      el.setAttribute('max', String(options.max));
-    }
-    if (
-      !options.indeterminate &&
-      options.value !== undefined &&
-      Number.isFinite(options.value)
-    ) {
-      el.setAttribute('value', String(options.value));
-    }
-    if (options.label) {
-      el.setAttribute('label', options.label);
-    }
-    if (options.text) {
-      el.setAttribute('text', options.text);
-    }
-    paint(el);
-    return el;
-  }
-
-  const el = document.createElement('progress');
-  el.className = classNames(options);
-  if (options.label) {
-    el.setAttribute('aria-label', options.label);
-  }
-  const value = options.indeterminate ? undefined : options.value;
-  applyProgress(el, value, options.max ?? 1, options.text);
+export function createGauge(options: KGaugeOptions = {}): KGauge {
+  const el = document.createElement('k-gauge');
+  el.className = 'k-gauge';
+  applyGaugeAttributes(el, options);
+  paint(el);
   return el;
 }
