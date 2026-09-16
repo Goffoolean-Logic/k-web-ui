@@ -1,7 +1,14 @@
 import { defineElement } from '../root.js';
-import { renderPagination } from './dom/dom.js';
-import { bindEvents, goTo } from './events/events.js';
-import { bindKeybinds } from './keybinds/keybinds.js';
+import {
+  applyAttribute,
+  getVisiblePages,
+  goTo,
+  hasNext,
+  hasPrevious,
+  init,
+  readCount,
+  toPage,
+} from './controller/controller.js';
 import type { KPaginationState } from './models/models.js';
 
 export type { KPaginationOptions } from './models/models.js';
@@ -22,7 +29,7 @@ export class KPagination extends HTMLElement {
 
   connectedCallback(): void {
     this.classList.add('k-pagination');
-    this.#connect();
+    this.#init();
   }
 
   disconnectedCallback(): void {
@@ -31,14 +38,24 @@ export class KPagination extends HTMLElement {
     this.#state = null;
   }
 
-  attributeChangedCallback(): void {
-    if (this.isConnected) {
-      this.#connect();
+  attributeChangedCallback(name: string): void {
+    if (!this.isConnected) {
+      return;
     }
+    if (this.#state && applyAttribute(this.#state, name)) {
+      return;
+    }
+    this.#init();
   }
 
-  disconnect(): void {
+  #init(): void {
+    const count = readCount(this);
+    if (count === null) {
+      return;
+    }
     this.#abort.abort();
+    this.#abort = new AbortController();
+    this.#state = init(this, count, this.#abort.signal);
   }
 
   get count(): number {
@@ -50,7 +67,7 @@ export class KPagination extends HTMLElement {
   }
 
   get page(): number {
-    return this.#state?.page ?? Number(this.getAttribute('page') ?? 1);
+    return this.#state?.page ?? toPage(this.getAttribute('page'));
   }
 
   set page(value: number) {
@@ -61,40 +78,61 @@ export class KPagination extends HTMLElement {
     this.setAttribute('page', String(value));
   }
 
-  goTo(page: number): void {
-    if (!this.#state) {
-      return;
-    }
-    goTo(this.#state, page);
+  get hasPrevious(): boolean {
+    return this.#state ? hasPrevious(this.#state) : false;
   }
 
-  #connect(): void {
-    const raw = this.getAttribute('count');
-    if (raw === null) {
-      return;
-    }
+  get hasNext(): boolean {
+    return this.#state ? hasNext(this.#state) : false;
+  }
 
-    const count = Number(raw);
-    if (!Number.isFinite(count) || count < 1) {
-      throw new Error('KPagination: count must be at least 1');
-    }
+  /** The page numbers currently rendered, ends included. */
+  getVisiblePages(): number[] {
+    return this.#state ? getVisiblePages(this.#state) : [];
+  }
 
+  /** Every rendered button, controls and page numbers alike. */
+  getButtons(): HTMLButtonElement[] {
+    return this.#state ? [...this.#state.buttons] : [];
+  }
+
+  goTo(page: number): void {
+    if (this.#state) {
+      goTo(this.#state, page);
+    }
+  }
+
+  next(): void {
+    if (this.#state) {
+      goTo(this.#state, this.#state.page + 1);
+    }
+  }
+
+  previous(): void {
+    if (this.#state) {
+      goTo(this.#state, this.#state.page - 1);
+    }
+  }
+
+  first(): void {
+    this.goTo(1);
+  }
+
+  last(): void {
+    if (this.#state) {
+      goTo(this.#state, this.#state.count);
+    }
+  }
+
+  /** Re-renders the bar from the current count and page. */
+  refresh(): void {
+    if (this.isConnected) {
+      this.#init();
+    }
+  }
+
+  disconnect(): void {
     this.#abort.abort();
-    this.#abort = new AbortController();
-
-    const page = Number(this.getAttribute('page') ?? 1);
-    this.#state = {
-      root: this,
-      count,
-      page: Number.isFinite(page) && page >= 1 ? page : 1,
-      buttons: [],
-      signal: this.#abort.signal,
-    };
-    this.setAttribute('role', 'navigation');
-    this.setAttribute('aria-label', 'Pagination');
-    renderPagination(this.#state);
-    bindEvents(this.#state);
-    bindKeybinds(this.#state);
   }
 }
 

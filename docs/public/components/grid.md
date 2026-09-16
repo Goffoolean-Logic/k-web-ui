@@ -1,5 +1,7 @@
 # Grid
 
+**CSS component.** No JavaScript needed.
+
 div.k-grid or ul.k-grid. CSS only.
 
 A grid is a row of repeating tiles, such as an icon set, a swatch list, or a gallery. Rows of the same columns belong in a [table](/components/table/).
@@ -10,15 +12,15 @@ Children can be anything. `k-grid__cell` is an optional tile: raised surface, bo
 
 ## Classes
 
-| Class | Type |
-| --- | --- |
-| `k-grid` | component |
-| `k-grid__cell` | part |
-| `k-grid--2` | modifier |
-| `k-grid--3` | modifier |
-| `k-grid--4` | modifier |
-| `k-grid--6` | modifier |
-| `k-grid--tight` | modifier |
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-grid` | component | The tile container. Columns auto-fill from 8rem by default. |
+| `k-grid__cell` | part | One tile. Centers its contents. |
+| `k-grid--2` | modifier | Pins the grid to two columns. |
+| `k-grid--3` | modifier | Pins the grid to three columns. |
+| `k-grid--4` | modifier | Pins the grid to four columns. |
+| `k-grid--6` | modifier | Pins the grid to six columns. |
+| `k-grid--tight` | modifier | Shortens the gap between tiles. |
 
 ## Examples
 

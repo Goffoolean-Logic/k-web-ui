@@ -1,10 +1,11 @@
 ---
 title: Toast
 description: div.k-toast wrapping banners. CSS only.
+kind: css
 ---
 
 import Example from '../../../components/Example.astro';
-import ClassTable from '../../../components/ClassTable.astro';
+import DocTable from '../../../components/DocTable.astro';
 
 A toast is a stack of [banners](/components/banner/) pinned to a corner of the page. Use it for short outcomes that should not push the rest of the layout: saved, sent, failed. It does not auto-dismiss. You add and remove the banners yourself.
 
@@ -14,14 +15,19 @@ This preview keeps the toast inside the example box so it does not cover the doc
 
 ## Classes
 
-<ClassTable
+<DocTable
+  columns={['Class', 'Type', 'Description']}
   rows={[
-    { name: 'k-toast', type: 'component' },
-    { name: 'k-toast--top', type: 'modifier' },
-    { name: 'k-toast--bottom', type: 'modifier' },
-    { name: 'k-toast--start', type: 'modifier' },
-    { name: 'k-toast--center', type: 'modifier' },
-    { name: 'k-toast--end', type: 'modifier' },
+    [
+      'k-toast',
+      'component',
+      'Fixed stack wrapping the banners. Bottom-right by default.',
+    ],
+    ['k-toast--top', 'modifier', 'Pins the stack to the top edge.'],
+    ['k-toast--bottom', 'modifier', 'Pins the stack to the bottom edge.'],
+    ['k-toast--start', 'modifier', 'Pins the stack to the inline start.'],
+    ['k-toast--center', 'modifier', 'Centers the stack on the inline axis.'],
+    ['k-toast--end', 'modifier', 'Pins the stack to the inline end.'],
   ]}
 />
 

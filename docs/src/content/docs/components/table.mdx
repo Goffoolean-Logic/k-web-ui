@@ -1,10 +1,11 @@
 ---
 title: Table
 description: table.k-table.
+kind: css
 ---
 
 import Example from '../../../components/Example.astro';
-import ClassTable from '../../../components/ClassTable.astro';
+import DocTable from '../../../components/DocTable.astro';
 
 A table is for tabular data: rows that share the same columns. If the content is not a grid of columns, use a card or a definition list. Use a real `<table class="k-table">` with `thead` and `tbody`. The kit styles the cells. It does not sort, filter, or paginate. Pair it with [pagination](/components/pagination/) when the list is long.
 
@@ -12,11 +13,16 @@ A table is for tabular data: rows that share the same columns. If the content is
 
 ## Classes
 
-<ClassTable
+<DocTable
+  columns={['Class', 'Type', 'Description']}
   rows={[
-    { name: 'k-table', type: 'component' },
-    { name: 'k-table--zebra', type: 'modifier' },
-    { name: 'k-table--sm', type: 'modifier' },
+    [
+      'k-table',
+      'component',
+      'Goes on a real table with thead and tbody. Styles cells only — no sorting or filtering.',
+    ],
+    ['k-table--zebra', 'modifier', 'Stripes even body rows.'],
+    ['k-table--sm', 'modifier', 'Tightens padding and type. Combines with zebra.'],
   ]}
 />
 

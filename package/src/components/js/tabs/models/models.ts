@@ -16,10 +16,20 @@ export type KTabsOptions = {
   keyboard?: boolean;
 };
 
+/** What `getSelected()` hands back: the index plus the live nodes. */
+export type KTabsSelection = {
+  index: number;
+  tab: HTMLElement;
+  panel: HTMLElement;
+  label: string;
+};
+
 export type KTabsState = {
   root: HTMLElement;
   tabs: HTMLElement[];
   panels: HTMLElement[];
   ink?: HTMLElement;
   keyboard: boolean;
+  /** The items the subtree was built from, for label lookups. */
+  items?: KTabItem[];
 };

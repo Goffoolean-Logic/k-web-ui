@@ -13,6 +13,18 @@ export function tabFromEvent(
   return tab;
 }
 
+export function setTabsLabel(state: KTabsState, label: string | null): void {
+  const list = state.root.querySelector('.k-tabs__list');
+  if (!list) {
+    return;
+  }
+  if (label) {
+    list.setAttribute('aria-label', label);
+    return;
+  }
+  list.removeAttribute('aria-label');
+}
+
 export function buildTabs(state: KTabsState, options: KTabsOptions): void {
   if (options.items.length === 0) {
     throw new Error('KTabs: at least one item is required');

@@ -1,0 +1,33 @@
+---
+---
+
+{/* This is intentionally inlined to avoid FOUC. */}
+<script is:inline>
+  window.StarlightThemeProvider = (() => {
+    const storedTheme =
+      typeof localStorage !== 'undefined' &&
+      localStorage.getItem('starlight-theme');
+    const fromStore =
+      storedTheme === 'k-dark' || storedTheme === 'dark'
+        ? 'k-dark'
+        : storedTheme === 'k-light' || storedTheme === 'light'
+          ? 'k-light'
+          : '';
+    const theme =
+      fromStore ||
+      (window.matchMedia('(prefers-color-scheme: light)').matches
+        ? 'k-light'
+        : 'k-dark');
+    document.documentElement.dataset.theme = theme;
+    return {
+      updatePickers(next = fromStore || theme) {
+        const label = next === 'k-dark' ? 'Dark' : 'Light';
+        document
+          .querySelectorAll('starlight-theme-select k-dropdown')
+          .forEach((el) => {
+            el.setAttribute('label', label);
+          });
+      },
+    };
+  })();
+</script>

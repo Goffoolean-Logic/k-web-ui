@@ -2,7 +2,11 @@ import { emitKChange } from '../../root.js';
 import { renderPagination } from '../dom/dom.js';
 import type { KPaginationState } from '../models/models.js';
 
-export function goTo(state: KPaginationState, page: number): void {
+export function goTo(
+  state: KPaginationState,
+  page: number,
+  { focus = true, emit = true } = {},
+): void {
   const next = Math.min(state.count, Math.max(1, page));
   if (next === state.page) {
     return;
@@ -10,8 +14,12 @@ export function goTo(state: KPaginationState, page: number): void {
   state.page = next;
   renderPagination(state);
   bindEvents(state);
-  state.root.querySelector<HTMLElement>('[aria-current="page"]')?.focus();
-  emitKChange(state.root, { page: state.page });
+  if (focus) {
+    state.root.querySelector<HTMLElement>('[aria-current="page"]')?.focus();
+  }
+  if (emit) {
+    emitKChange(state.root, { page: state.page });
+  }
 }
 
 export function bindEvents(state: KPaginationState): void {

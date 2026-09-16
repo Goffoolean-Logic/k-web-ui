@@ -1,24 +1,86 @@
 # Gauge
 
+**JS component.** Import `k-web-ui/js` once and the element writes the inside.
+
 k-gauge. Square frame with a reading and a caption.
 
 A gauge shows how far a task has gone as a square frame with a number in the middle and a caption in the open bottom. Use a [spin](/components/spin/) when you do not know the percent yet and the mark sits next to a label. Use [progress](/components/progress/) for a linear bar.
 
-Put `<k-gauge class="k-gauge">` on the page. Put an `id` on the host. `value`, `max`, `label`, `text`, `variant`, `size`, and `indeterminate` are attributes. Import the JS once. The tag writes a hidden progress, the reading, and the caption. `label` is the caption. `text` is the visible number if you do not want the raw value. `setGauge()` keeps `--k-gauge` in step when the value changes. The fill eases when the value changes. Reduced motion drops the motion.
+Put `<k-gauge class="k-gauge">` on the page and give the host an `id`. Import the JS once. The tag writes a hidden `<progress>`, the frame, the reading, and the caption, and every repaint reuses the nodes it already made. The fill eases when the value changes. Reduced motion drops the motion.
 
 The reading is yours to write: 8, 64%, 1,024, 12.4k. The type shrinks to fit the dial. Overflow wraps.
-
-Sizes are `size="sm"` and `size="lg"`. Color variants are info, success, warning, and danger. Primary (the orange chrome) is the default.
 
 No `value` is an empty gauge, not a loading state. Add `indeterminate` when you want the motion.
 
 ## Classes
 
-| Class | Type |
-| --- | --- |
-| `k-gauge` | component |
-| `k-gauge__value` | part |
-| `k-gauge__label` | part |
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-gauge` | component | The one class you write. The element generates the progress, frame, reading, and caption inside it. |
+
+### Generated classes
+
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-gauge__frame` | part | The square chrome around the reading. Decorative, `aria-hidden`. |
+| `k-gauge__seg` | part | One side of the frame. Combined with a track or fill layer and a side. |
+| `k-gauge__seg--track` | modifier | The empty track layer. |
+| `k-gauge__seg--fill` | modifier | The filled layer. Length follows `--k-gauge`. |
+| `k-gauge__seg--left` | modifier | The left side of the frame. |
+| `k-gauge__seg--top` | modifier | The top side of the frame. |
+| `k-gauge__seg--right` | modifier | The right side of the frame. |
+| `k-gauge__value` | part | The reading in the middle of the dial. |
+| `k-gauge__label` | part | Caption in the open bottom. Hidden when empty. |
+
+## Attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | number | — | How far along. Clamped to 0…`max`. Omit it for an empty gauge. |
+| `max` | number | `1` | The top of the range. |
+| `label` | string | — | Caption in the open bottom. Also labels the hidden progress. |
+| `text` | string | — | Visible reading. Defaults to the formatted value when omitted. |
+| `variant` | info \| success \| warning \| danger | — | Fill color. Omit for the primary orange chrome. |
+| `size` | sm \| lg | — | Dial size. Omit for the default. |
+| `indeterminate` | boolean attribute | — | Busy sweep. Ignores `value` while set. |
+
+## Properties
+
+Every attribute above is also a property that reflects back to the tag, so `el.value = 80` works on its own. Three more are computed:
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `percent` | number | Read-only. Share of `max` the gauge shows, 0 to 100. An empty gauge reads 0. |
+| `isEmpty` | boolean | Read-only. True when there is no `value`. |
+| `isComplete` | boolean | Read-only. True once `value` reaches `max`. |
+
+## Methods
+
+| Method | Returns | Description |
+| --- | --- | --- |
+| `increment(by)` | void | Raises `value` by one step, or by the amount given, stopping at `max`. Starts from 0 when empty. |
+| `decrement(by)` | void | Lowers `value` the same way, stopping at 0. |
+| `complete()` | void | Fills the gauge to `max`. |
+| `clear()` | void | Drops `value` so the gauge renders empty again. |
+| `getProgress()` | `HTMLProgressElement \| null` | The hidden progress element the gauge keeps in step. |
+| `refresh()` | void | Rewrites the progress, reading, and caption from the attributes. |
+
+Two imported helpers cover the setup cases:
+
+| Helper | Returns | Description |
+| --- | --- | --- |
+| `setGauge(el, value, max, text)` | void | Sets value, max, and the visible reading in one call. `max` defaults to the current max; omit `value` to empty the gauge. |
+| `createGauge(options)` | KGauge | Builds a `k-gauge` element from an options object, ready to append. |
+
+Unlike the other four elements, the gauge binds no listeners, so it has no `disconnect()`. Its methods also work on a gauge from `createGauge()` before it is appended, since it paints on demand rather than on connect.
+
+```js
+import { createGauge, setGauge } from 'k-web-ui/js';
+
+const gauge = createGauge({ value: 64, max: 100, label: 'Upload' });
+document.body.append(gauge);
+setGauge(gauge, 80, 100, '80 MB');
+```
 
 ## Examples
 
@@ -52,17 +114,18 @@ No `value` is an empty track. `indeterminate` is the busy sweep. `prefers-reduce
 
 ## Accessibility
 
-The tag points `aria-labelledby` at the caption it writes. Hide `.k-gauge__value` with `aria-hidden="true"` so the number is not read twice. The hidden `<progress>` is already a progressbar. Do not add `role="progressbar"`. `prefers-reduced-motion: reduce` stops `indeterminate`.
+The tag points `aria-labelledby` at the caption it writes. The reading is `aria-hidden` so the number is not read twice. The hidden `<progress>` is already a progressbar. Do not add `role="progressbar"`. `prefers-reduced-motion: reduce` stops `indeterminate`.
 
 ## Dos and don'ts
 
 **Do**
 - Use `<k-gauge id="upload" class="k-gauge">` so the JS can write the reading and the caption.
 - Pass `variant`, `size`, and `indeterminate` on the tag.
+- Use `setGauge()` when the value changes often.
 
 **Don't**
 - Use this when you only have a busy icon. That is [spin](/components/spin/).
 - Use this for a linear bar. That is [progress](/components/progress/).
 - Style a `div` to look like a gauge.
-- Write `.k-gauge__value` and `.k-gauge__label` by hand.
+- Write the reading or the caption by hand.
 - Put `k-gauge--success` on the host. That is `variant="success"`.

@@ -1,5 +1,7 @@
 # Badge
 
+**CSS component.** No JavaScript needed.
+
 span.k-badge. Color, style, size.
 
 A badge is a short label for a status, a count, or a category. Put one next to a heading or in a table cell. If something just happened on the page, that belongs on a [banner](/components/banner/), not here.
@@ -10,24 +12,24 @@ Sizes go `--xs` to `--xl`. Leave the size off and you get 1.5rem. An empty badge
 
 ## Classes
 
-| Class | Type |
-| --- | --- |
-| `k-badge` | component |
-| `k-badge--primary` | variant |
-| `k-badge--secondary` | variant |
-| `k-badge--accent` | variant |
-| `k-badge--info` | variant |
-| `k-badge--success` | variant |
-| `k-badge--warning` | variant |
-| `k-badge--danger` | variant |
-| `k-badge--outline` | style |
-| `k-badge--dash` | style |
-| `k-badge--soft` | style |
-| `k-badge--ghost` | style |
-| `k-badge--xs` | modifier |
-| `k-badge--sm` | modifier |
-| `k-badge--lg` | modifier |
-| `k-badge--xl` | modifier |
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-badge` | component | The chip itself. Goes on a `span` or a `div`. Empty collapses to a dot. |
+| `k-badge--primary` | variant | Orange kit chrome. |
+| `k-badge--secondary` | variant | Muted field color. |
+| `k-badge--accent` | variant | Accent color. |
+| `k-badge--info` | variant | Neutral status. |
+| `k-badge--success` | variant | Positive status. |
+| `k-badge--warning` | variant | Status needing attention. |
+| `k-badge--danger` | variant | Negative status. |
+| `k-badge--outline` | style | Transparent with a solid border. |
+| `k-badge--dash` | style | Transparent with a dashed border. |
+| `k-badge--soft` | style | Variant color washed into the surface. |
+| `k-badge--ghost` | style | No border, muted text. |
+| `k-badge--xs` | modifier | 1rem tall. |
+| `k-badge--sm` | modifier | 1.25rem tall. |
+| `k-badge--lg` | modifier | 1.75rem tall. |
+| `k-badge--xl` | modifier | 2rem tall. |
 
 ## Examples
 

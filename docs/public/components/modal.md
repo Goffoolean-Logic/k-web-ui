@@ -1,5 +1,7 @@
 # Modal
 
+**CSS component.** No JavaScript needed.
+
 dialog.k-modal with popover. No JS.
 
 A focused task on top of the page: confirm a delete, a short form, a warning. Use `<dialog class="k-modal" popover>`. The Popover API opens and closes it.
@@ -10,14 +12,14 @@ Put title, body, and actions inside `.k-modal__box`. That box is the raised surf
 
 ## Classes
 
-| Class | Type |
-| --- | --- |
-| `k-modal` | component |
-| `k-modal__scrim` | part |
-| `k-modal__box` | part |
-| `k-modal__title` | part |
-| `k-modal__body` | part |
-| `k-modal__actions` | part |
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-modal` | component | The dialog. Pair it with the `popover` attribute so the browser opens it. |
+| `k-modal__scrim` | part | Hide button covering the dimmed page, so a backdrop click closes. |
+| `k-modal__box` | part | The raised surface holding everything visible. |
+| `k-modal__title` | part | Name of the task. Use a real heading. |
+| `k-modal__body` | part | The copy or the form. |
+| `k-modal__actions` | part | Row of buttons, aligned to the end. |
 
 ## Examples
 

@@ -1,9 +1,22 @@
 ---
 const { entry } = Astro.locals.starlightRoute;
+const { kind } = entry.data;
+
+const badge =
+  kind === 'js'
+    ? { label: 'JS', class: 'doc-title__badge--js' }
+    : { label: 'CSS', class: 'k-badge--soft k-badge--info' };
 ---
 
 <div class="doc-title">
-  <h1 id="_top" data-page-title>{entry.data.title}</h1>
+  <div class="doc-title__heading">
+    <h1 id="_top" data-page-title>{entry.data.title}</h1>
+    {
+      kind && (
+        <span class={`k-badge k-badge--sm ${badge.class}`}>{badge.label}</span>
+      )
+    }
+  </div>
   <button type="button" class="k-btn k-btn--secondary k-btn--sm" data-copy-md>
     Copy markdown
   </button>
@@ -49,13 +62,31 @@ const { entry } = Astro.locals.starlightRoute;
       flex-shrink: 0;
     }
 
+    .doc-title__heading {
+      display: flex;
+      flex: 1 1 12rem;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.625rem;
+    }
+
     h1 {
       margin: 0;
-      flex: 1 1 12rem;
       font-size: var(--sl-text-h1);
       line-height: var(--sl-line-height-headings);
       font-weight: 600;
       color: var(--sl-color-white);
     }
+  }
+
+  /*
+   * Unlayered on purpose. The kit's badge rules live in @layer components,
+   * and anything layered loses to them no matter how specific it is.
+   * Black border because yellow alone is faint against the light canvas.
+   */
+  span.k-badge.doc-title__badge--js {
+    border-color: var(--k-palette-black);
+    background-color: var(--k-palette-yellow-300);
+    color: var(--k-palette-black);
   }
 </style>

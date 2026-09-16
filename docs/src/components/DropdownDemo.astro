@@ -20,7 +20,8 @@ const options = JSON.stringify([
 
 <k-dropdown
   id={id}
-  class:list={['k-dropdown', end && 'k-dropdown--end']}
+  class="k-dropdown"
+  align={end ? 'end' : undefined}
   label={label}
   options={options}></k-dropdown>
 

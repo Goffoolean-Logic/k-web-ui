@@ -1,5 +1,7 @@
 # Link
 
+**CSS component.** No JavaScript needed.
+
 a.k-link.
 
 A link goes somewhere: another page, a hash, or an external URL. If the click stays on this page, use a [button](/components/button/).
@@ -10,9 +12,9 @@ There is no disabled class. `aria-disabled="true"` when the destination is gone;
 
 ## Classes
 
-| Class | Type |
-| --- | --- |
-| `k-link` | component |
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-link` | component | Goes on an `a`. Orange and underlined; keep the underline. There is no disabled class — use `aria-disabled="true"`. |
 
 ## Examples
 

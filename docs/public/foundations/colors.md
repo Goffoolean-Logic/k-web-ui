@@ -7,10 +7,10 @@ Color in the kit is two layers. The palette is a fixed set of hex values. Semant
 Orange for buttons, fields, borders, and the focus ring is set once. It does not flip in dark mode, so a dark page does not turn the controls blue. Dark page backgrounds use the steel scale. Steel 950 is black.
 
 ```html
-<html data-theme="light">
+<html data-theme="k-light">
 ```
 
-`light`, `dark`, or `auto` (follows the OS). Utilities such as `bg-k-primary` and `text-k-fg` emit `var(--k-…)`, so a theme switch does not need a rebuild.
+`k-light` or `k-dark`. Utilities such as `bg-k-primary` and `text-k-fg` emit `var(--k-…)`, so a theme switch does not need a rebuild.
 
 Components should use the semantic tokens, not the palette steps. The palette is the source. Semantic names are what you override if the defaults are wrong.
 
@@ -71,6 +71,12 @@ Dark page backgrounds. 950 is black. Raised panels sit on 900. Stronger fills si
 A cool gray scale. Nothing in the current themes points at it. It is there if you need a gray that is not steel.
 
 `neutral-50`, `neutral-100`, `neutral-200`, `neutral-300`, `neutral-400`, `neutral-500`, `neutral-600`, `neutral-700`, `neutral-800`, `neutral-900`, `neutral-950`
+
+### Yellow
+
+A true yellow. Nothing in the current themes points at it either — warning stays on the orange scale, so a warning still reads as kit chrome. These docs use `yellow-300` for the JS badge next to a page title.
+
+`yellow-50`, `yellow-100`, `yellow-200`, `yellow-300`, `yellow-400`, `yellow-500`, `yellow-600`, `yellow-700`, `yellow-800`, `yellow-900`, `yellow-950`
 
 ### Status ramps
 

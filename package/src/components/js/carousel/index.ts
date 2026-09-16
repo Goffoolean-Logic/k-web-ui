@@ -1,68 +1,22 @@
-import { defineElement, parseJsonList } from '../root.js';
-import { buildCarousel } from './dom/dom.js';
-import { bindEvents, goTo } from './events/events.js';
-import { bindKeybinds } from './keybinds/keybinds.js';
+import { defineElement } from '../root.js';
+import {
+  applyAttribute,
+  getCurrentSlide,
+  getSlide,
+  goTo,
+  init,
+  insertAt,
+  isPlaying,
+  parseSlides,
+  patchAt,
+  removeAt,
+  serializeSlides,
+  setAutoscroll,
+  toIndex,
+} from './controller/controller.js';
 import type { KCarouselSlide, KCarouselState } from './models/models.js';
 
 export type { KCarouselOptions, KCarouselSlide } from './models/models.js';
-
-function isNode(value: unknown): value is Node {
-  return value instanceof Node;
-}
-
-function parseSlides(raw: string | null): KCarouselSlide[] {
-  const list = parseJsonList(raw, 'KCarousel');
-  const slides: KCarouselSlide[] = [];
-  for (const entry of list) {
-    if (!entry || typeof entry !== 'object') {
-      throw new Error('KCarousel: each slide is an object');
-    }
-    const rec = entry as { src?: unknown; alt?: unknown; content?: unknown };
-    const slide: KCarouselSlide = {};
-    if (typeof rec.src === 'string') {
-      slide.src = rec.src;
-    }
-    if (typeof rec.alt === 'string') {
-      slide.alt = rec.alt;
-    }
-    if (typeof rec.content === 'string') {
-      slide.content = rec.content;
-    }
-    slides.push(slide);
-  }
-  return slides;
-}
-
-function serializeSlides(slides: KCarouselSlide[]): string | null {
-  const json: Array<Record<string, string>> = [];
-  for (const slide of slides) {
-    if (isNode(slide.content)) {
-      return null;
-    }
-    const entry: Record<string, string> = {};
-    if (slide.src) {
-      entry.src = slide.src;
-    }
-    if (slide.alt) {
-      entry.alt = slide.alt;
-    }
-    if (typeof slide.content === 'string') {
-      entry.content = slide.content;
-    }
-    json.push(entry);
-  }
-  return JSON.stringify(json);
-}
-
-function resolveSlide(slide: KCarouselSlide): string | Node {
-  if (slide.src) {
-    const img = document.createElement('img');
-    img.src = slide.src;
-    img.alt = slide.alt ?? '';
-    return img;
-  }
-  return slide.content ?? '';
-}
 
 /**
  * Carousel. The host is `<k-carousel class="k-carousel">`. `slides`, `loop`,
@@ -83,7 +37,7 @@ export class KCarousel extends HTMLElement {
 
   connectedCallback(): void {
     this.classList.add('k-carousel');
-    this.#connect();
+    this.#init();
   }
 
   disconnectedCallback(): void {
@@ -99,13 +53,31 @@ export class KCarousel extends HTMLElement {
     if (name === 'slides') {
       this.#slides = null;
     }
-    if (this.isConnected) {
-      this.#connect();
+    if (!this.isConnected) {
+      return;
+    }
+    if (name === 'slides') {
+      this.#init();
+      return;
+    }
+    if (this.#state) {
+      applyAttribute(this.#state, name);
     }
   }
 
-  disconnect(): void {
+  #init(): void {
+    const slides = this.slides;
+    if (slides.length === 0) {
+      return;
+    }
     this.#abort.abort();
+    this.#abort = new AbortController();
+    this.#state = init(this, slides, this.#abort.signal);
+  }
+
+  /** Number of slides, readable before the element is connected. */
+  get count(): number {
+    return this.slides.length;
   }
 
   get slides(): KCarouselSlide[] {
@@ -121,45 +93,89 @@ export class KCarousel extends HTMLElement {
       this.#reflecting = false;
     }
     if (this.isConnected) {
-      this.#connect();
+      this.#init();
     }
   }
 
   get index(): number {
-    return this.#state?.index ?? Number(this.getAttribute('index') ?? 0);
+    return this.#state?.index ?? toIndex(this.getAttribute('index'));
+  }
+
+  /** True while autoscroll is on and nothing is hovering or focusing it. */
+  get isPlaying(): boolean {
+    return this.#state ? isPlaying(this.#state) : false;
+  }
+
+  getSlide(index: number): HTMLElement | null {
+    return this.#state ? getSlide(this.#state, index) : null;
+  }
+
+  getCurrentSlide(): HTMLElement | null {
+    return this.#state ? getCurrentSlide(this.#state) : null;
   }
 
   goTo(index: number): void {
-    if (!this.#state) {
-      return;
+    if (this.#state) {
+      goTo(this.#state, index);
     }
-    goTo(this.#state, index);
   }
 
-  #connect(): void {
-    const slides = this.slides;
-    if (slides.length === 0) {
-      return;
+  next(): void {
+    if (this.#state) {
+      goTo(this.#state, this.#state.index + 1);
     }
+  }
 
+  previous(): void {
+    if (this.#state) {
+      goTo(this.#state, this.#state.index - 1);
+    }
+  }
+
+  first(): void {
+    this.goTo(0);
+  }
+
+  last(): void {
+    if (this.#state) {
+      goTo(this.#state, this.#state.slides.length - 1);
+    }
+  }
+
+  /** Starts autoscroll. Hovering or focusing still pauses it. */
+  play(): void {
+    if (this.#state) {
+      setAutoscroll(this.#state, true);
+    }
+  }
+
+  pause(): void {
+    if (this.#state) {
+      setAutoscroll(this.#state, false);
+    }
+  }
+
+  addSlide(slide: KCarouselSlide, at?: number): void {
+    this.slides = insertAt(this.slides, slide, at);
+  }
+
+  removeSlide(index: number): void {
+    this.slides = removeAt(this.slides, index);
+  }
+
+  updateSlide(index: number, patch: Partial<KCarouselSlide>): void {
+    this.slides = patchAt(this.slides, index, patch);
+  }
+
+  /** Rebuilds the subtree from the current slides. */
+  refresh(): void {
+    if (this.isConnected) {
+      this.#init();
+    }
+  }
+
+  disconnect(): void {
     this.#abort.abort();
-    this.#abort = new AbortController();
-    const index = Number(this.getAttribute('index') ?? 0);
-    const parts = buildCarousel(this, {
-      items: slides.map((slide) => ({ content: resolveSlide(slide) })),
-    });
-    this.#state = {
-      ...parts,
-      index: Number.isFinite(index) ? index : 0,
-      loop: this.getAttribute('loop') !== 'false',
-      keyboard: this.getAttribute('keyboard') !== 'false',
-      autoscroll: this.getAttribute('autoscroll') !== 'false',
-    };
-    this.setAttribute('aria-roledescription', 'carousel');
-    this.tabIndex = 0;
-    bindEvents(this.#state, this.#abort.signal);
-    bindKeybinds(this.#state, this.#abort.signal);
-    goTo(this.#state, this.#state.index, { emit: false });
   }
 }
 

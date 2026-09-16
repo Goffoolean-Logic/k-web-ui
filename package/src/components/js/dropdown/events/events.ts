@@ -1,5 +1,24 @@
+import { emitKChange } from '../../root.js';
 import { setOpen } from '../dom/dom.js';
 import type { KDropdownState } from '../models/models.js';
+
+/**
+ * Closes the menu, hands focus back to the trigger, and announces the pick.
+ * Both a click and a keyboard activation land here.
+ */
+export function pickItem(state: KDropdownState, index: number): void {
+  const item = state.items[index];
+  if (!item) {
+    return;
+  }
+  setOpen(state, false);
+  state.trigger.focus();
+  emitKChange(state.root, {
+    index,
+    label: item.textContent ?? '',
+    href: item instanceof HTMLAnchorElement ? item.getAttribute('href') : null,
+  });
+}
 
 export function bindEvents(state: KDropdownState, signal: AbortSignal): void {
   state.trigger.addEventListener(
@@ -21,8 +40,7 @@ export function bindEvents(state: KDropdownState, signal: AbortSignal): void {
         '.k-dropdown__item',
       );
       if (item instanceof HTMLElement && state.root.contains(item)) {
-        setOpen(state, false);
-        state.trigger.focus();
+        pickItem(state, state.items.indexOf(item));
       }
     },
     { signal },

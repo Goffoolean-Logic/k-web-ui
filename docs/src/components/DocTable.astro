@@ -1,0 +1,71 @@
+---
+/**
+ * Reference table for a docs page. Pass the column titles and the rows.
+ * The first cell of every row renders as code, since it is always the
+ * class, attribute, or method being named.
+ *
+ * `generated` is optional. When it has rows, an accordion under the
+ * table lists the classes the element writes, for restyling. Leave it
+ * off unless this is the Classes table on a JS page.
+ */
+interface Props {
+  columns: string[];
+  rows: string[][];
+  generated?: string[][];
+}
+
+const { columns, rows, generated } = Astro.props;
+const generatedRows = generated ?? [];
+---
+
+<div class="not-content k-class-table">
+  <table class="k-table">
+    <thead>
+      <tr>
+        {columns.map((column) => <th>{column}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row) => (
+          <tr>
+            {
+              row.map((cell, i) => (
+                <td>{i === 0 ? <code>{cell}</code> : cell || '—'}</td>
+              ))
+            }
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+  {
+    generatedRows.length > 0 && (
+      <div class="k-accordion k-class-table__generated">
+        <details class="k-accordion__item">
+          <summary class="k-accordion__trigger">Generated classes</summary>
+          <div class="k-accordion__panel">
+            <table class="k-table">
+              <thead>
+                <tr>
+                  {columns.map((column) => (
+                    <th>{column}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {generatedRows.map((row) => (
+                  <tr>
+                    {row.map((cell, i) => (
+                      <td>{i === 0 ? <code>{cell}</code> : cell || '—'}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </div>
+    )
+  }
+</div>

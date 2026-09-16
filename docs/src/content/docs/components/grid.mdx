@@ -1,10 +1,11 @@
 ---
 title: Grid
 description: div.k-grid or ul.k-grid. CSS only.
+kind: css
 ---
 
 import Example from '../../../components/Example.astro';
-import ClassTable from '../../../components/ClassTable.astro';
+import DocTable from '../../../components/DocTable.astro';
 
 export const catalog = [
   'info',
@@ -53,15 +54,20 @@ Children can be anything. `k-grid__cell` is an optional tile: raised surface, bo
 
 ## Classes
 
-<ClassTable
+<DocTable
+  columns={['Class', 'Type', 'Description']}
   rows={[
-    { name: 'k-grid', type: 'component' },
-    { name: 'k-grid__cell', type: 'part' },
-    { name: 'k-grid--2', type: 'modifier' },
-    { name: 'k-grid--3', type: 'modifier' },
-    { name: 'k-grid--4', type: 'modifier' },
-    { name: 'k-grid--6', type: 'modifier' },
-    { name: 'k-grid--tight', type: 'modifier' },
+    [
+      'k-grid',
+      'component',
+      'The tile container. Columns auto-fill from 8rem by default.',
+    ],
+    ['k-grid__cell', 'part', 'One tile. Centers its contents.'],
+    ['k-grid--2', 'modifier', 'Pins the grid to two columns.'],
+    ['k-grid--3', 'modifier', 'Pins the grid to three columns.'],
+    ['k-grid--4', 'modifier', 'Pins the grid to four columns.'],
+    ['k-grid--6', 'modifier', 'Pins the grid to six columns.'],
+    ['k-grid--tight', 'modifier', 'Shortens the gap between tiles.'],
   ]}
 />
 

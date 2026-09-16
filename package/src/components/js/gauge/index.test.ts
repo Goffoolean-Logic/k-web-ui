@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createGauge, setGauge } from './index.js';
+import { createGauge, type KGauge, setGauge } from './index.js';
 import './index.js';
 
 describe('createGauge', () => {
@@ -104,5 +104,103 @@ describe('setGauge', () => {
     });
     setGauge(el, 12.5, 100, '12.5%');
     expect(el.querySelector('.k-gauge__value')?.textContent).toBe('12.5%');
+  });
+});
+
+describe('k-gauge api', () => {
+  function mounted(value?: number, max = 100): KGauge {
+    const el = document.createElement('k-gauge');
+    el.setAttribute('max', String(max));
+    if (value !== undefined) {
+      el.setAttribute('value', String(value));
+    }
+    document.body.append(el);
+    return el;
+  }
+
+  it('percent scales the value and clamps past the ends', () => {
+    const el = mounted(64);
+    expect(el.percent).toBe(64);
+    el.value = 150;
+    expect(el.percent).toBe(100);
+    el.value = -10;
+    expect(el.percent).toBe(0);
+    el.remove();
+  });
+
+  it('percent is 0 for an empty gauge', () => {
+    const el = mounted();
+    expect(el.percent).toBe(0);
+    expect(el.isEmpty).toBe(true);
+    el.remove();
+  });
+
+  it('isComplete flips at max', () => {
+    const el = mounted(99);
+    expect(el.isComplete).toBe(false);
+    el.value = 100;
+    expect(el.isComplete).toBe(true);
+    el.remove();
+  });
+
+  it('increment and decrement move the value and repaint', () => {
+    const el = mounted(50);
+    el.increment(10);
+    expect(el.value).toBe(60);
+    expect(el.querySelector('progress')?.value).toBe(60);
+    el.decrement(20);
+    expect(el.value).toBe(40);
+    el.remove();
+  });
+
+  it('increment defaults to one step and starts from empty', () => {
+    const el = mounted();
+    el.increment();
+    expect(el.value).toBe(1);
+    el.remove();
+  });
+
+  it('increment and decrement stop at the ends', () => {
+    const el = mounted(98);
+    el.increment(10);
+    expect(el.value).toBe(100);
+    el.decrement(500);
+    expect(el.value).toBe(0);
+    el.remove();
+  });
+
+  it('complete fills the gauge and clear empties it', () => {
+    const el = mounted(20);
+    el.complete();
+    expect(el.value).toBe(100);
+    expect(el.percent).toBe(100);
+    el.clear();
+    expect(el.value).toBeUndefined();
+    expect(el.isEmpty).toBe(true);
+    expect(el.querySelector('progress')?.hasAttribute('value')).toBe(false);
+    el.remove();
+  });
+
+  it('getProgress hands back the inner progress', () => {
+    const el = mounted(64);
+    expect(el.getProgress()).toBe(el.querySelector('progress'));
+    expect(el.getProgress()?.value).toBe(64);
+    el.remove();
+  });
+
+  it('refresh rewrites the parts from the attributes', () => {
+    const el = mounted(64);
+    el.querySelector('.k-gauge__value')?.remove();
+    el.refresh();
+    expect(el.querySelector('.k-gauge__value')?.textContent).toBe('64');
+    el.remove();
+  });
+
+  it('works on a gauge that was never connected', () => {
+    const el = createGauge({ value: 10, max: 100 });
+    el.increment(5);
+    expect(el.value).toBe(15);
+    expect(el.percent).toBe(15);
+    expect(el.getProgress()).toBeTruthy();
   });
 });

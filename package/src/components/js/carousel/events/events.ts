@@ -62,6 +62,21 @@ export function goTo(
   }
 }
 
+/** Loop changes which arrows are disabled, so repaint and re-arm. */
+export function setLoop(state: KCarouselState, loop: boolean): void {
+  state.loop = loop;
+  paint(state);
+  armAutoscroll(state);
+}
+
+export function setAutoscroll(
+  state: KCarouselState,
+  autoscroll: boolean,
+): void {
+  state.autoscroll = autoscroll;
+  armAutoscroll(state);
+}
+
 export function bindEvents(state: KCarouselState, signal: AbortSignal): void {
   state.prev.addEventListener('click', () => goTo(state, state.index - 1), {
     signal,

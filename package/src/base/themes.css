@@ -13,13 +13,13 @@
 
   --k-primary: var(--k-palette-orange-700);
   --k-primary-fg: var(--k-palette-white);
-  --k-primary-hover: var(--k-palette-orange-800);
+  --k-primary-hover: var(--k-palette-orange-500);
 
   --k-ring: var(--k-palette-orange-500);
 }
 
 :root,
-[data-theme='light'] {
+[data-theme='k-light'] {
   color-scheme: light;
 
   --k-surface: var(--k-palette-orange-50);
@@ -31,7 +31,7 @@
 
   --k-accent: var(--k-palette-black);
   --k-accent-fg: var(--k-palette-white);
-  --k-accent-hover: var(--k-palette-orange-950);
+  --k-accent-hover: var(--k-palette-orange-800);
 
   --k-danger: var(--k-palette-red-600);
   --k-danger-fg: var(--k-palette-white);
@@ -50,7 +50,7 @@
   --k-shadow-3: 0 16px 40px rgb(15 23 42 / 0.18);
 }
 
-[data-theme='dark'] {
+[data-theme='k-dark'] {
   color-scheme: dark;
 
   --k-surface: var(--k-palette-steel-950);
@@ -79,37 +79,4 @@
   --k-shadow-1: 0 1px 2px rgb(0 0 0 / 0.7), 0 0 0 1px rgb(255 255 255 / 0.04);
   --k-shadow-2: 0 8px 20px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(255 255 255 / 0.06);
   --k-shadow-3: 0 20px 50px rgb(0 0 0 / 0.75), 0 0 0 1px rgb(255 255 255 / 0.08);
-}
-
-@media (prefers-color-scheme: dark) {
-  [data-theme='auto'] {
-    color-scheme: dark;
-
-    --k-surface: var(--k-palette-steel-950);
-    --k-surface-raised: var(--k-palette-steel-900);
-    --k-surface-hard: var(--k-palette-steel-800);
-    --k-surface-soft: var(--k-palette-steel-950);
-    --k-fg: var(--k-palette-white);
-    --k-fg-muted: var(--k-palette-orange-300);
-
-    --k-accent: var(--k-palette-white);
-    --k-accent-fg: var(--k-palette-steel-950);
-    --k-accent-hover: var(--k-palette-orange-100);
-
-    --k-danger: var(--k-palette-red-400);
-    --k-danger-fg: var(--k-palette-red-950);
-
-    --k-info: var(--k-palette-blue-400);
-    --k-info-fg: var(--k-palette-blue-950);
-
-    --k-success: var(--k-palette-green-400);
-    --k-success-fg: var(--k-palette-green-950);
-
-    --k-warning: var(--k-palette-orange-400);
-    --k-warning-fg: var(--k-palette-orange-950);
-
-    --k-shadow-1: 0 1px 2px rgb(0 0 0 / 0.7), 0 0 0 1px rgb(255 255 255 / 0.04);
-    --k-shadow-2: 0 8px 20px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(255 255 255 / 0.06);
-    --k-shadow-3: 0 20px 50px rgb(0 0 0 / 0.75), 0 0 0 1px rgb(255 255 255 / 0.08);
-  }
 }

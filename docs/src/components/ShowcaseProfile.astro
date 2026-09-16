@@ -1,0 +1,232 @@
+---
+const activities = [
+  {
+    id: 'docs-showcase-activity-redeem',
+    date: '14 Sep',
+    title: 'Redeemed 500 points',
+    amount: '−500 pts',
+    body: "A $10 dining credit at Harbor Kitchen. It's in her wallet now.",
+  },
+  {
+    id: 'docs-showcase-activity-referral',
+    date: '11 Sep',
+    title: 'Referral bonus',
+    amount: '+250 pts',
+    body: "Jordan K. joined with Maya's code. The bonus posted the same day.",
+  },
+  {
+    id: 'docs-showcase-activity-order',
+    date: '8 Sep',
+    title: 'Order #1842',
+    amount: '+84 pts',
+    body: 'Two pour-over kits. She paid $42.00. Points landed at pickup.',
+  },
+];
+---
+
+<div class="k-showcase-profile">
+  <div class="k-card">
+    <div class="k-card__header">
+      <h3 class="k-card__title">Maya Chen</h3>
+      <p class="k-card__subtitle">Member since March 2024</p>
+    </div>
+    <div class="k-card__body">
+      <div class="k-showcase-profile__meta">
+        <span class="k-badge k-badge--warning">Gold</span>
+        <span>2,450 points toward a $25 reward.</span>
+      </div>
+    </div>
+  </div>
+
+  <k-tabs id="docs-showcase-tabs" class="k-tabs" label="Account"></k-tabs>
+
+  <template id="docs-showcase-points">
+    <div class="k-showcase-profile__points">
+      <k-gauge
+        id="docs-showcase-points-gauge"
+        class="k-gauge"
+        size="lg"
+        value="2450"
+        max="3000"
+        label="Points"
+        text="2,450"></k-gauge>
+      <p>2,450 of 3,000 points. The next reward is a $25 credit.</p>
+    </div>
+  </template>
+
+  <template id="docs-showcase-deals">
+    <k-carousel
+      id="docs-showcase-deals-carousel"
+      class="k-carousel"></k-carousel>
+  </template>
+
+  <template id="docs-showcase-deal-dining">
+    <div class="k-showcase-deal">
+      <span class="k-badge k-badge--success">Weekend</span>
+      <h3>Double points on dining</h3>
+      <p>Earn 2× at restaurants through Sunday night.</p>
+      <button type="button" class="k-btn k-btn--primary k-btn--sm">
+        Claim
+      </button>
+    </div>
+  </template>
+
+  <template id="docs-showcase-deal-travel">
+    <div class="k-showcase-deal">
+      <img src="/travel-promo.jpg" alt="Hotel on the water at dusk" />
+      <span class="k-badge k-badge--primary">20% off</span>
+      <h3>Fall travel</h3>
+      <p>Code LEAF at checkout, through October.</p>
+      <button type="button" class="k-btn k-btn--primary k-btn--sm">
+        Claim
+      </button>
+    </div>
+  </template>
+
+  <template id="docs-showcase-deal-merch">
+    <div class="k-showcase-deal">
+      <span class="k-badge k-badge--warning">Gold</span>
+      <h3>Merch drop, a day early</h3>
+      <p>Gold members shop the fall drop before it goes public.</p>
+      <button type="button" class="k-btn k-btn--primary k-btn--sm">
+        Claim
+      </button>
+    </div>
+  </template>
+
+  <template id="docs-showcase-activity">
+    <table class="k-table k-table--zebra">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Activity</th>
+          <th>Amount</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          activities.map((row) => (
+            <tr>
+              <td>{row.date}</td>
+              <td>{row.title}</td>
+              <td>{row.amount}</td>
+              <td>
+                <button
+                  type="button"
+                  class="k-btn k-btn--secondary k-btn--sm"
+                  popovertarget={row.id}
+                >
+                  Show
+                </button>
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </template>
+
+  {
+    activities.map((row) => (
+      <dialog id={row.id} class="k-modal" popover>
+        <button
+          type="button"
+          class="k-modal__scrim"
+          popovertarget={row.id}
+          popovertargetaction="hide"
+          aria-label="Close"
+        />
+        <div class="k-modal__box">
+          <h3 class="k-modal__title">{row.title}</h3>
+          <p class="k-modal__body">
+            {row.date}. {row.body}
+          </p>
+          <div class="k-modal__actions">
+            <button
+              type="button"
+              class="k-btn k-btn--ghost"
+              popovertarget={row.id}
+              popovertargetaction="hide"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </dialog>
+    ))
+  }
+</div>
+
+<script>
+  import 'k-web-ui/js';
+
+  type TabsHost = HTMLElement & {
+    panels: Array<{ label: string; content: Node }>;
+  };
+
+  type CarouselHost = HTMLElement & {
+    slides: Array<{ content: Node }>;
+    play: () => void;
+    pause: () => void;
+  };
+
+  function template(id: string): HTMLTemplateElement {
+    const node = document.getElementById(id);
+    if (!(node instanceof HTMLTemplateElement)) {
+      throw new Error(`Showcase: missing #${id}`);
+    }
+    return node;
+  }
+
+  const tabs = document.getElementById('docs-showcase-tabs');
+  if (tabs instanceof HTMLElement) {
+    const host = tabs as TabsHost;
+    host.panels = [
+      {
+        label: 'Points',
+        content: template('docs-showcase-points').content.cloneNode(true),
+      },
+      {
+        label: 'Deals',
+        content: template('docs-showcase-deals').content.cloneNode(true),
+      },
+      {
+        label: 'Activity',
+        content: template('docs-showcase-activity').content.cloneNode(true),
+      },
+    ];
+
+    const carousel = host.querySelector('#docs-showcase-deals-carousel');
+    if (carousel instanceof HTMLElement) {
+      const deals = carousel as CarouselHost;
+      deals.slides = [
+        {
+          content: template('docs-showcase-deal-dining').content.cloneNode(true),
+        },
+        {
+          content: template('docs-showcase-deal-travel').content.cloneNode(true),
+        },
+        {
+          content: template('docs-showcase-deal-merch').content.cloneNode(true),
+        },
+      ];
+
+      const syncDeals = (selected: number): void => {
+        if (selected === 1) {
+          deals.play();
+          return;
+        }
+        deals.pause();
+      };
+
+      syncDeals(0);
+      host.addEventListener('k-change', (event) => {
+        if (!(event instanceof CustomEvent)) {
+          return;
+        }
+        syncDeals(Number(event.detail?.selected));
+      });
+    }
+  }
+</script>

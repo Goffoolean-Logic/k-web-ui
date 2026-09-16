@@ -1,10 +1,11 @@
 ---
 title: Card
 description: div.k-card with optional header, body, footer.
+kind: css
 ---
 
 import Example from '../../../components/Example.astro';
-import ClassTable from '../../../components/ClassTable.astro';
+import DocTable from '../../../components/DocTable.astro';
 
 A card is a box around one unit of content: a deployment, a setting, a summary. It is a layout shell, not an interactive widget. Put buttons and links inside it. Do not hang a click handler on the box itself.
 
@@ -12,14 +13,15 @@ The element is `<div class="k-card">`. Header, body, and footer are optional. Ti
 
 ## Classes
 
-<ClassTable
+<DocTable
+  columns={['Class', 'Type', 'Description']}
   rows={[
-    { name: 'k-card', type: 'component' },
-    { name: 'k-card__header', type: 'part' },
-    { name: 'k-card__title', type: 'part' },
-    { name: 'k-card__subtitle', type: 'part' },
-    { name: 'k-card__body', type: 'part' },
-    { name: 'k-card__footer', type: 'part' },
+    ['k-card', 'component', 'The box. A layout shell, not a control.'],
+    ['k-card__header', 'part', 'Holds the title and subtitle. Optional.'],
+    ['k-card__title', 'part', 'Name of the thing. Use a real heading.'],
+    ['k-card__subtitle', 'part', 'Secondary line under the title.'],
+    ['k-card__body', 'part', 'The copy. A card with only a body is fine.'],
+    ['k-card__footer', 'part', 'Row of actions, aligned to the end.'],
   ]}
 />
 

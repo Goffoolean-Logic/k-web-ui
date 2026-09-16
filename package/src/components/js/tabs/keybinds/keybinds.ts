@@ -3,13 +3,13 @@ import { selectTab } from '../events/events.js';
 import type { KTabsState } from '../models/models.js';
 
 export function bindKeybinds(state: KTabsState, signal: AbortSignal): void {
-  if (!state.keyboard) {
-    return;
-  }
-
   state.root.addEventListener(
     'keydown',
     (event) => {
+      if (!state.keyboard) {
+        return;
+      }
+
       const tab = tabFromEvent(state.root, event);
       if (!tab) {
         return;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildDropdown, setOpen } from './dom.js';
+import { buildDropdown, setLabel, setOpen } from './dom.js';
 
 const items = [{ label: 'Name' }, { label: 'Date' }];
 
@@ -23,11 +23,17 @@ describe('buildDropdown', () => {
   it('builds the trigger, menu, and items from the host id', () => {
     const { root, parts } = built('sort');
     expect(parts.trigger.className).toContain('k-dropdown__trigger');
+    expect(parts.trigger.querySelector('.k-dropdown__label')?.textContent).toBe(
+      'Sort',
+    );
+    expect(parts.trigger.querySelector('.k-icon--chevron-down')).not.toBeNull();
     expect(parts.trigger.textContent).toBe('Sort');
     expect(parts.trigger.getAttribute('aria-haspopup')).toBe('menu');
     expect(parts.trigger.getAttribute('aria-controls')).toBe('sort-menu');
     expect(parts.menu.id).toBe('sort-menu');
     expect(parts.menu.getAttribute('role')).toBe('menu');
+    expect(parts.trigger.style.getPropertyValue('anchor-name')).toBe('--sort');
+    expect(parts.menu.style.getPropertyValue('position-anchor')).toBe('--sort');
     expect(parts.items).toHaveLength(2);
     expect(parts.items[0]?.textContent).toBe('Name');
     expect(parts.items[0]?.getAttribute('role')).toBe('menuitem');
@@ -50,6 +56,19 @@ describe('buildDropdown', () => {
     });
     expect(parts.items[0]?.tagName).toBe('A');
     expect(parts.items[0]?.getAttribute('href')).toBe('/docs');
+  });
+});
+
+describe('setLabel', () => {
+  it('relabels the trigger without dropping the chevron', () => {
+    const { root, parts } = built('sort');
+    const state = { ...parts, open: false };
+    setLabel(state, 'Order');
+    expect(parts.trigger.querySelector('.k-dropdown__label')?.textContent).toBe(
+      'Order',
+    );
+    expect(parts.trigger.querySelector('.k-icon--chevron-down')).not.toBeNull();
+    root.remove();
   });
 });
 

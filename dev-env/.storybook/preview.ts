@@ -4,21 +4,20 @@ import './preview.css';
 const preview: Preview = {
   globalTypes: {
     theme: {
-      description: 'Light, dark, or follow the OS',
+      description: 'Light or dark',
       toolbar: {
         title: 'Theme',
         icon: 'paintbrush',
         items: [
-          { value: 'light', title: 'Light' },
-          { value: 'dark', title: 'Dark' },
-          { value: 'auto', title: 'Auto (OS)' },
+          { value: 'k-light', title: 'Light' },
+          { value: 'k-dark', title: 'Dark' },
         ],
         dynamicTitle: true,
       },
     },
   },
   initialGlobals: {
-    theme: 'light',
+    theme: 'k-light',
   },
   decorators: [
     (story, context) => {

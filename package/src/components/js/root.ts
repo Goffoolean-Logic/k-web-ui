@@ -47,6 +47,36 @@ export function defineElement(
   }
 }
 
+/**
+ * Item-list edits for the `panels`, `slides`, and `options` properties. Each
+ * returns a new array, or the original when the index misses, so assigning
+ * the result is what triggers a rebuild.
+ */
+export function insertAt<T>(items: T[], item: T, at?: number): T[] {
+  const next = [...items];
+  next.splice(at ?? next.length, 0, item);
+  return next;
+}
+
+export function removeAt<T>(items: T[], index: number): T[] {
+  if (index < 0 || index >= items.length) {
+    return items;
+  }
+  const next = [...items];
+  next.splice(index, 1);
+  return next;
+}
+
+export function patchAt<T>(items: T[], index: number, patch: Partial<T>): T[] {
+  const current = items[index];
+  if (!current) {
+    return items;
+  }
+  const next = [...items];
+  next[index] = { ...current, ...patch };
+  return next;
+}
+
 export function emitKChange(
   host: EventTarget,
   detail: Record<string, unknown>,

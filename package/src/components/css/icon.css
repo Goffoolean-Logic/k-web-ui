@@ -80,14 +80,8 @@
     background-color: var(--k-primary);
   }
 
-  [data-theme='dark'] span.k-icon--loading {
+  [data-theme='k-dark'] span.k-icon--loading {
     background-color: var(--k-fg);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    [data-theme='auto'] span.k-icon--loading {
-      background-color: var(--k-fg);
-    }
   }
 
   :is(button, a).k-btn > :is(span.k-icon, svg.k-icon),

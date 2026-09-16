@@ -1,10 +1,11 @@
 ---
 title: Accordion
 description: details.k-accordion__item. CSS only.
+kind: css
 ---
 
 import Example from '../../../components/Example.astro';
-import ClassTable from '../../../components/ClassTable.astro';
+import DocTable from '../../../components/DocTable.astro';
 
 An accordion is a list of sections the reader can open, such as an FAQ or a settings group. Each item is a `<details>` element. The browser owns open state, so there is nothing to `mount`.
 
@@ -14,12 +15,21 @@ The chevron is a CSS `::after` on the trigger. It flips when the item is open. T
 
 ## Classes
 
-<ClassTable
+<DocTable
+  columns={['Class', 'Type', 'Description']}
   rows={[
-    { name: 'k-accordion', type: 'component' },
-    { name: 'k-accordion__item', type: 'part' },
-    { name: 'k-accordion__trigger', type: 'part' },
-    { name: 'k-accordion__panel', type: 'part' },
+    ['k-accordion', 'component', 'Wrapper around the group of items.'],
+    ['k-accordion__item', 'part', 'One section. Goes on a details element.'],
+    [
+      'k-accordion__trigger',
+      'part',
+      'The summary row. Carries the chevron that flips when open.',
+    ],
+    [
+      'k-accordion__panel',
+      'part',
+      'Content revealed while the item is open. Its height eases.',
+    ],
   ]}
 />
 

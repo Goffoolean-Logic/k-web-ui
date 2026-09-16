@@ -2,13 +2,12 @@ import { goTo } from '../events/events.js';
 import type { KCarouselState } from '../models/models.js';
 
 export function bindKeybinds(state: KCarouselState, signal: AbortSignal): void {
-  if (!state.keyboard) {
-    return;
-  }
-
   state.root.addEventListener(
     'keydown',
     (event) => {
+      if (!state.keyboard) {
+        return;
+      }
       if (event.key === 'ArrowLeft') {
         event.preventDefault();
         goTo(state, state.index - 1);

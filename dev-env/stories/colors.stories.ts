@@ -82,3 +82,8 @@ export const Steel: Story = {
 export const Neutral: Story = {
   render: () => `<ul class="k-grid k-grid--4">${scale('neutral')}</ul>`,
 };
+
+/** True yellow. Unused by the current themes; warning stays on orange. */
+export const Yellow: Story = {
+  render: () => `<ul class="k-grid k-grid--4">${scale('yellow')}</ul>`,
+};

@@ -1,10 +1,11 @@
 ---
 title: Link
 description: a.k-link.
+kind: css
 ---
 
 import Example from '../../../components/Example.astro';
-import ClassTable from '../../../components/ClassTable.astro';
+import DocTable from '../../../components/DocTable.astro';
 
 A link goes somewhere: another page, a hash, or an external URL. If the click stays on this page, use a [button](/components/button/).
 
@@ -14,9 +15,14 @@ There is no disabled class. `aria-disabled="true"` when the destination is gone;
 
 ## Classes
 
-<ClassTable
+<DocTable
+  columns={['Class', 'Type', 'Description']}
   rows={[
-    { name: 'k-link', type: 'component' },
+    [
+      'k-link',
+      'component',
+      'Goes on an a. Orange and underlined; keep the underline. There is no disabled class — use aria-disabled="true".',
+    ],
   ]}
 />
 

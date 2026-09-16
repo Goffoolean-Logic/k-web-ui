@@ -1,0 +1,75 @@
+---
+/**
+ * Kit theme picker. Starlight still mounts this in the header; the
+ * control itself is a k-dropdown so it matches the rest of the kit.
+ */
+const options = JSON.stringify([{ label: 'Light' }, { label: 'Dark' }]);
+const id = `docs-theme-${crypto.randomUUID()}`;
+---
+
+<starlight-theme-select>
+  <k-dropdown
+    id={id}
+    class="k-dropdown"
+    align="end"
+    label="Light"
+    options={options}></k-dropdown>
+</starlight-theme-select>
+
+{/* Inlined to avoid FOUC. Uses global scope from `ThemeProvider.astro` */}
+<script is:inline>
+  StarlightThemeProvider.updatePickers();
+</script>
+
+<script>
+  import 'k-web-ui/js';
+
+  type Theme = 'k-dark' | 'k-light';
+
+  const storageKey = 'starlight-theme';
+
+  const parseTheme = (theme: unknown): Theme => {
+    if (theme === 'k-dark' || theme === 'dark' || theme === 'Dark') {
+      return 'k-dark';
+    }
+    if (theme === 'k-light' || theme === 'light' || theme === 'Light') {
+      return 'k-light';
+    }
+    return document.documentElement.dataset.theme === 'k-dark'
+      ? 'k-dark'
+      : 'k-light';
+  };
+
+  const loadTheme = (): Theme =>
+    parseTheme(
+      typeof localStorage !== 'undefined' && localStorage.getItem(storageKey),
+    );
+
+  function storeTheme(theme: Theme): void {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(storageKey, theme);
+    }
+  }
+
+  function onThemeChange(theme: Theme): void {
+    window.StarlightThemeProvider.updatePickers(theme);
+    document.documentElement.dataset.theme = theme;
+    storeTheme(theme);
+  }
+
+  class StarlightThemeSelect extends HTMLElement {
+    constructor() {
+      super();
+      onThemeChange(loadTheme());
+      this.addEventListener('k-change', (event) => {
+        if (!(event instanceof CustomEvent)) {
+          return;
+        }
+        onThemeChange(parseTheme(event.detail?.label));
+      });
+    }
+  }
+  if (!customElements.get('starlight-theme-select')) {
+    customElements.define('starlight-theme-select', StarlightThemeSelect);
+  }
+</script>

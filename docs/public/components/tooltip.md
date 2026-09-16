@@ -1,5 +1,7 @@
 # Tooltip
 
+**CSS component.** No JavaScript needed.
+
 span.k-tooltip with data-tip. No JS.
 
 A tooltip is extra context on a control the reader already sees, such as a last-saved time or a keyboard hint. It is not a banner and it is not a modal. Keep the text short.
@@ -10,12 +12,12 @@ If the tip is required to use the control, put that copy in the UI, not only in 
 
 ## Classes
 
-| Class | Type |
-| --- | --- |
-| `k-tooltip` | component |
-| `k-tooltip--bottom` | modifier |
-| `k-tooltip--left` | modifier |
-| `k-tooltip--right` | modifier |
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-tooltip` | component | Wraps the control. Reads the tip from `data-tip`. Shows above by default. |
+| `k-tooltip--bottom` | modifier | Moves the tip below the control. |
+| `k-tooltip--left` | modifier | Moves the tip to the left. |
+| `k-tooltip--right` | modifier | Moves the tip to the right. |
 
 ## Examples
 

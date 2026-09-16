@@ -1,5 +1,7 @@
 # Sidebar
 
+**CSS component.** No JavaScript needed.
+
 Checkbox-hack drawer. No JS.
 
 A sidebar is a drawer for navigation or filters. The open state is a checkbox, so there is no kit JavaScript. Use it when the panel should overlay the main column instead of sitting in the document flow.
@@ -10,15 +12,15 @@ The wrapper is `.k-sidebar`. Order matters: hidden checkbox, then the dimmed-pag
 
 ## Classes
 
-| Class | Type |
-| --- | --- |
-| `k-sidebar` | component |
-| `k-sidebar__toggle` | part |
-| `k-sidebar__scrim` | part |
-| `k-sidebar__panel` | part |
-| `k-sidebar__trigger` | part |
-| `k-sidebar__main` | part |
-| `k-sidebar--end` | modifier |
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-sidebar` | component | The wrapper. Child order matters. |
+| `k-sidebar__toggle` | part | Hidden checkbox holding the open state. Comes first. |
+| `k-sidebar__scrim` | part | Label over the dimmed page. Clicking it closes the drawer. |
+| `k-sidebar__panel` | part | The drawer that slides over the main column. |
+| `k-sidebar__trigger` | part | Label that toggles the checkbox. One to open, one to close. |
+| `k-sidebar__main` | part | The page content the drawer covers. |
+| `k-sidebar--end` | modifier | Docks the panel on the inline end. |
 
 ## Examples
 

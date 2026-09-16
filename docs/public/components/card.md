@@ -1,5 +1,7 @@
 # Card
 
+**CSS component.** No JavaScript needed.
+
 div.k-card with optional header, body, footer.
 
 A card is a box around one unit of content: a deployment, a setting, a summary. It is a layout shell, not an interactive widget. Put buttons and links inside it. Do not hang a click handler on the box itself.
@@ -8,14 +10,14 @@ The element is `<div class="k-card">`. Header, body, and footer are optional. Ti
 
 ## Classes
 
-| Class | Type |
-| --- | --- |
-| `k-card` | component |
-| `k-card__header` | part |
-| `k-card__title` | part |
-| `k-card__subtitle` | part |
-| `k-card__body` | part |
-| `k-card__footer` | part |
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-card` | component | The box. A layout shell, not a control. |
+| `k-card__header` | part | Holds the title and subtitle. Optional. |
+| `k-card__title` | part | Name of the thing. Use a real heading. |
+| `k-card__subtitle` | part | Secondary line under the title. |
+| `k-card__body` | part | The copy. A card with only a body is fine. |
+| `k-card__footer` | part | Row of actions, aligned to the end. |
 
 ## Examples
 

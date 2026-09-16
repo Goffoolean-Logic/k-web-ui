@@ -1,5 +1,7 @@
 # Input
 
+**CSS component.** No JavaScript needed.
+
 k-field, k-label, k-input, k-hint.
 
 These classes style one form field: a label, a text input, and optional helper text. Use them for short values such as email, a name, or a search box. They do not wrap `<select>` or `<textarea>`.
@@ -10,13 +12,13 @@ These classes style one form field: a label, a text input, and optional helper t
 
 ## Classes
 
-| Class | Type |
-| --- | --- |
-| `k-field` | component |
-| `k-label` | component |
-| `k-input` | component |
-| `k-hint` | component |
-| `k-error` | component |
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-field` | component | The stack that holds the label, control, and hint. |
+| `k-label` | component | The label. Point it at the input with `for` / `id`. |
+| `k-input` | component | The text control itself. |
+| `k-hint` | component | Quiet helper line under the control. |
+| `k-error` | component | Replaces the hint when the value is wrong. Pair with `aria-invalid="true"`. |
 
 ## Examples
 

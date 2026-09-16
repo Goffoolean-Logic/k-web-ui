@@ -1,5 +1,7 @@
 # Spin
 
+**CSS component.** No JavaScript needed.
+
 span.k-spin wraps an icon and rotates it.
 
 Spin is the rotation, not the icon itself. The [loading icon](/foundations/iconography/) sits still until you wrap it. Use `<span class="k-spin">` around any kit icon when something is in progress, such as a save or a refresh.
@@ -10,9 +12,9 @@ Inside a button the inner icon drops to `1em`, same as any other icon next to a 
 
 ## Classes
 
-| Class | Type |
-| --- | --- |
-| `k-spin` | component |
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-spin` | component | Wraps a kit icon and rotates it. Reduced motion stops the spin; the icon still shows. |
 
 ## Examples
 

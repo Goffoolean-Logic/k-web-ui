@@ -7,12 +7,12 @@
     import.
   </p>
 
-  <div class="k-playground__stage" data-theme="light">
+  <div class="k-playground__stage" data-theme="k-light">
     <div class="k-playground__themes" role="group" aria-label="Preview theme">
       <button
         type="button"
         class="k-btn k-btn--primary k-btn--sm"
-        data-playground-theme="light"
+        data-playground-theme="k-light"
         aria-pressed="true"
       >
         Light
@@ -20,7 +20,7 @@
       <button
         type="button"
         class="k-btn k-btn--ghost k-btn--sm"
-        data-playground-theme="dark"
+        data-playground-theme="k-dark"
         aria-pressed="false"
       >
         Dark
@@ -277,7 +277,7 @@
     ]);
   }
 
-  function setPreviewTheme(root: Element, theme: 'light' | 'dark'): void {
+  function setPreviewTheme(root: Element, theme: 'k-light' | 'k-dark'): void {
     const stage = root.querySelector('.k-playground__stage');
     if (!(stage instanceof HTMLElement)) {
       return;
@@ -501,7 +501,7 @@
     for (const btn of root.querySelectorAll('[data-playground-theme]')) {
       btn.addEventListener('click', () => {
         const theme = btn.getAttribute('data-playground-theme');
-        if (theme !== 'light' && theme !== 'dark') {
+        if (theme !== 'k-light' && theme !== 'k-dark') {
           return;
         }
         setPreviewTheme(root, theme);
@@ -509,7 +509,7 @@
           selected &&
           (selected.scope === 'light' || selected.scope === 'dark')
         ) {
-          const nextScope: TokenScope = theme === 'dark' ? 'dark' : 'light';
+          const nextScope: TokenScope = theme === 'k-dark' ? 'dark' : 'light';
           const match = currentTokens().find(
             (token) => token.scope === nextScope && token.name === selected?.name,
           );
