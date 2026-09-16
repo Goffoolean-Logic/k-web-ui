@@ -115,7 +115,9 @@ Write a method that takes an options object in its destructured form: `next({ wr
 
 The `html` prop is the source the reader copies. The children are what renders. **They must match**, and keeping them in sync by hand is the price of the component, so re-check both whenever you touch either.
 
-Two optional props: `stack` lays the preview out vertically, `lift` raises it onto a panel. Use `stack` for anything full-width.
+Optional props: `stack` lays the preview out vertically, `lift` raises it onto a panel, `ts` is a TypeScript snippet. Use `stack` for anything full-width.
+
+Pass `ts` only when the example is HTML plus script. The source then becomes HTML and TS tabs. Leave it off when the example is markup alone, which is most of them. The tabs do not render for a single snippet.
 
 Prefer single quotes inside the `html` template literal. Backticks there need escaping and are easy to get wrong.
 
@@ -127,6 +129,8 @@ On a JS page, the children are usually the demo component rather than raw markup
 </Example>
 ```
 
+When panels are nodes, pass both `html` (the host and any `<template>`s) and `ts` (the property assignment). The live demo uses its own ids so it does not collide with other examples on the page.
+
 ## The markdown twin
 
 Same prose, translated. Full templates are in [references/templates.md](references/templates.md); read it before writing either file.
@@ -136,7 +140,7 @@ The rules that are easy to miss:
 - Open with an H1 of the title, then the kind line, then the frontmatter description as a plain line. The kind line is **CSS component.** No JavaScript needed. or **JS component.** Import `k-web-ui/js` once and the element writes the inside.
 - Every `DocTable` becomes a markdown table, with an em dash where a cell was empty.
 - `generated` on a Classes table becomes a **Generated classes** heading and a second markdown table.
-- Every `Example` becomes a fenced html block holding only the `html` prop.
+- Every `Example` becomes a fenced html block holding the `html` prop. If the Example also has a `ts` prop, follow that fence with a `ts` fence.
 - Drop the imports and the frontmatter.
 - Escape `|` inside a cell as `\|`. Union return types like `HTMLElement \| null` need it.
 - Wrap bare element names in backticks where the mdx left them plain, since the twin is read as markdown.

@@ -23,6 +23,8 @@ export default defineConfig({
         SiteTitle: './src/components/SiteTitle.astro',
         Hero: './src/components/Hero.astro',
         PageTitle: './src/components/PageTitle.astro',
+        ThemeProvider: './src/components/ThemeProvider.astro',
+        ThemeSelect: './src/components/ThemeSelect.astro',
       },
       social: [
         {
@@ -35,7 +37,6 @@ export default defineConfig({
       sidebar: [
         { label: 'Getting started', slug: 'getting-started' },
         { label: 'How it works', slug: 'how-it-works' },
-        { label: 'Theme playground', slug: 'theme-playground' },
         {
           label: 'Foundations',
           items: [
@@ -45,6 +46,8 @@ export default defineConfig({
             { label: 'Iconography', slug: 'foundations/iconography' },
           ],
         },
+        { label: 'Showcase', slug: 'showcase' },
+        { label: 'Theme playground', slug: 'theme-playground' },
         {
           label: 'Components',
           items: [

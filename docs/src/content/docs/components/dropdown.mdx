@@ -12,7 +12,7 @@ A dropdown is a short list of choices attached to a trigger, such as sort order 
 
 Put `<k-dropdown class="k-dropdown">` on the page with `label` and `options`. The element builds the trigger, menu, items, and ARIA. Each option is a `label`. `href` on an option makes a link instead of a button.
 
-The trigger is a secondary button. Importing the JS registers the tag. It toggles open, closes on outside click, and moves through items with the keyboard. Escape closes.
+The trigger is a secondary button. The open menu sits below it, outside any overflow on a parent. Importing the JS registers the tag. It toggles open, closes on outside click, and moves through items with the keyboard. Escape closes.
 
 ## Classes
 
@@ -29,7 +29,7 @@ The trigger is a secondary button. Importing the JS registers the tag. It toggle
     [
       'k-dropdown__trigger',
       'part',
-      'The button that opens the menu. Also carries k-btn k-btn--secondary.',
+      'The button that opens the menu. Also carries k-btn k-btn--secondary and a chevron-down icon.',
     ],
     ['k-dropdown__menu', 'part', 'The list of items. Hidden until open.'],
     [

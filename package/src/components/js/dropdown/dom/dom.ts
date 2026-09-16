@@ -1,3 +1,4 @@
+import { createIcon } from '../../icon.js';
 import type { KDropdownOptions, KDropdownState } from '../models/models.js';
 
 export function buildDropdown(
@@ -9,18 +10,25 @@ export function buildDropdown(
   }
 
   const hostId = root.id || 'k-dropdown';
+  const anchor = `--${hostId}`;
 
   const trigger = document.createElement('button');
   trigger.type = 'button';
   trigger.className = 'k-btn k-btn--secondary k-dropdown__trigger';
+  trigger.style.setProperty('anchor-name', anchor);
   trigger.setAttribute('aria-haspopup', 'menu');
   trigger.setAttribute('aria-expanded', 'false');
   trigger.setAttribute('aria-controls', `${hostId}-menu`);
-  trigger.textContent = options.label ?? '';
+
+  const label = document.createElement('span');
+  label.className = 'k-dropdown__label';
+  label.textContent = options.label ?? '';
+  trigger.append(label, createIcon('chevron-down'));
 
   const menu = document.createElement('div');
   menu.className = 'k-dropdown__menu';
   menu.id = `${hostId}-menu`;
+  menu.style.setProperty('position-anchor', anchor);
   menu.hidden = true;
   menu.setAttribute('role', 'menu');
 
@@ -47,6 +55,11 @@ export function buildDropdown(
 }
 
 export function setLabel(state: KDropdownState, label: string | null): void {
+  const text = state.trigger.querySelector('.k-dropdown__label');
+  if (text) {
+    text.textContent = label ?? '';
+    return;
+  }
   state.trigger.textContent = label ?? '';
 }
 

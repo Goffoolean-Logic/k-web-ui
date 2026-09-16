@@ -3,11 +3,22 @@ import { Code } from '@astrojs/starlight/components';
 
 interface Props {
   html: string;
+  ts?: string;
   stack?: boolean;
   lift?: boolean;
 }
 
-const { html, stack = false, lift = false } = Astro.props;
+const { html, ts, stack = false, lift = false } = Astro.props;
+
+type Snippet = { label: string; lang: 'html' | 'ts'; code: string };
+
+const snippets: Snippet[] = [{ label: 'HTML', lang: 'html', code: html }];
+if (ts?.trim()) {
+  snippets.push({ label: 'TS', lang: 'ts', code: ts });
+}
+
+const tabbed = snippets.length > 1;
+const sourceId = tabbed ? `docs-example-${crypto.randomUUID()}` : '';
 ---
 
 <div class="k-example not-content">
@@ -20,7 +31,62 @@ const { html, stack = false, lift = false } = Astro.props;
   >
     <slot />
   </div>
-  <div class="k-example__source">
-    <Code code={html} lang="html" />
-  </div>
+  {
+    tabbed ? (
+      <div class="k-example__source k-example__source--tabs" data-example-source>
+        <k-tabs
+          id={sourceId}
+          class="k-tabs k-example__code-tabs"
+          label="Example code"></k-tabs>
+        <div hidden>
+          {snippets.map((snippet) => (
+            <div data-example-code data-label={snippet.label}>
+              <Code code={snippet.code} lang={snippet.lang} />
+            </div>
+          ))}
+        </div>
+      </div>
+    ) : (
+      <div class="k-example__source">
+        <Code code={html} lang="html" />
+      </div>
+    )
+  }
 </div>
+
+<script>
+  async function mountExampleSources(): Promise<void> {
+    const roots = document.querySelectorAll('[data-example-source]');
+    if (roots.length === 0) {
+      return;
+    }
+
+    await import('k-web-ui/js');
+
+    for (const root of roots) {
+      if (!(root instanceof HTMLElement) || root.dataset.wired === 'true') {
+        continue;
+      }
+      const tabs = root.querySelector('k-tabs');
+      const nodes = [...root.querySelectorAll('[data-example-code]')];
+      if (
+        !(tabs instanceof HTMLElement) ||
+        !('panels' in tabs) ||
+        nodes.length < 2
+      ) {
+        continue;
+      }
+      root.dataset.wired = 'true';
+      (
+        tabs as HTMLElement & {
+          panels: Array<{ label: string; content: Node }>;
+        }
+      ).panels = nodes.map((node) => ({
+        label: node.getAttribute('data-label') ?? 'Code',
+        content: node,
+      }));
+    }
+  }
+
+  void mountExampleSources();
+</script>

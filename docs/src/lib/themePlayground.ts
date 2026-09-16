@@ -15,13 +15,13 @@ export const STARTER_THEME_CSS = `/* Paste after the k-web-ui stylesheet.
 
   --k-primary: #c2410c;
   --k-primary-fg: #ffffff;
-  --k-primary-hover: #9a3412;
+  --k-primary-hover: #f97316;
 
   --k-ring: #f97316;
 }
 
 :root,
-[data-theme='light'] {
+[data-theme='k-light'] {
   color-scheme: light;
 
   --k-surface: #fff7ed;
@@ -33,7 +33,7 @@ export const STARTER_THEME_CSS = `/* Paste after the k-web-ui stylesheet.
 
   --k-accent: #000000;
   --k-accent-fg: #ffffff;
-  --k-accent-hover: #431407;
+  --k-accent-hover: #9a3412;
 
   --k-danger: #dc2626;
   --k-danger-fg: #ffffff;
@@ -52,7 +52,7 @@ export const STARTER_THEME_CSS = `/* Paste after the k-web-ui stylesheet.
   --k-shadow-3: 0 16px 40px rgb(15 23 42 / 0.18);
 }
 
-[data-theme='dark'] {
+[data-theme='k-dark'] {
   color-scheme: dark;
 
   --k-surface: #000000;
@@ -82,39 +82,6 @@ export const STARTER_THEME_CSS = `/* Paste after the k-web-ui stylesheet.
   --k-shadow-2: 0 8px 20px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(255 255 255 / 0.06);
   --k-shadow-3: 0 20px 50px rgb(0 0 0 / 0.75), 0 0 0 1px rgb(255 255 255 / 0.08);
 }
-
-@media (prefers-color-scheme: dark) {
-  [data-theme='auto'] {
-    color-scheme: dark;
-
-    --k-surface: #000000;
-    --k-surface-raised: #0d0f12;
-    --k-surface-hard: #1a1d21;
-    --k-surface-soft: #000000;
-    --k-fg: #ffffff;
-    --k-fg-muted: #fdba74;
-
-    --k-accent: #ffffff;
-    --k-accent-fg: #000000;
-    --k-accent-hover: #ffedd5;
-
-    --k-danger: #f87171;
-    --k-danger-fg: #450a0a;
-
-    --k-info: #60a5fa;
-    --k-info-fg: #172554;
-
-    --k-success: #4ade80;
-    --k-success-fg: #052e16;
-
-    --k-warning: #fb923c;
-    --k-warning-fg: #431407;
-
-    --k-shadow-1: 0 1px 2px rgb(0 0 0 / 0.7), 0 0 0 1px rgb(255 255 255 / 0.04);
-    --k-shadow-2: 0 8px 20px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(255 255 255 / 0.06);
-    --k-shadow-3: 0 20px 50px rgb(0 0 0 / 0.75), 0 0 0 1px rgb(255 255 255 / 0.08);
-  }
-}
 `;
 
 const HOST = '.k-playground__stage';
@@ -137,11 +104,10 @@ export type ColorToken = {
 
 const HEX_DECL = /(--k-[a-z0-9-]+)\s*:\s*(#[0-9a-fA-F]{3,8})\b/g;
 
-const SCOPE_OPEN: Record<TokenScope | 'auto', RegExp> = {
+const SCOPE_OPEN: Record<TokenScope, RegExp> = {
   shared: /:root\s*\{/,
-  light: /:root\s*,\s*\[data-theme=['"]light['"]\]\s*\{/,
-  dark: /\[data-theme=['"]dark['"]\]\s*\{/,
-  auto: /\[data-theme=['"]auto['"]\]\s*\{/,
+  light: /:root\s*,\s*\[data-theme=['"]k-light['"]\]\s*\{/,
+  dark: /\[data-theme=['"]k-dark['"]\]\s*\{/,
 };
 
 function braceInner(
@@ -164,7 +130,7 @@ function braceInner(
 
 function findScopeBlock(
   css: string,
-  scope: TokenScope | 'auto',
+  scope: TokenScope,
 ): { start: number; end: number } | null {
   const match = SCOPE_OPEN[scope].exec(css);
   if (!match) {
@@ -218,7 +184,7 @@ export function readColorTokens(css: string): ColorToken[] {
 
 function replaceHexInBlock(
   css: string,
-  scope: TokenScope | 'auto',
+  scope: TokenScope,
   name: string,
   value: string,
 ): string {
@@ -238,7 +204,7 @@ function replaceHexInBlock(
   return css.slice(0, block.start) + next + css.slice(block.end);
 }
 
-/** Write a hex token. Dark edits also update the `auto` block so copy-paste stays in sync. */
+/** Write a hex token. */
 export function setColorToken(
   css: string,
   scope: TokenScope,
@@ -249,9 +215,5 @@ export function setColorToken(
   if (!hex) {
     return css;
   }
-  let next = replaceHexInBlock(css, scope, name, hex);
-  if (scope === 'dark') {
-    next = replaceHexInBlock(next, 'auto', name, hex);
-  }
-  return next;
+  return replaceHexInBlock(css, scope, name, hex);
 }

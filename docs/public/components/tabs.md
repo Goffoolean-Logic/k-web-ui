@@ -68,16 +68,47 @@ Selecting a tab dispatches `k-change` with `{ selected }`, and the event bubbles
 
 ## Examples
 
+Each panel is a node cloned from a `<template>`. JSON in the `panels` attribute is still fine for plain text.
+
 ### Three panels
 
 Click a tab or move with the arrow keys once one is focused.
 
 ```html
-<k-tabs
-  class="k-tabs"
-  label="Sections"
-  panels='[{"label":"Overview","content":"The first panel."},{"label":"Usage","content":"The second panel."},{"label":"API","content":"The third panel."}]'
-></k-tabs>
+<template id="progress">
+  <k-gauge class="k-gauge" value="64" max="100" label="Upload" text="64"></k-gauge>
+</template>
+<template id="notes">
+  <p>The other two panels are components. This one is a paragraph.</p>
+</template>
+<template id="invite">
+  <div class="k-field">
+    <label class="k-label" for="email">Email</label>
+    <input class="k-input" id="email" type="text" placeholder="maya@example.com" />
+  </div>
+  <button type="button" class="k-btn k-btn--primary">Send</button>
+</template>
+<k-tabs id="sections" class="k-tabs" label="Sections"></k-tabs>
+```
+
+```ts
+import 'k-web-ui/js';
+
+const tabs = document.getElementById('sections');
+tabs.panels = [
+  {
+    label: 'Progress',
+    content: document.getElementById('progress').content.cloneNode(true),
+  },
+  {
+    label: 'Notes',
+    content: document.getElementById('notes').content.cloneNode(true),
+  },
+  {
+    label: 'Invite',
+    content: document.getElementById('invite').content.cloneNode(true),
+  },
+];
 ```
 
 ### With icons
@@ -85,10 +116,43 @@ Click a tab or move with the arrow keys once one is focused.
 `icon` is a kit name such as `info`. The glyph sits before the label and shrinks to `1em`.
 
 ```html
-<k-tabs
-  class="k-tabs"
-  panels='[{"label":"Overview","icon":"info","content":"The first panel."},{"label":"Usage","icon":"success","content":"The second panel."},{"label":"API","icon":"warning","content":"The third panel."}]'
-></k-tabs>
+<template id="icon-progress">
+  <k-gauge class="k-gauge" value="64" max="100" label="Upload" text="64"></k-gauge>
+</template>
+<template id="icon-notes">
+  <p>The other two panels are components. This one is a paragraph.</p>
+</template>
+<template id="icon-invite">
+  <div class="k-field">
+    <label class="k-label" for="icon-email">Email</label>
+    <input class="k-input" id="icon-email" type="text" placeholder="maya@example.com" />
+  </div>
+  <button type="button" class="k-btn k-btn--primary">Send</button>
+</template>
+<k-tabs id="icon-tabs" class="k-tabs"></k-tabs>
+```
+
+```ts
+import 'k-web-ui/js';
+
+const tabs = document.getElementById('icon-tabs');
+tabs.panels = [
+  {
+    label: 'Progress',
+    icon: 'info',
+    content: document.getElementById('icon-progress').content.cloneNode(true),
+  },
+  {
+    label: 'Notes',
+    icon: 'success',
+    content: document.getElementById('icon-notes').content.cloneNode(true),
+  },
+  {
+    label: 'Invite',
+    icon: 'warning',
+    content: document.getElementById('icon-invite').content.cloneNode(true),
+  },
+];
 ```
 
 ### Large
@@ -96,11 +160,43 @@ Click a tab or move with the arrow keys once one is focused.
 `size="lg"` makes every tab a fixed 10rem wide, with larger padding and type.
 
 ```html
-<k-tabs
-  class="k-tabs"
-  size="lg"
-  panels='[{"label":"Overview","icon":"info","content":"The first panel."},{"label":"Usage","icon":"success","content":"The second panel."},{"label":"API","icon":"warning","content":"The third panel."}]'
-></k-tabs>
+<template id="lg-progress">
+  <k-gauge class="k-gauge" value="64" max="100" label="Upload" text="64"></k-gauge>
+</template>
+<template id="lg-notes">
+  <p>The other two panels are components. This one is a paragraph.</p>
+</template>
+<template id="lg-invite">
+  <div class="k-field">
+    <label class="k-label" for="lg-email">Email</label>
+    <input class="k-input" id="lg-email" type="text" placeholder="maya@example.com" />
+  </div>
+  <button type="button" class="k-btn k-btn--primary">Send</button>
+</template>
+<k-tabs id="lg-tabs" class="k-tabs" size="lg"></k-tabs>
+```
+
+```ts
+import 'k-web-ui/js';
+
+const tabs = document.getElementById('lg-tabs');
+tabs.panels = [
+  {
+    label: 'Progress',
+    icon: 'info',
+    content: document.getElementById('lg-progress').content.cloneNode(true),
+  },
+  {
+    label: 'Notes',
+    icon: 'success',
+    content: document.getElementById('lg-notes').content.cloneNode(true),
+  },
+  {
+    label: 'Invite',
+    icon: 'warning',
+    content: document.getElementById('lg-invite').content.cloneNode(true),
+  },
+];
 ```
 
 ## Accessibility

@@ -10,7 +10,7 @@ Every page here has a plain markdown twin. The Copy markdown button at the top f
 
 Component pages follow the same shape every time. A Classes table comes first, then reference tables for anything scriptable, then the examples. Accessibility notes and a short dos and don'ts list close out every one. On a JS page the Classes table is the one class you write. Generated parts sit in an accordion under it, for restyling.
 
-Examples show the markup and the live result together. What you copy is what you were just looking at.
+Examples show the markup and the live result together. What you copy is what you were just looking at. When an example needs script as well as markup, the source splits into HTML and TS tabs.
 
 ## CSS or JS
 
@@ -18,9 +18,11 @@ Every component page carries a badge beside its title. Yellow **JS**, blue **CSS
 
 **CSS** means the component is a class on markup you write. Nothing to import, nothing to initialize. Fifteen of the twenty work this way: accordion, badge, banner, button, card, grid, input, link, modal, progress, sidebar, spin, table, toast, and tooltip.
 
-**JS** means a custom element. You write one tag with its inputs and the element writes the children: [tabs](/components/tabs/), [pagination](/components/pagination/), [dropdown](/components/dropdown/), [carousel](/components/carousel/), and [gauge](/components/gauge/). All five ship a stylesheet as well, so what the badge really tells you is whether you need the JS import.
+**JS** means a custom element. You write one tag with its inputs and the element writes the children: [tabs](/components/tabs.md), [pagination](/components/pagination.md), [dropdown](/components/dropdown.md), [carousel](/components/carousel.md), and [gauge](/components/gauge.md). All five ship a stylesheet as well, so what the badge really tells you is whether you need the JS import.
 
 The line sits at what the browser already does on its own. A modal is CSS because `<dialog>` opens and closes itself. Tabs are different. A tablist has to move `aria-selected` as the selection changes and answer arrow keys, and CSS cannot do either.
+
+Those children are ordinary markup on the page. Style them. Query them. The `k-` prefix is how the kit keeps those class names from colliding with yours.
 
 ## How the layers stack
 
@@ -40,19 +42,11 @@ A color takes three hops before a component sees it.
 
 At the bottom is the raw palette, named by hue and step: `--k-palette-orange-700`. Nothing you write should reach for one of these directly.
 
-Above that sit the semantic tokens, which is where a theme actually happens. `--k-primary` stays `orange-700` in light and dark both, because the chrome does not flip. `--k-surface` does flip: `orange-50` in light, `steel-950` in dark, and steel 950 is black. [Colors](/foundations/colors/) has the whole set.
+Above that sit the semantic tokens, which is where a theme actually happens. `--k-primary` stays `orange-700` in light and dark both, because the chrome does not flip. `--k-surface` does flip: `orange-50` in light, `steel-950` in dark, and steel 950 is black. [Colors](/foundations/colors.md) has the whole set.
 
 The Tailwind utilities sit on top, so `bg-k-primary` exists next to the token it reads. Those utilities emit `var(--k-primary)` rather than a resolved hex, which is the reason flipping `data-theme` repaints a page with no rebuild.
 
 So a component reaches for `--k-surface` and never for `--k-palette-orange-50`.
-
-## No shadow DOM
-
-None of the elements use a shadow root. They build into the light DOM.
-
-A shadow root would scope the kit's styles and keep your page out of them. It would also keep you out. Your stylesheet could not reach a generated tab, and `document.querySelector` would come back empty.
-
-Since the generated children are ordinary markup, you can style and query them like anything else on the page. The tradeoff is global class names, which is what the `k-` prefix pays for.
 
 ## Content goes in attributes
 
@@ -62,16 +56,33 @@ A JS component reads its content from a JSON attribute.
 <k-tabs class="k-tabs" panels='[{"label":"Overview","content":"Text."}]'></k-tabs>
 ```
 
-Attributes are strings, so anything richer than text goes through the matching property:
-
-```js
-const tabs = document.querySelector('k-tabs');
-tabs.panels = [{ label: 'Overview', content: someElement }];
-```
-
-Same data either way, and the element writes the property back to the attribute when it can. A value carrying a `Node` cannot be serialized, so that one stays out of the markup.
+The matching property holds the same data, and the element writes it back to the attribute when it can.
 
 Content changes rebuild the subtree. Configuration changes do not. `selected`, `index`, `page`, and `label` patch in place, so focus and a running animation survive. Each component page says which of its own attributes land in which group.
+
+## Adding node content
+
+JSON in an attribute is a string. That is enough for "The first panel." It is not enough for a [gauge](/components/gauge.md) or a [table](/components/table.md) inside a tab.
+
+Those go on the property as a DOM node: an element you built, or the contents of a `<template>`.
+
+```html
+<template id="usage">
+  <k-gauge class="k-gauge" value="64" max="100" label="Upload"></k-gauge>
+</template>
+<k-tabs id="sections" class="k-tabs"></k-tabs>
+```
+
+```js
+const tabs = document.getElementById('sections');
+const usage = document.getElementById('usage');
+tabs.panels = [
+  { label: 'Overview', content: 'The first panel.' },
+  { label: 'Usage', content: usage.content.cloneNode(true) },
+];
+```
+
+[Tabs](/components/tabs.md) accept a node as panel `content` or `icon`. [Carousel](/components/carousel.md) accepts one as slide `content`. A node cannot be written back to the attribute, so it lives on the property only. The [Showcase](/showcase.md) profile tabs are this pattern in a full page.
 
 ## One event
 

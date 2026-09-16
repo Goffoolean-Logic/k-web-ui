@@ -26,7 +26,12 @@
   }
 
   :is(button, a).k-btn--secondary:hover:not(:disabled):not([aria-disabled='true']) {
-    background-color: color-mix(in oklab, var(--k-fg) 10%, var(--k-surface));
+    background-color: color-mix(in oklab, var(--k-border) 18%, var(--k-surface));
+  }
+
+  [data-theme='k-dark']
+    :is(button, a).k-btn--secondary:hover:not(:disabled):not([aria-disabled='true']) {
+    background-color: var(--k-border);
   }
 
   :is(button, a).k-btn--ghost {
@@ -34,7 +39,11 @@
   }
 
   :is(button, a).k-btn--ghost:hover:not(:disabled):not([aria-disabled='true']) {
-    background-color: color-mix(in oklab, var(--k-fg) 12%, transparent);
+    background-color: color-mix(
+      in oklab,
+      var(--k-primary-hover) 18%,
+      transparent
+    );
   }
 
   :is(button, a).k-btn--accent {
@@ -50,7 +59,7 @@
   }
 
   :is(button, a).k-btn--danger:hover:not(:disabled):not([aria-disabled='true']) {
-    @apply brightness-110;
+    background-color: color-mix(in oklab, #fff 16%, var(--k-danger));
   }
 
   /* Sizes */

@@ -20,11 +20,18 @@
     @apply relative z-10 inline-flex cursor-pointer items-center justify-center
       gap-2 rounded-k border-0 bg-transparent px-4 py-2 text-sm font-medium
       whitespace-nowrap text-k-fg-muted;
-    transition: color 400ms ease;
+    transition:
+      color 400ms ease,
+      background-color 150ms ease;
   }
 
   button.k-tabs__tab:hover:not([aria-selected='true']) {
     @apply text-k-fg;
+    background-color: color-mix(
+      in oklab,
+      var(--k-primary-hover) 18%,
+      transparent
+    );
   }
 
   button.k-tabs__tab[aria-selected='true'] {

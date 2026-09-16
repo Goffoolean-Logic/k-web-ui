@@ -18,7 +18,7 @@ import 'k-web-ui';
 <button type="button" class="k-btn k-btn--primary">Save</button>
 ```
 
-Set `data-theme="light"`, `dark`, or `auto` on the document root. Light and dark change the page background and text. The orange on buttons, fields, and focus stays the same in both themes.
+Set `data-theme="k-light"` or `k-dark` on the document root. They change the page background and text. The orange on buttons, fields, and focus stays the same in both themes.
 
 For pagination, tabs, dropdowns, the carousel, and the gauge frame, import the JS once and put the tag on the page with its inputs. The element writes the inside.
 

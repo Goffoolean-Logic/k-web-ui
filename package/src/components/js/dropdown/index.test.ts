@@ -77,7 +77,10 @@ describe('k-dropdown', () => {
 
     expect(dropdown.querySelector('.k-dropdown__trigger')).toBe(trigger);
     expect(dropdown.querySelector('.k-dropdown__menu')).toBe(menu);
-    expect(trigger?.textContent).toBe('Order');
+    expect(trigger?.querySelector('.k-dropdown__label')?.textContent).toBe(
+      'Order',
+    );
+    expect(trigger?.querySelector('.k-icon--chevron-down')).not.toBeNull();
     dropdown.remove();
   });
 

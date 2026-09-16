@@ -4,9 +4,15 @@
     @apply relative inline-block;
   }
 
+  button.k-dropdown__trigger {
+    justify-content: space-between;
+  }
+
   div.k-dropdown__menu {
-    @apply absolute start-0 z-30 mt-1 min-w-40 rounded-k border
+    @apply absolute z-30 w-max min-w-40 rounded-k border
       border-k-border bg-k-surface-raised py-1;
+    inset-inline-start: 0;
+    top: calc(100% + 0.5rem);
   }
 
   div.k-dropdown__menu[hidden] {
@@ -14,7 +20,25 @@
   }
 
   k-dropdown[align='end'] div.k-dropdown__menu {
-    @apply inset-s-auto inset-e-0;
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+  }
+
+  /* Fixed + named anchor paints above overflow:hidden/auto ancestors. */
+  @supports (position-anchor: auto) {
+    div.k-dropdown__menu {
+      position: fixed;
+      inset: auto;
+      width: max-content;
+      top: calc(anchor(bottom) + 0.5rem);
+      left: anchor(left);
+      right: auto;
+    }
+
+    k-dropdown[align='end'] div.k-dropdown__menu {
+      left: auto;
+      right: anchor(right);
+    }
   }
 
   :is(button.k-dropdown__item, a.k-dropdown__item) {
@@ -23,6 +47,10 @@
   }
 
   :is(button.k-dropdown__item, a.k-dropdown__item):hover {
-    @apply bg-k-field;
+    background-color: color-mix(
+      in oklab,
+      var(--k-primary-hover) 18%,
+      transparent
+    );
   }
 }

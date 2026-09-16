@@ -11,7 +11,12 @@
   }
 
   button.k-pagination__btn:hover:not(:disabled):not([aria-current='page']) {
-    @apply bg-k-surface-raised;
+    background-color: color-mix(in oklab, var(--k-border) 18%, var(--k-surface));
+  }
+
+  [data-theme='k-dark']
+    button.k-pagination__btn:hover:not(:disabled):not([aria-current='page']) {
+    background-color: var(--k-border);
   }
 
   button.k-pagination__btn:disabled {
