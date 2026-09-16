@@ -117,3 +117,143 @@ describe('k-carousel', () => {
     vi.useRealTimers();
   });
 });
+
+describe('k-carousel api', () => {
+  function mounted(): KCarousel {
+    const carousel = host();
+    carousel.setAttribute('autoscroll', 'false');
+    carousel.slides = slides;
+    document.body.append(carousel);
+    return carousel;
+  }
+
+  it('reports count with or without a connection', () => {
+    const carousel = host();
+    carousel.slides = slides;
+    expect(carousel.count).toBe(3);
+    document.body.append(carousel);
+    expect(carousel.count).toBe(3);
+    carousel.remove();
+  });
+
+  it('next and previous wrap when loop is on', () => {
+    const carousel = mounted();
+    carousel.next();
+    expect(carousel.index).toBe(1);
+    carousel.goTo(2);
+    carousel.next();
+    expect(carousel.index).toBe(0);
+    carousel.previous();
+    expect(carousel.index).toBe(2);
+    carousel.remove();
+  });
+
+  it('next and previous clamp when loop is off', () => {
+    const carousel = host();
+    carousel.setAttribute('autoscroll', 'false');
+    carousel.setAttribute('loop', 'false');
+    carousel.slides = slides;
+    document.body.append(carousel);
+
+    carousel.previous();
+    expect(carousel.index).toBe(0);
+    carousel.goTo(2);
+    carousel.next();
+    expect(carousel.index).toBe(2);
+    carousel.remove();
+  });
+
+  it('first and last jump to the ends', () => {
+    const carousel = mounted();
+    carousel.last();
+    expect(carousel.index).toBe(2);
+    carousel.first();
+    expect(carousel.index).toBe(0);
+    carousel.remove();
+  });
+
+  it('getSlide and getCurrentSlide hand back the live nodes', () => {
+    const carousel = mounted();
+    const rendered = carousel.querySelectorAll('.k-carousel__slide');
+    expect(carousel.getSlide(1)).toBe(rendered[1]);
+    expect(carousel.getCurrentSlide()).toBe(rendered[0]);
+    carousel.goTo(2);
+    expect(carousel.getCurrentSlide()).toBe(rendered[2]);
+    expect(carousel.getSlide(9)).toBeNull();
+    carousel.remove();
+  });
+
+  it('play and pause drive autoscroll', () => {
+    vi.useFakeTimers();
+    const carousel = mounted();
+    expect(carousel.isPlaying).toBe(false);
+
+    carousel.play();
+    expect(carousel.isPlaying).toBe(true);
+    vi.advanceTimersByTime(5000);
+    expect(carousel.index).toBe(1);
+
+    carousel.pause();
+    expect(carousel.isPlaying).toBe(false);
+    vi.advanceTimersByTime(20000);
+    expect(carousel.index).toBe(1);
+
+    carousel.remove();
+    vi.useRealTimers();
+  });
+
+  it('addSlide appends or inserts, and renders it', () => {
+    const carousel = mounted();
+    carousel.addSlide({ content: 'Four' });
+    expect(carousel.count).toBe(4);
+    carousel.addSlide({ content: 'Zero' }, 0);
+    expect(carousel.count).toBe(5);
+    expect(carousel.querySelectorAll('.k-carousel__slide')).toHaveLength(5);
+    expect(carousel.getSlide(0)?.textContent).toBe('Zero');
+    carousel.remove();
+  });
+
+  it('removeSlide drops a slide and its dot', () => {
+    const carousel = mounted();
+    carousel.removeSlide(0);
+    expect(carousel.count).toBe(2);
+    expect(carousel.querySelectorAll('.k-carousel__dot')).toHaveLength(2);
+    expect(carousel.getSlide(0)?.textContent).toBe('Two');
+    carousel.remove();
+  });
+
+  it('updateSlide patches one slide', () => {
+    const carousel = mounted();
+    carousel.updateSlide(1, { content: 'Second' });
+    expect(carousel.getSlide(1)?.textContent).toBe('Second');
+    expect(carousel.getSlide(0)?.textContent).toBe('One');
+    carousel.remove();
+  });
+
+  it('refresh rebuilds the subtree', () => {
+    const carousel = mounted();
+    const track = carousel.querySelector('.k-carousel__track');
+    carousel.refresh();
+    expect(carousel.querySelector('.k-carousel__track')).not.toBe(track);
+    expect(carousel.querySelectorAll('.k-carousel__track')).toHaveLength(1);
+    carousel.remove();
+  });
+
+  it('api calls are inert while disconnected', () => {
+    const carousel = host();
+    carousel.slides = slides;
+    expect(() => {
+      carousel.goTo(1);
+      carousel.next();
+      carousel.previous();
+      carousel.first();
+      carousel.last();
+      carousel.play();
+      carousel.pause();
+      carousel.refresh();
+    }).not.toThrow();
+    expect(carousel.isPlaying).toBe(false);
+    expect(carousel.getSlide(0)).toBeNull();
+    expect(carousel.getCurrentSlide()).toBeNull();
+  });
+});

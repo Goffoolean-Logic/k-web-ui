@@ -1,71 +1,33 @@
-import { defineElement, parseJsonList } from '../root.js';
-import { buildTabs, setTabsLabel } from './dom/dom.js';
-import { bindEvents, paintInk, selectTab } from './events/events.js';
-import { bindKeybinds } from './keybinds/keybinds.js';
-import type { KTabItem, KTabsState } from './models/models.js';
+import { defineElement } from '../root.js';
+import {
+  applyAttribute,
+  getLabels,
+  getSelected,
+  getSelectedIndex,
+  indexOfLabel,
+  init,
+  insertAt,
+  parsePanels,
+  patchAt,
+  removeAt,
+  selectTab,
+  serializePanels,
+  step,
+} from './controller/controller.js';
+import type { KTabItem, KTabsSelection, KTabsState } from './models/models.js';
 
-export type { KTabItem, KTabsOptions } from './models/models.js';
+export type {
+  KTabItem,
+  KTabsOptions,
+  KTabsSelection,
+} from './models/models.js';
 
-function isNode(value: unknown): value is Node {
-  return value instanceof Node;
-}
-
-function toIndex(raw: string | null): number {
-  const value = Number(raw ?? 0);
-  return Number.isFinite(value) ? value : 0;
-}
-
-function parsePanels(raw: string | null): KTabItem[] {
-  const list = parseJsonList(raw, 'KTabs');
-  const panels: KTabItem[] = [];
-  for (const entry of list) {
-    if (!entry || typeof entry !== 'object') {
-      throw new Error('KTabs: each panel is an object');
-    }
-    const rec = entry as {
-      label?: unknown;
-      icon?: unknown;
-      content?: unknown;
-    };
-    const panel: KTabItem = {
-      content: typeof rec.content === 'string' ? rec.content : '',
-    };
-    if (typeof rec.label === 'string') {
-      panel.label = rec.label;
-    }
-    if (typeof rec.icon === 'string') {
-      panel.icon = rec.icon as KTabItem['icon'];
-    }
-    panels.push(panel);
-  }
-  return panels;
-}
-
-function serializePanels(panels: KTabItem[]): string | null {
-  const json: Array<Record<string, string>> = [];
-  for (const panel of panels) {
-    if (isNode(panel.content) || isNode(panel.icon)) {
-      return null;
-    }
-    const entry: Record<string, string> = {};
-    if (panel.label !== undefined) {
-      entry.label = panel.label;
-    }
-    if (typeof panel.icon === 'string') {
-      entry.icon = panel.icon;
-    }
-    if (typeof panel.content === 'string') {
-      entry.content = panel.content;
-    }
-    json.push(entry);
-  }
-  return JSON.stringify(json);
-}
+type StepOptions = { wrap?: boolean; focus?: boolean };
 
 /**
  * Tabs. The host is `<k-tabs class="k-tabs">`. `label`, `selected`,
- * `keyboard`, and `panels` are attributes. The element builds the tablist,
- * tabs, panels, and ARIA.
+ * `keyboard`, `size`, and `panels` are attributes. The element builds the
+ * tablist, tabs, panels, and ARIA.
  *
  *   <k-tabs class="k-tabs" label="Sections" panels='[{"label":"Overview","content":"…"}]'></k-tabs>
  */
@@ -81,7 +43,7 @@ export class KTabs extends HTMLElement {
 
   connectedCallback(): void {
     this.classList.add('k-tabs');
-    this.#connect();
+    this.#init();
   }
 
   disconnectedCallback(): void {
@@ -101,35 +63,27 @@ export class KTabs extends HTMLElement {
       return;
     }
     if (name === 'panels') {
-      this.#connect();
+      this.#init();
       return;
     }
-
-    const state = this.#state;
-    if (!state) {
-      return;
-    }
-    switch (name) {
-      case 'selected':
-        selectTab(state, toIndex(this.getAttribute('selected')), {
-          emit: false,
-        });
-        break;
-      case 'keyboard':
-        state.keyboard = this.getAttribute('keyboard') !== 'false';
-        break;
-      case 'label':
-        setTabsLabel(state, this.getAttribute('label'));
-        break;
-      case 'size':
-        // Tab widths change, so the ink has to move with them.
-        paintInk(state, { animate: false });
-        break;
+    if (this.#state) {
+      applyAttribute(this.#state, name);
     }
   }
 
-  disconnect(): void {
+  #init(): void {
+    const panels = this.panels;
+    if (panels.length === 0) {
+      return;
+    }
     this.#abort.abort();
+    this.#abort = new AbortController();
+    this.#state = init(this, panels, this.#abort.signal);
+  }
+
+  /** Number of panels, readable before the element is connected. */
+  get count(): number {
+    return this.panels.length;
   }
 
   get panels(): KTabItem[] {
@@ -145,7 +99,7 @@ export class KTabs extends HTMLElement {
       this.#reflecting = false;
     }
     if (this.isConnected) {
-      this.#connect();
+      this.#init();
     }
   }
 
@@ -153,47 +107,82 @@ export class KTabs extends HTMLElement {
     return this.#state ? [...this.#state.tabs] : [];
   }
 
-  get selectedIndex(): number {
-    if (!this.#state) {
-      return -1;
+  get labels(): string[] {
+    if (this.#state) {
+      return getLabels(this.#state);
     }
-    return this.#state.tabs.findIndex(
-      (tab) => tab.getAttribute('aria-selected') === 'true',
-    );
+    return this.panels.map((panel) => panel.label ?? '');
+  }
+
+  get selectedIndex(): number {
+    return this.#state ? getSelectedIndex(this.#state) : -1;
+  }
+
+  /** The selected index with its live tab and panel nodes. */
+  getSelected(): KTabsSelection | null {
+    return this.#state ? getSelected(this.#state) : null;
+  }
+
+  getTab(index: number): HTMLElement | null {
+    return this.#state?.tabs[index] ?? null;
+  }
+
+  getPanel(index: number): HTMLElement | null {
+    return this.#state?.panels[index] ?? null;
   }
 
   select(index: number, { focus = false } = {}): void {
-    if (!this.#state) {
-      return;
+    if (this.#state) {
+      selectTab(this.#state, index, { focus });
     }
-    selectTab(this.#state, index, { focus });
   }
 
-  #connect(): void {
-    const panels = this.panels;
-    if (panels.length === 0) {
-      return;
+  /** Selects the first panel whose label matches. Returns false on a miss. */
+  selectByLabel(label: string, { focus = false } = {}): boolean {
+    if (!this.#state) {
+      return false;
     }
+    const index = indexOfLabel(this.#state, label);
+    if (index < 0) {
+      return false;
+    }
+    selectTab(this.#state, index, { focus });
+    return true;
+  }
 
+  next(options?: StepOptions): void {
+    if (this.#state) {
+      step(this.#state, 1, options);
+    }
+  }
+
+  previous(options?: StepOptions): void {
+    if (this.#state) {
+      step(this.#state, -1, options);
+    }
+  }
+
+  addPanel(panel: KTabItem, at?: number): void {
+    this.panels = insertAt(this.panels, panel, at);
+  }
+
+  removePanel(index: number): void {
+    this.panels = removeAt(this.panels, index);
+  }
+
+  updatePanel(index: number, patch: Partial<KTabItem>): void {
+    this.panels = patchAt(this.panels, index, patch);
+  }
+
+  /** Rebuilds the subtree from the current panels. */
+  refresh(): void {
+    if (this.isConnected) {
+      this.#init();
+    }
+  }
+
+  disconnect(): void {
     this.#abort.abort();
-    this.#abort = new AbortController();
-    this.#state = {
-      root: this,
-      tabs: [],
-      panels: [],
-      keyboard: this.getAttribute('keyboard') !== 'false',
-    };
-
-    buildTabs(this.#state, {
-      items: panels,
-      label: this.getAttribute('label') ?? undefined,
-      keyboard: this.#state.keyboard,
-    });
-    bindEvents(this.#state, this.#abort.signal);
-    bindKeybinds(this.#state, this.#abort.signal);
-    selectTab(this.#state, toIndex(this.getAttribute('selected')), {
-      emit: false,
-    });
   }
 }
 

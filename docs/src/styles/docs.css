@@ -114,7 +114,18 @@
 }
 
 .k-class-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   margin-block: 1.25rem 2rem;
+}
+
+.k-class-table__generated .k-accordion__panel {
+  padding: 0;
+}
+
+.k-class-table__generated .k-table tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
 }
 
 .k-token-grid {

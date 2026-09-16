@@ -1,5 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
-import { defineElement, emitKChange, fill, resolveRoot } from './root.js';
+import {
+  defineElement,
+  emitKChange,
+  fill,
+  insertAt,
+  patchAt,
+  removeAt,
+  resolveRoot,
+} from './root.js';
 
 describe('resolveRoot', () => {
   it('returns an element argument', () => {
@@ -41,6 +49,55 @@ describe('defineElement', () => {
     defineElement('k-root-probe', KRootProbe);
     expect(customElements.get('k-root-probe')).toBe(KRootProbe);
     expect(() => defineElement('k-root-probe', KRootProbe)).not.toThrow();
+  });
+});
+
+describe('insertAt', () => {
+  const items = [{ label: 'One' }, { label: 'Two' }];
+
+  it('appends by default and inserts at an index', () => {
+    expect(insertAt(items, { label: 'Three' }).map((i) => i.label)).toEqual([
+      'One',
+      'Two',
+      'Three',
+    ]);
+    expect(insertAt(items, { label: 'Zero' }, 0).map((i) => i.label)).toEqual([
+      'Zero',
+      'One',
+      'Two',
+    ]);
+  });
+
+  it('leaves the source array alone', () => {
+    insertAt(items, { label: 'Three' });
+    expect(items).toHaveLength(2);
+  });
+});
+
+describe('removeAt', () => {
+  const items = [{ label: 'One' }, { label: 'Two' }];
+
+  it('drops the index', () => {
+    expect(removeAt(items, 0).map((i) => i.label)).toEqual(['Two']);
+  });
+
+  it('returns the original array when the index misses', () => {
+    expect(removeAt(items, 9)).toBe(items);
+    expect(removeAt(items, -1)).toBe(items);
+  });
+});
+
+describe('patchAt', () => {
+  const items = [{ label: 'One', content: 'A' }, { label: 'Two' }];
+
+  it('merges the patch into one item', () => {
+    const patched = patchAt(items, 0, { label: 'First' });
+    expect(patched[0]).toEqual({ label: 'First', content: 'A' });
+    expect(patched[1]).toBe(items[1]);
+  });
+
+  it('returns the original array when the index misses', () => {
+    expect(patchAt(items, 9, { label: 'Nope' })).toBe(items);
   });
 });
 

@@ -25,6 +25,31 @@ If the user prefers reduced motion, the track does not animate and autoscroll st
       'The one class you write. The element generates the viewport, track, slides, arrows, and dots inside it.',
     ],
   ]}
+  generated={[
+    ['k-carousel__viewport', 'part', 'Clips the track to one slide.'],
+    [
+      'k-carousel__track',
+      'part',
+      'The row of slides. Translates as the index changes.',
+    ],
+    ['k-carousel__slide', 'part', 'One slide. A picture or text.'],
+    [
+      'k-carousel__prev',
+      'part',
+      'Previous control. Disabled at the start when loop is off.',
+    ],
+    [
+      'k-carousel__next',
+      'part',
+      'Next control. Disabled at the end when loop is off.',
+    ],
+    ['k-carousel__dots', 'part', 'The row of dots under the track.'],
+    [
+      'k-carousel__dot',
+      'part',
+      'One slide marker. The current one is aria-current.',
+    ],
+  ]}
 />
 
 ## Attributes
@@ -60,6 +85,30 @@ If the user prefers reduced motion, the track does not animate and autoscroll st
   ]}
 />
 
+## Properties
+
+<DocTable
+  columns={['Property', 'Type', 'Description']}
+  rows={[
+    [
+      'slides',
+      'KCarouselSlide[]',
+      'Read/write. Accepts a Node as content, which is how a slide gets real markup. Node values are not written back to the attribute.',
+    ],
+    [
+      'count',
+      'number',
+      'Read-only. Number of slides. Reads the attribute, so it works before the element connects.',
+    ],
+    ['index', 'number', 'Read-only. Index of the current slide.'],
+    [
+      'isPlaying',
+      'boolean',
+      'Read-only. True while autoscroll is on and nothing is hovering or focusing the host.',
+    ],
+  ]}
+/>
+
 ## Methods
 
 <DocTable
@@ -70,11 +119,35 @@ If the user prefers reduced motion, the track does not animate and autoscroll st
       'void',
       'Moves and fires k-change. Wraps when loop is on, clamps when it is off.',
     ],
+    [
+      'next()',
+      'void',
+      'Advances one slide, following the same wrap rule as goTo.',
+    ],
+    ['previous()', 'void', 'Goes back one slide, wrapping the same way.'],
+    ['first()', 'void', 'Jumps to the first slide.'],
+    ['last()', 'void', 'Jumps to the last slide.'],
+    ['getSlide(index)', 'HTMLElement | null', 'The slide at an index.'],
+    ['getCurrentSlide()', 'HTMLElement | null', 'The slide at index.'],
+    ['play()', 'void', 'Turns autoscroll on.'],
+    ['pause()', 'void', 'Turns autoscroll off.'],
+    [
+      'addSlide(slide, at)',
+      'void',
+      'Inserts a slide, appending when at is left out.',
+    ],
+    ['removeSlide(index)', 'void', 'Drops a slide and its dot.'],
+    [
+      'updateSlide(index, patch)',
+      'void',
+      'Merges a partial slide into the one at that index.',
+    ],
+    ['refresh()', 'void', 'Rebuilds the subtree from the current slides.'],
     ['disconnect()', 'void', 'Stops autoscroll and removes listeners.'],
   ]}
 />
 
-The `slides` property is read/write and accepts a `Node` as `content`, which is how a slide gets real markup; node values are not written back to the attribute. `index` is a read-only property.
+`pause()` turns autoscroll off rather than pausing it briefly, so `play()` is what resumes it. Hover and focus handle the temporary pause on their own, which is what `isPlaying` reports.
 
 Moving a slide dispatches `k-change` with `{ index }`, and the event bubbles. Setting the `index` attribute moves without firing it.
 

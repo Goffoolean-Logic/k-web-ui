@@ -25,6 +25,19 @@ The trigger is a secondary button. Importing the JS registers the tag. It toggle
       'The one class you write. The element generates the trigger, menu, and items inside it.',
     ],
   ]}
+  generated={[
+    [
+      'k-dropdown__trigger',
+      'part',
+      'The button that opens the menu. Also carries k-btn k-btn--secondary.',
+    ],
+    ['k-dropdown__menu', 'part', 'The list of items. Hidden until open.'],
+    [
+      'k-dropdown__item',
+      'part',
+      'One choice. A button, or an anchor when the option has href.',
+    ],
+  ]}
 />
 
 ## Attributes
@@ -48,6 +61,28 @@ The trigger is a secondary button. Importing the JS registers the tag. It toggle
   ]}
 />
 
+## Properties
+
+<DocTable
+  columns={['Property', 'Type', 'Description']}
+  rows={[
+    [
+      'options',
+      'KDropdownItem[]',
+      'Read/write, reflects to the attribute.',
+    ],
+    [
+      'count',
+      'number',
+      'Read-only. Number of options. Reads the attribute, so it works before the element connects.',
+    ],
+    ['labels', 'string[]', 'Read-only. Option labels in order.'],
+    ['open', 'boolean', 'Read-only. True while the menu is showing.'],
+    ['trigger', 'HTMLElement | null', 'Read-only. The generated trigger.'],
+    ['menu', 'HTMLElement | null', 'Read-only. The generated menu.'],
+  ]}
+/>
+
 ## Methods
 
 <DocTable
@@ -58,6 +93,41 @@ The trigger is a secondary button. Importing the JS registers the tag. It toggle
       'void',
       'Opens or closes the menu. Omit the argument to flip the current state.',
     ],
+    ['openMenu()', 'void', 'Opens the menu.'],
+    ['closeMenu()', 'void', 'Closes the menu.'],
+    ['getItems()', 'HTMLElement[]', 'Copy of the item nodes.'],
+    ['getItem(index)', 'HTMLElement | null', 'The item at an index.'],
+    [
+      'focusItem(index)',
+      'boolean',
+      'Opens the menu if needed and focuses an item. Returns false on a miss.',
+    ],
+    [
+      'select(index)',
+      'void',
+      'Picks an item the way a click does: closes the menu and fires k-change.',
+    ],
+    [
+      'selectByLabel(label)',
+      'boolean',
+      'Picks the first item whose label matches. Returns false on a miss.',
+    ],
+    [
+      'addOption(option, at)',
+      'void',
+      'Inserts an option, appending when at is left out.',
+    ],
+    ['removeOption(index)', 'void', 'Drops an option.'],
+    [
+      'updateOption(index, patch)',
+      'void',
+      'Merges a partial option into the one at that index.',
+    ],
+    [
+      'refresh()',
+      'void',
+      'Rebuilds the trigger and menu from the current options.',
+    ],
     [
       'disconnect()',
       'void',
@@ -66,9 +136,7 @@ The trigger is a secondary button. Importing the JS registers the tag. It toggle
   ]}
 />
 
-The `options` property is read/write and reflects to the attribute. `open` is a read-only boolean.
-
-This element dispatches no event. To react to a choice, give each option an `href`, or delegate on the host and read the clicked `.k-dropdown__item`.
+Picking an item dispatches `k-change` with `{ index, label, href }`, and the event bubbles. `href` is `null` for an option without one. The event fires on a click, on a keyboard activation, and on `select()`, so a single listener covers every path. An option with an `href` still navigates as a normal link.
 
 ## Examples
 
@@ -110,6 +178,7 @@ The element sets `aria-haspopup="menu"` and `aria-expanded` on the trigger, `rol
 **Do**
 - Use `<k-dropdown class="k-dropdown">` with `label` and `options`.
 - Pass `options` with a `label`. `href` is optional.
+- Listen for `k-change` to react to a pick.
 - Give the host an `id` when the menu and trigger need a stable pair.
 
 **Don't**

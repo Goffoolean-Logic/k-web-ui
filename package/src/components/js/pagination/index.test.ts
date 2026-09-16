@@ -73,3 +73,89 @@ describe('k-pagination', () => {
     pager.remove();
   });
 });
+
+describe('k-pagination api', () => {
+  function mounted(count = 12, page = 5): KPagination {
+    const pager = host();
+    pager.setAttribute('count', String(count));
+    pager.setAttribute('page', String(page));
+    document.body.append(pager);
+    return pager;
+  }
+
+  it('next and previous step one page, clamping at the ends', () => {
+    const pager = mounted(3, 1);
+    pager.previous();
+    expect(pager.page).toBe(1);
+    pager.next();
+    expect(pager.page).toBe(2);
+    pager.next();
+    expect(pager.page).toBe(3);
+    pager.next();
+    expect(pager.page).toBe(3);
+    pager.remove();
+  });
+
+  it('first and last jump to the ends', () => {
+    const pager = mounted();
+    pager.last();
+    expect(pager.page).toBe(12);
+    pager.first();
+    expect(pager.page).toBe(1);
+    pager.remove();
+  });
+
+  it('hasPrevious and hasNext track the edges', () => {
+    const pager = mounted(3, 1);
+    expect(pager.hasPrevious).toBe(false);
+    expect(pager.hasNext).toBe(true);
+    pager.last();
+    expect(pager.hasPrevious).toBe(true);
+    expect(pager.hasNext).toBe(false);
+    pager.remove();
+  });
+
+  it('getVisiblePages follows the current page', () => {
+    const pager = mounted(12, 6);
+    expect(pager.getVisiblePages()).toEqual([5, 6, 7]);
+    pager.first();
+    expect(pager.getVisiblePages()).toEqual([1, 2, 3]);
+    pager.remove();
+  });
+
+  it('getButtons returns every rendered button', () => {
+    const pager = mounted(12, 6);
+    const buttons = pager.getButtons();
+    expect(buttons).toHaveLength(
+      pager.querySelectorAll('.k-pagination__btn').length,
+    );
+    expect(buttons[0]?.className).toContain('k-pagination__first');
+    pager.remove();
+  });
+
+  it('refresh re-renders the bar', () => {
+    const pager = mounted(12, 6);
+    const first = pager.getButtons()[0];
+    pager.refresh();
+    expect(pager.getButtons()[0]).not.toBe(first);
+    expect(pager.page).toBe(6);
+    pager.remove();
+  });
+
+  it('api calls are inert while disconnected', () => {
+    const pager = host();
+    pager.setAttribute('count', '12');
+    expect(() => {
+      pager.goTo(3);
+      pager.next();
+      pager.previous();
+      pager.first();
+      pager.last();
+      pager.refresh();
+    }).not.toThrow();
+    expect(pager.hasNext).toBe(false);
+    expect(pager.hasPrevious).toBe(false);
+    expect(pager.getVisiblePages()).toEqual([]);
+    expect(pager.getButtons()).toEqual([]);
+  });
+});

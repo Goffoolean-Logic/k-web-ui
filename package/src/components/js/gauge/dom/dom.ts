@@ -2,7 +2,8 @@ function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
 
-function fillPercent(value: number, max: number): number {
+/** Share of `max` that `value` covers, as 0 to 100. */
+export function fillPercent(value: number, max: number): number {
   if (max <= 0) {
     return 0;
   }

@@ -4,8 +4,8 @@ const { kind } = entry.data;
 
 const badge =
   kind === 'js'
-    ? { label: 'JS', title: 'Custom element. Needs the JS import.' }
-    : { label: 'CSS', title: 'CSS only. No JavaScript needed.' };
+    ? { label: 'JS', class: 'doc-title__badge--js' }
+    : { label: 'CSS', class: 'k-badge--soft k-badge--info' };
 ---
 
 <div class="doc-title">
@@ -13,12 +13,7 @@ const badge =
     <h1 id="_top" data-page-title>{entry.data.title}</h1>
     {
       kind && (
-        <span
-          class={`k-badge k-badge--sm k-badge--soft k-badge--${kind === 'js' ? 'accent' : 'info'}`}
-          title={badge.title}
-        >
-          {badge.label}
-        </span>
+        <span class={`k-badge k-badge--sm ${badge.class}`}>{badge.label}</span>
       )
     }
   </div>
@@ -82,5 +77,16 @@ const badge =
       font-weight: 600;
       color: var(--sl-color-white);
     }
+  }
+
+  /*
+   * Unlayered on purpose. The kit's badge rules live in @layer components,
+   * and anything layered loses to them no matter how specific it is.
+   * Black border because yellow alone is faint against the light canvas.
+   */
+  span.k-badge.doc-title__badge--js {
+    border-color: var(--k-palette-black);
+    background-color: var(--k-palette-yellow-300);
+    color: var(--k-palette-black);
   }
 </style>

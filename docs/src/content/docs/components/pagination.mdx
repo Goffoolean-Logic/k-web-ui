@@ -25,6 +25,27 @@ Arrow keys step. Home and End jump to the ends even when first/last are omitted.
       'The one class you write. The element generates every control inside it.',
     ],
   ]}
+  generated={[
+    ['k-pagination__btn', 'part', 'Shared chrome on every control.'],
+    ['k-pagination__page', 'part', 'A numbered page button.'],
+    [
+      'k-pagination__current',
+      'part',
+      'The current page. Set with aria-current="page".',
+    ],
+    ['k-pagination__prev', 'part', 'Previous page.'],
+    ['k-pagination__next', 'part', 'Next page.'],
+    [
+      'k-pagination__first',
+      'part',
+      'Jump to page 1. Omitted when count is five or fewer.',
+    ],
+    [
+      'k-pagination__last',
+      'part',
+      'Jump to the last page. Omitted the same way.',
+    ],
+  ]}
 />
 
 ## Attributes
@@ -47,6 +68,22 @@ Arrow keys step. Home and End jump to the ends even when first/last are omitted.
   ]}
 />
 
+## Properties
+
+<DocTable
+  columns={['Property', 'Type', 'Description']}
+  rows={[
+    ['count', 'number', 'Read/write. Total pages.'],
+    [
+      'page',
+      'number',
+      'Read/write. Writing while connected moves the window and fires k-change, the same as calling goTo.',
+    ],
+    ['hasPrevious', 'boolean', 'Read-only. False on page 1.'],
+    ['hasNext', 'boolean', 'Read-only. False on the last page.'],
+  ]}
+/>
+
 ## Methods
 
 <DocTable
@@ -57,11 +94,28 @@ Arrow keys step. Home and End jump to the ends even when first/last are omitted.
       'void',
       'Moves, focuses the new current page, and fires k-change.',
     ],
+    ['next()', 'void', 'Advances one page, stopping at count.'],
+    ['previous()', 'void', 'Goes back one page, stopping at 1.'],
+    ['first()', 'void', 'Jumps to page 1.'],
+    ['last()', 'void', 'Jumps to the last page.'],
+    [
+      'getVisiblePages()',
+      'number[]',
+      'The page numbers the bar is currently showing.',
+    ],
+    [
+      'getButtons()',
+      'HTMLButtonElement[]',
+      'Every rendered button, controls and page numbers alike.',
+    ],
+    [
+      'refresh()',
+      'void',
+      'Re-renders the bar from the current count and page.',
+    ],
     ['disconnect()', 'void', 'Removes listeners.'],
   ]}
 />
-
-Both `count` and `page` are read/write properties. Writing `page` while the element is connected moves the window and fires the event, the same as calling `goTo`.
 
 Page changes dispatch `k-change` with `{ page }`, and the event bubbles. Setting the `page` attribute moves the window without firing the event and without taking focus, so it is the one to use when your app owns the state.
 

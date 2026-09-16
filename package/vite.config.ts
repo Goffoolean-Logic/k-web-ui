@@ -13,9 +13,14 @@ export default defineConfig({
     },
     outDir: 'dist/js',
   },
-  plugins: [dts({ include: ['src/components/js'], exclude: ['**/*.test.ts'] })],
+  plugins: [
+    dts({
+      include: ['src/components/js'],
+      exclude: ['**/*.test.ts', '**/*.spec.ts'],
+    }),
+  ],
   test: {
     environment: 'happy-dom',
-    include: ['src/components/js/**/*.test.ts'],
+    include: ['src/components/js/**/*.{test,spec}.ts'],
   },
 });

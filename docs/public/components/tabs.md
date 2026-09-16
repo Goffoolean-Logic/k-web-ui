@@ -16,6 +16,15 @@ Tabs sit flush. The selected chrome is primary. Switching a tab slides that fill
 | --- | --- | --- |
 | `k-tabs` | component | The one class you write. The element generates the list, tabs, panels, and ink inside it. |
 
+### Generated classes
+
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-tabs__list` | part | The tablist the element builds. |
+| `k-tabs__ink` | part | The primary fill that slides under the selected tab. |
+| `k-tabs__tab` | part | One tab button. |
+| `k-tabs__panel` | part | One panel. Hidden ones use `[hidden]`. |
+
 ## Attributes
 
 | Attribute | Type | Default | Description |
@@ -26,14 +35,34 @@ Tabs sit flush. The selected chrome is primary. Switching a tab slides that fill
 | `keyboard` | `"false"` to disable | enabled | Arrow keys, Home, and End move between tabs. |
 | `size` | `"lg"` | — | Fixed 10rem tabs with larger padding and type. Omit for the default width. |
 
+## Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `panels` | `KTabItem[]` | Read/write. Accepts a `Node` as `content` or `icon`, which is how you get links, headings, or images into a panel. Node values are not written back to the attribute. |
+| `count` | number | Read-only. Number of panels. Reads the attribute, so it works before the element connects. |
+| `tabs` | `HTMLElement[]` | Read-only copy of the tab buttons. |
+| `labels` | `string[]` | Read-only. Tab labels in order. |
+| `selectedIndex` | number | Read-only. Index of the open panel, or `-1` before the element has content. |
+
 ## Methods
 
 | Method | Returns | Description |
 | --- | --- | --- |
+| `getSelected()` | `KTabsSelection \| null` | The open tab as `{ index, tab, panel, label }`, or null when nothing is built. |
+| `getTab(index)` | `HTMLElement \| null` | The tab button at an index. |
+| `getPanel(index)` | `HTMLElement \| null` | The panel at an index. |
 | `select(index, { focus })` | void | Opens a panel and fires `k-change`. Pass `focus: true` to move focus to the tab. |
+| `selectByLabel(label, { focus })` | boolean | Opens the first panel whose label matches. Returns false on a miss. |
+| `next({ wrap, focus })` | void | Opens the following panel. Wraps past the last one unless `wrap` is false. |
+| `previous({ wrap, focus })` | void | Opens the preceding panel, wrapping the same way. |
+| `addPanel(panel, at)` | void | Inserts a panel, appending when `at` is left out. |
+| `removePanel(index)` | void | Drops a panel and its tab. |
+| `updatePanel(index, patch)` | void | Merges a partial panel into the one at that index. |
+| `refresh()` | void | Rebuilds the subtree from the current panels. |
 | `disconnect()` | void | Removes listeners without removing the element from the page. |
 
-Three properties round out the API. `panels` is read/write and accepts a `Node` as `content` or `icon`, which is how you get links, headings, or images into a panel — node values are not written back to the attribute. `tabs` returns the tab buttons and `selectedIndex` the open index, both read-only.
+The three edit methods write through the `panels` property, so they reflect to the attribute and rebuild the tablist. Everything else patches in place.
 
 Selecting a tab dispatches `k-change` with `{ selected }`, and the event bubbles. Setting the `selected` attribute moves the panel without firing the event, so you can drive the element from your own state without a loop.
 

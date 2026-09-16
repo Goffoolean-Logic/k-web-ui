@@ -34,6 +34,7 @@ export default defineConfig({
       customCss: ['./src/styles/docs.css'],
       sidebar: [
         { label: 'Getting started', slug: 'getting-started' },
+        { label: 'How it works', slug: 'how-it-works' },
         { label: 'Theme playground', slug: 'theme-playground' },
         {
           label: 'Foundations',

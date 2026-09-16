@@ -146,3 +146,139 @@ describe('k-tabs', () => {
     tabs.remove();
   });
 });
+
+describe('k-tabs api', () => {
+  it('getSelected returns the index, nodes, and label', () => {
+    const tabs = host();
+    tabs.panels = panels;
+    document.body.append(tabs);
+    tabs.select(1);
+
+    expect(tabs.getSelected()).toEqual({
+      index: 1,
+      tab: tabs.tabs[1],
+      panel: tabs.getPanel(1),
+      label: 'Usage',
+    });
+    tabs.remove();
+  });
+
+  it('getSelected is null before the element is connected', () => {
+    const tabs = host();
+    tabs.panels = panels;
+    expect(tabs.getSelected()).toBeNull();
+    expect(tabs.selectedIndex).toBe(-1);
+  });
+
+  it('reports count and labels with or without a connection', () => {
+    const tabs = host();
+    tabs.panels = panels;
+    expect(tabs.count).toBe(2);
+    expect(tabs.labels).toEqual(['Overview', 'Usage']);
+
+    document.body.append(tabs);
+    expect(tabs.count).toBe(2);
+    expect(tabs.labels).toEqual(['Overview', 'Usage']);
+    tabs.remove();
+  });
+
+  it('getTab and getPanel hand back the live nodes, null past the end', () => {
+    const tabs = host();
+    tabs.panels = panels;
+    document.body.append(tabs);
+    expect(tabs.getTab(0)).toBe(tabs.tabs[0]);
+    expect(tabs.getPanel(1)?.id).toBe('sections-panel-1');
+    expect(tabs.getTab(9)).toBeNull();
+    expect(tabs.getPanel(9)).toBeNull();
+    tabs.remove();
+  });
+
+  it('next and previous wrap, and clamp when asked', () => {
+    const tabs = host();
+    tabs.panels = panels;
+    document.body.append(tabs);
+
+    tabs.next();
+    expect(tabs.selectedIndex).toBe(1);
+    tabs.next();
+    expect(tabs.selectedIndex).toBe(0);
+    tabs.previous();
+    expect(tabs.selectedIndex).toBe(1);
+
+    tabs.next({ wrap: false });
+    expect(tabs.selectedIndex).toBe(1);
+    tabs.select(0);
+    tabs.previous({ wrap: false });
+    expect(tabs.selectedIndex).toBe(0);
+    tabs.remove();
+  });
+
+  it('selectByLabel selects a match and reports a miss', () => {
+    const tabs = host();
+    tabs.panels = panels;
+    document.body.append(tabs);
+    expect(tabs.selectByLabel('Usage')).toBe(true);
+    expect(tabs.selectedIndex).toBe(1);
+    expect(tabs.selectByLabel('Nope')).toBe(false);
+    expect(tabs.selectedIndex).toBe(1);
+    tabs.remove();
+  });
+
+  it('addPanel appends or inserts, and renders the new tab', () => {
+    const tabs = host();
+    tabs.panels = panels;
+    document.body.append(tabs);
+
+    tabs.addPanel({ label: 'API', content: 'Third' });
+    expect(tabs.labels).toEqual(['Overview', 'Usage', 'API']);
+
+    tabs.addPanel({ label: 'Intro', content: 'Zero' }, 0);
+    expect(tabs.labels).toEqual(['Intro', 'Overview', 'Usage', 'API']);
+    expect(tabs.querySelectorAll('[role="tab"]')).toHaveLength(4);
+    tabs.remove();
+  });
+
+  it('removePanel drops a tab and its panel', () => {
+    const tabs = host();
+    tabs.panels = panels;
+    document.body.append(tabs);
+    tabs.removePanel(0);
+    expect(tabs.labels).toEqual(['Usage']);
+    expect(tabs.querySelectorAll('[role="tabpanel"]')).toHaveLength(1);
+    tabs.remove();
+  });
+
+  it('updatePanel patches one item and leaves the others alone', () => {
+    const tabs = host();
+    tabs.panels = panels;
+    document.body.append(tabs);
+    tabs.updatePanel(1, { label: 'Recipes' });
+    expect(tabs.labels).toEqual(['Overview', 'Recipes']);
+    expect(tabs.tabs[1]?.textContent).toBe('Recipes');
+    tabs.remove();
+  });
+
+  it('refresh rebuilds the subtree', () => {
+    const tabs = host();
+    tabs.panels = panels;
+    document.body.append(tabs);
+    const first = tabs.tabs[0];
+    tabs.refresh();
+    expect(tabs.tabs[0]).not.toBe(first);
+    expect(tabs.querySelectorAll('[role="tablist"]')).toHaveLength(1);
+    tabs.remove();
+  });
+
+  it('api calls are inert while disconnected', () => {
+    const tabs = host();
+    tabs.panels = panels;
+    expect(() => {
+      tabs.select(1);
+      tabs.next();
+      tabs.previous();
+      tabs.refresh();
+    }).not.toThrow();
+    expect(tabs.selectByLabel('Usage')).toBe(false);
+    expect(tabs.tabs).toEqual([]);
+  });
+});

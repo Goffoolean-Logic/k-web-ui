@@ -1,5 +1,13 @@
 import { defineElement } from '../root.js';
-import { paint } from './dom/dom.js';
+import {
+  applyGaugeAttributes,
+  init,
+  paint,
+  parseNumber,
+  percentOf,
+  setBooleanAttribute,
+  stepValue,
+} from './controller/controller.js';
 import {
   isGaugeSize,
   isGaugeVariant,
@@ -13,54 +21,6 @@ export type {
   KGaugeSize,
   KGaugeVariant,
 } from './models/models.js';
-
-function parseNumber(raw: string | null): number | undefined {
-  if (raw === null || raw === '') {
-    return undefined;
-  }
-  const next = Number(raw);
-  return Number.isFinite(next) ? next : undefined;
-}
-
-function setBooleanAttribute(
-  el: HTMLElement,
-  name: string,
-  next: boolean,
-): void {
-  if (next) {
-    el.setAttribute(name, '');
-    return;
-  }
-  el.removeAttribute(name);
-}
-
-function applyGaugeAttributes(el: HTMLElement, options: KGaugeOptions): void {
-  if (options.max !== undefined) {
-    el.setAttribute('max', String(options.max));
-  }
-  if (
-    !options.indeterminate &&
-    options.value !== undefined &&
-    Number.isFinite(options.value)
-  ) {
-    el.setAttribute('value', String(options.value));
-  }
-  if (options.label) {
-    el.setAttribute('label', options.label);
-  }
-  if (options.text) {
-    el.setAttribute('text', options.text);
-  }
-  if (options.size) {
-    el.setAttribute('size', options.size);
-  }
-  if (options.variant) {
-    el.setAttribute('variant', options.variant);
-  }
-  if (options.indeterminate) {
-    el.setAttribute('indeterminate', '');
-  }
-}
 
 /**
  * Keep `value` / `max` and `--k-gauge` in step. Omit `value` for an empty
@@ -105,8 +65,7 @@ export class KGauge extends HTMLElement {
   }
 
   connectedCallback(): void {
-    this.classList.add('k-gauge');
-    paint(this);
+    init(this);
   }
 
   attributeChangedCallback(): void {
@@ -133,6 +92,21 @@ export class KGauge extends HTMLElement {
 
   set max(next: number) {
     this.setAttribute('max', String(next));
+  }
+
+  /** Share of `max` the gauge shows, 0 to 100. Empty reads as 0. */
+  get percent(): number {
+    return percentOf(this.value, this.max);
+  }
+
+  /** True when the gauge has no value, so it renders as an empty frame. */
+  get isEmpty(): boolean {
+    return this.value === undefined;
+  }
+
+  get isComplete(): boolean {
+    const value = this.value;
+    return value !== undefined && value >= this.max;
   }
 
   get label(): string {
@@ -191,6 +165,36 @@ export class KGauge extends HTMLElement {
 
   set indeterminate(next: boolean) {
     setBooleanAttribute(this, 'indeterminate', next);
+  }
+
+  /** Raises the value, stopping at `max`. Starts from 0 when empty. */
+  increment(by = 1): void {
+    this.value = stepValue(this.value, this.max, by);
+  }
+
+  /** Lowers the value, stopping at 0. */
+  decrement(by = 1): void {
+    this.value = stepValue(this.value, this.max, -by);
+  }
+
+  /** Fills the gauge to `max`. */
+  complete(): void {
+    this.value = this.max;
+  }
+
+  /** Drops the value so the gauge renders empty again. */
+  clear(): void {
+    this.value = undefined;
+  }
+
+  /** The hidden `<progress>` the gauge keeps in step. */
+  getProgress(): HTMLProgressElement | null {
+    return this.querySelector(':scope > progress');
+  }
+
+  /** Rewrites the progress, reading, and caption from the attributes. */
+  refresh(): void {
+    paint(this);
   }
 }
 

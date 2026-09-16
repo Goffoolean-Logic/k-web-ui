@@ -1,34 +1,25 @@
-import { defineElement, parseJsonList } from '../root.js';
-import { buildDropdown, setLabel, setOpen } from './dom/dom.js';
-import { bindEvents } from './events/events.js';
-import { bindKeybinds } from './keybinds/keybinds.js';
+import { defineElement } from '../root.js';
+import {
+  applyAttribute,
+  focusItem,
+  getItem,
+  indexOfLabel,
+  init,
+  insertAt,
+  parseOptions,
+  patchAt,
+  pickItem,
+  removeAt,
+  setOpen,
+} from './controller/controller.js';
 import type { KDropdownItem, KDropdownState } from './models/models.js';
 
 export type { KDropdownItem, KDropdownOptions } from './models/models.js';
 
-function parseOptions(raw: string | null): KDropdownItem[] {
-  const list = parseJsonList(raw, 'KDropdown');
-  const options: KDropdownItem[] = [];
-  for (const entry of list) {
-    if (
-      !entry ||
-      typeof entry !== 'object' ||
-      typeof (entry as { label?: unknown }).label !== 'string'
-    ) {
-      throw new Error('KDropdown: each option needs a label');
-    }
-    const item: KDropdownItem = { label: (entry as { label: string }).label };
-    if (typeof (entry as { href?: unknown }).href === 'string') {
-      item.href = (entry as { href: string }).href;
-    }
-    options.push(item);
-  }
-  return options;
-}
-
 /**
- * Dropdown. The host is `<k-dropdown class="k-dropdown">`. `label` and
- * `options` are attributes. The element builds the trigger, menu, and ARIA.
+ * Dropdown. The host is `<k-dropdown class="k-dropdown">`. `label`, `align`,
+ * and `options` are attributes. The element builds the trigger, menu, and
+ * ARIA, and fires `k-change` when an item is picked.
  *
  *   <k-dropdown class="k-dropdown" label="Sort" options='[{"label":"Name"}]'></k-dropdown>
  */
@@ -42,7 +33,7 @@ export class KDropdown extends HTMLElement {
 
   connectedCallback(): void {
     this.classList.add('k-dropdown');
-    this.#connect();
+    this.#init();
   }
 
   disconnectedCallback(): void {
@@ -55,15 +46,25 @@ export class KDropdown extends HTMLElement {
     if (!this.isConnected) {
       return;
     }
-    if (name === 'label' && this.#state) {
-      setLabel(this.#state, this.getAttribute('label'));
+    if (this.#state && applyAttribute(this.#state, name)) {
       return;
     }
-    this.#connect();
+    this.#init();
   }
 
-  disconnect(): void {
+  #init(): void {
+    const options = this.options;
+    if (options.length === 0) {
+      return;
+    }
     this.#abort.abort();
+    this.#abort = new AbortController();
+    this.#state = init(this, options, this.#abort.signal);
+  }
+
+  /** Number of options, readable before the element is connected. */
+  get count(): number {
+    return this.options.length;
   }
 
   get options(): KDropdownItem[] {
@@ -74,35 +75,90 @@ export class KDropdown extends HTMLElement {
     this.setAttribute('options', JSON.stringify(value));
   }
 
+  get labels(): string[] {
+    return this.options.map((option) => option.label);
+  }
+
   get open(): boolean {
     return this.#state?.open ?? false;
   }
 
-  toggle(open = !this.open): void {
-    if (!this.#state) {
-      return;
-    }
-    setOpen(this.#state, open);
+  get trigger(): HTMLElement | null {
+    return this.#state?.trigger ?? null;
   }
 
-  #connect(): void {
-    const options = this.options;
-    if (options.length === 0) {
-      return;
-    }
+  get menu(): HTMLElement | null {
+    return this.#state?.menu ?? null;
+  }
 
+  getItems(): HTMLElement[] {
+    return this.#state ? [...this.#state.items] : [];
+  }
+
+  getItem(index: number): HTMLElement | null {
+    return this.#state ? getItem(this.#state, index) : null;
+  }
+
+  toggle(open = !this.open): void {
+    if (this.#state) {
+      setOpen(this.#state, open);
+    }
+  }
+
+  openMenu(): void {
+    this.toggle(true);
+  }
+
+  closeMenu(): void {
+    this.toggle(false);
+  }
+
+  /** Opens the menu if needed and moves focus to an item. */
+  focusItem(index: number): boolean {
+    return this.#state ? focusItem(this.#state, index) : false;
+  }
+
+  /** Picks an item as a click would: closes the menu and fires `k-change`. */
+  select(index: number): void {
+    if (this.#state) {
+      pickItem(this.#state, index);
+    }
+  }
+
+  /** Picks the first option whose label matches. Returns false on a miss. */
+  selectByLabel(label: string): boolean {
+    if (!this.#state) {
+      return false;
+    }
+    const index = indexOfLabel(this.#state, label);
+    if (index < 0) {
+      return false;
+    }
+    pickItem(this.#state, index);
+    return true;
+  }
+
+  addOption(option: KDropdownItem, at?: number): void {
+    this.options = insertAt(this.options, option, at);
+  }
+
+  removeOption(index: number): void {
+    this.options = removeAt(this.options, index);
+  }
+
+  updateOption(index: number, patch: Partial<KDropdownItem>): void {
+    this.options = patchAt(this.options, index, patch);
+  }
+
+  /** Rebuilds the trigger and menu from the current options. */
+  refresh(): void {
+    if (this.isConnected) {
+      this.#init();
+    }
+  }
+
+  disconnect(): void {
     this.#abort.abort();
-    this.#abort = new AbortController();
-    this.#state = {
-      ...buildDropdown(this, {
-        items: options,
-        label: this.getAttribute('label') ?? undefined,
-      }),
-      open: false,
-    };
-    setOpen(this.#state, false);
-    bindEvents(this.#state, this.#abort.signal);
-    bindKeybinds(this.#state, this.#abort.signal);
   }
 }
 

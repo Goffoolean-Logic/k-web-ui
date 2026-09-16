@@ -4,4 +4,13 @@ storybook-static/
 .astro/
 *.log
 .DS_Store
-.cursor
+
+# Only the kit's own Cursor skills are versioned. Anything else dropped into
+# .cursor/skills stays local. The trailing /* is required: git cannot
+# re-include a path whose parent directory is itself excluded.
+# Adding a skill to the repo means adding a ! line here.
+.cursor/skills/*
+!.cursor/skills/author-skill/
+!.cursor/skills/create-component-docs/
+!.cursor/skills/create-css-component/
+!.cursor/skills/create-js-component/

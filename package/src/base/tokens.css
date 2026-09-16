@@ -5,6 +5,7 @@
  * borders, focus) and the light canvas wash. Steel is the dark canvas —
  * 950 is black. White is type on dark chrome. Red, green, and blue exist
  * only for status (danger, success, info). Warning reuses the orange chrome.
+ * Neutral and yellow are spare — no theme points at either.
  *
  * Nothing outside themes.css should reference these directly.
  */
@@ -47,6 +48,18 @@
   --k-palette-orange-800: #9a3412;
   --k-palette-orange-900: #7c2d12;
   --k-palette-orange-950: #431407;
+
+  --k-palette-yellow-50: #fefce8;
+  --k-palette-yellow-100: #fef9c3;
+  --k-palette-yellow-200: #fef08a;
+  --k-palette-yellow-300: #fde047;
+  --k-palette-yellow-400: #facc15;
+  --k-palette-yellow-500: #eab308;
+  --k-palette-yellow-600: #ca8a04;
+  --k-palette-yellow-700: #a16207;
+  --k-palette-yellow-800: #854d0e;
+  --k-palette-yellow-900: #713f12;
+  --k-palette-yellow-950: #422006;
 
   --k-palette-red-400: #f87171;
   --k-palette-red-600: #dc2626;

@@ -72,6 +72,12 @@ A cool gray scale. Nothing in the current themes points at it. It is there if yo
 
 `neutral-50`, `neutral-100`, `neutral-200`, `neutral-300`, `neutral-400`, `neutral-500`, `neutral-600`, `neutral-700`, `neutral-800`, `neutral-900`, `neutral-950`
 
+### Yellow
+
+A true yellow. Nothing in the current themes points at it either — warning stays on the orange scale, so a warning still reads as kit chrome. These docs use `yellow-300` for the JS badge next to a page title.
+
+`yellow-50`, `yellow-100`, `yellow-200`, `yellow-300`, `yellow-400`, `yellow-500`, `yellow-600`, `yellow-700`, `yellow-800`, `yellow-900`, `yellow-950`
+
 ### Status ramps
 
 Only the steps the themes actually use.

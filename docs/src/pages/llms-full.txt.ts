@@ -6,6 +6,7 @@ const publicDir = resolve(process.cwd(), 'public');
 
 const PAGES = [
   'getting-started.md',
+  'how-it-works.md',
   'theme-playground.md',
   'foundations/colors.md',
   'foundations/typography.md',

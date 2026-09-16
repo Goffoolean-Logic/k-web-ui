@@ -38,7 +38,8 @@ function pageButton(
   return btn;
 }
 
-function visiblePages(page: number, count: number): number[] {
+/** The page numbers the bar renders around `page`, ends included. */
+export function visiblePages(page: number, count: number): number[] {
   if (count <= FEW_PAGES) {
     return Array.from({ length: count }, (_, i) => i + 1);
   }

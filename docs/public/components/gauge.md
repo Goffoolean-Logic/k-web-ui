@@ -18,6 +18,20 @@ No `value` is an empty gauge, not a loading state. Add `indeterminate` when you 
 | --- | --- | --- |
 | `k-gauge` | component | The one class you write. The element generates the progress, frame, reading, and caption inside it. |
 
+### Generated classes
+
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-gauge__frame` | part | The square chrome around the reading. Decorative, `aria-hidden`. |
+| `k-gauge__seg` | part | One side of the frame. Combined with a track or fill layer and a side. |
+| `k-gauge__seg--track` | modifier | The empty track layer. |
+| `k-gauge__seg--fill` | modifier | The filled layer. Length follows `--k-gauge`. |
+| `k-gauge__seg--left` | modifier | The left side of the frame. |
+| `k-gauge__seg--top` | modifier | The top side of the frame. |
+| `k-gauge__seg--right` | modifier | The right side of the frame. |
+| `k-gauge__value` | part | The reading in the middle of the dial. |
+| `k-gauge__label` | part | Caption in the open bottom. Hidden when empty. |
+
 ## Attributes
 
 | Attribute | Type | Default | Description |
@@ -30,14 +44,35 @@ No `value` is an empty gauge, not a loading state. Add `indeterminate` when you 
 | `size` | sm \| lg | — | Dial size. Omit for the default. |
 | `indeterminate` | boolean attribute | — | Busy sweep. Ignores `value` while set. |
 
-## Methods
+## Properties
 
-The element has no methods. Two imported helpers cover the common cases, and every attribute above is also a property that reflects back to the tag, so `el.value = 80` works on its own.
+Every attribute above is also a property that reflects back to the tag, so `el.value = 80` works on its own. Three more are computed:
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `percent` | number | Read-only. Share of `max` the gauge shows, 0 to 100. An empty gauge reads 0. |
+| `isEmpty` | boolean | Read-only. True when there is no `value`. |
+| `isComplete` | boolean | Read-only. True once `value` reaches `max`. |
+
+## Methods
 
 | Method | Returns | Description |
 | --- | --- | --- |
+| `increment(by)` | void | Raises `value` by one step, or by the amount given, stopping at `max`. Starts from 0 when empty. |
+| `decrement(by)` | void | Lowers `value` the same way, stopping at 0. |
+| `complete()` | void | Fills the gauge to `max`. |
+| `clear()` | void | Drops `value` so the gauge renders empty again. |
+| `getProgress()` | `HTMLProgressElement \| null` | The hidden progress element the gauge keeps in step. |
+| `refresh()` | void | Rewrites the progress, reading, and caption from the attributes. |
+
+Two imported helpers cover the setup cases:
+
+| Helper | Returns | Description |
+| --- | --- | --- |
 | `setGauge(el, value, max, text)` | void | Sets value, max, and the visible reading in one call. `max` defaults to the current max; omit `value` to empty the gauge. |
 | `createGauge(options)` | KGauge | Builds a `k-gauge` element from an options object, ready to append. |
+
+Unlike the other four elements, the gauge binds no listeners, so it has no `disconnect()`. Its methods also work on a gauge from `createGauge()` before it is appended, since it paints on demand rather than on connect.
 
 ```js
 import { createGauge, setGauge } from 'k-web-ui/js';
