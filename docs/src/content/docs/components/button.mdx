@@ -1,10 +1,11 @@
 ---
 title: Button
 description: button.k-btn. Variants, sizes, block.
+kind: css
 ---
 
 import Example from '../../../components/Example.astro';
-import ClassTable from '../../../components/ClassTable.astro';
+import DocTable from '../../../components/DocTable.astro';
 
 Use a button when the click stays on this page: save, cancel, delete, open a modal. If you are sending someone somewhere else, use a [link](/components/link/).
 
@@ -14,17 +15,22 @@ The element is a `<button>` with `.k-btn` and one variant. Use `<a class="k-btn"
 
 ## Classes
 
-<ClassTable
+<DocTable
+  columns={['Class', 'Type', 'Description']}
   rows={[
-    { name: 'k-btn', type: 'component' },
-    { name: 'k-btn--primary', type: 'variant' },
-    { name: 'k-btn--secondary', type: 'variant' },
-    { name: 'k-btn--ghost', type: 'variant' },
-    { name: 'k-btn--accent', type: 'variant' },
-    { name: 'k-btn--danger', type: 'variant' },
-    { name: 'k-btn--sm', type: 'modifier' },
-    { name: 'k-btn--lg', type: 'modifier' },
-    { name: 'k-btn--block', type: 'modifier' },
+    [
+      'k-btn',
+      'component',
+      'The control. Goes on a button, or an a when the click navigates.',
+    ],
+    ['k-btn--primary', 'variant', 'The main action. One per group.'],
+    ['k-btn--secondary', 'variant', 'Sits next to the primary action.'],
+    ['k-btn--ghost', 'variant', 'Recedes until hovered.'],
+    ['k-btn--accent', 'variant', 'Dark type on a light accent fill.'],
+    ['k-btn--danger', 'variant', 'Destructive action.'],
+    ['k-btn--sm', 'modifier', 'Smaller padding and type for tight UI.'],
+    ['k-btn--lg', 'modifier', 'Larger padding and type.'],
+    ['k-btn--block', 'modifier', 'Full width of the parent.'],
   ]}
 />
 

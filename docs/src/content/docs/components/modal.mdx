@@ -1,10 +1,11 @@
 ---
 title: Modal
 description: dialog.k-modal with popover. No JS.
+kind: css
 ---
 
 import Example from '../../../components/Example.astro';
-import ClassTable from '../../../components/ClassTable.astro';
+import DocTable from '../../../components/DocTable.astro';
 
 A focused task on top of the page: confirm a delete, a short form, a warning. Use `<dialog class="k-modal" popover>`. The Popover API opens and closes it.
 
@@ -14,14 +15,23 @@ Put title, body, and actions inside `.k-modal__box`. That box is the raised surf
 
 ## Classes
 
-<ClassTable
+<DocTable
+  columns={['Class', 'Type', 'Description']}
   rows={[
-    { name: 'k-modal', type: 'component' },
-    { name: 'k-modal__scrim', type: 'part' },
-    { name: 'k-modal__box', type: 'part' },
-    { name: 'k-modal__title', type: 'part' },
-    { name: 'k-modal__body', type: 'part' },
-    { name: 'k-modal__actions', type: 'part' },
+    [
+      'k-modal',
+      'component',
+      'The dialog. Pair it with the popover attribute so the browser opens it.',
+    ],
+    [
+      'k-modal__scrim',
+      'part',
+      'Hide button covering the dimmed page, so a backdrop click closes.',
+    ],
+    ['k-modal__box', 'part', 'The raised surface holding everything visible.'],
+    ['k-modal__title', 'part', 'Name of the task. Use a real heading.'],
+    ['k-modal__body', 'part', 'The copy or the form.'],
+    ['k-modal__actions', 'part', 'Row of buttons, aligned to the end.'],
   ]}
 />
 

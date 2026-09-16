@@ -22,10 +22,13 @@ function paintDropdown(root: KDropdown): void {
   root.setAttribute('options', OPTIONS);
 }
 
-function dropdownRoot(id: string, extraClass = ''): KDropdown {
+function dropdownRoot(id: string, align?: 'end'): KDropdown {
   const root = document.createElement('k-dropdown');
   root.id = id;
-  root.className = extraClass ? `k-dropdown ${extraClass}` : 'k-dropdown';
+  root.className = 'k-dropdown';
+  if (align) {
+    root.setAttribute('align', align);
+  }
   paintDropdown(root);
   return root;
 }
@@ -49,7 +52,7 @@ export const End: Story = {
     const wrap = document.createElement('div');
     wrap.style.display = 'flex';
     wrap.style.justifyContent = 'flex-end';
-    wrap.append(dropdownRoot('sort-dropdown-end', 'k-dropdown--end'));
+    wrap.append(dropdownRoot('sort-dropdown-end', 'end'));
     return wrap;
   },
   play: ({ canvasElement }) => {

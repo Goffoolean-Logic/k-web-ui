@@ -24,7 +24,8 @@ const {
 
 <k-tabs
   id={id}
-  class:list={['k-tabs', large && 'k-tabs--lg']}
+  class="k-tabs"
+  size={large ? 'lg' : undefined}
   panels={JSON.stringify(items)}></k-tabs>
 
 <script>

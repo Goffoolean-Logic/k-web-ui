@@ -1,5 +1,7 @@
 # Progress
 
+**CSS component.** No JavaScript needed.
+
 progress.k-progress. Linear bar.
 
 A progress bar shows how far a task has gone along a line. Use it for an upload, a quota, or a long save. Use a [spin](/components/spin/) when you do not know the percent yet. Use a [gauge](/components/gauge/) when you want a square reading with a caption.
@@ -12,17 +14,17 @@ No `value` is an empty track. Add `--indeterminate` when you want the motion. Re
 
 ## Classes
 
-| Class | Type |
-| --- | --- |
-| `k-progress` | component |
-| `k-progress--info` | variant |
-| `k-progress--success` | variant |
-| `k-progress--warning` | variant |
-| `k-progress--danger` | variant |
-| `k-progress--indeterminate` | modifier |
-| `k-progress--block` | modifier |
-| `k-progress--sm` | modifier |
-| `k-progress--lg` | modifier |
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-progress` | component | Goes on a native `progress` element. `value` and `max` drive the fill. |
+| `k-progress--info` | variant | Neutral fill color. |
+| `k-progress--success` | variant | Positive fill color. |
+| `k-progress--warning` | variant | Fill color needing attention. |
+| `k-progress--danger` | variant | Negative fill color. |
+| `k-progress--indeterminate` | modifier | Busy sweep for when the percent is unknown. |
+| `k-progress--block` | modifier | Stretches the bar to the parent width. |
+| `k-progress--sm` | modifier | Thinner bar. |
+| `k-progress--lg` | modifier | Thicker bar. |
 
 ## Examples
 

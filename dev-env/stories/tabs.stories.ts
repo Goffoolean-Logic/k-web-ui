@@ -66,7 +66,10 @@ function tabsRoot(
 ): KTabs {
   const root = document.createElement('k-tabs');
   root.id = id;
-  root.className = large ? 'k-tabs k-tabs--lg' : 'k-tabs';
+  root.className = 'k-tabs';
+  if (large) {
+    root.setAttribute('size', 'lg');
+  }
   paintTabs(root, panels, selected);
   return root;
 }

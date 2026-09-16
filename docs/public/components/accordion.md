@@ -1,5 +1,7 @@
 # Accordion
 
+**CSS component.** No JavaScript needed.
+
 details.k-accordion__item. CSS only.
 
 An accordion is a list of sections the reader can open, such as an FAQ or a settings group. Each item is a `<details>` element. The browser owns open state, so there is nothing to `mount`.
@@ -10,12 +12,12 @@ The chevron is a CSS `::after` on the trigger. It flips when the item is open. T
 
 ## Classes
 
-| Class | Type |
-| --- | --- |
-| `k-accordion` | component |
-| `k-accordion__item` | part |
-| `k-accordion__trigger` | part |
-| `k-accordion__panel` | part |
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-accordion` | component | Wrapper around the group of items. |
+| `k-accordion__item` | part | One section. Goes on a `details` element. |
+| `k-accordion__trigger` | part | The `summary` row. Carries the chevron that flips when open. |
+| `k-accordion__panel` | part | Content revealed while the item is open. Its height eases. |
 
 ## Examples
 

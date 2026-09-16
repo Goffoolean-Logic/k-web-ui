@@ -67,6 +67,37 @@ describe('k-carousel', () => {
     carousel.remove();
   });
 
+  it('keeps the track and slide nodes when index changes', () => {
+    const carousel = host();
+    carousel.slides = slides;
+    document.body.append(carousel);
+    const track = carousel.querySelector('.k-carousel__track');
+    const first = carousel.querySelector('.k-carousel__slide');
+    const onChange = vi.fn();
+    carousel.addEventListener('k-change', onChange);
+
+    carousel.setAttribute('index', '2');
+
+    expect(carousel.querySelector('.k-carousel__track')).toBe(track);
+    expect(carousel.querySelector('.k-carousel__slide')).toBe(first);
+    expect(carousel.index).toBe(2);
+    expect(onChange).not.toHaveBeenCalled();
+    carousel.remove();
+  });
+
+  it('re-disables the arrows when loop changes', () => {
+    const carousel = host();
+    carousel.slides = slides;
+    document.body.append(carousel);
+    const prev = carousel.querySelector<HTMLButtonElement>('.k-carousel__prev');
+    expect(prev?.disabled).toBe(false);
+
+    carousel.setAttribute('loop', 'false');
+    expect(carousel.querySelector('.k-carousel__prev')).toBe(prev);
+    expect(prev?.disabled).toBe(true);
+    carousel.remove();
+  });
+
   it('advances on autoscroll unless it is off', () => {
     vi.useFakeTimers();
     const on = host();

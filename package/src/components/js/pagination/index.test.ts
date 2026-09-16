@@ -40,6 +40,23 @@ describe('k-pagination', () => {
     pager.remove();
   });
 
+  it('moves the current page from the attribute without focusing or emitting', () => {
+    const pager = host();
+    pager.setAttribute('count', '12');
+    pager.setAttribute('page', '5');
+    document.body.append(pager);
+    const onChange = vi.fn();
+    pager.addEventListener('k-change', onChange);
+
+    pager.setAttribute('page', '6');
+
+    expect(pager.page).toBe(6);
+    expect(pager.querySelector('[aria-current="page"]')?.textContent).toBe('6');
+    expect(onChange).not.toHaveBeenCalled();
+    expect(document.activeElement).toBe(document.body);
+    pager.remove();
+  });
+
   it('goTo fires k-change', () => {
     const pager = host();
     pager.setAttribute('count', '12');

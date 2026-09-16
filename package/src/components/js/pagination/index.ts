@@ -6,6 +6,11 @@ import type { KPaginationState } from './models/models.js';
 
 export type { KPaginationOptions } from './models/models.js';
 
+function toPage(raw: string | null): number {
+  const value = Number(raw ?? 1);
+  return Number.isFinite(value) && value >= 1 ? value : 1;
+}
+
 /**
  * Pagination. The host is `<k-pagination class="k-pagination">`. `count` and
  * `page` are attributes. Page changes dispatch `k-change` with `{ page }`.
@@ -31,10 +36,18 @@ export class KPagination extends HTMLElement {
     this.#state = null;
   }
 
-  attributeChangedCallback(): void {
-    if (this.isConnected) {
-      this.#connect();
+  attributeChangedCallback(name: string): void {
+    if (!this.isConnected) {
+      return;
     }
+    if (name === 'page' && this.#state) {
+      goTo(this.#state, toPage(this.getAttribute('page')), {
+        focus: false,
+        emit: false,
+      });
+      return;
+    }
+    this.#connect();
   }
 
   disconnect(): void {
@@ -82,11 +95,10 @@ export class KPagination extends HTMLElement {
     this.#abort.abort();
     this.#abort = new AbortController();
 
-    const page = Number(this.getAttribute('page') ?? 1);
     this.#state = {
       root: this,
       count,
-      page: Number.isFinite(page) && page >= 1 ? page : 1,
+      page: toPage(this.getAttribute('page')),
       buttons: [],
       signal: this.#abort.signal,
     };

@@ -1,10 +1,11 @@
 ---
 title: Input
 description: k-field, k-label, k-input, k-hint.
+kind: css
 ---
 
 import Example from '../../../components/Example.astro';
-import ClassTable from '../../../components/ClassTable.astro';
+import DocTable from '../../../components/DocTable.astro';
 
 These classes style one form field: a label, a text input, and optional helper text. Use them for short values such as email, a name, or a search box. They do not wrap `<select>` or `<textarea>`.
 
@@ -14,13 +15,18 @@ These classes style one form field: a label, a text input, and optional helper t
 
 ## Classes
 
-<ClassTable
+<DocTable
+  columns={['Class', 'Type', 'Description']}
   rows={[
-    { name: 'k-field', type: 'component' },
-    { name: 'k-label', type: 'component' },
-    { name: 'k-input', type: 'component' },
-    { name: 'k-hint', type: 'component' },
-    { name: 'k-error', type: 'component' },
+    ['k-field', 'component', 'The stack that holds the label, control, and hint.'],
+    ['k-label', 'component', 'The label. Point it at the input with for / id.'],
+    ['k-input', 'component', 'The text control itself.'],
+    ['k-hint', 'component', 'Quiet helper line under the control.'],
+    [
+      'k-error',
+      'component',
+      'Replaces the hint when the value is wrong. Pair with aria-invalid="true".',
+    ],
   ]}
 />
 

@@ -1,10 +1,11 @@
 ---
 title: Banner
 description: div.k-banner with role="alert".
+kind: css
 ---
 
 import Example from '../../../components/Example.astro';
-import ClassTable from '../../../components/ClassTable.astro';
+import DocTable from '../../../components/DocTable.astro';
 
 A banner is an inline alert for something that just happened: a failed save, a confirmed purchase, an update in the page flow. Put `role="alert"` on the element. If the message should float over the page instead, wrap banners in a [toast](/components/toast/).
 
@@ -14,23 +15,32 @@ Children are optional. An icon, a plain span, or the body parts (`k-banner__titl
 
 ## Classes
 
-<ClassTable
+<DocTable
+  columns={['Class', 'Type', 'Description']}
   rows={[
-    { name: 'k-banner', type: 'component' },
-    { name: 'k-banner__body', type: 'part' },
-    { name: 'k-banner__title', type: 'part' },
-    { name: 'k-banner__description', type: 'part' },
-    { name: 'k-banner__actions', type: 'part' },
-    { name: 'k-banner--info', type: 'variant' },
-    { name: 'k-banner--success', type: 'variant' },
-    { name: 'k-banner--warning', type: 'variant' },
-    { name: 'k-banner--danger', type: 'variant' },
-    { name: 'k-banner--soft', type: 'style' },
-    { name: 'k-banner--outline', type: 'style' },
-    { name: 'k-banner--dash', type: 'style' },
-    { name: 'k-banner--vertical', type: 'modifier' },
-    { name: 'k-banner--horizontal', type: 'modifier' },
-    { name: 'k-banner--sm-horizontal', type: 'modifier' },
+    ['k-banner', 'component', 'The alert box. Add role="alert" yourself.'],
+    [
+      'k-banner__body',
+      'part',
+      'Groups the title, description, and actions in the grid.',
+    ],
+    ['k-banner__title', 'part', 'Short headline for the message.'],
+    ['k-banner__description', 'part', 'Supporting copy under the title.'],
+    ['k-banner__actions', 'part', 'Trailing buttons or links.'],
+    ['k-banner--info', 'variant', 'Neutral notice. Filled info color.'],
+    ['k-banner--success', 'variant', 'Something worked.'],
+    ['k-banner--warning', 'variant', 'Something needs attention.'],
+    ['k-banner--danger', 'variant', 'Something failed.'],
+    ['k-banner--soft', 'style', 'Variant color as a wash instead of a fill.'],
+    ['k-banner--outline', 'style', 'Transparent with a solid border.'],
+    ['k-banner--dash', 'style', 'Transparent with a dashed border.'],
+    ['k-banner--vertical', 'modifier', 'Stacks the grid into a column.'],
+    ['k-banner--horizontal', 'modifier', 'Lays the grid out as a row.'],
+    [
+      'k-banner--sm-horizontal',
+      'modifier',
+      'Becomes a row from the sm breakpoint up.',
+    ],
   ]}
 />
 

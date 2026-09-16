@@ -1,10 +1,11 @@
 ---
 title: Progress
 description: progress.k-progress. Linear bar.
+kind: css
 ---
 
 import Example from '../../../components/Example.astro';
-import ClassTable from '../../../components/ClassTable.astro';
+import DocTable from '../../../components/DocTable.astro';
 
 A progress bar shows how far a task has gone along a line. Use it for an upload, a quota, or a long save. Use a [spin](/components/spin/) when you do not know the percent yet. Use a [gauge](/components/gauge/) when you want a square reading with a caption.
 
@@ -16,17 +17,26 @@ No `value` is an empty track. Add `--indeterminate` when you want the motion. Re
 
 ## Classes
 
-<ClassTable
+<DocTable
+  columns={['Class', 'Type', 'Description']}
   rows={[
-    { name: 'k-progress', type: 'component' },
-    { name: 'k-progress--info', type: 'variant' },
-    { name: 'k-progress--success', type: 'variant' },
-    { name: 'k-progress--warning', type: 'variant' },
-    { name: 'k-progress--danger', type: 'variant' },
-    { name: 'k-progress--indeterminate', type: 'modifier' },
-    { name: 'k-progress--block', type: 'modifier' },
-    { name: 'k-progress--sm', type: 'modifier' },
-    { name: 'k-progress--lg', type: 'modifier' },
+    [
+      'k-progress',
+      'component',
+      'Goes on a native progress element. value and max drive the fill.',
+    ],
+    ['k-progress--info', 'variant', 'Neutral fill color.'],
+    ['k-progress--success', 'variant', 'Positive fill color.'],
+    ['k-progress--warning', 'variant', 'Fill color needing attention.'],
+    ['k-progress--danger', 'variant', 'Negative fill color.'],
+    [
+      'k-progress--indeterminate',
+      'modifier',
+      'Busy sweep for when the percent is unknown.',
+    ],
+    ['k-progress--block', 'modifier', 'Stretches the bar to the parent width.'],
+    ['k-progress--sm', 'modifier', 'Thinner bar.'],
+    ['k-progress--lg', 'modifier', 'Thicker bar.'],
   ]}
 />
 

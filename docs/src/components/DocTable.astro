@@ -1,0 +1,36 @@
+---
+/**
+ * Reference table for a docs page. Pass the column titles and the rows.
+ * The first cell of every row renders as code, since it is always the
+ * class, attribute, or method being named.
+ */
+interface Props {
+  columns: string[];
+  rows: string[][];
+}
+
+const { columns, rows } = Astro.props;
+---
+
+<div class="not-content k-class-table">
+  <table class="k-table">
+    <thead>
+      <tr>
+        {columns.map((column) => <th>{column}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row) => (
+          <tr>
+            {
+              row.map((cell, i) => (
+                <td>{i === 0 ? <code>{cell}</code> : cell || '—'}</td>
+              ))
+            }
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

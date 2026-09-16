@@ -1,6 +1,6 @@
 import { defineElement, parseJsonList } from '../root.js';
 import { buildCarousel } from './dom/dom.js';
-import { bindEvents, goTo } from './events/events.js';
+import { bindEvents, goTo, setAutoscroll, setLoop } from './events/events.js';
 import { bindKeybinds } from './keybinds/keybinds.js';
 import type { KCarouselSlide, KCarouselState } from './models/models.js';
 
@@ -8,6 +8,11 @@ export type { KCarouselOptions, KCarouselSlide } from './models/models.js';
 
 function isNode(value: unknown): value is Node {
   return value instanceof Node;
+}
+
+function toIndex(raw: string | null): number {
+  const value = Number(raw ?? 0);
+  return Number.isFinite(value) ? value : 0;
 }
 
 function parseSlides(raw: string | null): KCarouselSlide[] {
@@ -99,8 +104,31 @@ export class KCarousel extends HTMLElement {
     if (name === 'slides') {
       this.#slides = null;
     }
-    if (this.isConnected) {
+    if (!this.isConnected) {
+      return;
+    }
+    if (name === 'slides') {
       this.#connect();
+      return;
+    }
+
+    const state = this.#state;
+    if (!state) {
+      return;
+    }
+    switch (name) {
+      case 'index':
+        goTo(state, toIndex(this.getAttribute('index')), { emit: false });
+        break;
+      case 'loop':
+        setLoop(state, this.getAttribute('loop') !== 'false');
+        break;
+      case 'autoscroll':
+        setAutoscroll(state, this.getAttribute('autoscroll') !== 'false');
+        break;
+      case 'keyboard':
+        state.keyboard = this.getAttribute('keyboard') !== 'false';
+        break;
     }
   }
 
@@ -144,13 +172,12 @@ export class KCarousel extends HTMLElement {
 
     this.#abort.abort();
     this.#abort = new AbortController();
-    const index = Number(this.getAttribute('index') ?? 0);
     const parts = buildCarousel(this, {
       items: slides.map((slide) => ({ content: resolveSlide(slide) })),
     });
     this.#state = {
       ...parts,
-      index: Number.isFinite(index) ? index : 0,
+      index: toIndex(this.getAttribute('index')),
       loop: this.getAttribute('loop') !== 'false',
       keyboard: this.getAttribute('keyboard') !== 'false',
       autoscroll: this.getAttribute('autoscroll') !== 'false',

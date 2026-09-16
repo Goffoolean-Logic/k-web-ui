@@ -46,6 +46,10 @@ export function buildDropdown(
   return { root, trigger, menu, items };
 }
 
+export function setLabel(state: KDropdownState, label: string | null): void {
+  state.trigger.textContent = label ?? '';
+}
+
 export function setOpen(state: KDropdownState, open: boolean): void {
   state.open = open;
   state.menu.hidden = !open;

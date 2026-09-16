@@ -13,8 +13,8 @@
     display: none;
   }
 
-  k-dropdown.k-dropdown--end div.k-dropdown__menu {
-    @apply start-auto end-0;
+  k-dropdown[align='end'] div.k-dropdown__menu {
+    @apply inset-s-auto inset-e-0;
   }
 
   :is(button.k-dropdown__item, a.k-dropdown__item) {

@@ -1,10 +1,11 @@
 ---
 title: Spin
 description: span.k-spin wraps an icon and rotates it.
+kind: css
 ---
 
 import Example from '../../../components/Example.astro';
-import ClassTable from '../../../components/ClassTable.astro';
+import DocTable from '../../../components/DocTable.astro';
 
 Spin is the rotation, not the icon itself. The [loading icon](/foundations/iconography/) sits still until you wrap it. Use `<span class="k-spin">` around any kit icon when something is in progress, such as a save or a refresh.
 
@@ -14,9 +15,14 @@ Inside a button the inner icon drops to `1em`, same as any other icon next to a 
 
 ## Classes
 
-<ClassTable
+<DocTable
+  columns={['Class', 'Type', 'Description']}
   rows={[
-    { name: 'k-spin', type: 'component' },
+    [
+      'k-spin',
+      'component',
+      'Wraps a kit icon and rotates it. Reduced motion stops the spin; the icon still shows.',
+    ],
   ]}
 />
 

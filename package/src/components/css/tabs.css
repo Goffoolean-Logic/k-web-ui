@@ -31,7 +31,7 @@
     @apply text-k-primary-fg;
   }
 
-  k-tabs.k-tabs--lg button.k-tabs__tab {
+  k-tabs[size='lg'] button.k-tabs__tab {
     @apply w-40 shrink-0 px-6 text-base;
   }
 

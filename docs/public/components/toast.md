@@ -1,5 +1,7 @@
 # Toast
 
+**CSS component.** No JavaScript needed.
+
 div.k-toast wrapping banners. CSS only.
 
 A toast is a stack of [banners](/components/banner/) pinned to a corner of the page. Use it for short outcomes that should not push the rest of the layout: saved, sent, failed. It does not auto-dismiss. You add and remove the banners yourself.
@@ -8,14 +10,14 @@ Wrap the banners in `<div class="k-toast">`. The default position is the bottom-
 
 ## Classes
 
-| Class | Type |
-| --- | --- |
-| `k-toast` | component |
-| `k-toast--top` | modifier |
-| `k-toast--bottom` | modifier |
-| `k-toast--start` | modifier |
-| `k-toast--center` | modifier |
-| `k-toast--end` | modifier |
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-toast` | component | Fixed stack wrapping the banners. Bottom-right by default. |
+| `k-toast--top` | modifier | Pins the stack to the top edge. |
+| `k-toast--bottom` | modifier | Pins the stack to the bottom edge. |
+| `k-toast--start` | modifier | Pins the stack to the inline start. |
+| `k-toast--center` | modifier | Centers the stack on the inline axis. |
+| `k-toast--end` | modifier | Pins the stack to the inline end. |
 
 ## Examples
 

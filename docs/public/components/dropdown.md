@@ -1,22 +1,39 @@
 # Dropdown
 
+**JS component.** Import `k-web-ui/js` once and the element writes the inside.
+
 k-dropdown. Trigger, menu, and keyboard from options.
 
 A dropdown is a short list of choices attached to a trigger, such as sort order or a row menu. It is not a form `<select>`. Use the native control when you need a form value.
 
-Put `<k-dropdown class="k-dropdown">` on the page with `label` and `options`. The element builds the trigger, menu, items, and ARIA. Each option is a `label`. `href` on an option makes a link instead of a button. `label` on the host names the trigger. `--end` aligns the menu to the inline end.
+Put `<k-dropdown class="k-dropdown">` on the page with `label` and `options`. The element builds the trigger, menu, items, and ARIA. Each option is a `label`. `href` on an option makes a link instead of a button.
 
 The trigger is a secondary button. Importing the JS registers the tag. It toggles open, closes on outside click, and moves through items with the keyboard. Escape closes.
 
 ## Classes
 
-| Class | Type |
-| --- | --- |
-| `k-dropdown` | component |
-| `k-dropdown__trigger` | part |
-| `k-dropdown__menu` | part |
-| `k-dropdown__item` | part |
-| `k-dropdown--end` | modifier |
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-dropdown` | component | The one class you write. The element generates the trigger, menu, and items inside it. |
+
+## Attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `options` | JSON array | — | One object per item. `label` is required; `href` makes it a link instead of a button. |
+| `label` | string | — | Visible text on the generated trigger. |
+| `align` | `"end"` | — | Aligns the menu to the inline end of the host. Omit to align to the start. |
+
+## Methods
+
+| Method | Returns | Description |
+| --- | --- | --- |
+| `toggle(open)` | void | Opens or closes the menu. Omit the argument to flip the current state. |
+| `disconnect()` | void | Removes listeners, including the document-level outside-click handler. |
+
+The `options` property is read/write and reflects to the attribute. `open` is a read-only boolean.
+
+This element dispatches no event. To react to a choice, give each option an `href`, or delegate on the host and read the clicked `.k-dropdown__item`.
 
 ## Examples
 
@@ -27,6 +44,19 @@ Open it, then pick an item or click away.
 ```html
 <k-dropdown
   class="k-dropdown"
+  label="Sort"
+  options='[{"label":"Name"},{"label":"Date"},{"label":"Size"}]'
+></k-dropdown>
+```
+
+### Aligned to the end
+
+`align="end"` pins the menu to the inline end, for a trigger sitting on the right.
+
+```html
+<k-dropdown
+  class="k-dropdown"
+  align="end"
   label="Sort"
   options='[{"label":"Name"},{"label":"Date"},{"label":"Size"}]'
 ></k-dropdown>

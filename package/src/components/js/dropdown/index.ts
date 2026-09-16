@@ -1,5 +1,5 @@
 import { defineElement, parseJsonList } from '../root.js';
-import { buildDropdown, setOpen } from './dom/dom.js';
+import { buildDropdown, setLabel, setOpen } from './dom/dom.js';
 import { bindEvents } from './events/events.js';
 import { bindKeybinds } from './keybinds/keybinds.js';
 import type { KDropdownItem, KDropdownState } from './models/models.js';
@@ -51,10 +51,15 @@ export class KDropdown extends HTMLElement {
     this.#state = null;
   }
 
-  attributeChangedCallback(): void {
-    if (this.isConnected) {
-      this.#connect();
+  attributeChangedCallback(name: string): void {
+    if (!this.isConnected) {
+      return;
     }
+    if (name === 'label' && this.#state) {
+      setLabel(this.#state, this.getAttribute('label'));
+      return;
+    }
+    this.#connect();
   }
 
   disconnect(): void {

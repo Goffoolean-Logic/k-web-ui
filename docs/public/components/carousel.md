@@ -1,25 +1,41 @@
 # Carousel
 
+**JS component.** Import `k-web-ui/js` once and the element writes the inside.
+
 k-carousel. Track, slides, and controls from slides.
 
 A carousel steps through slides in one viewport, such as screenshots, quotes, or a short tour. Put `<k-carousel class="k-carousel">` on the page with `slides`. The element builds the track, slides, prev/next, and dots. A slide is `content` (a string) or `src` and `alt` for a picture.
 
-It loops and autoscrolls by default. Set `loop="false"` to stop at the ends. The arrows disable there. Set `autoscroll="false"` to hold the slide. Hover or focus pauses the autoscroll. `index` sets the starting slide. `keyboard` (default true) lets arrow keys move once the carousel is focused.
+It loops and autoscrolls by default. Hover or focus pauses the autoscroll. Changing `slides` rebuilds the track; changing `index`, `loop`, `autoscroll`, or `keyboard` does not.
 
 If the user prefers reduced motion, the track does not animate and autoscroll stays off.
 
 ## Classes
 
-| Class | Type |
-| --- | --- |
-| `k-carousel` | component |
-| `k-carousel__viewport` | part |
-| `k-carousel__track` | part |
-| `k-carousel__slide` | part |
-| `k-carousel__prev` | part |
-| `k-carousel__next` | part |
-| `k-carousel__dots` | part |
-| `k-carousel__dot` | part |
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-carousel` | component | The one class you write. The element generates the viewport, track, slides, arrows, and dots inside it. |
+
+## Attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `slides` | JSON array | — | One object per slide: `src` and `alt` for a picture, or `content` for text. |
+| `index` | number | `0` | Zero-based slide to open on. |
+| `loop` | `"false"` to disable | enabled | Wraps past the ends. When off, the end arrows become `disabled`. |
+| `autoscroll` | `"false"` to disable | enabled | Advances every five seconds. Pauses on hover and focus. |
+| `keyboard` | `"false"` to disable | enabled | Arrows, Home, and End move once the carousel has focus. |
+
+## Methods
+
+| Method | Returns | Description |
+| --- | --- | --- |
+| `goTo(index)` | void | Moves and fires `k-change`. Wraps when `loop` is on, clamps when it is off. |
+| `disconnect()` | void | Stops autoscroll and removes listeners. |
+
+The `slides` property is read/write and accepts a `Node` as `content`, which is how a slide gets real markup; node values are not written back to the attribute. `index` is a read-only property.
+
+Moving a slide dispatches `k-change` with `{ index }`, and the event bubbles. Setting the `index` attribute moves without firing it.
 
 ## Examples
 

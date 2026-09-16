@@ -1,6 +1,6 @@
 import { defineElement, parseJsonList } from '../root.js';
-import { buildTabs } from './dom/dom.js';
-import { bindEvents, selectTab } from './events/events.js';
+import { buildTabs, setTabsLabel } from './dom/dom.js';
+import { bindEvents, paintInk, selectTab } from './events/events.js';
 import { bindKeybinds } from './keybinds/keybinds.js';
 import type { KTabItem, KTabsState } from './models/models.js';
 
@@ -8,6 +8,11 @@ export type { KTabItem, KTabsOptions } from './models/models.js';
 
 function isNode(value: unknown): value is Node {
   return value instanceof Node;
+}
+
+function toIndex(raw: string | null): number {
+  const value = Number(raw ?? 0);
+  return Number.isFinite(value) ? value : 0;
 }
 
 function parsePanels(raw: string | null): KTabItem[] {
@@ -71,7 +76,7 @@ export class KTabs extends HTMLElement {
   #reflecting = false;
 
   static get observedAttributes(): string[] {
-    return ['label', 'selected', 'keyboard', 'panels'];
+    return ['label', 'selected', 'keyboard', 'panels', 'size'];
   }
 
   connectedCallback(): void {
@@ -92,8 +97,34 @@ export class KTabs extends HTMLElement {
     if (name === 'panels') {
       this.#panels = null;
     }
-    if (this.isConnected) {
+    if (!this.isConnected) {
+      return;
+    }
+    if (name === 'panels') {
       this.#connect();
+      return;
+    }
+
+    const state = this.#state;
+    if (!state) {
+      return;
+    }
+    switch (name) {
+      case 'selected':
+        selectTab(state, toIndex(this.getAttribute('selected')), {
+          emit: false,
+        });
+        break;
+      case 'keyboard':
+        state.keyboard = this.getAttribute('keyboard') !== 'false';
+        break;
+      case 'label':
+        setTabsLabel(state, this.getAttribute('label'));
+        break;
+      case 'size':
+        // Tab widths change, so the ink has to move with them.
+        paintInk(state, { animate: false });
+        break;
     }
   }
 
@@ -153,7 +184,6 @@ export class KTabs extends HTMLElement {
       keyboard: this.getAttribute('keyboard') !== 'false',
     };
 
-    const selected = Number(this.getAttribute('selected') ?? 0);
     buildTabs(this.#state, {
       items: panels,
       label: this.getAttribute('label') ?? undefined,
@@ -161,7 +191,7 @@ export class KTabs extends HTMLElement {
     });
     bindEvents(this.#state, this.#abort.signal);
     bindKeybinds(this.#state, this.#abort.signal);
-    selectTab(this.#state, Number.isFinite(selected) ? selected : 0, {
+    selectTab(this.#state, toIndex(this.getAttribute('selected')), {
       emit: false,
     });
   }

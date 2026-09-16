@@ -1,5 +1,7 @@
 # Button
 
+**CSS component.** No JavaScript needed.
+
 button.k-btn. Variants, sizes, block.
 
 Use a button when the click stays on this page: save, cancel, delete, open a modal. If you are sending someone somewhere else, use a [link](/components/link/).
@@ -10,17 +12,17 @@ The element has to be a real `<button>` with `.k-btn` and one variant. Primary i
 
 ## Classes
 
-| Class | Type |
-| --- | --- |
-| `k-btn` | component |
-| `k-btn--primary` | variant |
-| `k-btn--secondary` | variant |
-| `k-btn--ghost` | variant |
-| `k-btn--accent` | variant |
-| `k-btn--danger` | variant |
-| `k-btn--sm` | modifier |
-| `k-btn--lg` | modifier |
-| `k-btn--block` | modifier |
+| Class | Type | Description |
+| --- | --- | --- |
+| `k-btn` | component | The control. Goes on a `button`, or an `a` when the click navigates. |
+| `k-btn--primary` | variant | The main action. One per group. |
+| `k-btn--secondary` | variant | Sits next to the primary action. |
+| `k-btn--ghost` | variant | Recedes until hovered. |
+| `k-btn--accent` | variant | Dark type on a light accent fill. |
+| `k-btn--danger` | variant | Destructive action. |
+| `k-btn--sm` | modifier | Smaller padding and type for tight UI. |
+| `k-btn--lg` | modifier | Larger padding and type. |
+| `k-btn--block` | modifier | Full width of the parent. |
 
 ## Examples
 

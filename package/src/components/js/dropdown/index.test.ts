@@ -66,6 +66,21 @@ describe('k-dropdown', () => {
     dropdown.remove();
   });
 
+  it('relabels the trigger without rebuilding the menu', () => {
+    const dropdown = host();
+    dropdown.options = options;
+    document.body.append(dropdown);
+    const trigger = dropdown.querySelector('.k-dropdown__trigger');
+    const menu = dropdown.querySelector('.k-dropdown__menu');
+
+    dropdown.setAttribute('label', 'Order');
+
+    expect(dropdown.querySelector('.k-dropdown__trigger')).toBe(trigger);
+    expect(dropdown.querySelector('.k-dropdown__menu')).toBe(menu);
+    expect(trigger?.textContent).toBe('Order');
+    dropdown.remove();
+  });
+
   it('setting options again does not double-bind', () => {
     const dropdown = host();
     dropdown.options = options;
