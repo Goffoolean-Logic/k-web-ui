@@ -1,0 +1,63 @@
+name: Tear down Storybook
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Pull request number whose Storybook preview should be shut down
+        required: true
+        type: string
+
+concurrency:
+  group: storybook-pr-${{ inputs.pr_number }}
+  cancel-in-progress: true
+
+jobs:
+  teardown:
+    runs-on: ubuntu-latest
+    permissions:
+      deployments: write
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      STORYBOOK_S3_BUCKET: ${{ vars.STORYBOOK_S3_BUCKET }}
+    steps:
+      - name: Check AWS settings
+        run: |
+          missing=
+          [ -n "$STORYBOOK_S3_BUCKET" ] || missing="$missing STORYBOOK_S3_BUCKET"
+          [ -n "$AWS_REGION" ] || missing="$missing AWS_REGION"
+          if [ -n "$missing" ]; then
+            echo "Set these GitHub repository variables:$missing"
+            exit 1
+          fi
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Remove the preview files
+        env:
+          PR_NUMBER: ${{ inputs.pr_number }}
+        run: |
+          prefix="s3://${STORYBOOK_S3_BUCKET}/pr/${PR_NUMBER}/"
+          if [ -z "$(aws s3 ls "$prefix")" ]; then
+            echo "No Storybook preview at $prefix"
+            exit 1
+          fi
+          aws s3 rm "$prefix" --recursive
+      - name: Mark the GitHub deployment inactive
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+        run: |
+          ids="$(gh api "repos/${GITHUB_REPOSITORY}/deployments?environment=storybook-pr-${PR_NUMBER}" --jq '.[].id')"
+          if [ -z "$ids" ]; then
+            echo "No GitHub deployments recorded for storybook-pr-${PR_NUMBER}"
+            exit 0
+          fi
+          for id in $ids; do
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/deployments/${id}/statuses" \
+              -f state=inactive \
+              -f environment="storybook-pr-${PR_NUMBER}" \
+              -f description="Storybook preview shut down"
+          done

@@ -39,7 +39,7 @@ One attribute on the document root:
 
 ## JavaScript
 
-Five widgets are custom elements: tabs, pagination, dropdown, carousel, and gauge. Put the tag on the page with its inputs, import the JS once, and the element writes the inside.
+Six widgets are custom elements: tabs, pagination, dropdown, carousel, gauge, and scrollbar. Put the tag on the page with its inputs, import the JS once, and the element writes the inside.
 
 ```html
 <k-tabs

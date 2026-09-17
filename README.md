@@ -1,6 +1,6 @@
 # K-Web-UI
 
-CSS classes for real HTML. Put `k-` classes on a button, a table, or a dialog and they pick up the kit look. Most of the kit is a stylesheet. Five widgets (tabs, pagination, dropdowns, the carousel, and the gauge frame) are custom elements because CSS cannot manage that behavior on its own.
+CSS classes for real HTML. Put `k-` classes on a button, a table, or a dialog and they pick up the kit look. Most of the kit is a stylesheet. Six widgets (tabs, pagination, dropdowns, the carousel, the gauge frame, and the scrollbar) are custom elements because CSS cannot manage that behavior on its own.
 
 The kit does not wrap elements in React and does not restyle the rest of your page. If an element has no `k-` class, it is left alone.
 
