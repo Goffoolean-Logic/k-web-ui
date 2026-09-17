@@ -25,6 +25,9 @@ export default defineConfig({
         PageTitle: './src/components/PageTitle.astro',
         ThemeProvider: './src/components/ThemeProvider.astro',
         ThemeSelect: './src/components/ThemeSelect.astro',
+        Footer: './src/components/Footer.astro',
+        PageFrame: './src/components/PageFrame.astro',
+        Header: './src/components/Header.astro',
       },
       social: [
         {
@@ -46,8 +49,13 @@ export default defineConfig({
             { label: 'Iconography', slug: 'foundations/iconography' },
           ],
         },
-        { label: 'Showcase', slug: 'showcase' },
-        { label: 'Theme playground', slug: 'theme-playground' },
+        {
+          label: 'Showcase',
+          items: [
+            { label: 'Profile', slug: 'showcase' },
+            { label: 'Restyle', slug: 'showcase/restyle' },
+          ],
+        },
         {
           label: 'Components',
           items: [

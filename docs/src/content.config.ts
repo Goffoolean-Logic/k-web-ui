@@ -2,6 +2,8 @@ import { defineCollection, z } from 'astro:content';
 import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
 
+/** Docs collection: MDX under src/content/docs. */
+
 export const collections = {
   docs: defineCollection({
     loader: docsLoader(),

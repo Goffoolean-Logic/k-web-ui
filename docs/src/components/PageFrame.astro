@@ -1,0 +1,18 @@
+---
+import Default from '@astrojs/starlight/components/PageFrame.astro';
+---
+
+<div class="site-shell">
+  <Default>
+    <slot />
+    <slot name="header" slot="header" />
+    <slot name="sidebar" slot="sidebar" />
+  </Default>
+  <footer class="site-footer px-8 py-4 tablet:px-15 laptop:px-18 desktop:px-36">
+    <p>Caleb Goff</p>
+    <a href="https://github.com/Goffoolean-Logic">
+      <span class="k-icon k-icon--github" aria-hidden="true"></span>
+      GitHub
+    </a>
+  </footer>
+</div>

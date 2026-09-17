@@ -1,14 +1,14 @@
 ---
 title: Iconography
-description: Eleven UI icons. CSS masks. Recolor with bg-k-*.
+description: Fifteen UI icons. CSS masks. Recolor with bg-k-*.
 ---
 
 import Preview from '../../../components/Preview.astro';
 import Example from '../../../components/Example.astro';
 
-The kit ships a small set of UI icons: chevrons, status, close, and loading. It is not a general icon library. If you need a product illustration, drop in your own SVG.
+The kit ships a small set of UI icons: chevrons, an arrow, status, close, loading, sun, moon, and GitHub. It's not a general icon library. If you need a product illustration, drop in your own SVG.
 
-Put `.k-icon` and a name on a `span`. The glyph is a CSS mask. The painted part is `background-color`, which defaults to `currentColor`, so you do not have to inline a path.
+Put `.k-icon` and a name on a `span`. The glyph is a CSS mask. The painted part is `background-color`, which defaults to `currentColor`, so you don't have to inline a path.
 
 <Example
   html={`<span class="k-icon k-icon--info" aria-hidden="true"></span>`}
@@ -65,6 +65,10 @@ The first icon in the preview has no `bg-k-*` class, so it follows the surroundi
       <code>chevron-last</code>
     </li>
     <li class="k-grid__cell">
+      <span class="k-icon k-icon--arrow-down k-icon--sm" aria-hidden="true"></span>
+      <code>arrow-down</code>
+    </li>
+    <li class="k-grid__cell">
       <span class="k-icon k-icon--info k-icon--sm" aria-hidden="true"></span>
       <code>info</code>
     </li>
@@ -88,6 +92,18 @@ The first icon in the preview has no `bg-k-*` class, so it follows the surroundi
       <span class="k-icon k-icon--loading k-icon--sm" aria-hidden="true"></span>
       <code>loading</code>
     </li>
+    <li class="k-grid__cell">
+      <span class="k-icon k-icon--sun k-icon--sm" aria-hidden="true"></span>
+      <code>sun</code>
+    </li>
+    <li class="k-grid__cell">
+      <span class="k-icon k-icon--moon k-icon--sm" aria-hidden="true"></span>
+      <code>moon</code>
+    </li>
+    <li class="k-grid__cell">
+      <span class="k-icon k-icon--github k-icon--sm" aria-hidden="true"></span>
+      <code>github</code>
+    </li>
   </ul>
 </Preview>
 
@@ -100,7 +116,7 @@ The first icon in the preview has no `bg-k-*` class, so it follows the surroundi
 | `k-icon--sm` | 2.5rem |
 | `k-icon--lg` | 7rem |
 
-Inside a button, a pagination control, or a carousel arrow they shrink to `1em` so they follow the type.
+Inside a button, a pagination control, a carousel arrow, or a dropdown item they shrink to `1em` so they follow the type.
 
 <Example html={`<span class="k-icon k-icon--info k-icon--xs" aria-hidden="true"></span>
 <span class="k-icon k-icon--info k-icon--sm" aria-hidden="true"></span>

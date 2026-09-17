@@ -1,10 +1,15 @@
 ---
 /**
- * Kit theme picker. Starlight still mounts this in the header; the
- * control itself is a k-dropdown so it matches the rest of the kit.
+ * Kit theme picker. Starlight still mounts this in the header on docs
+ * pages. The splash hero mounts it next to the hero actions.
  */
-const options = JSON.stringify([{ label: 'Light' }, { label: 'Dark' }]);
+import { DOCS_THEMES } from '../lib/themes';
+
+const options = JSON.stringify(
+  DOCS_THEMES.map((theme) => ({ label: theme.label })),
+);
 const id = `docs-theme-${crypto.randomUUID()}`;
+const initial = DOCS_THEMES[0]?.label ?? 'K-light';
 ---
 
 <starlight-theme-select>
@@ -12,7 +17,7 @@ const id = `docs-theme-${crypto.randomUUID()}`;
     id={id}
     class="k-dropdown"
     align="end"
-    label="Light"
+    label={initial}
     options={options}></k-dropdown>
 </starlight-theme-select>
 
@@ -23,38 +28,74 @@ const id = `docs-theme-${crypto.randomUUID()}`;
 
 <script>
   import 'k-web-ui/js';
-
-  type Theme = 'k-dark' | 'k-light';
+  import { createIcon, type KIconName } from 'k-web-ui/js';
+  import {
+    parseDocsTheme,
+    themeIcon,
+    type DocsThemeId,
+  } from '../lib/themes';
 
   const storageKey = 'starlight-theme';
 
-  const parseTheme = (theme: unknown): Theme => {
-    if (theme === 'k-dark' || theme === 'dark' || theme === 'Dark') {
-      return 'k-dark';
-    }
-    if (theme === 'k-light' || theme === 'light' || theme === 'Light') {
-      return 'k-light';
-    }
-    return document.documentElement.dataset.theme === 'k-dark'
-      ? 'k-dark'
-      : 'k-light';
-  };
-
-  const loadTheme = (): Theme =>
-    parseTheme(
+  const loadTheme = (): DocsThemeId =>
+    parseDocsTheme(
       typeof localStorage !== 'undefined' && localStorage.getItem(storageKey),
     );
 
-  function storeTheme(theme: Theme): void {
+  function storeTheme(theme: DocsThemeId): void {
     if (typeof localStorage !== 'undefined') {
       localStorage.setItem(storageKey, theme);
     }
   }
 
-  function onThemeChange(theme: Theme): void {
+  function setIcon(el: Element, name: KIconName): void {
+    el.className = `k-icon k-icon--${name}`;
+    el.setAttribute('aria-hidden', 'true');
+    el.setAttribute('data-theme-icon', '');
+  }
+
+  function decoratePicker(dropdown: Element, theme: DocsThemeId): void {
+    const trigger = dropdown.querySelector('.k-dropdown__trigger');
+    if (!(trigger instanceof HTMLElement)) return;
+
+    const triggerName = themeIcon(theme);
+    let triggerIcon = trigger.querySelector('[data-theme-icon]');
+    if (triggerName) {
+      if (!triggerIcon) {
+        triggerIcon = createIcon(triggerName);
+        triggerIcon.setAttribute('data-theme-icon', '');
+        trigger.prepend(triggerIcon);
+      } else {
+        setIcon(triggerIcon, triggerName);
+      }
+    }
+
+    for (const item of dropdown.querySelectorAll('.k-dropdown__item')) {
+      const itemId = item.textContent?.trim() ?? '';
+      const itemName = themeIcon(itemId);
+      if (!itemName) continue;
+      let icon = item.querySelector('[data-theme-icon]');
+      if (!icon) {
+        icon = createIcon(itemName);
+        icon.setAttribute('data-theme-icon', '');
+        item.prepend(icon);
+      } else {
+        setIcon(icon, itemName);
+      }
+    }
+  }
+
+  function decorateAll(theme: DocsThemeId): void {
+    document
+      .querySelectorAll('starlight-theme-select k-dropdown')
+      .forEach((el) => decoratePicker(el, theme));
+  }
+
+  function onThemeChange(theme: DocsThemeId): void {
     window.StarlightThemeProvider.updatePickers(theme);
     document.documentElement.dataset.theme = theme;
     storeTheme(theme);
+    decorateAll(theme);
   }
 
   class StarlightThemeSelect extends HTMLElement {
@@ -65,8 +106,25 @@ const id = `docs-theme-${crypto.randomUUID()}`;
         if (!(event instanceof CustomEvent)) {
           return;
         }
-        onThemeChange(parseTheme(event.detail?.label));
+        onThemeChange(parseDocsTheme(event.detail?.label));
       });
+    }
+
+    connectedCallback(): void {
+      const dropdown = this.querySelector('k-dropdown');
+      if (!dropdown) return;
+
+      const decorate = (): void => decoratePicker(dropdown, loadTheme());
+      decorate();
+      if (dropdown.querySelector('.k-dropdown__trigger')) return;
+
+      const observer = new MutationObserver(() => {
+        if (dropdown.querySelector('.k-dropdown__trigger')) {
+          decorate();
+          observer.disconnect();
+        }
+      });
+      observer.observe(dropdown, { childList: true });
     }
   }
   if (!customElements.get('starlight-theme-select')) {

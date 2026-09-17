@@ -6,15 +6,15 @@ a.k-link.
 
 A link goes somewhere: another page, a hash, or an external URL. If the click stays on this page, use a [button](/components/button/).
 
-The element is an `<a>` with `.k-link`. It is orange and underlined. Hover darkens it. Keep the underline. Color alone is not enough to mark a link.
+The element is an `<a>` with `.k-link`. It's orange and underlined. Hover darkens it. Keep the underline. Color alone isn't enough to mark a link.
 
-There is no disabled class. `aria-disabled="true"` when the destination is gone; the kit kills pointer events and the underline.
+There's no disabled class. `aria-disabled="true"` when the destination is gone; the kit kills pointer events and the underline.
 
 ## Classes
 
 | Class | Type | Description |
 | --- | --- | --- |
-| `k-link` | component | Goes on an `a`. Orange and underlined; keep the underline. There is no disabled class — use `aria-disabled="true"`. |
+| `k-link` | component | Goes on an `a`. Orange and underlined; keep the underline. There is no disabled class. Use `aria-disabled="true"`. |
 
 ## Examples
 
@@ -28,7 +28,7 @@ A text link. The `href` is yours.
 
 ## Accessibility
 
-Use a real `<a>` with an `href`. Color is not the only cue; the underline stays. `aria-disabled="true"` removes pointer events and the underline. Take it out of the tab order too, or explain nearby why it is still sitting there.
+Use a real `<a>` with an `href`. Color isn't the only cue; the underline stays. `aria-disabled="true"` removes pointer events and the underline. Take it out of the tab order too, or explain nearby why it's still sitting there.
 
 ## Dos and don'ts
 

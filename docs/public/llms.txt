@@ -7,8 +7,9 @@ Every docs page has a markdown twin. Start here, or take [/llms-full.txt](/llms-
 ## Getting started
 
 - [Getting started](/getting-started.md): Install the kit and put a class on a button.
-- [How it works](/how-it-works.md): How to read these docs, and how the kit is put together.
+- [How it works](/how-it-works.md): How to read these docs, how the kit is put together, and how to add a theme.
 - [Showcase](/showcase.md): Kit pieces used together the way they would sit on a real page.
+- [Restyle](/showcase/restyle.md): Same markup. Your CSS. A different look.
 - [Theme playground](/theme-playground.md): Override kit tokens and copy a theme into your project.
 
 ## Foundations
@@ -16,7 +17,7 @@ Every docs page has a markdown twin. Start here, or take [/llms-full.txt](/llms-
 - [Colors](/foundations/colors.md): Palette steps and the semantic colors that flip with the theme.
 - [Typography](/foundations/typography.md): Outfit for UI. IBM Plex Mono for code. Sizes and weights.
 - [Styles](/foundations/styles.md): Radius, shadows, and the focus ring.
-- [Iconography](/foundations/iconography.md): Eleven UI icons. CSS masks. Recolor with bg-k-*.
+- [Iconography](/foundations/iconography.md): Fifteen UI icons. CSS masks. Recolor with bg-k-*.
 
 ## Components
 

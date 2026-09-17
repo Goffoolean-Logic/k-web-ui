@@ -4,7 +4,7 @@
 
 table.k-table.
 
-A table is for tabular data: rows that share the same columns. If the content is not a grid of columns, use a card or a definition list. Use a real `<table class="k-table">` with `thead` and `tbody`. The kit styles the cells. It does not sort, filter, or paginate. Pair it with [pagination](/components/pagination/) when the list is long.
+A table is for tabular data: rows that share the same columns. If the content isn't a grid of columns, use a card or a definition list. Use a real `<table class="k-table">` with `thead` and `tbody`. The kit styles the cells. It doesn't sort, filter, or paginate. Pair it with [pagination](/components/pagination/) when the list is long.
 
 `--zebra` stripes even body rows. `--sm` tightens padding and type. They combine.
 
@@ -12,7 +12,7 @@ A table is for tabular data: rows that share the same columns. If the content is
 
 | Class | Type | Description |
 | --- | --- | --- |
-| `k-table` | component | Goes on a real `table` with `thead` and `tbody`. Styles cells only — no sorting or filtering. |
+| `k-table` | component | Goes on a real `table` with `thead` and `tbody`. Styles cells only. No sorting or filtering. |
 | `k-table--zebra` | modifier | Stripes even body rows. |
 | `k-table--sm` | modifier | Tightens padding and type. Combines with zebra. |
 
@@ -74,7 +74,7 @@ A two-column table. Header cells are `th`, body cells are `td`.
 
 ## Accessibility
 
-Use a real `<table>` with `th` in the header and `td` in the body. The kit does not add `scope` or a caption. Add a `<caption>` or `aria-label` when the heading above is not enough. Zebra is visual only. Do not rely on stripe color to mark a row.
+Use a real `<table>` with `th` in the header and `td` in the body. The kit doesn't add `scope` or a caption. Add a `<caption>` or `aria-label` when the heading above isn't enough. Zebra is visual only. Don't rely on stripe color to mark a row.
 
 ## Dos and don'ts
 

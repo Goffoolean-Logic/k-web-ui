@@ -1,0 +1,37 @@
+---
+title: Restyle
+description: Same markup. Your CSS. A different look.
+---
+
+import Example from '../../../components/Example.astro';
+import GaugeDemo from '../../../components/GaugeDemo.astro';
+import { restyleButtonHtml, restyleGaugeHtml } from '../../../lib/restyleHtml';
+
+Don't like the kit look? It's CSS. Paste your own rules after the `k-web-ui` import and they win, because they're unlayered. [How it works](/how-it-works/) covers the cascade. You don't fork a component to change its shape.
+
+These examples keep the markup from the [button](/components/button/) and [gauge](/components/gauge/) pages. The extra class is yours.
+
+## Capsule buttons
+
+`.k-btn` uses `--k-radius`, which is 2px. Round the corners and it reads as a capsule. Variants and sizes still apply.
+
+<Example html={restyleButtonHtml}>
+  <button type="button" class="k-btn k-btn--primary">Save</button>
+  <button type="button" class="k-btn k-btn--primary btn-capsule">Save</button>
+  <button type="button" class="k-btn k-btn--secondary btn-capsule">Cancel</button>
+</Example>
+
+## Half-circle gauge
+
+The kit gauge is three sides of a square. `--k-gauge-amount` is how far the fill has gone along those sides. Hide the segments and paint `.k-gauge__frame` from the same token. The fill runs left to right along the top of a semicircle. The tag still writes the hidden progress, the reading, and the caption.
+
+<Example html={restyleGaugeHtml}>
+  <GaugeDemo id="docs-restyle-gauge" value="64" label="Upload" text="64%" />
+  <GaugeDemo
+    id="docs-restyle-gauge-arc"
+    class="gauge-arc"
+    value="64"
+    label="Upload"
+    text="64%"
+  />
+</Example>

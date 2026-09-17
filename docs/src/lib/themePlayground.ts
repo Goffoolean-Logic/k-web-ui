@@ -30,6 +30,7 @@ export const STARTER_THEME_CSS = `/* Paste after the k-web-ui stylesheet.
   --k-surface-soft: #fff7ed;
   --k-fg: #000000;
   --k-fg-muted: #9a3412;
+  --k-border-hard: #000000;
 
   --k-accent: #000000;
   --k-accent-fg: #ffffff;
@@ -61,6 +62,7 @@ export const STARTER_THEME_CSS = `/* Paste after the k-web-ui stylesheet.
   --k-surface-soft: #000000;
   --k-fg: #ffffff;
   --k-fg-muted: #fdba74;
+  --k-border-hard: #f97316;
 
   --k-accent: #ffffff;
   --k-accent-fg: #000000;

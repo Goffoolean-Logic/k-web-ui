@@ -4,7 +4,7 @@
 
 k-field, k-label, k-input, k-hint.
 
-These classes style one form field: a label, a text input, and optional helper text. Use them for short values such as email, a name, or a search box. They do not wrap `<select>` or `<textarea>`.
+These classes style one form field: a label, a text input, and optional helper text. Use them for short values like email, a name, or a search box. They don't wrap `<select>` or `<textarea>`.
 
 `.k-field` is the stack. Point `.k-label` at the input with `for` / `id`. `.k-input` is the control. `.k-hint` is the quiet line under it. When the value is wrong, set `aria-invalid="true"` on the input and swap the hint for `.k-error` so the red border and the message agree.
 
@@ -48,7 +48,7 @@ A complete field. The hint is extra context, not an error.
 
 ## Accessibility
 
-The label has to point at the input with `for` and `id`. Placeholder is not a name. Invalid means `aria-invalid="true"` on the input plus `.k-error` for the message. The red border alone is not enough. `disabled` is the attribute. Focus uses the kit ring.
+The label has to point at the input with `for` and `id`. Placeholder is not a name. Invalid means `aria-invalid="true"` on the input plus `.k-error` for the message. The red border alone isn't enough. `disabled` is the attribute. Focus uses the kit ring.
 
 ## Dos and don'ts
 

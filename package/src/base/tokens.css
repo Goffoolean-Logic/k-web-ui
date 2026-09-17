@@ -76,6 +76,9 @@
   --k-radius: 0.125rem;
   --k-radius-lg: 0.125rem;
 
+  --k-space-15: 3.75rem;
+  --k-space-18: 4.5rem;
+
   --k-shadow-1: 0 1px 2px rgb(15 23 42 / 0.08);
   --k-shadow-2: 0 4px 14px rgb(15 23 42 / 0.12);
   --k-shadow-3: 0 16px 40px rgb(15 23 42 / 0.18);

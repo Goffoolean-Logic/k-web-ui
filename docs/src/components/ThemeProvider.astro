@@ -1,18 +1,33 @@
 ---
+import { DOCS_THEMES } from '../lib/themes';
+
+const themes = DOCS_THEMES.map((theme) => ({
+  id: theme.id,
+  label: theme.label,
+}));
 ---
 
 {/* This is intentionally inlined to avoid FOUC. */}
-<script is:inline>
+<script is:inline define:vars={{ themes }}>
   window.StarlightThemeProvider = (() => {
+    const aliases = {
+      light: 'k-light',
+      Light: 'k-light',
+      dark: 'k-dark',
+      Dark: 'k-dark',
+    };
+    const parse = (value) => {
+      const hit = themes.find((theme) => theme.id === value || theme.label === value);
+      if (hit) return hit.id;
+      if (aliases[value]) return aliases[value];
+      return '';
+    };
+    const labelFor = (id) =>
+      themes.find((theme) => theme.id === id)?.label ?? id;
     const storedTheme =
       typeof localStorage !== 'undefined' &&
       localStorage.getItem('starlight-theme');
-    const fromStore =
-      storedTheme === 'k-dark' || storedTheme === 'dark'
-        ? 'k-dark'
-        : storedTheme === 'k-light' || storedTheme === 'light'
-          ? 'k-light'
-          : '';
+    const fromStore = parse(storedTheme);
     const theme =
       fromStore ||
       (window.matchMedia('(prefers-color-scheme: light)').matches
@@ -21,11 +36,10 @@
     document.documentElement.dataset.theme = theme;
     return {
       updatePickers(next = fromStore || theme) {
-        const label = next === 'k-dark' ? 'Dark' : 'Light';
         document
           .querySelectorAll('starlight-theme-select k-dropdown')
           .forEach((el) => {
-            el.setAttribute('label', label);
+            el.setAttribute('label', labelFor(next));
           });
       },
     };

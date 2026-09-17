@@ -6,8 +6,10 @@
     <div class="k-card__body">
       <p>How about all three.</p>
       <p>
-        A stylesheet ships the look. A small JS file covers the widgets CSS
-        cannot. The HTML you write is the HTML that ships.
+        Most components function on Tailwind CSS alone. This allows for components to be implemented using 
+        only CSS classes, shedding that bulky Javascript logic. Some of the more logic driven components have 
+        to use Javascript. Thankfully, their implementation was simplified down to mostly html selectors, 
+        thanks to the use of Web Components.
       </p>
     </div>
   </div>
@@ -20,7 +22,8 @@
         Works in a static HTML file, Astro, React, Vue, or anything else that can render a DOM.
       </p>
       <p>
-        Classes go on real elements. You do not need a React wrapper or a custom-element runtime.
+        Classes go on real elements. You do not need a React wrapper or a custom-element runtime. So, if it's compatible with Javascript, 
+        implement with whatever project you see fit.
       </p>
     </div>
   </div>
@@ -30,10 +33,10 @@
     </div>
     <div class="k-card__body">
       <p>Hours?</p>
-      <p>For CSS, put k-btn class on a button. Import the sheet. You are done.</p>
+      <p>For most components, if you know how to apply a class onto an HTML element, it takes 2 seconds!</p>
       <p>
-        Using the power of the Web Components Framework. The JS widgets work the same way: empty host, attributes, one
-        import. The element writes the inside.
+        JS components work mostly the same way. If the component needs to take other dom tree elements as an input then you'll need 
+        a little, and I mean little, Javascript/Typescript to get it working. 
       </p>
     </div>
   </div>

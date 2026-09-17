@@ -19,6 +19,7 @@ const SEMANTIC_TOKENS = [
   'fg',
   'fg-muted',
   'border',
+  'border-hard',
   'primary',
   'primary-fg',
   'primary-hover',

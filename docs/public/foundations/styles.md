@@ -2,7 +2,7 @@
 
 Radius, shadows, and the focus ring.
 
-Everything that is not a [color](/foundations/colors/) or a [typeface](/foundations/typography/) lives here: corner radius, elevation, and the focus ring. These tokens sit on `:root`. Shadows pick up a stronger treatment in dark mode so they still read on a black page.
+Everything that isn't a [color](/foundations/colors/) or a [typeface](/foundations/typography/) lives here: corner radius, elevation, and the focus ring. These tokens sit on `:root`. Shadows pick up a stronger treatment in dark mode so they still read on a black page.
 
 ## Radius
 
@@ -20,7 +20,7 @@ Everything that is not a [color](/foundations/colors/) or a [typeface](/foundati
 
 ## Shadows
 
-Three elevations. Use `--k-shadow-1` for a light lift (a resting card). `--k-shadow-2` is a menu or popover. `--k-shadow-3` is something that should sit clearly above the page, such as a dialog.
+Three elevations. Use `--k-shadow-1` for a light lift (a resting card). `--k-shadow-2` is a menu or popover. `--k-shadow-3` is something that should sit clearly above the page, like a dialog.
 
 ```html
 <div class="shadow-k-1">Resting</div>
@@ -52,4 +52,4 @@ The ring is defined once for every `k-` class. Width, offset, and color are toke
 | `--k-focus-ring-offset` | 2px |
 | `--k-focus-ring-color` | `var(--k-ring)` |
 
-`k-focus-ring` applies the same outline to something that is not focusable on its own. Do not restyle the ring per component. Anyone tabbing through the page will see the mismatch.
+`k-focus-ring` applies the same outline to something that is not focusable on its own. Don't restyle the ring per component. Anyone tabbing through the page will see the mismatch.

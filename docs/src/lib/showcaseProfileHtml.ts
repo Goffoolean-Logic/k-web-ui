@@ -147,34 +147,34 @@ export const showcaseProfileHtml = `<div class="k-showcase-profile">
 </dialog>
 
 </div>
+`;
 
-<script type="module">
-  import 'k-web-ui/js';
+/** Copyable TypeScript for the Showcase member-profile example. */
+export const showcaseProfileTs = `import 'k-web-ui/js';
 
-  const tabs = document.getElementById('profile-tabs');
-  const clone = (id) => document.getElementById(id).content.cloneNode(true);
+const tabs = document.getElementById('profile-tabs');
+const clone = (id) => document.getElementById(id).content.cloneNode(true);
 
-  tabs.panels = [
-    { label: 'Points', content: clone('points-panel') },
-    { label: 'Deals', content: clone('deals-panel') },
-    { label: 'Activity', content: clone('activity-panel') },
-  ];
+tabs.panels = [
+  { label: 'Points', content: clone('points-panel') },
+  { label: 'Deals', content: clone('deals-panel') },
+  { label: 'Activity', content: clone('activity-panel') },
+];
 
-  const carousel = document.getElementById('deals-carousel');
-  carousel.slides = [
-    { content: clone('deal-dining') },
-    { content: clone('deal-travel') },
-    { content: clone('deal-merch') },
-  ];
+const carousel = document.getElementById('deals-carousel');
+carousel.slides = [
+  { content: clone('deal-dining') },
+  { content: clone('deal-travel') },
+  { content: clone('deal-merch') },
+];
 
-  const syncDeals = (selected) => {
-    if (selected === 1) carousel.play();
-    else carousel.pause();
-  };
+const syncDeals = (selected) => {
+  if (selected === 1) carousel.play();
+  else carousel.pause();
+};
 
-  syncDeals(0);
-  tabs.addEventListener('k-change', (event) => {
-    syncDeals(event.detail.selected);
-  });
-</script>
+syncDeals(0);
+tabs.addEventListener('k-change', (event) => {
+  syncDeals(event.detail.selected);
+});
 `;

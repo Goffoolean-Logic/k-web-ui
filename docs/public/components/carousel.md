@@ -4,11 +4,11 @@
 
 k-carousel. Track, slides, and controls from slides.
 
-A carousel steps through slides in one viewport, such as screenshots, quotes, or a short tour. Put `<k-carousel class="k-carousel">` on the page with `slides`. The element builds the track, slides, prev/next, and dots. A slide is `content` (a string) or `src` and `alt` for a picture.
+A carousel steps through slides in one viewport: screenshots, quotes, a short tour. Put `<k-carousel class="k-carousel">` on the page with `slides`. The element builds the track, slides, prev/next, and dots. A slide is `content` (a string) or `src` and `alt` for a picture.
 
-It loops and autoscrolls by default. Hover or focus pauses the autoscroll. Changing `slides` rebuilds the track; changing `index`, `loop`, `autoscroll`, or `keyboard` does not.
+It loops and autoscrolls by default. Hover or focus pauses the autoscroll. Changing `slides` rebuilds the track; changing `index`, `loop`, `autoscroll`, or `keyboard` doesn't.
 
-If the user prefers reduced motion, the track does not animate and autoscroll stays off.
+If the user prefers reduced motion, the track doesn't animate and autoscroll stays off.
 
 ## Classes
 

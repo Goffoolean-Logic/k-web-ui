@@ -1,0 +1,24 @@
+---
+import Pagination from 'virtual:starlight/components/Pagination';
+
+const { pagination } = Astro.locals.starlightRoute;
+const showPagination = Boolean(pagination.prev || pagination.next);
+---
+
+{
+  showPagination && (
+    <div class="sl-flex page-footer">
+      <Pagination />
+    </div>
+  )
+}
+
+<style>
+  @layer starlight.core {
+    .page-footer {
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+  }
+</style>

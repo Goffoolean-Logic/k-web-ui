@@ -4,7 +4,7 @@
 
 div.k-toast wrapping banners. CSS only.
 
-A toast is a stack of [banners](/components/banner/) pinned to a corner of the page. Use it for short outcomes that should not push the rest of the layout: saved, sent, failed. It does not auto-dismiss. You add and remove the banners yourself.
+A toast is a stack of [banners](/components/banner/) pinned to a corner of the page. Use it for short outcomes that shouldn't push the rest of the layout: saved, sent, failed. It doesn't auto-dismiss. You add and remove the banners yourself.
 
 Wrap the banners in `<div class="k-toast">`. The default position is the bottom-right corner. Combine a block modifier (`--top` or `--bottom`) with an inline one (`--start`, `--center`, `--end`) to move it. The stack is `position: fixed`. Children take pointer events. The wrapper does not.
 
@@ -35,7 +35,7 @@ Bottom-end, the default. Two banners would stack upward from this corner.
 
 ## Accessibility
 
-Each child should be a banner with `role="alert"` so new toasts are announced. The wrapper is not a live region of its own. Because there is no auto-dismiss, the reader can actually reach the message. Do not yank it before they can. Keep the copy short.
+Each child should be a banner with `role="alert"` so new toasts are announced. The wrapper isn't a live region of its own. There's no auto-dismiss, so the reader can actually reach the message. Don't yank it before they can. Keep the copy short.
 
 ## Dos and don'ts
 
@@ -45,6 +45,6 @@ Each child should be a banner with `role="alert"` so new toasts are announced. T
 - Add and remove the banners yourself.
 
 **Don't**
-- Wait for a timeout. There is not one.
+- Wait for a timeout. There isn't one.
 - Put a toast in the page flow. Use a [banner](/components/banner/) there.
 - Put `role="alert"` on the wrapper.

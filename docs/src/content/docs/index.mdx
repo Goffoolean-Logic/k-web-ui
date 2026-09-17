@@ -6,12 +6,13 @@ hero: {}
 ---
 
 import Hero from '../../components/Hero.astro';
+import HeroShowcase from '../../components/HeroShowcase.astro';
 import SplashBand from '../../components/SplashBand.astro';
 import SplashCards from '../../components/SplashCards.astro';
 
 <div class="splash not-content">
   <Hero>
-    <p slot="tagline">Designed to feel warm and engineered to run hot.</p>
+    <p slot="tagline"></p>
     <a slot="actions" href="/getting-started/" class="k-btn k-btn--primary">
       Get started
       <span class="k-icon k-icon--chevron-right" aria-hidden="true"></span>
@@ -22,10 +23,13 @@ import SplashCards from '../../components/SplashCards.astro';
     </a>
   </Hero>
 
-  <div class="splash-lower">
+  <div class="splash-lower" id="splash-lower">
     <SplashBand>
-      <p>Warm, configurable, adaptable, clean, and actionable. Now introducing K-Web-UI.</p>
+      <p>The UI kit to end all UI kits. Designed and programmed to be the all in one 
+      solution to your web-application's UI. This kit will give you beautiful and functional components out of the box,
+      while still being easily configurable if their current design isn't what you like.</p>
     </SplashBand>
+    <HeroShowcase />
     <SplashCards />
   </div>
 </div>

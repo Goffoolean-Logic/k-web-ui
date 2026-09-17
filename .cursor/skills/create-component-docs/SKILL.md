@@ -147,9 +147,9 @@ The rules that are easy to miss:
 
 ## Voice
 
-Short declarative sentences. Second person when instructing: "Put `.k-badge` on a `span`." Say what a thing is for, then what to use instead when it is wrong, and link that alternative.
+Sound like the splash page, not a documentation engine. Contractions. Talk to "you". Mix a short punch with a longer explanation. Say what a thing is for, then what to use instead when it is wrong, and link that alternative.
 
-State defaults as facts. "Leave the size off and you get 1.5rem." No hedging, no "simply", no "just".
+State defaults as facts. "Skip the size and you get 1.5rem." No hedging, no "simply". Don't write "You do not" when "You don't" is what you'd say out loud.
 
 The Dos and don'ts section is two bolded lists, **Do** then **Don't**, three or four items each. Make them specific enough to act on: "Give the host an `id` when more than one is on the page" beats "follow accessibility best practices".
 

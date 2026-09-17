@@ -17,6 +17,7 @@
   --color-k-fg: var(--k-fg);
   --color-k-fg-muted: var(--k-fg-muted);
   --color-k-border: var(--k-border);
+  --color-k-border-hard: var(--k-border-hard);
 
   --color-k-primary: var(--k-primary);
   --color-k-primary-fg: var(--k-primary-fg);
@@ -42,6 +43,13 @@
 
   --radius-k: var(--k-radius);
   --radius-k-lg: var(--k-radius-lg);
+
+  --spacing-15: var(--k-space-15);
+  --spacing-18: var(--k-space-18);
+
+  --breakpoint-tablet: 48rem;
+  --breakpoint-laptop: 64rem;
+  --breakpoint-desktop: 80rem;
 
   --shadow-k-1: var(--k-shadow-1);
   --shadow-k-2: var(--k-shadow-2);
