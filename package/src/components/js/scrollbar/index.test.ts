@@ -49,9 +49,7 @@ function mockOverflow(
 
 describe('k-scrollbar', () => {
   it('does not boot a page overlay in tests', () => {
-    expect(
-      document.querySelector('k-scrollbar[target="viewport"]'),
-    ).toBeNull();
+    expect(document.querySelector('k-scrollbar[target="viewport"]')).toBeNull();
   });
 
   it('wraps children and writes tracks', () => {
