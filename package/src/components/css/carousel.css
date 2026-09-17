@@ -38,6 +38,7 @@
     border-radius: var(--k-radius);
     top: 50%;
     translate: 0 -50%;
+    transition: background-color 150ms ease;
   }
 
   button.k-carousel__prev {
@@ -48,17 +49,33 @@
     @apply end-2;
   }
 
+  button.k-carousel__prev:hover:not(:disabled),
+  button.k-carousel__next:hover:not(:disabled) {
+    background-color: color-mix(in oklab, var(--k-border) 18%, var(--k-surface));
+  }
+
+  [data-theme='k-dark'] button.k-carousel__prev:hover:not(:disabled),
+  [data-theme='k-dark'] button.k-carousel__next:hover:not(:disabled) {
+    background-color: var(--k-border);
+  }
+
   button.k-carousel__prev:disabled,
   button.k-carousel__next:disabled {
     @apply cursor-not-allowed opacity-40;
   }
 
   div.k-carousel__dots {
-    @apply absolute inset-x-0 bottom-2 flex justify-center gap-1;
+    @apply absolute inset-x-0 bottom-2 z-10 flex justify-center gap-1;
   }
 
   button.k-carousel__dot {
-    @apply h-2 w-2 cursor-pointer rounded-full border-0 bg-k-border p-0;
+    @apply h-2 w-2 cursor-pointer border-0 bg-k-border p-0;
+    border-radius: var(--k-radius);
+    transition: background-color 150ms ease;
+  }
+
+  button.k-carousel__dot:hover:not([aria-current='true']) {
+    background-color: color-mix(in oklab, var(--k-fg) 28%, var(--k-border));
   }
 
   button.k-carousel__dot[aria-current='true'] {

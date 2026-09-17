@@ -4,11 +4,11 @@
 
 k-tabs. Tablist, panels, and ARIA from panels.
 
-Tabs switch related panels in place, such as overview / usage / API, or three views of the same object. Do not use them for wizard steps or for a sequence the reader has to walk in order.
+Tabs switch related panels in place: overview / usage / API, or three views of the same object. Don't use them for wizard steps or for a sequence the reader has to walk in order.
 
 Put `<k-tabs class="k-tabs">` on the page with `panels`. The element builds the tablist, tabs, panels, and ARIA. Each panel is a `label` and `content`. `icon` is optional: a kit icon name.
 
-Tabs sit flush. The selected chrome is primary. Switching a tab slides that fill through the tabs in between, then fades the panel. Hidden panels use `[hidden]`. Changing `panels` rebuilds the tablist; changing `selected`, `size`, `label`, or `keyboard` does not. Reduced motion drops the motion.
+Tabs sit flush. The selected chrome is primary. Switching a tab slides that fill through the tabs in between, then fades the panel. Hidden panels use `[hidden]`. Changing `panels` rebuilds the tablist; changing `selected`, `size`, `label`, or `keyboard` doesn't. Reduced motion drops the motion.
 
 ## Classes
 
@@ -113,7 +113,7 @@ tabs.panels = [
 
 ### With icons
 
-`icon` is a kit name such as `info`. The glyph sits before the label and shrinks to `1em`.
+`icon` is a kit name like `info`. The glyph sits before the label and shrinks to `1em`.
 
 ```html
 <template id="icon-progress">

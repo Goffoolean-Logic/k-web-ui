@@ -4,7 +4,7 @@
 
 progress.k-progress. Linear bar.
 
-A progress bar shows how far a task has gone along a line. Use it for an upload, a quota, or a long save. Use a [spin](/components/spin/) when you do not know the percent yet. Use a [gauge](/components/gauge/) when you want a square reading with a caption.
+A progress bar shows how far a task has gone along a line. Use it for an upload, a quota, or a long save. Use a [spin](/components/spin/) when you don't know the percent yet. Use a [gauge](/components/gauge/) when you want a square reading with a caption.
 
 Put `.k-progress` on a `<progress>`. `value` and `max` are the native attributes. `--k-progress` is the fill. Name the task with `aria-label` if there is no visible label.
 
@@ -73,7 +73,7 @@ No `value` is an empty track. `--indeterminate` is the busy sweep.
 
 ## Accessibility
 
-`<progress>` is already a progressbar. Do not add `role="progressbar"`. The text inside the tag is a fallback, not a visible label. Put the name in `aria-label` or a visible caption next to the bar. `prefers-reduced-motion: reduce` stops `--indeterminate`.
+`<progress>` is already a progressbar. Don't add `role="progressbar"`. The text inside the tag is a fallback, not a visible label. Put the name in `aria-label` or a visible caption next to the bar. `prefers-reduced-motion: reduce` stops `--indeterminate`.
 
 ## Dos and don'ts
 

@@ -3,12 +3,14 @@ title: Showcase
 description: Kit pieces used together the way they would sit on a real page.
 ---
 
-import Example from '../../components/Example.astro';
-import ShowcaseProfile from '../../components/ShowcaseProfile.astro';
-import { showcaseProfileHtml } from '../../lib/showcaseProfileHtml';
+import Example from '../../../components/Example.astro';
+import ShowcaseProfile from '../../../components/ShowcaseProfile.astro';
+import {
+  showcaseProfileHtml,
+  showcaseProfileTs,
+} from '../../../lib/showcaseProfileHtml';
 
-Here is a real work example of the K-Web-UI kit in action. Using a wide array of components to achieve a result that mimics how the
-kit would be implemented in the field.
+Here's a real work example of the kit in action. A bunch of components on one page, the way you'd actually use them.
 
 ## Member profile
 
@@ -18,6 +20,8 @@ Points is a [gauge](/components/gauge/) at 2,450 of 3,000 toward the next $25 cr
 
 The panels need real markup, so the tabs take their content through the `panels` property, not the JSON attribute. Same move as [How it works](/how-it-works/). The dialogs sit beside the tabs, not inside a panel. A hidden panel can swallow a popover.
 
-<Example stack lift html={showcaseProfileHtml}>
+<Example stack lift html={showcaseProfileHtml} ts={showcaseProfileTs}>
   <ShowcaseProfile />
 </Example>
+
+To change the look of one piece instead of composing several, see [Restyle](/showcase/restyle/).

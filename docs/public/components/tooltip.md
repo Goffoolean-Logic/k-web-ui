@@ -4,7 +4,7 @@
 
 span.k-tooltip with data-tip. No JS.
 
-A tooltip is extra context on a control the reader already sees, such as a last-saved time or a keyboard hint. It is not a banner and it is not a modal. Keep the text short.
+A tooltip is extra context on a control the reader already sees, like a last-saved time or a keyboard hint. It's not a banner and it's not a modal. Keep the text short.
 
 Wrap the control in `<span class="k-tooltip" data-tip="…">`. The tip is a `::before` on the span. It shows on hover and on focus-within, so a keyboard user sees it too. Default placement is above. `--bottom`, `--left`, and `--right` move it.
 
@@ -43,7 +43,7 @@ The default. Hover or focus the button.
 
 ## Accessibility
 
-The tip is a CSS `::before` from `data-tip`. It is not its own node in the accessibility tree. Show it on hover and on `focus-within` so keyboard users see it. Required instructions belong on the control or in a visible label. Keep `data-tip` short.
+The tip is a CSS `::before` from `data-tip`. It's not its own node in the accessibility tree. Show it on hover and on `focus-within` so keyboard users see it. Required instructions belong on the control or in a visible label. Keep `data-tip` short.
 
 ## Dos and don'ts
 
@@ -54,5 +54,5 @@ The tip is a CSS `::before` from `data-tip`. It is not its own node in the acces
 
 **Don't**
 - Use this as a [banner](/components/banner/) or a [modal](/components/modal/).
-- Import a widget for this. It is a `::before`.
+- Import a widget for this. It's a `::before`.
 - Hide the only label in `data-tip`.

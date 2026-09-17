@@ -4,7 +4,7 @@
 
 k-dropdown. Trigger, menu, and keyboard from options.
 
-A dropdown is a short list of choices attached to a trigger, such as sort order or a row menu. It is not a form `<select>`. Use the native control when you need a form value.
+A dropdown is a short list of choices attached to a trigger: sort order, a row menu. It's not a form `<select>`. Use the native control when you need a form value.
 
 Put `<k-dropdown class="k-dropdown">` on the page with `label` and `options`. The element builds the trigger, menu, items, and ARIA. Each option is a `label`. `href` on an option makes a link instead of a button.
 

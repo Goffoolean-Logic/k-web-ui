@@ -7,11 +7,11 @@ kind: css
 import Example from '../../../components/Example.astro';
 import DocTable from '../../../components/DocTable.astro';
 
-A badge is a short label for a status, a count, or a category. Put one next to a heading or in a table cell. If something just happened on the page, that belongs on a [banner](/components/banner/), not here.
+A badge is a short label. Status, a count, a category. Stick one next to a heading or in a table cell. If something just happened on the page, that's a [banner](/components/banner/), not a badge.
 
-Put `.k-badge` on a `span`. A `div` works too. A variant picks the color. A style picks the fill: solid if you omit one, then outline, dash, soft, or ghost. Mix them. `k-badge--info k-badge--soft` is a washed info chip.
+Put `.k-badge` on a `span`. A `div` works too. A variant picks the color. A style picks the fill: solid if you skip one, then outline, dash, soft, or ghost. Mix them. `k-badge--info k-badge--soft` is a washed info chip.
 
-Sizes go `--xs` to `--xl`. Leave the size off and you get 1.5rem. An empty badge, no text and no icon, collapses to a dot. Drop a kit icon in when the color is not enough on its own.
+Sizes go `--xs` to `--xl`. Skip the size and you get 1.5rem. An empty badge, no text and no icon, collapses to a dot. Drop a kit icon in when the color isn't enough on its own.
 
 ## Classes
 
@@ -85,7 +85,7 @@ The same info color through every fill treatment.
 
 ## Accessibility
 
-This is not a live region. Leave `role="alert"` off. If the color means something, say it in the text, or hide the icon with `aria-hidden="true"` and keep the word. Empty dots are decorative. If the dot is the only status, give the badge an `aria-label`.
+This isn't a live region. Leave `role="alert"` off. If the color means something, say it in the text, or hide the icon with `aria-hidden="true"` and keep the word. Empty dots are decorative. If the dot is the only status, give the badge an `aria-label`.
 
 ## Dos and don'ts
 

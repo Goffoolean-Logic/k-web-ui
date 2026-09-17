@@ -1,22 +1,43 @@
 ---
 import DraftContentNotice from 'virtual:starlight/components/DraftContentNotice';
-import Wordmark from './Wordmark.astro';
-import HeroIsland from './HeroIsland.astro';
-import heroAside from '../assets/hero-aside.png';
+import logo from '../assets/logo.png';
+import { HERO_TITLE_SIZE_REM } from '../lib/heroIntro';
+import ThemeSelect from './ThemeSelect.astro';
 
 const { data } = Astro.locals.starlightRoute.entry;
 const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
 ---
 
-{composed && <div class="hero">
+{composed && <div
+  class="hero"
+  data-hero
+  data-hero-state="playing"
+  style={`--hero-title-size: ${HERO_TITLE_SIZE_REM}`}
+>
   <div class="hero-stage">
-    <HeroIsland />
     <div class="hero-panel sl-flex">
       <div class="sl-flex stack">
         <div class="sl-flex copy">
-          <h1 id="_top" data-page-title>
-            <Wordmark />
-          </h1>
+          <div class="hero-title">
+            <h1 id="_top" data-page-title>
+              <span class="k-visually-hidden">K-Web-UI</span>
+              <span class="hero-intro" data-hero-intro aria-hidden="true">
+                <span class="hero-intro__prompt" data-hero-prompt></span>
+                <span class="hero-intro__letter" data-hero-letter hidden>K</span>
+                <img
+                  class="hero-intro__logo"
+                  data-hero-logo
+                  src={logo.src}
+                  alt=""
+                  width="32"
+                  height="32"
+                  hidden
+                />
+                <span class="hero-intro__rest" data-hero-rest translate="no"></span>
+                <span class="hero-intro__caret" data-hero-caret></span>
+              </span>
+            </h1>
+          </div>
           {data.draft && <DraftContentNotice />}
           {
             Astro.slots.has('tagline') && (
@@ -30,66 +51,229 @@ const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
           Astro.slots.has('actions') && (
             <div class="sl-flex actions">
               <slot name="actions" />
+              <ThemeSelect />
             </div>
           )
         }
       </div>
-      <div class="hero-frame hero-frame--aside">
-        <img src={heroAside.src} alt="" width={heroAside.width} height={heroAside.height} />
-      </div>
     </div>
   </div>
+  <a class="hero-scroll" href="#splash-lower" data-hero-scroll>
+    <span class="hero-scroll__label">Scroll down</span>
+    <span class="k-icon k-icon--arrow-down" aria-hidden="true"></span>
+  </a>
+  <button type="button" class="k-visually-hidden" data-hero-skip>
+    Skip animation
+  </button>
 </div>}
+
+<noscript>
+  <style>
+    .hero[data-hero-state='playing'] .hero-intro__logo {
+      display: block !important;
+    }
+    .hero[data-hero-state='playing'] .hero-intro__rest::after {
+      content: '-Web-UI';
+    }
+    .hero[data-hero-state='playing'] .hero-intro__caret {
+      display: none !important;
+    }
+  </style>
+</noscript>
+
+<script is:inline>
+  (() => {
+    const hero = document.querySelector('[data-hero]');
+    if (!(hero instanceof HTMLElement)) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      hero.dataset.heroState = 'done';
+      const letter = hero.querySelector('[data-hero-letter]');
+      const logo = hero.querySelector('[data-hero-logo]');
+      const rest = hero.querySelector('[data-hero-rest]');
+      const caret = hero.querySelector('[data-hero-caret]');
+      if (letter instanceof HTMLElement) letter.hidden = true;
+      if (logo instanceof HTMLElement) logo.hidden = false;
+      if (rest) rest.textContent = '-Web-UI';
+      if (caret instanceof HTMLElement) caret.hidden = true;
+    }
+  })();
+</script>
+
+<script>
+  import { playHeroIntro } from '../lib/heroIntro.ts';
+  playHeroIntro();
+</script>
 
 <style>
   @layer starlight.core {
     .hero {
+      position: relative;
+      isolation: isolate;
       display: flex;
+      min-height: 100dvh;
       flex-direction: column;
-      gap: clamp(1.5rem, calc(1rem + 3vw), 3rem);
-      padding-block: clamp(2.5rem, calc(1rem + 10vmin), 10rem);
-      padding-bottom: 0;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding-block: 2rem 3rem;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 100vw;
+      translate: -50% 0;
+      pointer-events: none;
+      background:
+        radial-gradient(
+          70% 80% at 12% 8%,
+          color-mix(in srgb, var(--k-primary) 32%, transparent),
+          transparent 72%
+        ),
+        radial-gradient(
+          55% 60% at 88% 0%,
+          color-mix(in srgb, var(--k-surface-hard) 70%, transparent),
+          transparent 68%
+        ),
+        linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--k-surface-hard) 42%, var(--k-surface)) 0%,
+          var(--k-surface) 78%
+        );
+    }
+
+    :global([data-theme='k-dark']) .hero::before {
+      background:
+        radial-gradient(
+          140% 90% at 50% -20%,
+          color-mix(in srgb, var(--k-primary) 46%, transparent),
+          transparent 70%
+        ),
+        linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--k-primary) 16%, var(--k-surface)) 0%,
+          var(--k-surface) 58%
+        );
     }
 
     .hero-stage {
       position: relative;
       isolation: isolate;
+      width: min(100%, calc(100vw - 3rem));
+      overflow: visible;
     }
 
     .hero-panel {
       position: relative;
       z-index: 1;
       align-items: center;
-      justify-content: space-between;
-      gap: clamp(1.5rem, calc(1rem + 4vw), 4rem);
+      justify-content: center;
+      overflow: visible;
     }
 
     .stack {
-      flex: 1 1 18rem;
+      flex: 1 1 auto;
       flex-direction: column;
-      gap: clamp(1.5rem, calc(1.5rem + 1vw), 2rem);
+      align-items: center;
+      gap: 0.85rem;
+      overflow: visible;
     }
 
     .copy {
       flex-direction: column;
-      gap: 1rem;
-      align-items: flex-start;
+      gap: 0.65rem;
+      align-items: center;
+      width: min(36rem, 100%);
+      overflow: visible;
     }
 
-    .copy > * {
-      max-width: 60ch;
+    .hero-title {
+      position: relative;
+      width: 100%;
+      height: 1.15em;
+      font-size: min(var(--hero-title-size, 4.5rem), calc((100vw - 5rem) / 21));
+      line-height: 1.15;
     }
 
     h1 {
-      font-size: clamp(var(--sl-text-3xl), calc(0.25rem + 5vw), var(--sl-text-6xl));
-      line-height: var(--sl-line-height-headings);
+      position: relative;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      font-size: inherit;
+      line-height: inherit;
       font-weight: 600;
       color: var(--sl-color-white);
+      text-align: center;
+    }
+
+    .hero-intro {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: inline-flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: center;
+      column-gap: 0;
+      white-space: nowrap;
+      translate: -50% -50%;
+    }
+
+    @media (min-width: 1440px) {
+      .hero-title {
+        font-size: min(
+          var(--hero-title-size, 4.5rem),
+          calc((100vw - 5rem) / 20.5)
+        );
+      }
+    }
+
+    .hero-intro__prompt:not(:empty) ~ .hero-intro__letter,
+    .hero-intro__prompt:not(:empty) ~ .hero-intro__logo {
+      margin-inline-start: 0.3em;
+    }
+
+    .hero-intro__letter[hidden] {
+      display: none;
+    }
+
+    .hero-intro__logo {
+      display: block;
+      height: 1em;
+      width: 1em;
+      object-fit: contain;
+      object-position: center;
+      border-radius: 0.15em;
+    }
+
+    .hero-intro__logo[hidden] {
+      display: none;
+    }
+
+    .hero-intro__caret {
+      display: inline-block;
+      width: 0.08em;
+      height: 0.9em;
+      margin-inline-start: 0.08em;
+      background: currentColor;
+      animation: hero-caret 1s steps(1) infinite;
+    }
+
+    .hero-intro__caret[hidden] {
+      display: none;
     }
 
     .tagline {
+      flex-shrink: 0;
+      max-width: 36rem;
       font-size: clamp(var(--sl-text-base), calc(0.0625rem + 2vw), var(--sl-text-xl));
       color: var(--sl-color-gray-2);
+      text-align: center;
     }
 
     .tagline :global(p) {
@@ -97,39 +281,102 @@ const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
     }
 
     .actions {
-      gap: 1rem 2rem;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-    }
-
-    .hero-frame {
-      overflow: hidden;
-      border-radius: 1.25rem;
       flex-shrink: 0;
+      gap: 1rem 1.25rem;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
-    .hero-frame img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .hero[data-hero-state='playing'],
+    .hero[data-hero-state='settling'] {
+      cursor: pointer;
     }
 
-    .hero-frame--aside {
-      width: min(22rem, 38%);
-      aspect-ratio: 1;
+    .hero[data-hero-state='playing'] .actions,
+    .hero[data-hero-state='settling'] .actions {
+      cursor: auto;
     }
 
-    @media (max-width: 50rem) {
-      .hero-panel {
-        flex-direction: column;
-        align-items: stretch;
+    .hero-scroll {
+      position: absolute;
+      bottom: 1.25rem;
+      left: 50%;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      translate: -50% 0;
+      color: var(--sl-color-gray-2);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      text-decoration: none;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .hero-scroll .k-icon {
+      width: 3.5rem;
+      height: 3.5rem;
+    }
+
+    .hero-scroll:hover,
+    .hero-scroll:focus-visible {
+      color: var(--sl-color-white);
+    }
+
+    .hero[data-hero-state='done'] .hero-scroll {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .hero[data-hero-state='done']:not([data-hero-skipped]) .hero-scroll {
+      animation: hero-scroll-in 0.9s ease both;
+    }
+
+    .hero[data-hero-state='done'] .hero-scroll .k-icon {
+      animation: hero-scroll-bounce 1.8s ease-in-out infinite;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-intro__caret,
+      .hero[data-hero-state='done'] .hero-scroll,
+      .hero[data-hero-state='done'] .hero-scroll .k-icon {
+        animation: none;
       }
+    }
+  }
 
-      .hero-frame--aside {
-        width: min(16rem, 100%);
-        align-self: center;
-      }
+  @keyframes hero-caret {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes hero-scroll-in {
+    from {
+      opacity: 0;
+      translate: -50% 0.5rem;
+    }
+
+    to {
+      opacity: 1;
+      translate: -50% 0;
+    }
+  }
+
+  @keyframes hero-scroll-bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(0.3rem);
     }
   }
 </style>

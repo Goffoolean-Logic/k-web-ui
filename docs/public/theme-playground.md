@@ -2,7 +2,7 @@
 
 Override kit tokens and copy a theme into your project.
 
-The kit is tokens. Change `--k-primary` and every primary button follows. You do not restyle each class.
+The kit is tokens. Change `--k-primary` and every primary button follows. You don't restyle each class.
 
 Paste the CSS after the `k-web-ui` import. Put `data-theme="k-light"` or `k-dark` on the document root. The live editor is at [/theme-playground/](/theme-playground/).
 
@@ -37,6 +37,7 @@ See [Colors](/foundations/colors.md) for what each token is for, and [Styles](/f
   --k-surface-soft: #fff7ed;
   --k-fg: #000000;
   --k-fg-muted: #9a3412;
+  --k-border-hard: #000000;
 
   --k-accent: #000000;
   --k-accent-fg: #ffffff;
@@ -68,6 +69,7 @@ See [Colors](/foundations/colors.md) for what each token is for, and [Styles](/f
   --k-surface-soft: #000000;
   --k-fg: #ffffff;
   --k-fg-muted: #fdba74;
+  --k-border-hard: #f97316;
 
   --k-accent: #ffffff;
   --k-accent-fg: #000000;

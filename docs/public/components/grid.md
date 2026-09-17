@@ -4,7 +4,7 @@
 
 div.k-grid or ul.k-grid. CSS only.
 
-A grid is a row of repeating tiles, such as an icon set, a swatch list, or a gallery. Rows of the same columns belong in a [table](/components/table/).
+A grid is a row of repeating tiles: an icon set, a swatch list, a gallery. Rows of the same columns belong in a [table](/components/table/).
 
 Use `<div class="k-grid">` or `<ul class="k-grid">`. Default columns auto-fill from `8rem`. Pin a count with `--2`, `--3`, `--4`, or `--6`. `--tight` shortens the gap.
 
@@ -73,6 +73,10 @@ The default. Columns wrap as the page widens. A list, because the cells are a se
   <li class="k-grid__cell">
     <span class="k-icon k-icon--chevron-last k-icon--sm" aria-hidden="true"></span>
     <code>chevron-last</code>
+  </li>
+  <li class="k-grid__cell">
+    <span class="k-icon k-icon--arrow-down k-icon--sm" aria-hidden="true"></span>
+    <code>arrow-down</code>
   </li>
 </ul>
 ```

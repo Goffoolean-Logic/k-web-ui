@@ -4,12 +4,16 @@ export const K_ICON_NAMES = [
   'chevron-down',
   'chevron-first',
   'chevron-last',
+  'arrow-down',
   'info',
   'success',
   'warning',
   'danger',
   'close',
   'loading',
+  'sun',
+  'moon',
+  'github',
 ] as const;
 
 export type KIconName = (typeof K_ICON_NAMES)[number];

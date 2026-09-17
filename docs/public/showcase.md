@@ -2,9 +2,7 @@
 
 Kit pieces used together the way they would sit on a real page.
 
-Component pages isolate one piece. This page puts a few of them on the same screen, the way they would sit in an app.
-
-More scenes will land here. The first one is a member profile.
+Here's a real work example of the kit in action. A bunch of components on one page, the way you'd actually use them.
 
 ## Member profile
 
@@ -163,34 +161,36 @@ The panels need real markup, so the tabs take their content through the `panels`
 </dialog>
 
 </div>
-
-<script type="module">
-  import 'k-web-ui/js';
-
-  const tabs = document.getElementById('profile-tabs');
-  const clone = (id) => document.getElementById(id).content.cloneNode(true);
-
-  tabs.panels = [
-    { label: 'Points', content: clone('points-panel') },
-    { label: 'Deals', content: clone('deals-panel') },
-    { label: 'Activity', content: clone('activity-panel') },
-  ];
-
-  const carousel = document.getElementById('deals-carousel');
-  carousel.slides = [
-    { content: clone('deal-dining') },
-    { content: clone('deal-travel') },
-    { content: clone('deal-merch') },
-  ];
-
-  const syncDeals = (selected) => {
-    if (selected === 1) carousel.play();
-    else carousel.pause();
-  };
-
-  syncDeals(0);
-  tabs.addEventListener('k-change', (event) => {
-    syncDeals(event.detail.selected);
-  });
-</script>
 ```
+
+```ts
+import 'k-web-ui/js';
+
+const tabs = document.getElementById('profile-tabs');
+const clone = (id) => document.getElementById(id).content.cloneNode(true);
+
+tabs.panels = [
+  { label: 'Points', content: clone('points-panel') },
+  { label: 'Deals', content: clone('deals-panel') },
+  { label: 'Activity', content: clone('activity-panel') },
+];
+
+const carousel = document.getElementById('deals-carousel');
+carousel.slides = [
+  { content: clone('deal-dining') },
+  { content: clone('deal-travel') },
+  { content: clone('deal-merch') },
+];
+
+const syncDeals = (selected) => {
+  if (selected === 1) carousel.play();
+  else carousel.pause();
+};
+
+syncDeals(0);
+tabs.addEventListener('k-change', (event) => {
+  syncDeals(event.detail.selected);
+});
+```
+
+To change the look of one piece instead of composing several, see [Restyle](/showcase/restyle.md).

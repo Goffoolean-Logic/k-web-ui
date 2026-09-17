@@ -1,10 +1,10 @@
 # Iconography
 
-Eleven UI icons. CSS masks. Recolor with bg-k-*.
+Fifteen UI icons. CSS masks. Recolor with bg-k-*.
 
-The kit ships a small set of UI icons: chevrons, status, close, and loading. It is not a general icon library. If you need a product illustration, drop in your own SVG.
+The kit ships a small set of UI icons: chevrons, an arrow, status, close, loading, sun, moon, and GitHub. It's not a general icon library. If you need a product illustration, drop in your own SVG.
 
-Put `.k-icon` and a name on a `span`. The glyph is a CSS mask. The painted part is `background-color`, which defaults to `currentColor`, so you do not have to inline a path.
+Put `.k-icon` and a name on a `span`. The glyph is a CSS mask. The painted part is `background-color`, which defaults to `currentColor`, so you don't have to inline a path.
 
 ```html
 <span class="k-icon k-icon--info" aria-hidden="true"></span>
@@ -38,12 +38,16 @@ The first icon has no `bg-k-*` class, so it follows the surrounding text color. 
 | `chevron-down` |
 | `chevron-first` |
 | `chevron-last` |
+| `arrow-down` |
 | `info` |
 | `success` |
 | `warning` |
 | `danger` |
 | `close` |
 | `loading` |
+| `sun` |
+| `moon` |
+| `github` |
 
 ```html
 <span class="k-icon k-icon--info" aria-hidden="true"></span>
@@ -58,7 +62,7 @@ The first icon has no `bg-k-*` class, so it follows the surrounding text color. 
 | `k-icon--sm` | 2.5rem |
 | `k-icon--lg` | 7rem |
 
-Inside a button, a pagination control, or a carousel arrow they shrink to `1em` so they follow the type.
+Inside a button, a pagination control, a carousel arrow, or a dropdown item they shrink to `1em` so they follow the type.
 
 ```html
 <span class="k-icon k-icon--info k-icon--xs" aria-hidden="true"></span>

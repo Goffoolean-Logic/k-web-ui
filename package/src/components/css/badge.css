@@ -9,7 +9,7 @@
     --k-badge-size: 1.5rem;
 
     @apply box-border inline-flex w-fit shrink-0 items-center justify-center
-      gap-1 rounded-full border border-k-border bg-k-surface-raised
+      gap-1 border rounded-k border-k-border bg-k-surface-raised 
       align-middle text-sm leading-none font-medium whitespace-nowrap text-k-fg;
     height: var(--k-badge-size);
     padding-inline: calc(var(--k-badge-size) / 2 - 1px);

@@ -4,7 +4,7 @@
 
 span.k-spin wraps an icon and rotates it.
 
-Spin is the rotation, not the icon itself. The [loading icon](/foundations/iconography/) sits still until you wrap it. Use `<span class="k-spin">` around any kit icon when something is in progress, such as a save or a refresh.
+Spin is the rotation, not the icon itself. The [loading icon](/foundations/iconography/) sits still until you wrap it. Use `<span class="k-spin">` around any kit icon when something is in progress, like a save or a refresh.
 
 `createSpin()` builds the wrapper and defaults to the loading icon. Pass a name and size if you want to spin something else. Reduced motion turns the animation off. The icon still shows.
 

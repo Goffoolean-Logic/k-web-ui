@@ -4,9 +4,9 @@
 
 dialog.k-modal with popover. No JS.
 
-A focused task on top of the page: confirm a delete, a short form, a warning. Use `<dialog class="k-modal" popover>`. The Popover API opens and closes it.
+A modal is a focused task on top of the page: confirm a delete, a short form, a warning. Use `<dialog class="k-modal" popover>`. The Popover API opens and closes it.
 
-A button with `popovertarget` matching the dialog `id` opens it. The same attribute with `popovertargetaction="hide"` closes it. Escape still dismisses. A click on the dimmed backdrop does not, unless you put a `.k-modal__scrim` hide button in the dialog.
+A button with `popovertarget` matching the dialog `id` opens it. The same attribute with `popovertargetaction="hide"` closes it. Escape still dismisses. A click on the dimmed backdrop doesn't, unless you put a `.k-modal__scrim` hide button in the dialog.
 
 Put title, body, and actions inside `.k-modal__box`. That box is the raised surface. The dimmed page is `::backdrop`. The scrim sits on that dimmed area so a click closes the dialog without hitting the page underneath.
 
@@ -56,7 +56,7 @@ A destructive confirm. Open it from the button. Cancel, Delete, and a click on t
 
 ## Accessibility
 
-The element is a `<dialog popover>`. The Popover API handles Escape and focus. Backdrop close is a `.k-modal__scrim` button with `popovertargetaction="hide"` and `aria-label="Close"`. Title the dialog with `.k-modal__title`. Do not trap focus yourself. The browser already does.
+The element is a `<dialog popover>`. The Popover API handles Escape and focus. Backdrop close is a `.k-modal__scrim` button with `popovertargetaction="hide"` and `aria-label="Close"`. Title the dialog with `.k-modal__title`. Don't trap focus yourself. The browser already does.
 
 ## Dos and don'ts
 

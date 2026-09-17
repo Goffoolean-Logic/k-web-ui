@@ -4,7 +4,7 @@
 
 k-gauge. Square frame with a reading and a caption.
 
-A gauge shows how far a task has gone as a square frame with a number in the middle and a caption in the open bottom. Use a [spin](/components/spin/) when you do not know the percent yet and the mark sits next to a label. Use [progress](/components/progress/) for a linear bar.
+A gauge shows how far a task has gone as a square frame with a number in the middle and a caption in the open bottom. Use a [spin](/components/spin/) when you don't know the percent yet and the mark sits next to a label. Use [progress](/components/progress/) for a linear bar.
 
 Put `<k-gauge class="k-gauge">` on the page and give the host an `id`. Import the JS once. The tag writes a hidden `<progress>`, the frame, the reading, and the caption, and every repaint reuses the nodes it already made. The fill eases when the value changes. Reduced motion drops the motion.
 
@@ -114,7 +114,7 @@ No `value` is an empty track. `indeterminate` is the busy sweep. `prefers-reduce
 
 ## Accessibility
 
-The tag points `aria-labelledby` at the caption it writes. The reading is `aria-hidden` so the number is not read twice. The hidden `<progress>` is already a progressbar. Do not add `role="progressbar"`. `prefers-reduced-motion: reduce` stops `indeterminate`.
+The tag points `aria-labelledby` at the caption it writes. The reading is `aria-hidden` so the number is not read twice. The hidden `<progress>` is already a progressbar. Don't add `role="progressbar"`. `prefers-reduced-motion: reduce` stops `indeterminate`.
 
 ## Dos and don'ts
 

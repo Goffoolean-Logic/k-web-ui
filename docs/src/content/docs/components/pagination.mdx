@@ -10,7 +10,7 @@ import DocTable from '../../../components/DocTable.astro';
 
 Pagination walks a numbered list of pages. Use it under a table or a result set when you already know the page count. Put `<k-pagination class="k-pagination">` on the page with `count` and optional `page`. The element builds the buttons.
 
-Five or fewer pages list every number and drop first/last. More than five keep first and last and a sliding three-page window. The window clamps at the ends: page 1 shows 1 2 3, the last page shows n-2 n-1 n. The current page (`aria-current="page"`) does not pick up the hover fill.
+Five or fewer pages list every number and drop first/last. More than five keep first and last and a sliding three-page window. The window clamps at the ends: page 1 shows 1 2 3, the last page shows n-2 n-1 n. The current page (`aria-current="page"`) doesn't pick up the hover fill.
 
 Arrow keys step. Home and End jump to the ends even when first/last are omitted.
 

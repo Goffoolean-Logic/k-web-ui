@@ -4,7 +4,7 @@
 
 div.k-card with optional header, body, footer.
 
-A card is a box around one unit of content: a deployment, a setting, a summary. It is a layout shell, not an interactive widget. Put buttons and links inside it. Do not hang a click handler on the box itself.
+A card is a box around one unit of content: a deployment, a setting, a summary. It's a layout shell, not an interactive widget. Put buttons and links inside it. Don't hang a click handler on the box itself.
 
 The element is `<div class="k-card">`. Header, body, and footer are optional. Title and subtitle go in the header. Copy goes in the body. The footer is a row of actions, aligned to the end. A card with only a body is fine.
 
@@ -47,7 +47,7 @@ This is a grouping, not a button. Leave `onclick` off `.k-card`. The title shoul
 ## Dos and don'ts
 
 **Do**
-- Skip the parts you do not need. A body-only card is valid.
+- Skip the parts you don't need. A body-only card is valid.
 - Put actions in the footer as real buttons or links.
 
 **Don't**

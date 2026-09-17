@@ -8,6 +8,7 @@ const PAGES = [
   'getting-started.md',
   'how-it-works.md',
   'showcase.md',
+  'showcase/restyle.md',
   'theme-playground.md',
   'foundations/colors.md',
   'foundations/typography.md',
