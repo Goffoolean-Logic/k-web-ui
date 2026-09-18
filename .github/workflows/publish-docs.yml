@@ -18,11 +18,11 @@ jobs:
     env:
       AWS_REGION: us-east-2
       STORYBOOK_S3_BUCKET: storybook-915376883059-us-east-2-an
-      DOCS_URL: https://d1wk4i2ff1khwj.cloudfront.net/index.html
+      DOCS_URL: https://d1wk4i2ff1khwj.cloudfront.net/
       CLOUDFRONT_DISTRIBUTION_ID: E15HY49OQ7IVP4
     environment:
       name: docs
-      url: ${{ env.DOCS_URL }}
+      url: https://d1wk4i2ff1khwj.cloudfront.net/
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
