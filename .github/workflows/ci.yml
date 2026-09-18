@@ -71,7 +71,7 @@ jobs:
       PREVIEW_URL: https://d1wk4i2ff1khwj.cloudfront.net/pr/${{ github.event.number }}/index.html
     environment:
       name: storybook-pr-${{ github.event.number }}
-      url: https://d1wk4i2ff1khwj.cloudfront.net/pr/${{ github.event.number }}/
+      url: https://d1wk4i2ff1khwj.cloudfront.net/pr/${{ github.event.number }}/index.html
     steps:
       - uses: actions/download-artifact@v4
         with:
