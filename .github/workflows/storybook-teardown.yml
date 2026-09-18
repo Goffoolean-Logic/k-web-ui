@@ -1,4 +1,5 @@
 name: Tear down Storybook
+run-name: Tear down Storybook PR ${{ github.event.inputs.pr_number || github.event.pull_request.number }}
 
 on:
   workflow_dispatch:
@@ -7,39 +8,44 @@ on:
         description: Pull request number whose Storybook preview should be shut down
         required: true
         type: string
+  pull_request:
+    types: [closed]
 
 concurrency:
-  group: storybook-pr-${{ inputs.pr_number }}
+  group: storybook-pr-${{ github.event.inputs.pr_number || github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
   teardown:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     permissions:
       id-token: write
       deployments: write
     env:
       AWS_REGION: us-east-2
-      STORYBOOK_S3_BUCKET: storybook-915376883059-us-east-2-an.s3.us-east-2.amazonaws.com-mu642q3wzs6
+      STORYBOOK_S3_BUCKET: storybook-915376883059-us-east-2-an
+      PR_NUMBER: ${{ github.event.inputs.pr_number || github.event.pull_request.number }}
     steps:
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::915376883059:role/GitHubStorybookDeploy
           aws-region: ${{ env.AWS_REGION }}
       - name: Remove the preview files
-        env:
-          PR_NUMBER: ${{ inputs.pr_number }}
         run: |
+          if ! [[ "$PR_NUMBER" =~ ^[0-9]+$ ]]; then
+            echo "PR number must be digits, got: $PR_NUMBER"
+            exit 1
+          fi
           prefix="s3://${STORYBOOK_S3_BUCKET}/pr/${PR_NUMBER}/"
           if [ -z "$(aws s3 ls "$prefix")" ]; then
             echo "No Storybook preview at $prefix"
-            exit 1
+            exit 0
           fi
           aws s3 rm "$prefix" --recursive
       - name: Mark the GitHub deployment inactive
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ inputs.pr_number }}
         run: |
           ids="$(gh api "repos/${GITHUB_REPOSITORY}/deployments?environment=storybook-pr-${PR_NUMBER}" --jq '.[].id')"
           if [ -z "$ids" ]; then

@@ -9,6 +9,7 @@ import { defineConfig } from 'astro/config';
 const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 
 export default defineConfig({
+  site: 'https://d1wk4i2ff1khwj.cloudfront.net',
   redirects: {
     '/components/icon': '/foundations/iconography',
     '/foundations/tokens': '/foundations/colors',

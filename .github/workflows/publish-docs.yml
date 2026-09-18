@@ -1,0 +1,55 @@
+name: Publish docs
+run-name: Publish docs from ${{ github.ref_name }}
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: publish-docs
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      deployments: write
+    env:
+      AWS_REGION: us-east-2
+      STORYBOOK_S3_BUCKET: storybook-915376883059-us-east-2-an
+      DOCS_URL: https://d1wk4i2ff1khwj.cloudfront.net/
+      CLOUDFRONT_DOMAIN: d1wk4i2ff1khwj.cloudfront.net
+    environment:
+      name: docs
+      url: https://d1wk4i2ff1khwj.cloudfront.net/
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build:docs
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::915376883059:role/GitHubStorybookDeploy
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Upload the docs site
+        run: |
+          aws s3 sync docs/dist "s3://${STORYBOOK_S3_BUCKET}/" \
+            --delete \
+            --exclude "pr/*"
+      - name: Refresh CloudFront
+        run: |
+          dist_id="$(
+            aws cloudfront list-distributions \
+              --query "DistributionList.Items[?DomainName=='${CLOUDFRONT_DOMAIN}'].Id" \
+              --output text
+          )"
+          if [ -z "$dist_id" ] || [ "$dist_id" = "None" ]; then
+            echo "No CloudFront distribution named ${CLOUDFRONT_DOMAIN}"
+            exit 1
+          fi
+          aws cloudfront create-invalidation --distribution-id "$dist_id" --paths "/*"
