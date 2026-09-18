@@ -1,6 +1,6 @@
 @layer components {
   div.k-card {
-    @apply flex flex-col rounded-k-lg border border-k-border bg-k-surface-raised;
+    @apply flex flex-col shadow-k-1 rounded-k-lg border border-k-border bg-k-surface-raised;
   }
 
   div.k-card__header {

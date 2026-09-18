@@ -9,7 +9,7 @@
   }
 
   div.k-dropdown__menu {
-    @apply absolute z-30 w-max min-w-40 rounded-k border
+    @apply absolute z-30 w-max min-w-40 rounded-k shadow-k-2 border
       border-k-border bg-k-surface-raised py-1;
     inset-inline-start: 0;
     top: calc(100% + 0.5rem);
