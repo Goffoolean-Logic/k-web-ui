@@ -19,7 +19,7 @@ jobs:
       AWS_REGION: us-east-2
       STORYBOOK_S3_BUCKET: storybook-915376883059-us-east-2-an
       DOCS_URL: https://d1wk4i2ff1khwj.cloudfront.net/
-      CLOUDFRONT_DOMAIN: d1wk4i2ff1khwj.cloudfront.net
+      CLOUDFRONT_DISTRIBUTION_ID: E15HY49OQ7IVP4
     environment:
       name: docs
       url: https://d1wk4i2ff1khwj.cloudfront.net/
@@ -43,13 +43,6 @@ jobs:
             --exclude "pr/*"
       - name: Refresh CloudFront
         run: |
-          dist_id="$(
-            aws cloudfront list-distributions \
-              --query "DistributionList.Items[?DomainName=='${CLOUDFRONT_DOMAIN}'].Id" \
-              --output text
-          )"
-          if [ -z "$dist_id" ] || [ "$dist_id" = "None" ]; then
-            echo "No CloudFront distribution named ${CLOUDFRONT_DOMAIN}"
-            exit 1
-          fi
-          aws cloudfront create-invalidation --distribution-id "$dist_id" --paths "/*"
+          aws cloudfront create-invalidation \
+            --distribution-id "$CLOUDFRONT_DISTRIBUTION_ID" \
+            --paths "/*"
