@@ -67,7 +67,7 @@ jobs:
       deployments: write
     env:
       AWS_REGION: us-east-2
-      STORYBOOK_S3_BUCKET: storybook-915376883059-us-east-2-an.s3.us-east-2.amazonaws.com-mu642q3wzs6
+      STORYBOOK_S3_BUCKET: storybook-915376883059-us-east-2-an
       PREVIEW_URL: https://d1wk4i2ff1khwj.cloudfront.net/pr/${{ github.event.number }}/
     environment:
       name: storybook-pr-${{ github.event.number }}
