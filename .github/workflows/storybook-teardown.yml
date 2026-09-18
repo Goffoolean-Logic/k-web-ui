@@ -22,6 +22,8 @@ jobs:
     permissions:
       id-token: write
       deployments: write
+    environment:
+      name: storybook-pr-${{ github.event.inputs.pr_number || github.event.pull_request.number }}
     env:
       AWS_REGION: us-east-2
       STORYBOOK_S3_BUCKET: storybook-915376883059-us-east-2-an
