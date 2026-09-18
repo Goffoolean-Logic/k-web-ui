@@ -68,7 +68,7 @@ jobs:
     env:
       AWS_REGION: us-east-2
       STORYBOOK_S3_BUCKET: storybook-915376883059-us-east-2-an
-      PREVIEW_URL: https://d1wk4i2ff1khwj.cloudfront.net/pr/${{ github.event.number }}/
+      PREVIEW_URL: https://d1wk4i2ff1khwj.cloudfront.net/pr/${{ github.event.number }}/index.html
     environment:
       name: storybook-pr-${{ github.event.number }}
       url: https://d1wk4i2ff1khwj.cloudfront.net/pr/${{ github.event.number }}/
