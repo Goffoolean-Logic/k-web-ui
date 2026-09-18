@@ -47,6 +47,82 @@ jobs:
       - run: pnpm build
       - run: pnpm --filter k-web-ui-docs build
       - run: pnpm --filter k-web-ui-dev-env build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: storybook-static
+          path: dev-env/storybook-static
+          if-no-files-found: error
+          retention-days: 14
+
+  deploy-storybook:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    needs: [builds]
+    runs-on: ubuntu-latest
+    concurrency:
+      group: storybook-pr-${{ github.event.number }}
+      cancel-in-progress: true
+    permissions:
+      id-token: write
+      pull-requests: write
+      deployments: write
+    env:
+      AWS_REGION: us-east-2
+      STORYBOOK_S3_BUCKET: storybook-915376883059-us-east-2-an
+      PREVIEW_URL: https://d1wk4i2ff1khwj.cloudfront.net/pr/${{ github.event.number }}/index.html
+    environment:
+      name: storybook-pr-${{ github.event.number }}
+      url: https://d1wk4i2ff1khwj.cloudfront.net/pr/${{ github.event.number }}/index.html
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: storybook-static
+          path: preview
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::915376883059:role/GitHubStorybookDeploy
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Upload Storybook preview
+        run: aws s3 sync preview "s3://${STORYBOOK_S3_BUCKET}/pr/${{ github.event.number }}/" --delete
+      - name: Comment the preview URL
+        uses: actions/github-script@v7
+        env:
+          PREVIEW_URL: ${{ env.PREVIEW_URL }}
+        with:
+          script: |
+            const pr = context.payload.pull_request.number;
+            const marker = '<!-- storybook-preview -->';
+            const url = process.env.PREVIEW_URL;
+            const body = [
+              marker,
+              `**Storybook preview:** ${url}`,
+              '',
+              `When you are done looking, shut it down from Actions → **Tear down Storybook** with PR number \`${pr}\`.`,
+            ].join('\n');
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr,
+            });
+            const existing = comments.find(
+              (comment) =>
+                comment.user?.login === 'github-actions[bot]' &&
+                comment.body?.includes(marker),
+            );
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+              return;
+            }
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr,
+              body,
+            });
 
   publish:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'

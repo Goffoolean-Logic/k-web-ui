@@ -1,0 +1,47 @@
+---
+interface Props {
+  id?: string;
+  autohide?: boolean;
+  size?: string;
+  axis?: 'x' | 'y' | 'both';
+}
+
+const {
+  id = 'docs-scrollbar',
+  autohide = false,
+  size,
+  axis = 'y',
+} = Astro.props;
+
+const lines = [
+  'Overview',
+  'Install the kit',
+  'Put a class on a button',
+  'Import the JS once',
+  'Tabs write their own panels',
+  'Pagination windows a long list',
+  'Dropdown builds the menu',
+  'Carousel keeps a track',
+  'Gauge paints a square reading',
+  'This pane is taller than its host',
+  'Wheel, drag the thumb, or click the track',
+  'Native bars stay hidden',
+];
+---
+
+<k-scrollbar
+  id={id}
+  class="k-scrollbar"
+  style={axis === 'x' ? 'height: 4.5rem' : 'height: 12rem'}
+  axis={axis}
+  autohide={autohide ? '' : undefined}
+  size={size}
+>
+  <ul>
+    {lines.map((line) => <li>{line}</li>)}
+  </ul>
+</k-scrollbar>
+
+<script>
+  import 'k-web-ui/js';
+</script>

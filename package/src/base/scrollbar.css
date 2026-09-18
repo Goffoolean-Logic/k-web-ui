@@ -1,0 +1,20 @@
+/*
+ * Native bars are kit chrome. Unlayered so a host sheet cannot bring them
+ * back. k-scrollbar paints the replacement on the page and on any scroller
+ * it is attached to.
+ */
+*,
+*::before,
+*::after {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar,
+*::-webkit-scrollbar:vertical,
+*::-webkit-scrollbar:horizontal,
+*::-webkit-scrollbar-corner {
+  display: none;
+  width: 0;
+  height: 0;
+}

@@ -16,11 +16,11 @@ Examples show the markup next to the live result. What you copy is what you were
 
 Every component page has a badge next to the title. Yellow **JS**, blue **CSS**.
 
-**CSS** means it's a class on markup you write. Nothing to import, nothing to initialize. Fifteen of the twenty work this way: accordion, badge, banner, button, card, grid, input, link, modal, progress, sidebar, spin, table, toast, and tooltip.
+**CSS** means it's a class on markup you write. Nothing to import, nothing to initialize. Fifteen of the twenty-one work this way: accordion, badge, banner, button, card, grid, input, link, modal, progress, sidebar, spin, table, toast, and tooltip.
 
-**JS** means a custom element. You write one tag with its inputs and the element writes the children: [tabs](/components/tabs.md), [pagination](/components/pagination.md), [dropdown](/components/dropdown.md), [carousel](/components/carousel.md), and [gauge](/components/gauge.md). All five ship a stylesheet too, so the badge is really telling you whether you need the JS import.
+**JS** means a custom element. You write one tag with its inputs and the element writes the children: [tabs](/components/tabs.md), [pagination](/components/pagination.md), [dropdown](/components/dropdown.md), [carousel](/components/carousel.md), [gauge](/components/gauge.md), and [scrollbar](/components/scrollbar.md). All six ship a stylesheet too, so the badge is really telling you whether you need the JS import.
 
-The split is whatever the browser already does. A modal is CSS because `<dialog>` opens and closes itself. Tabs aren't. A tablist has to move `aria-selected` as the selection changes and answer arrow keys, and CSS can't do either.
+The split is whatever the browser already does. A modal is CSS because `<dialog>` opens and closes itself. Tabs aren't. A tablist has to move `aria-selected` as the selection changes and answer arrow keys, and CSS can't do either. A scrollbar isn't either. Firefox, Chrome, and Safari each draw their own bar, and CSS can only recolor them.
 
 Those children are ordinary markup on the page. Style them. Query them. The `k-` prefix is how the kit keeps those class names from colliding with yours.
 
@@ -34,7 +34,7 @@ The stylesheet declares its cascade order before any rules:
 
 Order matters. Later layers win. `utilities` overrides `components`, and unlayered CSS in your own app beats both. That's how you're supposed to restyle a kit component. You shouldn't need a specificity fight. [Restyle](/showcase/restyle.md) turns the square gauge into a half-circle that way.
 
-There's no reset. Drop the stylesheet into a page and nothing moves unless it carries a `k-` class. That's also why the selectors name their element: `span.k-badge` and `button.k-btn`, not bare classes. A `k-badge` on a `div` works because `div` is spelled out in the rule. On a `<section>` it does nothing.
+There's no reset. Drop the stylesheet into a page and nothing moves unless it carries a `k-` class. Native scrollbars are the exception: the sheet hides them so kit thumbs can sit on the page, including inside code blocks. That's also why the selectors name their element: `span.k-badge` and `button.k-btn`, not bare classes. A `k-badge` on a `div` works because `div` is spelled out in the rule. On a `<section>` it does nothing.
 
 ## Where a color comes from
 

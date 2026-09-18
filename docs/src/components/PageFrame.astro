@@ -16,3 +16,66 @@ import Default from '@astrojs/starlight/components/PageFrame.astro';
     </a>
   </footer>
 </div>
+<k-scrollbar
+  id="docs-page-scroll"
+  class="k-scrollbar"
+  target="viewport"></k-scrollbar>
+
+<script>
+  import { attachScrollbar } from 'k-web-ui/js';
+  import 'k-web-ui/js';
+
+  const NESTED = [
+    '.sidebar-pane',
+    '.sidebar-content',
+    '#starlight__sidebar',
+    '.expressive-code pre',
+    '.sl-markdown-content pre',
+    '.k-playground__code',
+    '.k-playground__editor-tabs .k-tabs__panel',
+    '.k-showcase-profile .k-tabs__panel',
+  ];
+
+  function nestedScrollers(): HTMLElement[] {
+    const nodes: HTMLElement[] = [];
+    for (const selector of NESTED) {
+      for (const node of document.querySelectorAll(selector)) {
+        if (node instanceof HTMLElement && !node.closest('k-scrollbar')) {
+          nodes.push(node);
+        }
+      }
+    }
+    return nodes;
+  }
+
+  function prune(): void {
+    for (const el of document.querySelectorAll('k-scrollbar[target]')) {
+      const target = el.getAttribute('target');
+      if (!target || target === 'viewport' || target === 'html') {
+        continue;
+      }
+      if (!document.querySelector(target)) {
+        el.remove();
+      }
+    }
+  }
+
+  function mount(): void {
+    prune();
+    for (const node of nestedScrollers()) {
+      attachScrollbar(node);
+    }
+  }
+
+  let timer = 0;
+  function schedule(): void {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(mount, 50);
+  }
+
+  mount();
+  document.addEventListener('astro:page-load', mount);
+  document.addEventListener('astro:after-swap', mount);
+  const observer = new MutationObserver(schedule);
+  observer.observe(document.body, { childList: true, subtree: true });
+</script>

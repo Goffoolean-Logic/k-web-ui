@@ -13,7 +13,7 @@ const config: StorybookConfig = {
     name: '@storybook/html-vite',
     options: {},
   },
-  viteFinal: (viteConfig) => {
+  viteFinal: (viteConfig, { configType }) => {
     viteConfig.plugins ??= [];
     viteConfig.plugins.push(tailwindcss());
     viteConfig.server ??= {};
@@ -22,6 +22,10 @@ const config: StorybookConfig = {
       ...(viteConfig.server.fs.allow ?? []),
       repoRoot,
     ];
+    // Relative asset URLs so a PR preview can live under /pr/<n>/.
+    if (configType === 'PRODUCTION') {
+      viteConfig.base = './';
+    }
     return viteConfig;
   },
 };

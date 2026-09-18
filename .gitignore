@@ -5,6 +5,10 @@ storybook-static/
 *.log
 .DS_Store
 
+# environment variables
+.env
+.env.production
+
 # Only the kit's own Cursor skills are versioned. Anything else dropped into
 # .cursor/skills stays local. The trailing /* is required: git cannot
 # re-include a path whose parent directory is itself excluded.

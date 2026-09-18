@@ -35,6 +35,7 @@ Every docs page has a markdown twin. Start here, or take [/llms-full.txt](/llms-
 - [Modal](/components/modal.md): dialog.k-modal with popover. No JS.
 - [Pagination](/components/pagination.md): k-pagination. Page window and first/last jumps.
 - [Progress](/components/progress.md): progress.k-progress. Linear bar.
+- [Scrollbar](/components/scrollbar.md): k-scrollbar. Overlay thumbs that hide native bars.
 - [Sidebar](/components/sidebar.md): Checkbox-hack drawer. No JS.
 - [Spin](/components/spin.md): span.k-spin wraps an icon and rotates it.
 - [Table](/components/table.md): table.k-table.

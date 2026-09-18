@@ -65,6 +65,42 @@
   background-color: var(--k-surface);
 }
 
+.k-preview k-scrollbar.k-scrollbar {
+  width: 100%;
+  height: 12rem;
+}
+
+.k-preview k-scrollbar.k-scrollbar ul {
+  margin: 0;
+  padding: 0.75rem 1.25rem 0.75rem 1rem;
+  min-height: 22rem;
+}
+
+.k-preview k-scrollbar.k-scrollbar li {
+  padding-block: 0.45rem;
+}
+
+.k-preview k-scrollbar.k-scrollbar[axis='x'] {
+  height: 4.5rem;
+}
+
+.k-preview k-scrollbar.k-scrollbar[axis='x'] ul {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 1.25rem;
+  min-height: 0;
+  min-width: 48rem;
+  padding: 1rem 1.25rem;
+  white-space: nowrap;
+  list-style: none;
+}
+
+.k-preview k-scrollbar.k-scrollbar[axis='x'] li {
+  flex: 0 0 auto;
+  padding-block: 0;
+}
+
 .k-preview .k-toast-demo {
   position: relative;
   min-height: 8rem;
@@ -426,8 +462,20 @@ html:has(.hero-island) {
   overflow-x: clip;
 }
 
-html:has(.hero) {
-  scrollbar-gutter: stable;
+*,
+*::before,
+*::after {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar,
+*::-webkit-scrollbar:vertical,
+*::-webkit-scrollbar:horizontal,
+*::-webkit-scrollbar-corner {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 html:has(.hero[data-hero-state='playing']),

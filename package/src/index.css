@@ -3,7 +3,9 @@
  *
  * All three layers in one file: base (tokens, themes, focus), components, and
  * the guaranteed utility surface. Ships no reset, so dropping this into a page
- * restyles nothing that doesn't carry a k- class.
+ * restyles nothing that doesn't carry a k- class. Native scrollbars are
+ * the exception — the sheet hides them everywhere so kit thumbs can
+ * replace them.
  *
  * Visual classes live in components/css. Behavior lives in components/js.
  */
@@ -20,6 +22,7 @@
 @import './base/fonts.css';
 @import './base/icons.css';
 @import './base/focus.css';
+@import './base/scrollbar.css';
 
 @import './components/css/icon.css';
 @import './components/css/spin.css';
@@ -42,6 +45,7 @@
 @import './components/css/toast.css';
 @import './components/css/sidebar.css';
 @import './components/css/carousel.css';
+@import './components/css/scrollbar.css';
 
 @import './utilities/utilities.css';
 @import 'tailwindcss/utilities.css' layer(utilities);

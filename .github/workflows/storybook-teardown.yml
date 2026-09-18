@@ -1,0 +1,54 @@
+name: Tear down Storybook
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Pull request number whose Storybook preview should be shut down
+        required: true
+        type: string
+
+concurrency:
+  group: storybook-pr-${{ inputs.pr_number }}
+  cancel-in-progress: true
+
+jobs:
+  teardown:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      deployments: write
+    env:
+      AWS_REGION: us-east-2
+      STORYBOOK_S3_BUCKET: storybook-915376883059-us-east-2-an.s3.us-east-2.amazonaws.com-mu642q3wzs6
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::915376883059:role/GitHubStorybookDeploy
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Remove the preview files
+        env:
+          PR_NUMBER: ${{ inputs.pr_number }}
+        run: |
+          prefix="s3://${STORYBOOK_S3_BUCKET}/pr/${PR_NUMBER}/"
+          if [ -z "$(aws s3 ls "$prefix")" ]; then
+            echo "No Storybook preview at $prefix"
+            exit 1
+          fi
+          aws s3 rm "$prefix" --recursive
+      - name: Mark the GitHub deployment inactive
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+        run: |
+          ids="$(gh api "repos/${GITHUB_REPOSITORY}/deployments?environment=storybook-pr-${PR_NUMBER}" --jq '.[].id')"
+          if [ -z "$ids" ]; then
+            echo "No GitHub deployments recorded for storybook-pr-${PR_NUMBER}"
+            exit 0
+          fi
+          for id in $ids; do
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/deployments/${id}/statuses" \
+              -f state=inactive \
+              -f environment="storybook-pr-${PR_NUMBER}" \
+              -f description="Storybook preview shut down"
+          done

@@ -13,6 +13,13 @@ export { createIcon, createSpin, K_ICON_NAMES } from './icon.js';
 export type { KPaginationOptions } from './pagination/index.js';
 export { KPagination } from './pagination/index.js';
 export type {
+  KScrollbarAxis,
+  KScrollbarMetrics,
+  KScrollbarOptions,
+  KScrollbarSize,
+} from './scrollbar/index.js';
+export { attachScrollbar, KScrollbar } from './scrollbar/index.js';
+export type {
   KTabItem,
   KTabsOptions,
   KTabsSelection,

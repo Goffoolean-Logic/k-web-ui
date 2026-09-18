@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/html-vite';
+import 'k-web-ui/js';
 import './preview.css';
 
 const preview: Preview = {
