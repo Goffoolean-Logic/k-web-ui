@@ -57,6 +57,7 @@ export default defineConfig({
             { label: 'Restyle', slug: 'showcase/restyle' },
           ],
         },
+        {label: 'Theme Playground', slug: 'theme-playground'},
         {
           label: 'Components',
           items: [
