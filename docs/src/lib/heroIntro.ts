@@ -14,9 +14,9 @@ export const HERO_TITLE_SIZE_REM = pxToRem(HERO_TITLE_SIZE_PX);
 export const HERO_TITLE_REST = '-Web-UI';
 
 export const HERO_PHRASES = [
-  { text: 'Need a UI Toolbox with flexibility?', end: 'letter' },
-  { text: 'Component performance is a priority?', end: 'letter' },
-  { text: 'Worried about frameworks?', end: 'logo' },
+  { text: 'Worried about frameworks?', end: 'letter' },
+  { text: 'Need something simple and flexible?', end: 'letter' },
+  { text: 'Just want a UI library that works?', end: 'logo' },
 ] as const;
 
 export const HERO_TIMING = {
