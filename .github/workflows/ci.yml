@@ -68,27 +68,18 @@ jobs:
     env:
       AWS_REGION: us-east-2
       STORYBOOK_S3_BUCKET: storybook-915376883059-us-east-2-an.s3.us-east-2.amazonaws.com-mu642q3wzs6
-      PREVIEW_URL: ${{ https://d1wk4i2ff1khwj.cloudfront.net || format('http://{0}.s3-website-{1}.amazonaws.com', storybook-915376883059-us-east-2-an.s3.us-east-2.amazonaws.com-mu642q3wzs6, us-east-2) }}/pr/${{ github.event.number }}/
+      PREVIEW_URL: https://d1wk4i2ff1khwj.cloudfront.net/pr/${{ github.event.number }}/
     environment:
       name: storybook-pr-${{ github.event.number }}
-      url: ${{ https://d1wk4i2ff1khwj.cloudfront.net || format('http://{0}.s3-website-{1}.amazonaws.com', storybook-915376883059-us-east-2-an.s3.us-east-2.amazonaws.com-mu642q3wzs6, us-east-2) }}/pr/${{ github.event.number }}/
+      url: https://d1wk4i2ff1khwj.cloudfront.net/pr/${{ github.event.number }}/
     steps:
-      - name: Check AWS settings
-        run: |
-          missing=
-          [ -n "$STORYBOOK_S3_BUCKET" ] || missing="$missing STORYBOOK_S3_BUCKET"
-          [ -n "$AWS_REGION" ] || missing="$missing AWS_REGION"
-          if [ -n "$missing" ]; then
-            echo "Set these GitHub repository variables:$missing"
-            exit 1
-          fi
       - uses: actions/download-artifact@v4
         with:
           name: storybook-static
           path: preview
       - uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::<915376883059>:role/GitHubStorybookDeploy
+          role-to-assume: arn:aws:iam::915376883059:role/GitHubStorybookDeploy
           aws-region: ${{ env.AWS_REGION }}
       - name: Upload Storybook preview
         run: aws s3 sync preview "s3://${STORYBOOK_S3_BUCKET}/pr/${{ github.event.number }}/" --delete

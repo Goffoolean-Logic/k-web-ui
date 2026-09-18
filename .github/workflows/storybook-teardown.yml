@@ -16,24 +16,15 @@ jobs:
   teardown:
     runs-on: ubuntu-latest
     permissions:
+      id-token: write
       deployments: write
     env:
-      AWS_REGION: ${{ vars.AWS_REGION }}
-      STORYBOOK_S3_BUCKET: ${{ vars.STORYBOOK_S3_BUCKET }}
+      AWS_REGION: us-east-2
+      STORYBOOK_S3_BUCKET: storybook-915376883059-us-east-2-an.s3.us-east-2.amazonaws.com-mu642q3wzs6
     steps:
-      - name: Check AWS settings
-        run: |
-          missing=
-          [ -n "$STORYBOOK_S3_BUCKET" ] || missing="$missing STORYBOOK_S3_BUCKET"
-          [ -n "$AWS_REGION" ] || missing="$missing AWS_REGION"
-          if [ -n "$missing" ]; then
-            echo "Set these GitHub repository variables:$missing"
-            exit 1
-          fi
       - uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: arn:aws:iam::915376883059:role/GitHubStorybookDeploy
           aws-region: ${{ env.AWS_REGION }}
       - name: Remove the preview files
         env:
