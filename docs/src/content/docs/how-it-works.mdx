@@ -3,66 +3,68 @@ title: How it works
 description: How to read these docs, how the kit is put together, and how to add a theme.
 ---
 
-[Getting started](/getting-started/) has the install. This page is the stuff underneath: how these docs are laid out, how the stylesheet stacks, where CSS stops and JavaScript starts, and how you drop your own theme on top.
-
 ## Reading these docs
 
-Every page here has a plain markdown twin. Hit Copy markdown at the top and you get the whole page, no HTML scraping. [/llms.txt](/llms.txt) indexes them. [/llms-full.txt](/llms-full.txt) dumps all of them in one request.
+Every component page follows the same structure: classes, API reference, examples, accessibility notes, and dos and don'ts.
 
-Component pages all follow the same shape. Classes table first, then reference tables if it's scriptable, then examples. Accessibility and a short dos and don'ts list close it out. On a JS page, the Classes table is the one class you write. Generated parts sit in an accordion under it, for restyling.
+The **Classes** table shows the classes you add to your markup. For JavaScript components, generated markup is shown separately so you can see what the component creates and customize it with CSS.
 
-Examples show the markup next to the live result. What you copy is what you were looking at. If an example needs script too, the source splits into HTML and TS tabs.
+Examples show the markup alongside the rendered component. If JavaScript is required, the example source is split into **HTML** and **TS**.
 
-## CSS or JS
+## CSS or JavaScript
 
-Every component page has a badge next to the title. Yellow **JS**, blue **CSS**.
+The badge next to each component tells you whether it needs JavaScript. **CSS** components only require the class shown in the documentation. **JS** components are custom elements and require the kit's JavaScript.
 
-**CSS** means it's a class on markup you write. Nothing to import, nothing to initialize. Fifteen of the twenty-one work this way: accordion, badge, banner, button, card, grid, input, link, modal, progress, sidebar, spin, table, toast, and tooltip.
+Most components are CSS-only: accordion, badge, banner, button, card, grid, input, link, modal, progress, sidebar, spin, table, toast, and tooltip.
 
-**JS** means a custom element. You write one tag with its inputs and the element writes the children: [tabs](/components/tabs/), [pagination](/components/pagination/), [dropdown](/components/dropdown/), [carousel](/components/carousel/), [gauge](/components/gauge/), and [scrollbar](/components/scrollbar/). All six ship a stylesheet too, so the badge is really telling you whether you need the JS import.
+The JavaScript components are [tabs](/components/tabs/), [pagination](/components/pagination/), [dropdown](/components/dropdown/), [carousel](/components/carousel/), [gauge](/components/gauge/), and [scrollbar](/components/scrollbar/).
 
-The split is whatever the browser already does. A modal is CSS because `<dialog>` opens and closes itself. Tabs aren't. A tablist has to move `aria-selected` as the selection changes and answer arrow keys, and CSS can't do either. A scrollbar isn't either. Firefox, Chrome, and Safari each draw their own bar, and CSS can only recolor them.
+The distinction comes down to behavior CSS cannot provide. A modal can use the browser's native `<dialog>` element, so it only needs styling. Tabs need JavaScript to manage selection state, ARIA attributes, and keyboard navigation.
 
-Those children are ordinary markup on the page. Style them. Query them. The `k-` prefix is how the kit keeps those class names from colliding with yours.
+Generated markup is still normal DOM. You can query it, style it, and interact with it like any other element. The `k-` prefix keeps the kit's classes separate from your application's classes.
 
-## How the layers stack
+## How the CSS is layered
 
-The stylesheet declares its cascade order before any rules:
+The kit defines its cascade layers in this order:
 
 ```css
 @layer theme, base, components, utilities;
 ```
 
-Order matters. Later layers win. `utilities` overrides `components`, and unlayered CSS in your own app beats both. That's how you're supposed to restyle a kit component. You shouldn't need a specificity fight. [Restyle](/showcase/restyle/) turns the square gauge into a half-circle that way.
+Later layers take precedence. Your unlayered CSS takes precedence over all of them.
 
-There's no reset. Drop the stylesheet into a page and nothing moves unless it carries a `k-` class. Native scrollbars are the exception: the sheet hides them so kit thumbs can sit on the page, including inside code blocks. That's also why the selectors name their element: `span.k-badge` and `button.k-btn`, not bare classes. A `k-badge` on a `div` works because `div` is spelled out in the rule. On a `<section>` it does nothing.
+This is the intended customization model. Override the component styles you need without fighting specificity.
 
-## Where a color comes from
+The kit does not include a reset, so adding the stylesheet does not change unrelated elements. Kit selectors also include the expected HTML element, such as `button.k-btn` or `span.k-badge`, to prevent a `k-` class from styling the wrong element.
 
-A color goes through three layers before a component sees it.
+## Colors and themes
 
-At the bottom is the raw palette, named by hue and step: `--k-palette-orange-700`. Don't reach for these in your own CSS.
+Components use semantic color tokens rather than raw palette values.
 
-Above that sit the semantic tokens, which is where a theme actually happens. `--k-primary` stays `orange-700` in light and dark. Chrome doesn't flip. `--k-surface` does: `orange-50` in light, `steel-950` in dark, and steel 950 is black. `--k-border-hard` is the other flip: black in light, orange-500 in dark. [Colors](/foundations/colors/) has the whole set.
+For example:
 
-Tailwind utilities sit on top, so `bg-k-primary` exists next to the token it reads. Those utilities emit `var(--k-primary)` rather than a resolved hex, which is why flipping `data-theme` repaints the page with no rebuild.
+```css
+--k-primary
+--k-surface
+--k-fg
+--k-border
+--k-accent
+```
 
-So a component reaches for `--k-surface` and never for `--k-palette-orange-50`.
+These tokens point to the underlying palette and can change between themes. Components use the semantic token, so changing the token changes every component that uses it.
 
-## Your own theme
+Tailwind utilities use the same tokens. For example, `bg-k-primary` resolves through `--k-primary`, which means changing the theme updates the page without rebuilding the stylesheet.
 
-A theme is a CSS file you load after the kit. Set `--k-primary` and the rest. Components already read those tokens, so `.k-btn` doesn't need a rewrite. Your CSS is unlayered, so it beats the kit layers. Change `data-theme` on `<html>` and every `var(--k-…)` on the page repaints.
+## Creating a theme
 
-The kit ships two values: `k-light` and `k-dark`. Most apps keep those names and change the hex.
+Load your theme after the kit stylesheet and override the tokens you want to change.
 
-```js
+```ts
 import 'k-web-ui';
 import './theme.css';
 ```
 
 ```css
-/* theme.css: after the kit stylesheet */
-
 :root {
   --k-primary: #1d4ed8;
   --k-primary-hover: #3b82f6;
@@ -70,7 +72,6 @@ import './theme.css';
   --k-ring: #3b82f6;
 }
 
-:root,
 [data-theme='k-light'] {
   --k-surface: #eff6ff;
   --k-fg-muted: #1e40af;
@@ -82,9 +83,9 @@ import './theme.css';
 }
 ```
 
-Set the tokens you want different. The rest stay the kit defaults. Hex is fine. Palette variables work too if you still want the kit ramps.
+You only need to define the tokens you want to change. Everything else keeps the kit's default value.
 
-A third name is the same pattern with a new selector. Light canvas tokens live on `:root`, so they still apply until you override them.
+You can also create your own theme name:
 
 ```html
 <html data-theme="night">
@@ -106,57 +107,59 @@ A third name is the same pattern with a new selector. Light canvas tokens live o
 }
 ```
 
-Redeclare every flipping token you care about. Leave one out and you inherit the light value from `:root`. Status colors and shadows flip in `k-dark` too; copy that block from the [Theme playground](/theme-playground/) if you want the full list.
+If a token is not overridden, it inherits its existing value. Make sure to override every token that should change between themes.
 
-A few hover rules still look for `k-dark` itself: secondary buttons, pagination, carousel arrows, and the loading icon. Keep the shipped names if you want those treatments without extra CSS. If you invent a new name, copy the hover rules onto it.
-
-Switching is one attribute:
+Switch themes by changing the `data-theme` attribute:
 
 ```js
 document.documentElement.setAttribute('data-theme', 'night');
 ```
 
-[Colors](/foundations/colors/) lists the tokens. [Styles](/foundations/styles/) has radius, shadow, and the focus ring.
+The [Colors](/foundations/colors/) page lists the available tokens. [Styles](/foundations/styles/) covers radius, shadows, and focus rings.
 
-## Content goes in attributes
+## Component content
 
-A JS component reads its content from a JSON attribute.
+JavaScript components accept simple content through attributes:
 
 ```html
-<k-tabs class="k-tabs" panels='[{"label":"Overview","content":"Text."}]'></k-tabs>
+<k-tabs
+  class="k-tabs"
+  panels='[{"label":"Overview","content":"Text."}]'
+></k-tabs>
 ```
 
-The matching property holds the same data, and the element writes it back to the attribute when it can.
-
-Content changes rebuild the subtree. Configuration changes don't. `selected`, `index`, `page`, and `label` patch in place, so focus and a running animation survive. Each component page says which of its own attributes land in which group.
-
-## Adding node content
-
-JSON in an attribute is a string. That's enough for "The first panel." It's not enough for a [gauge](/components/gauge/) or a [table](/components/table/) inside a tab.
-
-Those go on the property as a DOM node: an element you built, or the contents of a `<template>`.
+For content that contains other elements, use the component property instead. This lets you pass DOM nodes rather than encoding HTML inside JSON.
 
 ```html
 <template id="usage">
-  <k-gauge class="k-gauge" value="64" max="100" label="Upload"></k-gauge>
+  <k-gauge
+    class="k-gauge"
+    value="64"
+    max="100"
+    label="Upload"
+  ></k-gauge>
 </template>
+
 <k-tabs id="sections" class="k-tabs"></k-tabs>
 ```
 
 ```js
 const tabs = document.getElementById('sections');
 const usage = document.getElementById('usage');
+
 tabs.panels = [
   { label: 'Overview', content: 'The first panel.' },
   { label: 'Usage', content: usage.content.cloneNode(true) },
 ];
 ```
 
-[Tabs](/components/tabs/) accept a node as panel `content` or `icon`. [Carousel](/components/carousel/) accepts one as slide `content`. A node can't be written back to the attribute, so it lives on the property only. The [Showcase](/showcase/) profile tabs are this pattern in a full page.
+Tabs accept DOM nodes as panel content or icons. Carousel accepts nodes as slide content.
 
-## One event
+Simple content can be stored in the attribute. DOM content belongs on the property because it cannot be serialized back into JSON.
 
-Four of the five elements fire a single event, `k-change`, and it bubbles. Gauge is the exception. It shows a value and has nothing to report back.
+## Events
+
+Interactive components use a single `k-change` event. Gauge is the exception because it displays a value without producing a user-driven change.
 
 ```js
 document.querySelector('k-tabs').addEventListener('k-change', (event) => {
@@ -164,6 +167,11 @@ document.querySelector('k-tabs').addEventListener('k-change', (event) => {
 });
 ```
 
-The `detail` carries whatever moved, so its shape depends on the element: `{ selected }` from tabs, `{ page }` from pagination, `{ index }` from carousel, and `{ index, label, href }` from dropdown. Each component page states its own.
+The event detail depends on the component:
 
-A click fires it. So does calling a method. Setting the attribute doesn't, on purpose: your app can push its own state into the element without hearing it echo back.
+- Tabs: `{ selected }`
+- Pagination: `{ page }`
+- Carousel: `{ index }`
+- Dropdown: `{ index, label, href }`
+
+The event fires when a component changes through user interaction or a method call. Setting an attribute does not fire `k-change`, so an application can update component state without triggering another state update in response.
