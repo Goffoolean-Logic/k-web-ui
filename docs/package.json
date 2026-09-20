@@ -12,7 +12,7 @@
   "dependencies": {
     "@astrojs/starlight": "^0.42.0",
     "astro": "^7.2.10",
-    "k-web-ui": "0.1.0",
+    "k-web-ui": "0.1.2",
     "sharp": "^0.35.3",
     "vanilla-colorful": "^0.7.2"
   },

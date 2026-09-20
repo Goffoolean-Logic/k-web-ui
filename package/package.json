@@ -15,7 +15,8 @@
   ],
   "files": [
     "dist",
-    "src"
+    "src",
+    "postcss.js"
   ],
   "style": "./dist/full.css",
   "exports": {
@@ -32,7 +33,12 @@
       "default": "./dist/js/index.js"
     },
     "./source": "./src/index.css",
-    "./source/*": "./src/*"
+    "./source/*": "./src/*",
+    "./postcss": "./postcss.js"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "tailwindcss": "^4.3.3"
   },
   "scripts": {
     "build": "pnpm run build:css && pnpm run build:js",
@@ -51,7 +57,6 @@
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
-    "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
     "happy-dom": "^20.0.2",
     "vite": "^8.3.0",

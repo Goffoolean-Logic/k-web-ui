@@ -18,6 +18,26 @@ That writes it into `package.json` and installs it into `node_modules`. Import t
 @import 'k-web-ui';
 ```
 
+That prebuilt sheet is enough for `k-btn` and the kit's own token utilities (`bg-k-surface`, `rounded-k`, …). Tailwind itself is a dependency of `k-web-ui`. You do not add `tailwindcss` to the app.
+
+To compile **your** utilities (`w-[100px]`, `flex`, arbitrary values) through the same Tailwind, import source and run the kit's PostCSS plugin:
+
+```css
+@import 'k-web-ui/source';
+
+@source "./**/*.{html,js,ts}";
+```
+
+```json
+{
+  "plugins": {
+    "k-web-ui/postcss": {}
+  }
+}
+```
+
+Do not import both `k-web-ui` and `k-web-ui/source`. Source already includes the kit layers plus Tailwind's theme and utilities.
+
 ## Markup
 
 Classes are tied to the element. A button is a `<button>` with `.k-btn`, not a `div` you styled to look like one.
