@@ -23,14 +23,38 @@ interface Props {
   nested?: boolean;
 }
 
+const STORAGE_KEY = 'k_docs_sidebar_groups';
+
 const { entries, nested = false } = Astro.props;
 
-function groupOpen(group: SidebarGroup): boolean {
+function readStored(): Record<string, boolean> {
+  const raw = Astro.cookies.get(STORAGE_KEY)?.value;
+  if (!raw) return {};
+  try {
+    return JSON.parse(decodeURIComponent(raw)) as Record<string, boolean>;
+  } catch {
+    try {
+      return JSON.parse(raw) as Record<string, boolean>;
+    } catch {
+      return {};
+    }
+  }
+}
+
+const stored = nested ? {} : readStored();
+
+function containsCurrent(group: SidebarGroup): boolean {
   const walk = (items: SidebarEntry[]): boolean =>
     items.some((item) =>
       item.type === 'link' ? item.isCurrent : walk(item.entries),
     );
-  return walk(group.entries) || !group.collapsed;
+  return walk(group.entries);
+}
+
+function groupOpen(group: SidebarGroup): boolean {
+  if (containsCurrent(group)) return true;
+  if (Object.hasOwn(stored, group.label)) return stored[group.label]!;
+  return false;
 }
 ---
 
@@ -55,7 +79,11 @@ function groupOpen(group: SidebarGroup): boolean {
         </li>
       ) : (
         <li>
-          <details class="k-sidebar__group" open={groupOpen(entry)}>
+          <details
+            class="k-sidebar__group"
+            data-sidebar-group={entry.label}
+            open={groupOpen(entry)}
+          >
             <summary class="k-sidebar__heading">
               <span>{entry.label}</span>
               <span class="k-icon k-icon--chevron-down k-icon--xs" aria-hidden="true" />
@@ -67,3 +95,74 @@ function groupOpen(group: SidebarGroup): boolean {
     )
   }
 </ul>
+
+{
+  !nested && (
+    <script is:inline define:vars={{ STORAGE_KEY }}>
+      (() => {
+        const nav = document.currentScript?.previousElementSibling;
+        let state = {};
+        try {
+          state = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '{}');
+        } catch {}
+        const roots = nav?.querySelectorAll
+          ? nav.querySelectorAll('details.k-sidebar__group[data-sidebar-group]')
+          : document.querySelectorAll(
+              'details.k-sidebar__group[data-sidebar-group]',
+            );
+        for (const el of roots) {
+          if (!(el instanceof HTMLDetailsElement)) continue;
+          const id = el.getAttribute('data-sidebar-group');
+          if (!id) continue;
+          // Only open — never close — so SSR/cookie state cannot flash shut.
+          if (el.querySelector('a[aria-current="page"]')) {
+            el.open = true;
+          } else if (
+            !el.open &&
+            Object.prototype.hasOwnProperty.call(state, id) &&
+            state[id]
+          ) {
+            el.open = true;
+          }
+        }
+      })();
+    </script>
+  )
+}
+
+{
+  !nested && (
+    <script>
+      const STORAGE_KEY = 'k_docs_sidebar_groups';
+
+      function load(): Record<string, boolean> {
+        try {
+          return JSON.parse(
+            sessionStorage.getItem(STORAGE_KEY) || '{}',
+          ) as Record<string, boolean>;
+        } catch {
+          return {};
+        }
+      }
+
+      function save(state: Record<string, boolean>): void {
+        const raw = JSON.stringify(state);
+        sessionStorage.setItem(STORAGE_KEY, raw);
+        document.cookie = `${STORAGE_KEY}=${encodeURIComponent(raw)}; path=/; SameSite=Lax`;
+      }
+
+      function onToggle(event: Event): void {
+        const el = event.target;
+        if (!(el instanceof HTMLDetailsElement)) return;
+        if (!el.matches('details.k-sidebar__group[data-sidebar-group]')) return;
+        const id = el.getAttribute('data-sidebar-group');
+        if (!id) return;
+        const state = load();
+        state[id] = el.open;
+        save(state);
+      }
+
+      document.addEventListener('toggle', onToggle, true);
+    </script>
+  )
+}
