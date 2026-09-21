@@ -6,7 +6,10 @@ export function bindKeybinds(state: KTabsState, signal: AbortSignal): void {
   state.root.addEventListener(
     'keydown',
     (event) => {
-      if (!state.keyboard) {
+      if (
+        !state.keyboard ||
+        state.root.classList.contains('k-tabs--no-keyboard')
+      ) {
         return;
       }
 

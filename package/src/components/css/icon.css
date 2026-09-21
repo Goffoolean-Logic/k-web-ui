@@ -47,6 +47,10 @@
     --k-icon-mask: var(--k-icon-chevron-down);
   }
 
+  span.k-icon--chevron-up {
+    --k-icon-mask: var(--k-icon-chevron-up);
+  }
+
   span.k-icon--chevron-first {
     --k-icon-mask: var(--k-icon-chevron-first);
   }

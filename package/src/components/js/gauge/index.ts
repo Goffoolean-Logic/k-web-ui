@@ -1,13 +1,6 @@
+import { optionsEqual } from '../content.js';
 import { defineElement } from '../root.js';
-import {
-  applyGaugeAttributes,
-  init,
-  paint,
-  parseNumber,
-  percentOf,
-  setBooleanAttribute,
-  stepValue,
-} from './controller/controller.js';
+import { init, paint, percentOf, stepValue } from './controller/controller.js';
 import {
   isGaugeSize,
   isGaugeVariant,
@@ -22,84 +15,78 @@ export type {
   KGaugeVariant,
 } from './models/models.js';
 
-/**
- * Keep `value` / `max` and `--k-gauge` in step. Omit `value` for an empty
- * gauge. Pass `text` to control the visible reading.
- *
- *   setGauge(el, 64, 100);
- */
 export function setGauge(
   el: KGauge,
   value?: number,
   max: number = el.max || 1,
-  text?: string,
 ): void {
-  el.max = max;
-  if (text !== undefined) {
-    el.text = text;
-  }
-  el.value = value;
-  if (!el.isConnected) {
-    paint(el);
-  }
+  el.options = {
+    ...el.options,
+    max,
+    value,
+  };
 }
 
-/**
- * Gauge frame. The host is `<k-gauge class="k-gauge">`. `value`, `max`,
- * `label`, `text`, `variant`, `size`, and `indeterminate` are attributes.
- * The tag writes a hidden progress, the reading, and the caption.
- *
- *   <k-gauge id="upload" class="k-gauge" value="64" max="100" label="Upload"></k-gauge>
- */
 export class KGauge extends HTMLElement {
-  static get observedAttributes(): string[] {
-    return [
-      'value',
-      'max',
-      'label',
-      'text',
-      'variant',
-      'size',
-      'indeterminate',
-    ];
-  }
+  #opts: KGaugeOptions = {};
 
   connectedCallback(): void {
+    this.classList.add('k-gauge');
     init(this);
+    paint(this, this.#opts);
   }
 
-  attributeChangedCallback(): void {
-    if (this.isConnected) {
-      paint(this);
+  get options(): KGaugeOptions {
+    return this.#opts;
+  }
+
+  set options(value: KGaugeOptions) {
+    const next: KGaugeOptions = {
+      ...value,
+      format: value.format?.trim() || undefined,
+      text: value.text || undefined,
+    };
+    if (optionsEqual(next, this.#opts)) {
+      return;
+    }
+    this.#opts = next;
+    this.#syncClasses();
+    paint(this, this.#opts);
+  }
+
+  #syncClasses(): void {
+    this.classList.add('k-gauge');
+    this.classList.toggle('k-gauge--sm', this.#opts.size === 'sm');
+    this.classList.toggle('k-gauge--lg', this.#opts.size === 'lg');
+    this.classList.toggle(
+      'k-gauge--indeterminate',
+      Boolean(this.#opts.indeterminate),
+    );
+    for (const name of ['info', 'success', 'warning', 'danger'] as const) {
+      this.classList.toggle(`k-gauge--${name}`, this.#opts.variant === name);
     }
   }
 
   get value(): number | undefined {
-    return parseNumber(this.getAttribute('value'));
+    return this.#opts.indeterminate ? undefined : this.#opts.value;
   }
 
   set value(next: number | undefined) {
-    if (next === undefined || !Number.isFinite(next)) {
-      this.removeAttribute('value');
-      return;
-    }
-    this.setAttribute('value', String(next));
+    this.options = { ...this.#opts, value: next };
   }
 
   get max(): number {
-    return parseNumber(this.getAttribute('max')) ?? 1;
+    return this.#opts.max ?? 1;
   }
 
   set max(next: number) {
-    this.setAttribute('max', String(next));
+    this.options = { ...this.#opts, max: next };
   }
 
-  /** Share of `max` the gauge shows, 0 to 100. Empty reads as 0. */
   get percent(): number {
     return percentOf(this.value, this.max);
   }
 
-  /** True when the gauge has no value, so it renders as an empty frame. */
   get isEmpty(): boolean {
     return this.value === undefined;
   }
@@ -110,91 +97,77 @@ export class KGauge extends HTMLElement {
   }
 
   get label(): string {
-    return this.getAttribute('label') ?? '';
+    return this.#opts.label ?? '';
   }
 
   set label(next: string) {
-    if (next) {
-      this.setAttribute('label', next);
-      return;
-    }
-    this.removeAttribute('label');
+    this.options = { ...this.#opts, label: next || undefined };
+  }
+
+  get format(): string {
+    return this.#opts.format ?? '';
+  }
+
+  set format(next: string) {
+    this.options = { ...this.#opts, format: next || undefined };
   }
 
   get text(): string {
-    return this.getAttribute('text') ?? '';
+    return this.#opts.text ?? '';
   }
 
   set text(next: string) {
-    if (next) {
-      this.setAttribute('text', next);
-      return;
-    }
-    this.removeAttribute('text');
+    this.options = { ...this.#opts, text: next || undefined };
   }
 
   get variant(): KGaugeVariant | undefined {
-    const raw = this.getAttribute('variant');
-    return isGaugeVariant(raw) ? raw : undefined;
+    return this.#opts.variant;
   }
 
   set variant(next: KGaugeVariant | undefined) {
-    if (next && isGaugeVariant(next)) {
-      this.setAttribute('variant', next);
-      return;
-    }
-    this.removeAttribute('variant');
+    this.options = { ...this.#opts, variant: next };
   }
 
   get size(): KGaugeSize | undefined {
-    const raw = this.getAttribute('size');
-    return isGaugeSize(raw) ? raw : undefined;
+    return this.#opts.size;
   }
 
   set size(next: KGaugeSize | undefined) {
-    if (next && isGaugeSize(next)) {
-      this.setAttribute('size', next);
-      return;
-    }
-    this.removeAttribute('size');
+    this.options = { ...this.#opts, size: next };
   }
 
   get indeterminate(): boolean {
-    return this.hasAttribute('indeterminate');
+    return Boolean(this.#opts.indeterminate);
   }
 
   set indeterminate(next: boolean) {
-    setBooleanAttribute(this, 'indeterminate', next);
+    this.options = { ...this.#opts, indeterminate: next || undefined };
   }
 
-  /** Raises the value, stopping at `max`. Starts from 0 when empty. */
   increment(by = 1): void {
     this.value = stepValue(this.value, this.max, by);
   }
 
-  /** Lowers the value, stopping at 0. */
   decrement(by = 1): void {
     this.value = stepValue(this.value, this.max, -by);
   }
 
-  /** Fills the gauge to `max`. */
   complete(): void {
     this.value = this.max;
   }
 
-  /** Drops the value so the gauge renders empty again. */
   clear(): void {
     this.value = undefined;
   }
 
-  /** The hidden `<progress>` the gauge keeps in step. */
   getProgress(): HTMLProgressElement | null {
     return this.querySelector(':scope > progress');
   }
 
-  /** Rewrites the progress, reading, and caption from the attributes. */
   refresh(): void {
-    paint(this);
+    if (this.isConnected) {
+      paint(this, this.#opts);
+    }
   }
 }
 
@@ -206,15 +179,12 @@ declare global {
   }
 }
 
-/**
- * Empty `<k-gauge class="k-gauge">` with attributes. The tag writes the
- * reading and the caption. `indeterminate: true` turns on the empty-state
- * animation.
- */
 export function createGauge(options: KGaugeOptions = {}): KGauge {
   const el = document.createElement('k-gauge');
-  el.className = 'k-gauge';
-  applyGaugeAttributes(el, options);
-  paint(el);
+  el.options = options;
+  paint(el, options);
   return el;
 }
+
+// Keep type guards available for callers that branch on size/variant strings.
+export { isGaugeSize, isGaugeVariant };

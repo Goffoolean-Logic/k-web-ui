@@ -1,22 +1,22 @@
 @layer components {
-  /* Requires <k-carousel class="k-carousel">. JS builds the track, slides, and controls. */
+  /* Controls live on the host. Slides live in an external .k-carousel__track. */
   k-carousel.k-carousel {
-    @apply relative block overflow-hidden rounded-k-lg border border-k-border
-      bg-k-surface-raised;
+    @apply flex items-center justify-center gap-3 py-2;
   }
 
-  div.k-carousel__viewport {
-    @apply overflow-hidden;
-  }
-
+  /*
+   * Track is the slides' parent (not inside the host). Overflow clips;
+   * each slide translates by --k-carousel-index so we never wrap or move nodes.
+   */
   div.k-carousel__track {
-    @apply flex;
-    transition: transform 600ms ease;
+    @apply flex overflow-hidden rounded-k-lg border border-k-border bg-k-surface-raised;
   }
 
   div.k-carousel__slide {
     flex: 0 0 100%;
     @apply box-border px-14 pt-8 pb-12 text-center text-sm text-k-fg;
+    translate: calc(var(--k-carousel-index, 0) * -100%) 0;
+    transition: translate 600ms ease;
   }
 
   div.k-carousel__slide:has(> img) {
@@ -32,21 +32,19 @@
 
   button.k-carousel__prev,
   button.k-carousel__next {
-    @apply absolute z-10 inline-flex h-8 w-8
-      cursor-pointer items-center justify-center border
-      border-k-border bg-k-surface text-sm text-k-fg;
+    @apply inline-flex h-8 w-8 cursor-pointer items-center justify-center
+      border border-k-border bg-k-surface text-sm text-k-fg;
     border-radius: var(--k-radius);
-    top: 50%;
-    translate: 0 -50%;
     transition: background-color 150ms ease;
   }
 
+  /* The host is written prev, next, dots. Read it prev, dots, next. */
   button.k-carousel__prev {
-    @apply start-2;
+    order: 1;
   }
 
   button.k-carousel__next {
-    @apply end-2;
+    order: 3;
   }
 
   button.k-carousel__prev:hover:not(:disabled),
@@ -65,7 +63,8 @@
   }
 
   div.k-carousel__dots {
-    @apply absolute inset-x-0 bottom-2 z-10 flex justify-center gap-1;
+    @apply flex justify-center gap-1;
+    order: 2;
   }
 
   button.k-carousel__dot {
@@ -83,7 +82,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    div.k-carousel__track {
+    div.k-carousel__slide {
       transition: none;
     }
   }

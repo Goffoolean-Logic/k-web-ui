@@ -176,13 +176,13 @@
   padding: 0.5rem 0.75rem 0;
 }
 
-.k-example__code-tabs .k-tabs__panel {
+.k-example__source--tabs .k-tabs__panel {
   padding: 0;
   font-size: inherit;
 }
 
-.k-example__code-tabs .k-tabs__panel .expressive-code .frame,
-.k-example__code-tabs .k-tabs__panel .expressive-code pre {
+.k-example__source--tabs .k-tabs__panel .expressive-code .frame,
+.k-example__source--tabs .k-tabs__panel .expressive-code pre {
   border-radius: 0 0 var(--k-radius-lg) var(--k-radius-lg);
 }
 
@@ -415,6 +415,62 @@
   --ec-frm-edActTabBrdCol: var(--k-border);
 }
 
+/*
+ * Expressive Code only keys off data-theme=dark|light. This site uses
+ * k-dark / k-light, so map the syntax tokens and chrome onto those.
+ * --0 = dark theme colors, --1 = light theme colors.
+ */
+[data-theme='k-dark'] {
+  --ec-codeBg: color-mix(in oklab, var(--k-surface-raised) 88%, black);
+  --ec-codeFg: #e8eef7;
+  --ec-codeSelBg: color-mix(in oklab, var(--k-primary) 28%, transparent);
+  --ec-gtrFg: color-mix(in oklab, var(--k-fg-muted) 80%, transparent);
+  --ec-frm-edBg: var(--ec-codeBg);
+  --ec-frm-trmBg: var(--ec-codeBg);
+  --ec-frm-edTabBarBg: var(--k-surface);
+  --ec-frm-trmTtbBg: var(--k-surface);
+  --ec-frm-edActTabBg: var(--ec-codeBg);
+}
+
+[data-theme='k-light'] {
+  --ec-codeBg: color-mix(in oklab, var(--k-surface-raised) 70%, white);
+  --ec-codeFg: #2a2118;
+  --ec-codeSelBg: color-mix(in oklab, var(--k-primary) 16%, transparent);
+  --ec-frm-edBg: var(--ec-codeBg);
+  --ec-frm-trmBg: var(--ec-codeBg);
+  --ec-frm-edTabBarBg: var(--k-surface);
+  --ec-frm-trmTtbBg: var(--k-surface);
+  --ec-frm-edActTabBg: var(--ec-codeBg);
+}
+
+[data-theme='k-dark'] .expressive-code .ec-line :where(span[style^='--']:not([class])) {
+  color: var(--0, inherit);
+  background-color: var(--0bg, transparent);
+  font-style: var(--0fs, inherit);
+  font-weight: var(--0fw, inherit);
+  text-decoration: var(--0td, inherit);
+}
+
+[data-theme='k-light'] .expressive-code .ec-line :where(span[style^='--']:not([class])) {
+  color: var(--1, inherit);
+  background-color: var(--1bg, transparent);
+  font-style: var(--1fs, inherit);
+  font-weight: var(--1fw, inherit);
+  text-decoration: var(--1td, inherit);
+}
+
+[data-theme='k-dark'] .k-example__source,
+[data-theme='k-dark'] .expressive-code pre,
+[data-theme='k-dark'] .sl-markdown-content pre:not(.astro-code) {
+  background-color: var(--ec-codeBg);
+}
+
+[data-theme='k-dark'] .sl-markdown-content :not(pre) > code {
+  background-color: color-mix(in oklab, var(--k-surface-raised) 80%, white 6%);
+  color: var(--k-fg);
+  border-color: var(--k-border);
+}
+
 .expressive-code .frame.is-terminal {
   --button-spacing: 0.4rem;
 }
@@ -428,14 +484,11 @@
   border-radius: calc(var(--ec-brdRad) + var(--ec-brdWd));
 }
 
+/* Docs shell uses k-sidebar; keep dark chrome borders for code. */
 [data-theme='k-dark'] .pagination-links a,
 [data-theme='k-dark'] .sl-markdown-content pre,
 [data-theme='k-dark'] .expressive-code pre {
   border-color: var(--k-border);
-}
-
-[data-theme='k-dark'] .sl-markdown-content :not(pre) > code {
-  border: 1px solid var(--k-border);
 }
 
 html[data-theme='k-light'] {
@@ -995,8 +1048,7 @@ html:has(.k-playground) {
 }
 
 .k-playground__editor-tabs {
-  flex: 1 1 auto;
-  min-height: 0;
+  flex: 0 0 auto;
 }
 
 .k-playground__editor-tabs .k-tabs__list {
@@ -1005,14 +1057,15 @@ html:has(.k-playground) {
   padding-right: 8.5rem;
 }
 
-.k-playground__editor-tabs .k-tabs__panel {
+.k-playground__editor .k-tabs__panel {
   box-sizing: border-box;
+  flex: 1 1 auto;
   min-height: 0;
   overflow: auto;
   padding: 0.75rem;
 }
 
-.k-playground__editor-tabs .k-tabs__panel:has([data-playground-code]):not([hidden]) {
+.k-playground__editor .k-tabs__panel:has([data-playground-code]):not([hidden]) {
   display: flex;
   padding: 0;
 }

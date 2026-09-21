@@ -29,6 +29,8 @@ export default defineConfig({
         Footer: './src/components/Footer.astro',
         PageFrame: './src/components/PageFrame.astro',
         Header: './src/components/Header.astro',
+        Sidebar: './src/components/Sidebar.astro',
+        MobileMenuToggle: './src/components/MobileMenuToggle.astro',
       },
       social: [
         {
@@ -57,7 +59,7 @@ export default defineConfig({
             { label: 'Restyle', slug: 'showcase/restyle' },
           ],
         },
-        {label: 'Theme Playground', slug: 'theme-playground'},
+        { label: 'Theme Playground', slug: 'theme-playground' },
         {
           label: 'Components',
           items: [

@@ -1,0 +1,69 @@
+---
+interface SidebarLink {
+  type: 'link';
+  label: string;
+  href: string;
+  isCurrent: boolean;
+  badge?: { text: string; variant?: string };
+  attrs?: Record<string, unknown>;
+}
+
+interface SidebarGroup {
+  type: 'group';
+  label: string;
+  entries: SidebarEntry[];
+  collapsed?: boolean;
+  badge?: { text: string; variant?: string };
+}
+
+type SidebarEntry = SidebarLink | SidebarGroup;
+
+interface Props {
+  entries: SidebarEntry[];
+  nested?: boolean;
+}
+
+const { entries, nested = false } = Astro.props;
+
+function groupOpen(group: SidebarGroup): boolean {
+  const walk = (items: SidebarEntry[]): boolean =>
+    items.some((item) =>
+      item.type === 'link' ? item.isCurrent : walk(item.entries),
+    );
+  return walk(group.entries) || !group.collapsed;
+}
+---
+
+<ul
+  class:list={[
+    'k-sidebar__list',
+    nested ? 'k-sidebar__list--nested' : null,
+  ]}
+>
+  {
+    entries.map((entry) =>
+      entry.type === 'link' ? (
+        <li>
+          <a
+            href={entry.href}
+            class="k-sidebar__link"
+            aria-current={entry.isCurrent ? 'page' : undefined}
+            {...(entry.attrs ?? {})}
+          >
+            {entry.label}
+          </a>
+        </li>
+      ) : (
+        <li>
+          <details class="k-sidebar__group" open={groupOpen(entry)}>
+            <summary class="k-sidebar__heading">
+              <span>{entry.label}</span>
+              <span class="k-icon k-icon--chevron-down k-icon--xs" aria-hidden="true" />
+            </summary>
+            <Astro.self entries={entry.entries} nested />
+          </details>
+        </li>
+      ),
+    )
+  }
+</ul>

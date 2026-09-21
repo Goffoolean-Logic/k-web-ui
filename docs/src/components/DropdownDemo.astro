@@ -1,30 +1,33 @@
 ---
 interface Props {
   id?: string;
-  label?: string;
+  trigger?: string;
   end?: boolean;
+  select?: boolean;
 }
 
 const {
   id = 'docs-dropdown',
-  label = 'Sort',
+  trigger = 'Sort',
   end = false,
+  select = true,
 } = Astro.props;
-
-const options = JSON.stringify([
-  { label: 'Name' },
-  { label: 'Date' },
-  { label: 'Size' },
-]);
 ---
 
 <k-dropdown
   id={id}
-  class="k-dropdown"
-  align={end ? 'end' : undefined}
-  label={label}
-  options={options}></k-dropdown>
+  class:list={['k-dropdown', end && 'k-dropdown--end']}></k-dropdown>
 
 <script>
   import 'k-web-ui/js';
+</script>
+
+<script is:inline define:vars={{ id, trigger, select }}>
+  customElements.whenDefined('k-dropdown').then(() => {
+    document.getElementById(id).options = {
+      trigger,
+      items: [{ label: 'Name' }, { label: 'Date' }, { label: 'Size' }],
+      select,
+    };
+  });
 </script>

@@ -13,56 +13,47 @@ export const showcaseProfileHtml = `<div class="k-showcase-profile">
   </div>
 </div>
 
-<k-tabs id="profile-tabs" class="k-tabs" label="Account"></k-tabs>
+<k-tabs id="profile-tabs" class="k-tabs" aria-label="Account"></k-tabs>
 
-<template id="points-panel">
+<div id="profile-tabs-0">
   <div class="k-showcase-profile__points">
-    <k-gauge
-      id="points-gauge"
-      class="k-gauge"
-      size="lg"
-      value="2450"
-      max="3000"
-      label="Points"
-      text="2,450"
-    ></k-gauge>
+    <k-gauge id="points-gauge" class="k-gauge"></k-gauge>
     <p>2,450 of 3,000 points. The next reward is a $25 credit.</p>
   </div>
-</template>
+</div>
 
-<template id="deals-panel">
-  <k-carousel id="deals-carousel" class="k-carousel"></k-carousel>
-</template>
-
-<template id="deal-dining">
-  <div class="k-showcase-deal">
-    <span class="k-badge k-badge--success">Weekend</span>
-    <h3>Double points on dining</h3>
-    <p>Earn 2× at restaurants through Sunday night.</p>
-    <button type="button" class="k-btn k-btn--primary k-btn--sm">Claim</button>
+<div id="profile-tabs-1">
+  <div>
+    <div id="deals-0">
+      <div class="k-showcase-deal">
+        <span class="k-badge k-badge--success">Weekend</span>
+        <h3>Double points on dining</h3>
+        <p>Earn 2× at restaurants through Sunday night.</p>
+        <button type="button" class="k-btn k-btn--primary k-btn--sm">Claim</button>
+      </div>
+    </div>
+    <div id="deals-1">
+      <div class="k-showcase-deal">
+        <img src="/travel-promo.jpg" alt="Hotel on the water at dusk">
+        <span class="k-badge k-badge--primary">20% off</span>
+        <h3>Fall travel</h3>
+        <p>Code LEAF at checkout, through October.</p>
+        <button type="button" class="k-btn k-btn--primary k-btn--sm">Claim</button>
+      </div>
+    </div>
+    <div id="deals-2">
+      <div class="k-showcase-deal">
+        <span class="k-badge k-badge--warning">Gold</span>
+        <h3>Merch drop, a day early</h3>
+        <p>Gold members shop the fall drop before it goes public.</p>
+        <button type="button" class="k-btn k-btn--primary k-btn--sm">Claim</button>
+      </div>
+    </div>
   </div>
-</template>
+  <k-carousel id="deals" class="k-carousel"></k-carousel>
+</div>
 
-<template id="deal-travel">
-  <div class="k-showcase-deal">
-    <img src="/travel-promo.jpg" alt="Hotel on the water at dusk">
-    <span class="k-badge k-badge--primary">20% off</span>
-    <h3>Fall travel</h3>
-    <p>Code LEAF at checkout, through October.</p>
-    <button type="button" class="k-btn k-btn--primary k-btn--sm">Claim</button>
-  </div>
-</template>
-
-<template id="deal-merch">
-  <div class="k-showcase-deal">
-    <span class="k-badge k-badge--warning">Gold</span>
-    <h3>Merch drop, a day early</h3>
-    <p>Gold members shop the fall drop before it goes public.</p>
-    <button type="button" class="k-btn k-btn--primary k-btn--sm">Claim</button>
-  </div>
-</template>
-
-<template id="activity-panel">
+<div id="profile-tabs-2">
   <table class="k-table k-table--zebra">
     <thead>
       <tr>
@@ -105,7 +96,7 @@ export const showcaseProfileHtml = `<div class="k-showcase-profile">
       </tr>
     </tbody>
   </table>
-</template>
+</div>
 
 <dialog id="activity-redeem" class="k-modal" popover>
   <button type="button" class="k-modal__scrim" popovertarget="activity-redeem" popovertargetaction="hide" aria-label="Close"></button>
@@ -152,29 +143,25 @@ export const showcaseProfileHtml = `<div class="k-showcase-profile">
 /** Copyable TypeScript for the Showcase member-profile example. */
 export const showcaseProfileTs = `import 'k-web-ui/js';
 
+document.getElementById('points-gauge').options = {
+  value: 2450,
+  max: 3000,
+  size: 'lg',
+  label: 'Points',
+};
+
 const tabs = document.getElementById('profile-tabs');
-const clone = (id) => document.getElementById(id).content.cloneNode(true);
+tabs.options = [{ label: 'Points' }, { label: 'Deals' }, { label: 'Activity' }];
 
-tabs.panels = [
-  { label: 'Points', content: clone('points-panel') },
-  { label: 'Deals', content: clone('deals-panel') },
-  { label: 'Activity', content: clone('activity-panel') },
-];
+const carousel = document.getElementById('deals');
 
-const carousel = document.getElementById('deals-carousel');
-carousel.slides = [
-  { content: clone('deal-dining') },
-  { content: clone('deal-travel') },
-  { content: clone('deal-merch') },
-];
-
-const syncDeals = (selected) => {
-  if (selected === 1) carousel.play();
+const syncDeals = (index) => {
+  if (index === 1) carousel.play();
   else carousel.pause();
 };
 
 syncDeals(0);
 tabs.addEventListener('k-change', (event) => {
-  syncDeals(event.detail.selected);
+  syncDeals(event.detail.index);
 });
 `;

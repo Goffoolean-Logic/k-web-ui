@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/html-vite';
-import type { KPagination } from 'k-web-ui/js';
 import 'k-web-ui/js';
 
 const meta: Meta = {
@@ -11,39 +10,33 @@ export default meta;
 
 type Story = StoryObj;
 
-function paginationRoot(id: string, count: number, page?: number): KPagination {
-  const root = document.createElement('k-pagination');
-  root.id = id;
-  root.className = 'k-pagination';
-  root.setAttribute('count', String(count));
-  if (page != null) {
-    root.setAttribute('page', String(page));
-  }
-  return root;
-}
-
 /**
- * Empty `<k-pagination class="k-pagination">` with `count` and optional `page`.
+ * No options. The element counts the `#id-0`, `#id-1`, … pages it finds.
  * Few pages list every number and drop first/last. Longer lists keep those
  * jumps and a three-page window.
  */
+function pagination(id: string, count: number): HTMLDivElement {
+  const wrap = document.createElement('div');
+
+  for (let index = 0; index < count; index += 1) {
+    const page = document.createElement('div');
+    page.id = `${id}-${index}`;
+    page.textContent = `Page ${index + 1} of ${count}`;
+    wrap.append(page);
+  }
+
+  const host = document.createElement('k-pagination');
+  host.id = id;
+  host.className = 'k-pagination';
+  wrap.append(host);
+
+  return wrap;
+}
+
 export const Default: Story = {
-  render: () => paginationRoot('result-pages', 12, 5),
-  play: ({ canvasElement }) => {
-    const root = canvasElement.querySelector<KPagination>('#result-pages');
-    if (root) {
-      root.setAttribute('count', '12');
-      root.setAttribute('page', '5');
-    }
-  },
+  render: () => pagination('result-pages', 12),
 };
 
 export const FewPages: Story = {
-  render: () => paginationRoot('result-pages-few', 4),
-  play: ({ canvasElement }) => {
-    const root = canvasElement.querySelector<KPagination>('#result-pages-few');
-    if (root) {
-      root.setAttribute('count', '4');
-    }
-  },
+  render: () => pagination('result-pages-few', 4),
 };

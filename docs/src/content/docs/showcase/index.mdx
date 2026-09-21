@@ -18,7 +18,7 @@ Maya Chen's account. A card holds who she is. [Tabs](/components/tabs/) hold the
 
 Points is a [gauge](/components/gauge/) at 2,450 of 3,000 toward the next $25 credit. Deals is a [carousel](/components/carousel/) of three offers. Activity is a [table](/components/table/) of what she's done. Show on a row opens that entry in a [modal](/components/modal/).
 
-The panels need real markup, so the tabs take their content through the `panels` property, not the JSON attribute. Same move as [How it works](/how-it-works/). The dialogs sit beside the tabs, not inside a panel. A hidden panel can swallow a popover.
+Every panel is plain markup written next to the tabs and linked by id, which is why a gauge, a carousel, and a table can each sit in one. The carousel inside the Deals panel plays only while that tab is open. The dialogs sit beside the tabs rather than inside a panel, since a closed panel is `inert` and would swallow the popover.
 
 <Example stack lift html={showcaseProfileHtml} ts={showcaseProfileTs}>
   <ShowcaseProfile />

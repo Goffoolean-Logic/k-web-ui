@@ -1,5 +1,5 @@
 import { emitKChange } from '../../root.js';
-import { setOpen } from '../dom/dom.js';
+import { setLabel, setOpen } from '../dom/dom.js';
 import type { KDropdownState } from '../models/models.js';
 
 /**
@@ -11,11 +11,15 @@ export function pickItem(state: KDropdownState, index: number): void {
   if (!item) {
     return;
   }
+  const label = item.textContent ?? '';
+  if (state.select) {
+    setLabel(state, label);
+  }
   setOpen(state, false);
   state.trigger.focus();
   emitKChange(state.root, {
     index,
-    label: item.textContent ?? '',
+    label,
     href: item instanceof HTMLAnchorElement ? item.getAttribute('href') : null,
   });
 }

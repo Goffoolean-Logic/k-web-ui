@@ -39,7 +39,9 @@ const themes = DOCS_THEMES.map((theme) => ({
         document
           .querySelectorAll('starlight-theme-select k-dropdown')
           .forEach((el) => {
-            el.setAttribute('label', labelFor(next));
+            // Nothing to relabel until ThemeSelect has handed it the items.
+            if (!el.options) return;
+            el.options = { ...el.options, trigger: labelFor(next) };
           });
       },
     };

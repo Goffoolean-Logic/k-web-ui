@@ -2,7 +2,6 @@ function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
 
-/** Share of `max` that `value` covers, as 0 to 100. */
 export function fillPercent(value: number, max: number): number {
   if (max <= 0) {
     return 0;
@@ -16,12 +15,32 @@ function formatValue(value: number): string {
   );
 }
 
-function parseNumber(raw: string | null): number | undefined {
-  if (raw === null || raw === '') {
-    return undefined;
+/**
+ * Builds the dial reading from value.
+ * No format → number. "%" → percent. Anything else → currency prefix.
+ */
+export function formatReadout(value: number, format?: string): string {
+  const n = formatValue(value);
+  const kind = format?.trim();
+  if (!kind) {
+    return n;
   }
-  const next = Number(raw);
-  return Number.isFinite(next) ? next : undefined;
+  if (kind === '%') {
+    return `${n}%`;
+  }
+  return `${kind}${n}`;
+}
+
+/** Blank text is not an override; format (or the plain number) still drives the dial. */
+export function readoutText(
+  value: number,
+  format?: string,
+  text?: string,
+): string {
+  if (text != null && text !== '') {
+    return text;
+  }
+  return formatReadout(value, format);
 }
 
 function asProgress(el: HTMLElement): HTMLProgressElement | null {
@@ -31,42 +50,41 @@ function asProgress(el: HTMLElement): HTMLProgressElement | null {
   return el.querySelector(':scope > progress');
 }
 
-function groupFor(el: HTMLElement): HTMLElement | null {
-  if (el.tagName === 'K-GAUGE') {
-    return el;
-  }
-  return el.closest('k-gauge');
+function readoutFor(host: HTMLElement): HTMLElement | null {
+  return host.querySelector(':scope > .k-gauge__value');
 }
 
-function readoutFor(el: HTMLElement): HTMLElement | null {
-  return groupFor(el)?.querySelector(':scope > .k-gauge__value') ?? null;
+function captionFor(host: HTMLElement): HTMLElement | null {
+  return host.querySelector(':scope > .k-gauge__label');
 }
 
-function captionFor(el: HTMLElement): HTMLElement | null {
-  return groupFor(el)?.querySelector(':scope > .k-gauge__label') ?? null;
-}
-
-function setFill(progress: HTMLProgressElement, pct: string): void {
+function setFill(
+  progress: HTMLProgressElement,
+  host: HTMLElement,
+  pct: string,
+): void {
   progress.style.setProperty('--k-gauge', pct);
-  groupFor(progress)?.style.setProperty('--k-gauge', pct);
+  host.style.setProperty('--k-gauge', pct);
 }
 
 export function applyProgress(
+  host: HTMLElement,
   progress: HTMLProgressElement,
   value: number | undefined,
   max: number,
   text?: string,
+  format?: string,
 ): void {
   const nextMax = Number.isFinite(max) && max > 0 ? max : 1;
   progress.max = nextMax;
 
   if (value === undefined || !Number.isFinite(value)) {
     progress.removeAttribute('value');
-    setFill(progress, '0%');
+    setFill(progress, host, '0%');
     progress.textContent = '';
-    const readout = readoutFor(progress);
+    const readout = readoutFor(host);
     if (readout) {
-      readout.textContent = text ?? '';
+      readout.textContent = text != null && text !== '' ? text : '';
     }
     return;
   }
@@ -74,11 +92,11 @@ export function applyProgress(
   const nextValue = clamp(value, 0, nextMax);
   progress.value = nextValue;
   const pct = fillPercent(nextValue, nextMax);
-  setFill(progress, `${pct}%`);
+  setFill(progress, host, `${pct}%`);
   progress.textContent = `${Math.round(pct)}%`;
-  const readout = readoutFor(progress);
+  const readout = readoutFor(host);
   if (readout) {
-    readout.textContent = text ?? formatValue(nextValue);
+    readout.textContent = readoutText(nextValue, format, text);
   }
 }
 
@@ -118,17 +136,20 @@ function ensurePart(
   return part;
 }
 
-function stripHostModifiers(host: HTMLElement): void {
-  host.classList.add('k-gauge');
-  for (const name of [...host.classList]) {
-    if (name.startsWith('k-gauge--')) {
-      host.classList.remove(name);
-    }
-  }
-}
+export type GaugePaintOptions = {
+  value?: number;
+  max?: number;
+  label?: string;
+  format?: string;
+  text?: string;
+  indeterminate?: boolean;
+};
 
-export function paint(host: HTMLElement): void {
-  stripHostModifiers(host);
+export function paint(
+  host: HTMLElement,
+  options: GaugePaintOptions = {},
+): void {
+  host.classList.add('k-gauge');
 
   let progress = asProgress(host);
   if (!progress) {
@@ -141,7 +162,7 @@ export function paint(host: HTMLElement): void {
   const readout = ensurePart(host, '.k-gauge__value', 'k-gauge__value', frame);
   readout.setAttribute('aria-hidden', 'true');
 
-  const label = host.getAttribute('label') ?? '';
+  const label = options.label ?? '';
   if (label) {
     const caption = ensurePart(
       host,
@@ -159,11 +180,11 @@ export function paint(host: HTMLElement): void {
   }
 
   applyProgress(
+    host,
     progress,
-    host.hasAttribute('indeterminate')
-      ? undefined
-      : parseNumber(host.getAttribute('value')),
-    parseNumber(host.getAttribute('max')) ?? 1,
-    host.getAttribute('text') || undefined,
+    options.indeterminate ? undefined : options.value,
+    options.max ?? 1,
+    options.text,
+    options.format,
   );
 }

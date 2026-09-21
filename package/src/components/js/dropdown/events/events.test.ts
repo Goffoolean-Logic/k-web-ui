@@ -11,8 +11,9 @@ function mounted(): { state: KDropdownState; abort: AbortController } {
   document.body.append(root);
   const abort = new AbortController();
   const state: KDropdownState = {
-    ...buildDropdown(root, { items, label: 'Sort' }),
+    ...buildDropdown(root, { items, trigger: 'Sort' }),
     open: false,
+    select: false,
   };
   setOpen(state, false);
   bindEvents(state, abort.signal);
@@ -78,9 +79,10 @@ describe('bindEvents', () => {
     const state: KDropdownState = {
       ...buildDropdown(root, {
         items: [{ label: 'Docs', href: '/docs' }],
-        label: 'Go',
+        trigger: 'Go',
       }),
       open: false,
+      select: false,
     };
     setOpen(state, false);
     bindEvents(state, abort.signal);
@@ -121,6 +123,19 @@ describe('pickItem', () => {
     pickItem(state, 9);
     expect(state.open).toBe(true);
     expect(onChange).not.toHaveBeenCalled();
+    abort.abort();
+    state.root.remove();
+  });
+
+  it('writes the pick onto the trigger when select is on', () => {
+    const { state, abort } = mounted();
+    state.select = true;
+    setOpen(state, true);
+
+    pickItem(state, 1);
+    expect(state.trigger.querySelector('.k-dropdown__label')?.textContent).toBe(
+      'Date',
+    );
     abort.abort();
     state.root.remove();
   });

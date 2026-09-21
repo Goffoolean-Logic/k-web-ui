@@ -19,7 +19,7 @@
     display: none;
   }
 
-  k-dropdown[align='end'] div.k-dropdown__menu {
+  k-dropdown.k-dropdown--end div.k-dropdown__menu {
     inset-inline-start: auto;
     inset-inline-end: 0;
   }
@@ -35,7 +35,7 @@
       right: auto;
     }
 
-    k-dropdown[align='end'] div.k-dropdown__menu {
+    k-dropdown.k-dropdown--end div.k-dropdown__menu {
       left: auto;
       right: anchor(right);
     }

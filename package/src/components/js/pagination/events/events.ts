@@ -1,6 +1,14 @@
 import { emitKChange } from '../../root.js';
+import { setInactive } from '../../content.js';
 import { renderPagination } from '../dom/dom.js';
 import type { KPaginationState } from '../models/models.js';
+
+export function syncPanels(state: KPaginationState): void {
+  for (const [i, panel] of state.panels.entries()) {
+    setInactive(panel, i !== state.page - 1);
+    panel.classList.add('k-pagination__page-panel');
+  }
+}
 
 export function goTo(
   state: KPaginationState,
@@ -14,11 +22,12 @@ export function goTo(
   state.page = next;
   renderPagination(state);
   bindEvents(state);
+  syncPanels(state);
   if (focus) {
     state.root.querySelector<HTMLElement>('[aria-current="page"]')?.focus();
   }
   if (emit) {
-    emitKChange(state.root, { page: state.page });
+    emitKChange(state.root, { index: state.page - 1 });
   }
 }
 

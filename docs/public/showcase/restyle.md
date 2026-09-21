@@ -24,7 +24,7 @@ These examples keep the markup from the [button](/components/button.md) and [gau
 
 ## Half-circle gauge
 
-The kit gauge is three sides of a square. `--k-gauge-amount` is how far the fill has gone along those sides. Hide the segments and paint `.k-gauge__frame` from the same token. The fill runs left to right along the top of a semicircle. The tag still writes the hidden progress, the reading, and the caption.
+The kit gauge is three sides of a square. `--k-gauge-amount` is how far the fill has gone along those sides. Hide the segments and paint `.k-gauge__frame` from the same token. The fill runs left to right along the top of a semicircle. Both gauges take the same options; only the extra class differs.
 
 ```html
 <style>
@@ -87,6 +87,15 @@ The kit gauge is three sides of a square. `--k-gauge-amount` is how far the fill
     padding-bottom: 0;
   }
 </style>
-<k-gauge id="upload-square" class="k-gauge" value="64" max="100" label="Upload" text="64%"></k-gauge>
-<k-gauge id="upload-arc" class="k-gauge gauge-arc" value="64" max="100" label="Upload" text="64%"></k-gauge>
+<k-gauge id="upload-square" class="k-gauge"></k-gauge>
+<k-gauge id="upload-arc" class="k-gauge gauge-arc"></k-gauge>
+```
+
+```ts
+import 'k-web-ui/js';
+
+const reading = { value: 64, max: 100, label: 'Upload', format: '%' };
+
+document.getElementById('upload-square').options = reading;
+document.getElementById('upload-arc').options = reading;
 ```

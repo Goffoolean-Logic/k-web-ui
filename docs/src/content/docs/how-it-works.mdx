@@ -119,43 +119,31 @@ The [Colors](/foundations/colors/) page lists the available tokens. [Styles](/fo
 
 ## Component content
 
-JavaScript components accept simple content through attributes:
+Content stays in your HTML. A JavaScript component finds it by id: give the host an `id`, then number the content nodes from zero.
 
 ```html
-<k-tabs
-  class="k-tabs"
-  panels='[{"label":"Overview","content":"Text."}]'
-></k-tabs>
+<k-tabs id="sections" class="k-tabs" aria-label="Sections"></k-tabs>
+
+<div id="sections-0">The first panel.</div>
+<div id="sections-1">
+  <k-gauge id="upload" class="k-gauge"></k-gauge>
+</div>
 ```
 
-For content that contains other elements, use the component property instead. This lets you pass DOM nodes rather than encoding HTML inside JSON.
+The element never moves, clones, or rewrites those nodes. It adds a class, the ARIA it needs, and `hidden` plus `inert` on the ones that are closed. That means panel content can be anything — another component, a table, a form — and it can be rendered by Angular, React, Vue, or a template on your server. Nodes that show up after the element connects are picked up when they land.
 
-```html
-<template id="usage">
-  <k-gauge
-    class="k-gauge"
-    value="64"
-    max="100"
-    label="Upload"
-  ></k-gauge>
-</template>
+Tabs, pagination, and carousel work this way. Pagination and carousel take no options at all, since counting the nodes is the whole configuration.
 
-<k-tabs id="sections" class="k-tabs"></k-tabs>
-```
+Anything that isn't content is a property, set in JavaScript:
 
 ```js
-const tabs = document.getElementById('sections');
-const usage = document.getElementById('usage');
-
-tabs.panels = [
-  { label: 'Overview', content: 'The first panel.' },
-  { label: 'Usage', content: usage.content.cloneNode(true) },
+document.getElementById('sections').options = [
+  { label: 'Overview' },
+  { label: 'Usage' },
 ];
 ```
 
-Tabs accept DOM nodes as panel content or icons. Carousel accepts nodes as slide content.
-
-Simple content can be stored in the attribute. DOM content belongs on the property because it cannot be serialized back into JSON.
+Attributes are not part of the API. Visual variants are modifier classes you write on the tag (`k-tabs--lg`, `k-carousel--autoscroll`, `k-scrollbar--no-autohide`), and a class change patches in place rather than rebuilding.
 
 ## Events
 
@@ -169,9 +157,8 @@ document.querySelector('k-tabs').addEventListener('k-change', (event) => {
 
 The event detail depends on the component:
 
-- Tabs: `{ selected }`
-- Pagination: `{ page }`
-- Carousel: `{ index }`
+- Tabs, pagination, and carousel: `{ index }`, zero-based like the ids
 - Dropdown: `{ index, label, href }`
+- Scrollbar: `{ scrollTop, scrollLeft }`
 
-The event fires when a component changes through user interaction or a method call. Setting an attribute does not fire `k-change`, so an application can update component state without triggering another state update in response.
+The event fires when a component changes through user interaction or a method call. Tabs, pagination, and carousel all move with `select(index)`, so one listener and one call cover the three of them.

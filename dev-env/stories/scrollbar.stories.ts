@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/html-vite';
-import type { KScrollbar } from 'k-web-ui/js';
 import 'k-web-ui/js';
 
 const LINES = [
@@ -7,24 +6,23 @@ const LINES = [
   'Install the kit',
   'Put a class on a button',
   'Import the JS once',
-  'Tabs write their own panels',
-  'Pagination windows a long list',
+  'Tabs label their own panels',
+  'Pagination counts the pages it finds',
   'Dropdown builds the menu',
-  'Carousel keeps a track',
+  'Carousel drives the track next door',
   'Gauge paints a square reading',
   'This pane is taller than its host',
   'Wheel, drag the thumb, or click the track',
   'Native bars stay hidden',
 ];
 
-function pane(id: string, attrs: Record<string, string> = {}): KScrollbar {
-  const root = document.createElement('k-scrollbar');
-  root.id = id;
-  root.className = 'k-scrollbar';
-  root.style.height = '12rem';
-  for (const [name, value] of Object.entries(attrs)) {
-    root.setAttribute(name, value);
-  }
+/** Axis, thickness, and autohide are modifier classes on the tag. */
+function pane(id: string, ...modifiers: string[]): HTMLElement {
+  const host = document.createElement('k-scrollbar');
+  host.id = id;
+  host.className = ['k-scrollbar', ...modifiers].join(' ');
+  host.style.height = '12rem';
+
   const list = document.createElement('ul');
   list.className = 'flex flex-col gap-2 p-3 text-sm text-k-fg';
   for (const line of LINES) {
@@ -32,8 +30,8 @@ function pane(id: string, attrs: Record<string, string> = {}): KScrollbar {
     item.textContent = line;
     list.append(item);
   }
-  root.append(list);
-  return root;
+  host.append(list);
+  return host;
 }
 
 const meta: Meta = {
@@ -46,37 +44,36 @@ export default meta;
 type Story = StoryObj;
 
 /**
- * Overlay thumbs over a scrolling pane. Native bars are hidden. The same
- * chrome works in Chrome, Firefox, and Safari.
+ * Overlay thumbs over a scrolling pane. Native bars are hidden. The rails
+ * fade out until you hover, focus, or scroll.
  */
 export const Default: Story = {
-  render: () => pane('sb-scrollbar'),
+  render: () => pane('sb-scrollbar', 'k-scrollbar--y'),
 };
 
-export const Autohide: Story = {
-  render: () => pane('sb-scrollbar-autohide', { autohide: '' }),
+export const NoAutohide: Story = {
+  render: () =>
+    pane('sb-scrollbar-pinned', 'k-scrollbar--y', 'k-scrollbar--no-autohide'),
 };
 
 export const Small: Story = {
-  render: () => pane('sb-scrollbar-sm', { size: 'sm' }),
+  render: () => pane('sb-scrollbar-sm', 'k-scrollbar--y', 'k-scrollbar--sm'),
 };
 
 export const Large: Story = {
-  render: () => pane('sb-scrollbar-lg', { size: 'lg' }),
+  render: () => pane('sb-scrollbar-lg', 'k-scrollbar--y', 'k-scrollbar--lg'),
 };
 
-function strip(id: string): KScrollbar {
-  const root = pane(id, { axis: 'x' });
-  root.style.height = '4.5rem';
-  const list = root.querySelector('ul');
-  if (list) {
-    list.className =
-      'flex flex-nowrap gap-5 p-3 text-sm text-k-fg whitespace-nowrap';
-    list.style.minWidth = '48rem';
-  }
-  return root;
-}
-
 export const Horizontal: Story = {
-  render: () => strip('sb-scrollbar-x'),
+  render: () => {
+    const host = pane('sb-scrollbar-x', 'k-scrollbar--x');
+    host.style.height = '4.5rem';
+    const list = host.querySelector('ul');
+    if (list) {
+      list.className =
+        'flex flex-nowrap gap-5 p-3 text-sm text-k-fg whitespace-nowrap';
+      list.style.minWidth = '48rem';
+    }
+    return host;
+  },
 };

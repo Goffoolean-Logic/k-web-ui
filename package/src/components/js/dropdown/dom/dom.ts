@@ -4,7 +4,7 @@ import type { KDropdownOptions, KDropdownState } from '../models/models.js';
 export function buildDropdown(
   root: HTMLElement,
   options: KDropdownOptions,
-): Omit<KDropdownState, 'open'> {
+): Omit<KDropdownState, 'open' | 'select'> {
   if (options.items.length === 0) {
     throw new Error('KDropdown: at least one item is required');
   }
@@ -22,7 +22,7 @@ export function buildDropdown(
 
   const label = document.createElement('span');
   label.className = 'k-dropdown__label';
-  label.textContent = options.label ?? '';
+  label.textContent = options.trigger;
   trigger.append(label, createIcon('chevron-down'));
 
   const menu = document.createElement('div');

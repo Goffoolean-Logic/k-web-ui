@@ -1,17 +1,3 @@
-export type KCarouselSlide = {
-  content?: string | Node;
-  src?: string;
-  alt?: string;
-};
-
-export type KCarouselOptions = {
-  items: Array<{ content: string | Node }>;
-  index?: number;
-  loop?: boolean;
-  keyboard?: boolean;
-  autoscroll?: boolean;
-};
-
 export type KCarouselState = {
   root: HTMLElement;
   track: HTMLElement;
@@ -25,4 +11,19 @@ export type KCarouselState = {
   autoscroll: boolean;
   autoscrollPaused?: boolean;
   autoscrollTimer?: ReturnType<typeof setTimeout>;
+};
+
+/** @deprecated Kept for export compatibility; content is linked by id. */
+export type KCarouselSlide = {
+  content?: string | Node;
+  src?: string;
+  alt?: string;
+};
+
+/** @deprecated Kept for export compatibility. */
+export type KCarouselOptions = {
+  index?: number;
+  loop?: boolean;
+  keyboard?: boolean;
+  autoscroll?: boolean;
 };

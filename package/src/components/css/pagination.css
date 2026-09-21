@@ -1,7 +1,7 @@
 @layer components {
   /* Requires <k-pagination class="k-pagination">. */
   k-pagination.k-pagination {
-    @apply flex items-center gap-1;
+    @apply flex items-center justify-center gap-1;
   }
 
   button.k-pagination__btn {
@@ -11,12 +11,9 @@
   }
 
   button.k-pagination__btn:hover:not(:disabled):not([aria-current='page']) {
-    background-color: color-mix(in oklab, var(--k-border) 18%, var(--k-surface));
-  }
-
-  [data-theme='k-dark']
-    button.k-pagination__btn:hover:not(:disabled):not([aria-current='page']) {
-    background-color: var(--k-border);
+    border-color: var(--k-primary);
+    background-color: var(--k-primary);
+    color: #fff;
   }
 
   button.k-pagination__btn:disabled {
@@ -24,6 +21,7 @@
   }
 
   button.k-pagination__current[aria-current='page'] {
-    @apply border-k-primary bg-k-primary text-k-primary-fg;
+    @apply border-k-primary bg-k-primary;
+    color: #fff;
   }
 }

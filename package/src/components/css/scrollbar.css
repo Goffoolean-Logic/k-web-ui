@@ -17,7 +17,7 @@
     overflow: hidden;
   }
 
-  k-scrollbar.k-scrollbar[target] {
+  k-scrollbar.k-scrollbar[data-k-target] {
     display: block;
     position: fixed;
     inset: auto;
@@ -28,17 +28,17 @@
     pointer-events: none;
   }
 
-  k-scrollbar.k-scrollbar[target='viewport'] {
+  k-scrollbar.k-scrollbar[data-k-target='viewport'] {
     inset: 0;
     width: auto;
     height: auto;
   }
 
-  k-scrollbar.k-scrollbar[size='sm'] {
+  k-scrollbar.k-scrollbar--sm {
     --k-scrollbar-size: 0.375rem;
   }
 
-  k-scrollbar.k-scrollbar[size='lg'] {
+  k-scrollbar.k-scrollbar--lg {
     --k-scrollbar-size: 0.75rem;
   }
 
@@ -132,20 +132,24 @@
     background-color: var(--k-scrollbar-thumb-hover);
   }
 
-  k-scrollbar.k-scrollbar[autohide] .k-scrollbar__track {
+  k-scrollbar.k-scrollbar:not(.k-scrollbar--no-autohide) .k-scrollbar__track {
     opacity: 0;
     transition: opacity 150ms ease;
   }
 
-  k-scrollbar.k-scrollbar[autohide]:hover .k-scrollbar__track,
-  k-scrollbar.k-scrollbar[autohide]:focus-within .k-scrollbar__track,
-  k-scrollbar.k-scrollbar[autohide][data-scrolling] .k-scrollbar__track,
-  k-scrollbar.k-scrollbar[autohide][data-dragging] .k-scrollbar__track {
+  k-scrollbar.k-scrollbar:not(.k-scrollbar--no-autohide):hover
+    .k-scrollbar__track,
+  k-scrollbar.k-scrollbar:not(.k-scrollbar--no-autohide):focus-within
+    .k-scrollbar__track,
+  k-scrollbar.k-scrollbar:not(.k-scrollbar--no-autohide)[data-scrolling]
+    .k-scrollbar__track,
+  k-scrollbar.k-scrollbar:not(.k-scrollbar--no-autohide)[data-dragging]
+    .k-scrollbar__track {
     opacity: 1;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    k-scrollbar.k-scrollbar[autohide] .k-scrollbar__track {
+    k-scrollbar.k-scrollbar:not(.k-scrollbar--no-autohide) .k-scrollbar__track {
       transition: none;
     }
   }

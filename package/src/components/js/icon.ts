@@ -2,6 +2,7 @@ export const K_ICON_NAMES = [
   'chevron-left',
   'chevron-right',
   'chevron-down',
+  'chevron-up',
   'chevron-first',
   'chevron-last',
   'arrow-down',

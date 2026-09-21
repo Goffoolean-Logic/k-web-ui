@@ -6,11 +6,24 @@ k-gauge. Square frame with a reading and a caption.
 
 A gauge shows how far a task has gone as a square frame with a number in the middle and a caption in the open bottom. Use a [spin](/components/spin/) when you don't know the percent yet and the mark sits next to a label. Use [progress](/components/progress/) for a linear bar.
 
-Put `<k-gauge class="k-gauge">` on the page and give the host an `id`. Import the JS once. The tag writes a hidden `<progress>`, the frame, the reading, and the caption, and every repaint reuses the nodes it already made. The fill eases when the value changes. Reduced motion drops the motion.
+Give the host an `id` and hand it the reading:
 
-The reading is yours to write: 8, 64%, 1,024, 12.4k. The type shrinks to fit the dial. Overflow wraps.
+```html
+<k-gauge id="upload" class="k-gauge"></k-gauge>
+```
 
-No `value` is an empty gauge, not a loading state. Add `indeterminate` when you want the motion.
+```js
+document.getElementById('upload').options = {
+  value: 64,
+  max: 100,
+  label: 'Upload',
+  format: '%',
+};
+```
+
+The element writes a hidden `<progress>`, the frame, the reading, and the caption, and every repaint reuses the nodes it already made. Setting `options` also writes the modifier classes for `variant`, `size`, and `indeterminate`, so the tag reflects what you asked for. The fill eases when the value changes, and reduced motion drops the motion.
+
+The reading follows `value` through `format`: leave it out for a plain number, pass `%` for a percent, or pass any other string (`$`, `€`, …) as a currency prefix. Change `value` and the dial text updates with it. Reach for `text` only when you need a one-off string format cannot write, like `12.4k`. No `value` is an empty gauge, not a loading state. Pass `indeterminate` when you want the motion.
 
 ## Classes
 
@@ -22,6 +35,10 @@ No `value` is an empty gauge, not a loading state. Add `indeterminate` when you 
 
 | Class | Type | Description |
 | --- | --- | --- |
+| `k-gauge--sm` | modifier | Small dial. Written from `options.size`. |
+| `k-gauge--lg` | modifier | Large dial. Written from `options.size`. |
+| `k-gauge--info` | modifier | Fill color. Also success, warning, and danger. Written from `options.variant`. |
+| `k-gauge--indeterminate` | modifier | Busy sweep. Written from `options.indeterminate`. |
 | `k-gauge__frame` | part | The square chrome around the reading. Decorative, `aria-hidden`. |
 | `k-gauge__seg` | part | One side of the frame. Combined with a track or fill layer and a side. |
 | `k-gauge__seg--track` | modifier | The empty track layer. |
@@ -32,75 +49,123 @@ No `value` is an empty gauge, not a loading state. Add `indeterminate` when you 
 | `k-gauge__value` | part | The reading in the middle of the dial. |
 | `k-gauge__label` | part | Caption in the open bottom. Hidden when empty. |
 
-## Attributes
+## Options
 
-| Attribute | Type | Default | Description |
+| Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `value` | number | — | How far along. Clamped to 0…`max`. Omit it for an empty gauge. |
+| `value` | number | — | How far along. Clamped to 0…max. Leave it out for an empty gauge. |
 | `max` | number | `1` | The top of the range. |
 | `label` | string | — | Caption in the open bottom. Also labels the hidden progress. |
-| `text` | string | — | Visible reading. Defaults to the formatted value when omitted. |
-| `variant` | info \| success \| warning \| danger | — | Fill color. Omit for the primary orange chrome. |
-| `size` | sm \| lg | — | Dial size. Omit for the default. |
-| `indeterminate` | boolean attribute | — | Busy sweep. Ignores `value` while set. |
+| `format` | string | — | How to write the dial reading from `value`. Omit for a number. Pass `%` for a percent. Pass any other string (`$`, `€`, …) as a currency prefix. |
+| `text` | string | — | Override the dial reading. Use when `format` is not enough. Leave it out to let `format` drive the dial. |
+| `variant` | info \| success \| warning \| danger | — | Fill color. Leave it out for the primary orange chrome. |
+| `size` | sm \| lg | — | Dial size. Leave it out for the default. |
+| `indeterminate` | boolean | — | Busy sweep. Ignores value while set. |
 
 ## Properties
 
-Every attribute above is also a property that reflects back to the tag, so `el.value = 80` works on its own. Three more are computed:
+Every option above is also a property, so `el.value = 80` works on its own and leaves the rest of the options alone. Three more are computed:
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `percent` | number | Read-only. Share of `max` the gauge shows, 0 to 100. An empty gauge reads 0. |
-| `isEmpty` | boolean | Read-only. True when there is no `value`. |
-| `isComplete` | boolean | Read-only. True once `value` reaches `max`. |
+| `percent` | number | Read-only. Share of max the gauge shows, 0 to 100. An empty gauge reads 0. |
+| `isEmpty` | boolean | Read-only. True when there is no value. |
+| `isComplete` | boolean | Read-only. True once value reaches max. |
 
 ## Methods
 
 | Method | Returns | Description |
 | --- | --- | --- |
-| `increment(by)` | void | Raises `value` by one step, or by the amount given, stopping at `max`. Starts from 0 when empty. |
-| `decrement(by)` | void | Lowers `value` the same way, stopping at 0. |
-| `complete()` | void | Fills the gauge to `max`. |
-| `clear()` | void | Drops `value` so the gauge renders empty again. |
+| `increment(by)` | void | Raises value by one step, or by the amount given, stopping at max. Starts from 0 when empty. |
+| `decrement(by)` | void | Lowers value the same way, stopping at 0. |
+| `complete()` | void | Fills the gauge to max. |
+| `clear()` | void | Drops value so the gauge renders empty again. |
 | `getProgress()` | `HTMLProgressElement \| null` | The hidden progress element the gauge keeps in step. |
-| `refresh()` | void | Rewrites the progress, reading, and caption from the attributes. |
+| `refresh()` | void | Rewrites the progress, reading, and caption from the current options. |
 
 Two imported helpers cover the setup cases:
 
 | Helper | Returns | Description |
 | --- | --- | --- |
-| `setGauge(el, value, max, text)` | void | Sets value, max, and the visible reading in one call. `max` defaults to the current max; omit `value` to empty the gauge. |
-| `createGauge(options)` | KGauge | Builds a `k-gauge` element from an options object, ready to append. |
+| `setGauge(el, value, max)` | void | Sets value and max in one call. The reading follows `format`. `max` defaults to the current max; omit `value` to empty the gauge. |
+| `createGauge(options)` | `KGauge` | Builds a `k-gauge` element from an options object, ready to append. |
 
-Unlike the other four elements, the gauge binds no listeners, so it has no `disconnect()`. Its methods also work on a gauge from `createGauge()` before it is appended, since it paints on demand rather than on connect.
+Unlike the other five elements, the gauge binds no listeners, so it has no `disconnect()`. Its methods also work on a gauge from `createGauge()` before it is appended, since it paints on demand rather than on connect.
 
 ```js
 import { createGauge, setGauge } from 'k-web-ui/js';
 
-const gauge = createGauge({ value: 64, max: 100, label: 'Upload' });
+const gauge = createGauge({
+  value: 64,
+  max: 100,
+  label: 'Upload',
+  format: '%',
+});
 document.body.append(gauge);
-setGauge(gauge, 80, 100, '80 MB');
+setGauge(gauge, 80, 100);
 ```
 
 ## Examples
 
 ### Frame
 
-The tag writes the number and the caption. `--k-gauge` is how far the fill has gone along the three sides.
+The element writes the number and the caption. `--k-gauge` is how far the fill has gone along the three sides.
 
 ```html
-<k-gauge id="docs-gauge" class="k-gauge" value="64" max="100" label="Upload" text="64%"></k-gauge>
+<k-gauge id="upload" class="k-gauge"></k-gauge>
 ```
 
-### Numbers
+```ts
+import 'k-web-ui/js';
 
-You write the text; the fill still comes from `value` / `max`. `variant` is the color.
+document.getElementById('upload').options = {
+  value: 64,
+  max: 100,
+  label: 'Upload',
+  format: '%',
+};
+```
+
+### Formats
+
+Leave `format` out for a number. Pass `%` for a percent. Pass any other string as a currency prefix. `text` is still there when you need a one-off like `12.4k`.
 
 ```html
-<k-gauge id="docs-gauge-open" class="k-gauge" value="8" max="100" label="Open" text="8"></k-gauge>
-<k-gauge id="docs-gauge-requests" class="k-gauge" variant="success" value="1024" max="5000" label="Requests" text="1,024"></k-gauge>
-<k-gauge id="docs-gauge-bandwidth" class="k-gauge" variant="info" value="12400" max="20000" label="Bandwidth" text="12.4k"></k-gauge>
-<k-gauge id="docs-gauge-uptime" class="k-gauge" variant="warning" value="99.99" max="100" label="Uptime" text="99.99%"></k-gauge>
+<k-gauge id="open" class="k-gauge"></k-gauge>
+<k-gauge id="balance" class="k-gauge"></k-gauge>
+<k-gauge id="upload-pct" class="k-gauge"></k-gauge>
+<k-gauge id="bandwidth" class="k-gauge"></k-gauge>
+```
+
+```ts
+import 'k-web-ui/js';
+
+document.getElementById('open').options = {
+  value: 8,
+  max: 100,
+  label: 'Open',
+};
+document.getElementById('balance').options = {
+  value: 2450,
+  max: 3000,
+  variant: 'success',
+  label: 'Balance',
+  format: '$',
+};
+document.getElementById('upload-pct').options = {
+  value: 64,
+  max: 100,
+  variant: 'info',
+  label: 'Upload',
+  format: '%',
+};
+document.getElementById('bandwidth').options = {
+  value: 12400,
+  max: 20000,
+  variant: 'info',
+  label: 'Bandwidth',
+  text: '12.4k',
+};
 ```
 
 ### Empty and indeterminate
@@ -108,24 +173,34 @@ You write the text; the fill still comes from `value` / `max`. `variant` is the 
 No `value` is an empty track. `indeterminate` is the busy sweep. `prefers-reduced-motion: reduce` stops the motion.
 
 ```html
-<k-gauge id="docs-gauge-waiting" class="k-gauge" label="Waiting"></k-gauge>
-<k-gauge id="docs-gauge-syncing" class="k-gauge" indeterminate label="Syncing"></k-gauge>
+<k-gauge id="waiting" class="k-gauge"></k-gauge>
+<k-gauge id="syncing" class="k-gauge"></k-gauge>
+```
+
+```ts
+import 'k-web-ui/js';
+
+document.getElementById('waiting').options = { max: 100, label: 'Waiting' };
+document.getElementById('syncing').options = {
+  max: 100,
+  label: 'Syncing',
+  indeterminate: true,
+};
 ```
 
 ## Accessibility
 
-The tag points `aria-labelledby` at the caption it writes. The reading is `aria-hidden` so the number is not read twice. The hidden `<progress>` is already a progressbar. Don't add `role="progressbar"`. `prefers-reduced-motion: reduce` stops `indeterminate`.
+The element points `aria-labelledby` at the caption it writes, which is why the host needs an `id`. The reading is `aria-hidden` so the number is not read twice. The hidden `<progress>` is already a progressbar. Don't add `role="progressbar"`. `prefers-reduced-motion: reduce` stops the sweep.
 
 ## Dos and don'ts
 
 **Do**
-- Use `<k-gauge id="upload" class="k-gauge">` so the JS can write the reading and the caption.
-- Pass `variant`, `size`, and `indeterminate` on the tag.
+- Give the host a unique `id`. The generated ids derive from it.
+- Set `format` so the reading follows `value`. Use `text` only for one-offs.
 - Use `setGauge()` when the value changes often.
 
 **Don't**
 - Use this when you only have a busy icon. That is [spin](/components/spin/).
 - Use this for a linear bar. That is [progress](/components/progress/).
-- Style a `div` to look like a gauge.
+- Write `k-gauge--success` on the tag. That is `variant: 'success'`, and the element writes the class.
 - Write the reading or the caption by hand.
-- Put `k-gauge--success` on the host. That is `variant="success"`.

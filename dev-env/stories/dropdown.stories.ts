@@ -1,12 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/html-vite';
-import type { KDropdown } from 'k-web-ui/js';
 import 'k-web-ui/js';
 
-const OPTIONS = JSON.stringify([
-  { label: 'Name' },
-  { label: 'Date' },
-  { label: 'Size' },
-]);
+const ITEMS = [{ label: 'Name' }, { label: 'Date' }, { label: 'Size' }];
 
 const meta: Meta = {
   title: 'Components/Dropdown',
@@ -17,34 +12,24 @@ export default meta;
 
 type Story = StoryObj;
 
-function paintDropdown(root: KDropdown): void {
-  root.setAttribute('label', 'Sort');
-  root.setAttribute('options', OPTIONS);
+/** The element builds the trigger, menu, and ARIA from `options`. */
+function dropdown(
+  id: string,
+  { end = false, select = false }: { end?: boolean; select?: boolean } = {},
+): HTMLElement {
+  const host = document.createElement('k-dropdown');
+  host.id = id;
+  host.className = end ? 'k-dropdown k-dropdown--end' : 'k-dropdown';
+  host.options = { trigger: 'Sort', items: ITEMS, select };
+  return host;
 }
 
-function dropdownRoot(id: string, align?: 'end'): KDropdown {
-  const root = document.createElement('k-dropdown');
-  root.id = id;
-  root.className = 'k-dropdown';
-  if (align) {
-    root.setAttribute('align', align);
-  }
-  paintDropdown(root);
-  return root;
-}
-
-/**
- * Empty `<k-dropdown class="k-dropdown">`. `label` and `options` are
- * attributes. The element builds the trigger, menu, and ARIA.
- */
 export const Default: Story = {
-  render: () => dropdownRoot('sort-dropdown'),
-  play: ({ canvasElement }) => {
-    const root = canvasElement.querySelector<KDropdown>('#sort-dropdown');
-    if (root) {
-      paintDropdown(root);
-    }
-  },
+  render: () => dropdown('sort-dropdown'),
+};
+
+export const Select: Story = {
+  render: () => dropdown('sort-dropdown-select', { select: true }),
 };
 
 export const End: Story = {
@@ -52,13 +37,7 @@ export const End: Story = {
     const wrap = document.createElement('div');
     wrap.style.display = 'flex';
     wrap.style.justifyContent = 'flex-end';
-    wrap.append(dropdownRoot('sort-dropdown-end', 'end'));
+    wrap.append(dropdown('sort-dropdown-end', { end: true, select: true }));
     return wrap;
-  },
-  play: ({ canvasElement }) => {
-    const root = canvasElement.querySelector<KDropdown>('#sort-dropdown-end');
-    if (root) {
-      paintDropdown(root);
-    }
   },
 };

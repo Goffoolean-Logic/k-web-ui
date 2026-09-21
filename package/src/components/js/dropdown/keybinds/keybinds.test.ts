@@ -11,8 +11,9 @@ function mounted(): { state: KDropdownState; abort: AbortController } {
   document.body.append(root);
   const abort = new AbortController();
   const state: KDropdownState = {
-    ...buildDropdown(root, { items, label: 'Sort' }),
+    ...buildDropdown(root, { items, trigger: 'Sort' }),
     open: false,
+    select: false,
   };
   setOpen(state, false);
   bindKeybinds(state, abort.signal);

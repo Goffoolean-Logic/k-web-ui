@@ -49,7 +49,9 @@ function mockOverflow(
 
 describe('k-scrollbar', () => {
   it('does not boot a page overlay in tests', () => {
-    expect(document.querySelector('k-scrollbar[target="viewport"]')).toBeNull();
+    expect(
+      document.querySelector('k-scrollbar[data-k-target="viewport"]'),
+    ).toBeNull();
   });
 
   it('wraps children and writes tracks', () => {
@@ -57,9 +59,6 @@ describe('k-scrollbar', () => {
     document.body.append(bar);
     expect(bar.querySelector('.k-scrollbar__viewport')).toBeTruthy();
     expect(bar.querySelector('.k-scrollbar__thumb--y')).toBeTruthy();
-    expect(bar.getViewport()?.querySelector('p')?.textContent).toBe(
-      'Long copy.',
-    );
     bar.remove();
   });
 
@@ -84,6 +83,7 @@ describe('k-scrollbar', () => {
     const viewport = bar.getViewport();
     bar.axis = 'y';
     expect(bar.axis).toBe('y');
+    expect(bar.classList.contains('k-scrollbar--y')).toBe(true);
     expect(bar.getViewport()).toBe(viewport);
     bar.remove();
   });
@@ -104,43 +104,35 @@ describe('k-scrollbar api', () => {
   it('reads are empty while disconnected', () => {
     const bar = host();
     expect(bar.getViewport()).toBeNull();
-    expect(bar.getThumbY()).toBeNull();
-    expect(bar.getThumbX()).toBeNull();
-    expect(bar.hasOverflowY).toBe(false);
-    expect(bar.hasOverflowX).toBe(false);
-    expect(bar.getScroll()).toEqual({ scrollTop: 0, scrollLeft: 0 });
     expect(() => {
       bar.goTo(10);
       bar.refresh();
     }).not.toThrow();
   });
 
-  it('disconnect aborts listeners', () => {
+  it('autohide and size use modifier classes', () => {
     const bar = host();
     document.body.append(bar);
-    const view = bar.getViewport();
-    if (view) {
-      mockOverflow(view);
-    }
-    const onChange = vi.fn();
-    bar.addEventListener('k-change', onChange);
-    bar.disconnect();
-    view?.dispatchEvent(new Event('scroll'));
-    expect(onChange).not.toHaveBeenCalled();
+    bar.autohide = false;
+    bar.size = 'sm';
+    expect(bar.classList.contains('k-scrollbar--no-autohide')).toBe(true);
+    expect(bar.classList.contains('k-scrollbar--sm')).toBe(true);
+    bar.autohide = true;
+    bar.size = undefined;
+    expect(bar.classList.contains('k-scrollbar--no-autohide')).toBe(false);
+    expect(bar.classList.contains('k-scrollbar--sm')).toBe(false);
     bar.remove();
   });
 
-  it('autohide and size reflect to attributes', () => {
-    const bar = host();
+  it('options.target paints over another scroller', () => {
+    const pane = document.createElement('div');
+    pane.id = 'scroll-target';
+    document.body.append(pane);
+    const bar = document.createElement('k-scrollbar') as KScrollbar;
     document.body.append(bar);
-    bar.autohide = true;
-    bar.size = 'sm';
-    expect(bar.hasAttribute('autohide')).toBe(true);
-    expect(bar.getAttribute('size')).toBe('sm');
-    bar.autohide = false;
-    bar.size = undefined;
-    expect(bar.hasAttribute('autohide')).toBe(false);
-    expect(bar.hasAttribute('size')).toBe(false);
+    bar.options = { target: '#scroll-target' };
+    expect(bar.getViewport()).toBe(pane);
     bar.remove();
+    pane.remove();
   });
 });

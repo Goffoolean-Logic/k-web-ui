@@ -73,10 +73,10 @@ export const OutfitWeights: Story = {
 export const PlexMono: Story = {
   render: () => `
     <div class="font-k-mono text-k-fg" style="max-width: 40rem; display: flex; flex-direction: column; gap: 1.25rem;">
-      <p class="text-xs" style="margin: 0; font-weight: 400;">k-pagination count="12"</p>
-      <p class="text-sm" style="margin: 0; font-weight: 400;">k-pagination count="12"</p>
-      <p class="text-base" style="margin: 0; font-weight: 400;">k-pagination count="12"</p>
-      <p class="text-lg" style="margin: 0; font-weight: 400;">k-pagination count="12"</p>
+      <p class="text-xs" style="margin: 0; font-weight: 400;">tabs.options = labels</p>
+      <p class="text-sm" style="margin: 0; font-weight: 400;">tabs.options = labels</p>
+      <p class="text-base" style="margin: 0; font-weight: 400;">tabs.options = labels</p>
+      <p class="text-lg" style="margin: 0; font-weight: 400;">tabs.options = labels</p>
       <p class="text-base" style="margin: 0; font-weight: 400;">400 0123456789 --k-primary</p>
       <p class="text-base" style="margin: 0; font-weight: 500;">500 0123456789 --k-primary</p>
       <p class="text-base" style="margin: 0; font-weight: 600;">600 0123456789 --k-primary</p>

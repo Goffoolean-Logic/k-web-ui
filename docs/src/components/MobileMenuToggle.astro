@@ -1,0 +1,28 @@
+---
+/**
+ * Replaces Starlight's popover menu button with the k-sidebar checkbox trigger.
+ */
+---
+
+<label
+  for="docs-nav"
+  class="k-sidebar__trigger k-sidebar__trigger--icon k-sidebar__trigger--open md:sl-hidden print:hidden"
+>
+  <span aria-hidden="true">☰</span>
+  <span class="sr-only">{Astro.locals.t('menuButton.accessibleLabel')}</span>
+</label>
+
+<style>
+  label.k-sidebar__trigger--open {
+    position: fixed;
+    top: calc((var(--sl-nav-height) - 2.25rem) / 2);
+    inset-inline-end: var(--sl-nav-pad-x);
+    z-index: var(--sl-z-index-navbar);
+  }
+
+  @media (min-width: 50em) {
+    label.k-sidebar__trigger--open {
+      display: none;
+    }
+  }
+</style>

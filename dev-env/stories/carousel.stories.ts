@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/html-vite';
-import type { KCarousel } from 'k-web-ui/js';
 import 'k-web-ui/js';
+
+const SLIDES = ['Draft the brief.', 'Review comments.', 'Ship the release.'];
 
 const meta: Meta = {
   title: 'Components/Carousel',
@@ -11,69 +12,37 @@ export default meta;
 
 type Story = StoryObj;
 
-const SLIDES = JSON.stringify([
-  { content: 'Draft the brief.' },
-  { content: 'Review comments.' },
-  { content: 'Ship the release.' },
-]);
-
-function paintCarousel(
-  root: KCarousel,
-  loop?: boolean,
-  autoscroll?: boolean,
-): void {
-  if (loop === false) {
-    root.setAttribute('loop', 'false');
-  }
-  if (autoscroll === false) {
-    root.setAttribute('autoscroll', 'false');
-  }
-  root.setAttribute('slides', SLIDES);
-}
-
-function carouselRoot(
-  id: string,
-  loop?: boolean,
-  autoscroll?: boolean,
-): KCarousel {
-  const root = document.createElement('k-carousel');
-  root.id = id;
-  root.className = 'k-carousel';
-  root.style.maxWidth = '28rem';
-  paintCarousel(root, loop, autoscroll);
-  return root;
-}
-
 /**
- * Empty `<k-carousel class="k-carousel">`. `slides` is an attribute. The
- * element builds the track, slides, and controls.
+ * No options. The slides sit in a wrapper of their own, which the element
+ * takes over as the track. The host is the control bar under it.
  */
+function carousel(id: string, autoscroll = false): HTMLDivElement {
+  const wrap = document.createElement('div');
+  wrap.style.maxWidth = '28rem';
+
+  const track = document.createElement('div');
+  for (const [index, text] of SLIDES.entries()) {
+    const slide = document.createElement('div');
+    slide.id = `${id}-${index}`;
+    slide.textContent = text;
+    track.append(slide);
+  }
+  wrap.append(track);
+
+  const host = document.createElement('k-carousel');
+  host.id = id;
+  host.className = autoscroll
+    ? 'k-carousel k-carousel--autoscroll'
+    : 'k-carousel';
+  wrap.append(host);
+
+  return wrap;
+}
+
 export const Default: Story = {
-  render: () => carouselRoot('gallery'),
-  play: ({ canvasElement }) => {
-    const root = canvasElement.querySelector<KCarousel>('#gallery');
-    if (root) {
-      paintCarousel(root);
-    }
-  },
+  render: () => carousel('gallery'),
 };
 
-export const NoLoop: Story = {
-  render: () => carouselRoot('gallery-noloop', false),
-  play: ({ canvasElement }) => {
-    const root = canvasElement.querySelector<KCarousel>('#gallery-noloop');
-    if (root) {
-      paintCarousel(root, false);
-    }
-  },
-};
-
-export const NoAutoscroll: Story = {
-  render: () => carouselRoot('gallery-hold', true, false),
-  play: ({ canvasElement }) => {
-    const root = canvasElement.querySelector<KCarousel>('#gallery-hold');
-    if (root) {
-      paintCarousel(root, true, false);
-    }
-  },
+export const Autoscroll: Story = {
+  render: () => carousel('gallery-auto', true),
 };

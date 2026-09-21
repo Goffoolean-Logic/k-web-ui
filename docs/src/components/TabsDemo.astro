@@ -1,7 +1,6 @@
 ---
 interface Item {
   label: string;
-  content?: string;
   icon?: string;
 }
 
@@ -9,124 +8,55 @@ interface Props {
   id?: string;
   large?: boolean;
   label?: string;
-  nodes?: boolean;
   items?: Item[];
 }
 
 const {
   id = 'docs-tabs',
   large = false,
-  label,
-  nodes = false,
-  items = [
-    { label: 'Overview', content: 'The first panel.' },
-    { label: 'Usage', content: 'The second panel.' },
-    { label: 'API', content: 'The third panel.' },
-  ],
+  label = 'Sections',
+  items = [{ label: 'Progress' }, { label: 'Notes' }, { label: 'Invite' }],
 } = Astro.props;
-
-const first = items[0];
-const second = items[1];
-const third = items[2];
 ---
 
-{
-  nodes && first && second && third && (
-    <>
-      <template
-        id={`${id}-panel-0`}
-        data-label={first.label}
-        data-icon={first.icon}
-      >
-        <k-gauge
-          id={`${id}-gauge`}
-          class="k-gauge"
-          value="64"
-          max="100"
-          label="Upload"
-          text="64"></k-gauge>
-      </template>
-      <template
-        id={`${id}-panel-1`}
-        data-label={second.label}
-        data-icon={second.icon}
-      >
-        <p>The other two panels are components. This one is a paragraph.</p>
-      </template>
-      <template
-        id={`${id}-panel-2`}
-        data-label={third.label}
-        data-icon={third.icon}
-      >
-        <div class="k-field">
-          <label class="k-label" for={`${id}-email`}>Email</label>
-          <input
-            class="k-input"
-            id={`${id}-email`}
-            type="text"
-            placeholder="maya@example.com"
-          />
-        </div>
-        <button type="button" class="k-btn k-btn--primary">Send</button>
-      </template>
-    </>
-  )
-}
 <k-tabs
   id={id}
-  class="k-tabs"
-  size={large ? 'lg' : undefined}
-  label={label}
-  data-tabs-demo={nodes ? '' : undefined}
-  panels={
-    nodes
-      ? undefined
-      : JSON.stringify(
-          items.map((item) => ({
-            label: item.label,
-            icon: item.icon,
-            content: item.content ?? item.label,
-          })),
-        )
-  }></k-tabs>
+  class:list={['k-tabs', large && 'k-tabs--lg']}
+  aria-label={label}></k-tabs>
+
+<div id={`${id}-0`}>
+  <k-gauge id={`${id}-gauge`} class="k-gauge"></k-gauge>
+</div>
+
+<div id={`${id}-1`}>
+  <p>The other two panels are components. This one is a paragraph.</p>
+</div>
+
+<div id={`${id}-2`}>
+  <div class="k-field">
+    <label class="k-label" for={`${id}-email`}>Email</label>
+    <input
+      class="k-input"
+      id={`${id}-email`}
+      type="text"
+      placeholder="maya@example.com"
+    />
+  </div>
+  <button type="button" class="k-btn k-btn--primary">Send</button>
+</div>
 
 <script>
   import 'k-web-ui/js';
+</script>
 
-  type TabsHost = HTMLElement & {
-    panels: Array<{ label: string; content: Node; icon?: string }>;
-  };
-
-  function templatesFor(id: string): HTMLTemplateElement[] {
-    const nodes: HTMLTemplateElement[] = [];
-    for (let index = 0; ; index += 1) {
-      const node = document.getElementById(`${id}-panel-${index}`);
-      if (!(node instanceof HTMLTemplateElement)) {
-        break;
-      }
-      nodes.push(node);
-    }
-    return nodes;
-  }
-
-  for (const host of document.querySelectorAll('k-tabs[data-tabs-demo]')) {
-    if (!(host instanceof HTMLElement) || host.dataset.wired === 'true') {
-      continue;
-    }
-    const templates = templatesFor(host.id);
-    if (templates.length === 0) {
-      continue;
-    }
-    host.dataset.wired = 'true';
-    (host as TabsHost).panels = templates.map((template) => {
-      const item: { label: string; content: Node; icon?: string } = {
-        label: template.dataset.label ?? '',
-        content: template.content.cloneNode(true),
-      };
-      if (template.dataset.icon) {
-        item.icon = template.dataset.icon;
-      }
-      return item;
-    });
-  }
+<script is:inline define:vars={{ id, items }}>
+  customElements.whenDefined('k-tabs').then(() => {
+    document.getElementById(id).options = items;
+    document.getElementById(`${id}-gauge`).options = {
+      value: 64,
+      max: 100,
+      label: 'Upload',
+      format: '%',
+    };
+  });
 </script>

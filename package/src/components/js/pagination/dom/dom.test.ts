@@ -11,6 +11,7 @@ function state(page: number, count: number): KPaginationState {
     page,
     buttons: [],
     signal: new AbortController().signal,
+    panels: [],
   };
 }
 

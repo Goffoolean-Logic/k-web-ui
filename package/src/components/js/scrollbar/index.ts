@@ -1,20 +1,18 @@
 import { defineElement } from '../root.js';
 import {
-  applyAttribute,
   attachScrollbar,
   disconnectState,
   hasOverflowX,
   hasOverflowY,
   init,
-  isSize,
-  readAxis,
   scrollTo,
-  setBooleanAttribute,
+  setAxis,
   teardown,
 } from './controller/controller.js';
 import type {
   KScrollbarAxis,
   KScrollbarMetrics,
+  KScrollbarOptions,
   KScrollbarSize,
   KScrollbarState,
 } from './models/models.js';
@@ -26,23 +24,37 @@ export type {
   KScrollbarSize,
 } from './models/models.js';
 
-/**
- * Overlay scrollbar. The host is `<k-scrollbar class="k-scrollbar">`.
- * Leave `target` off to wrap the host's children. Pass `target="viewport"`
- * to paint over the page, or a selector to paint over another scroller.
- *
- *   <k-scrollbar class="k-scrollbar" style="height: 12rem">…</k-scrollbar>
- */
+function readAxisFromClass(root: HTMLElement): KScrollbarAxis {
+  if (root.classList.contains('k-scrollbar--x')) {
+    return 'x';
+  }
+  if (root.classList.contains('k-scrollbar--y')) {
+    return 'y';
+  }
+  return 'both';
+}
+
 export class KScrollbar extends HTMLElement {
   #state: KScrollbarState | null = null;
   #abort = new AbortController();
-
-  static get observedAttributes(): string[] {
-    return ['axis', 'target', 'autohide', 'size'];
-  }
+  #target: string | null = null;
+  #classObserver: MutationObserver | null = null;
 
   connectedCallback(): void {
     this.classList.add('k-scrollbar');
+    this.#classObserver = new MutationObserver(() => {
+      if (!this.#state) {
+        return;
+      }
+      setAxis(this.#state, readAxisFromClass(this));
+      this.#state.autohide = !this.classList.contains(
+        'k-scrollbar--no-autohide',
+      );
+    });
+    this.#classObserver.observe(this, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
     this.#init();
   }
 
@@ -52,64 +64,107 @@ export class KScrollbar extends HTMLElement {
     this.#state = null;
   }
 
-  attributeChangedCallback(name: string): void {
-    if (!this.isConnected) {
-      return;
-    }
-    if (this.#state && applyAttribute(this.#state, name)) {
-      return;
-    }
-    this.#init();
-  }
-
   #init(): void {
     this.#abort.abort();
     this.#abort = new AbortController();
     if (this.#state) {
       teardown(this.#state);
     }
-    this.#state = init(this, this.#abort.signal);
+    this.#state = init(this, this.#abort.signal, this.#target);
+  }
+
+  get options(): KScrollbarOptions {
+    const options: KScrollbarOptions = {};
+    if (this.#target) {
+      options.target = this.#target;
+    }
+    return options;
+  }
+
+  set options(value: KScrollbarOptions) {
+    const next = value.target ?? null;
+    if (
+      next === this.#target &&
+      value.axis === undefined &&
+      value.size === undefined &&
+      value.autohide === undefined
+    ) {
+      return;
+    }
+    this.#target = next;
+    if (next) {
+      this.setAttribute('data-k-target', next);
+    } else {
+      this.removeAttribute('data-k-target');
+    }
+    if (value.axis) {
+      this.axis = value.axis;
+    }
+    if (value.size === 'sm' || value.size === 'lg') {
+      this.size = value.size;
+    }
+    if (value.autohide === false) {
+      this.classList.add('k-scrollbar--no-autohide');
+    } else if (value.autohide === true) {
+      this.classList.remove('k-scrollbar--no-autohide');
+    }
+    if (this.isConnected) {
+      this.#init();
+    }
   }
 
   get axis(): KScrollbarAxis {
-    return this.#state?.axis ?? readAxis(this.getAttribute('axis'));
+    return this.#state?.axis ?? readAxisFromClass(this);
   }
 
   set axis(next: KScrollbarAxis) {
-    this.setAttribute('axis', next);
+    this.classList.remove(
+      'k-scrollbar--x',
+      'k-scrollbar--y',
+      'k-scrollbar--both',
+    );
+    if (next === 'x' || next === 'y') {
+      this.classList.add(`k-scrollbar--${next}`);
+    }
+    if (this.#state) {
+      setAxis(this.#state, next);
+    }
   }
 
   get target(): string {
-    return this.getAttribute('target') ?? '';
+    return this.#target ?? '';
   }
 
   set target(next: string) {
-    if (next) {
-      this.setAttribute('target', next);
-      return;
-    }
-    this.removeAttribute('target');
+    this.options = { ...this.options, target: next || undefined };
   }
 
   get autohide(): boolean {
-    return this.hasAttribute('autohide');
+    return !this.classList.contains('k-scrollbar--no-autohide');
   }
 
   set autohide(next: boolean) {
-    setBooleanAttribute(this, 'autohide', next);
+    this.classList.toggle('k-scrollbar--no-autohide', !next);
+    if (this.#state) {
+      this.#state.autohide = next;
+    }
   }
 
   get size(): KScrollbarSize | undefined {
-    const raw = this.getAttribute('size');
-    return isSize(raw) ? raw : undefined;
+    if (this.classList.contains('k-scrollbar--sm')) {
+      return 'sm';
+    }
+    if (this.classList.contains('k-scrollbar--lg')) {
+      return 'lg';
+    }
+    return undefined;
   }
 
   set size(next: KScrollbarSize | undefined) {
-    if (next && isSize(next)) {
-      this.setAttribute('size', next);
-      return;
+    this.classList.remove('k-scrollbar--sm', 'k-scrollbar--lg');
+    if (next === 'sm' || next === 'lg') {
+      this.classList.add(`k-scrollbar--${next}`);
     }
-    this.removeAttribute('size');
   }
 
   get hasOverflowY(): boolean {
@@ -145,7 +200,6 @@ export class KScrollbar extends HTMLElement {
     }
   }
 
-  /** Re-reads overflow and places the thumbs. */
   refresh(): void {
     if (this.isConnected) {
       this.#init();
@@ -157,6 +211,8 @@ export class KScrollbar extends HTMLElement {
       disconnectState(this.#state);
     }
     this.#abort.abort();
+    this.#classObserver?.disconnect();
+    this.#classObserver = null;
   }
 }
 

@@ -38,63 +38,53 @@ const activities = [
     </div>
   </div>
 
-  <k-tabs id="docs-showcase-tabs" class="k-tabs" label="Account"></k-tabs>
+  <k-tabs id="docs-showcase-tabs" class="k-tabs" aria-label="Account"></k-tabs>
 
-  <template id="docs-showcase-points">
+  <div id="docs-showcase-tabs-0">
     <div class="k-showcase-profile__points">
-      <k-gauge
-        id="docs-showcase-points-gauge"
-        class="k-gauge"
-        size="lg"
-        value="2450"
-        max="3000"
-        label="Points"
-        text="2,450"></k-gauge>
+      <k-gauge id="docs-showcase-points-gauge" class="k-gauge"></k-gauge>
       <p>2,450 of 3,000 points. The next reward is a $25 credit.</p>
     </div>
-  </template>
+  </div>
 
-  <template id="docs-showcase-deals">
-    <k-carousel
-      id="docs-showcase-deals-carousel"
-      class="k-carousel"></k-carousel>
-  </template>
-
-  <template id="docs-showcase-deal-dining">
-    <div class="k-showcase-deal">
-      <span class="k-badge k-badge--success">Weekend</span>
-      <h3>Double points on dining</h3>
-      <p>Earn 2× at restaurants through Sunday night.</p>
-      <button type="button" class="k-btn k-btn--primary k-btn--sm">
-        Claim
-      </button>
+  <div id="docs-showcase-tabs-1">
+    <div>
+      <div id="docs-showcase-deals-0">
+        <div class="k-showcase-deal">
+          <span class="k-badge k-badge--success">Weekend</span>
+          <h3>Double points on dining</h3>
+          <p>Earn 2× at restaurants through Sunday night.</p>
+          <button type="button" class="k-btn k-btn--primary k-btn--sm">
+            Claim
+          </button>
+        </div>
+      </div>
+      <div id="docs-showcase-deals-1">
+        <div class="k-showcase-deal">
+          <img src="/travel-promo.jpg" alt="Hotel on the water at dusk" />
+          <span class="k-badge k-badge--primary">20% off</span>
+          <h3>Fall travel</h3>
+          <p>Code LEAF at checkout, through October.</p>
+          <button type="button" class="k-btn k-btn--primary k-btn--sm">
+            Claim
+          </button>
+        </div>
+      </div>
+      <div id="docs-showcase-deals-2">
+        <div class="k-showcase-deal">
+          <span class="k-badge k-badge--warning">Gold</span>
+          <h3>Merch drop, a day early</h3>
+          <p>Gold members shop the fall drop before it goes public.</p>
+          <button type="button" class="k-btn k-btn--primary k-btn--sm">
+            Claim
+          </button>
+        </div>
+      </div>
     </div>
-  </template>
+    <k-carousel id="docs-showcase-deals" class="k-carousel"></k-carousel>
+  </div>
 
-  <template id="docs-showcase-deal-travel">
-    <div class="k-showcase-deal">
-      <img src="/travel-promo.jpg" alt="Hotel on the water at dusk" />
-      <span class="k-badge k-badge--primary">20% off</span>
-      <h3>Fall travel</h3>
-      <p>Code LEAF at checkout, through October.</p>
-      <button type="button" class="k-btn k-btn--primary k-btn--sm">
-        Claim
-      </button>
-    </div>
-  </template>
-
-  <template id="docs-showcase-deal-merch">
-    <div class="k-showcase-deal">
-      <span class="k-badge k-badge--warning">Gold</span>
-      <h3>Merch drop, a day early</h3>
-      <p>Gold members shop the fall drop before it goes public.</p>
-      <button type="button" class="k-btn k-btn--primary k-btn--sm">
-        Claim
-      </button>
-    </div>
-  </template>
-
-  <template id="docs-showcase-activity">
+  <div id="docs-showcase-tabs-2">
     <table class="k-table k-table--zebra">
       <thead>
         <tr>
@@ -125,7 +115,7 @@ const activities = [
         }
       </tbody>
     </table>
-  </template>
+  </div>
 
   {
     activities.map((row) => (
@@ -160,73 +150,38 @@ const activities = [
 
 <script>
   import 'k-web-ui/js';
+  import type { KCarousel, KGauge, KTabs } from 'k-web-ui/js';
 
-  type TabsHost = HTMLElement & {
-    panels: Array<{ label: string; content: Node }>;
-  };
+  const gauge = document.querySelector<KGauge>('#docs-showcase-points-gauge');
+  const tabs = document.querySelector<KTabs>('#docs-showcase-tabs');
+  const deals = document.querySelector<KCarousel>('#docs-showcase-deals');
 
-  type CarouselHost = HTMLElement & {
-    slides: Array<{ content: Node }>;
-    play: () => void;
-    pause: () => void;
-  };
-
-  function template(id: string): HTMLTemplateElement {
-    const node = document.getElementById(id);
-    if (!(node instanceof HTMLTemplateElement)) {
-      throw new Error(`Showcase: missing #${id}`);
-    }
-    return node;
+  if (gauge) {
+    gauge.options = {
+      value: 2450,
+      max: 3000,
+      size: 'lg',
+      label: 'Points',
+    };
   }
 
-  const tabs = document.getElementById('docs-showcase-tabs');
-  if (tabs instanceof HTMLElement) {
-    const host = tabs as TabsHost;
-    host.panels = [
-      {
-        label: 'Points',
-        content: template('docs-showcase-points').content.cloneNode(true),
-      },
-      {
-        label: 'Deals',
-        content: template('docs-showcase-deals').content.cloneNode(true),
-      },
-      {
-        label: 'Activity',
-        content: template('docs-showcase-activity').content.cloneNode(true),
-      },
+  if (tabs && deals) {
+    tabs.options = [
+      { label: 'Points' },
+      { label: 'Deals' },
+      { label: 'Activity' },
     ];
 
-    const carousel = host.querySelector('#docs-showcase-deals-carousel');
-    if (carousel instanceof HTMLElement) {
-      const deals = carousel as CarouselHost;
-      deals.slides = [
-        {
-          content: template('docs-showcase-deal-dining').content.cloneNode(true),
-        },
-        {
-          content: template('docs-showcase-deal-travel').content.cloneNode(true),
-        },
-        {
-          content: template('docs-showcase-deal-merch').content.cloneNode(true),
-        },
-      ];
-
-      const syncDeals = (selected: number): void => {
-        if (selected === 1) {
-          deals.play();
-          return;
-        }
+    // Autoscroll the deals only while that tab is open.
+    tabs.addEventListener('k-change', (event) => {
+      if (!(event instanceof CustomEvent)) {
+        return;
+      }
+      if (Number(event.detail?.index) === 1) {
+        deals.play();
+      } else {
         deals.pause();
-      };
-
-      syncDeals(0);
-      host.addEventListener('k-change', (event) => {
-        if (!(event instanceof CustomEvent)) {
-          return;
-        }
-        syncDeals(Number(event.detail?.selected));
-      });
-    }
+      }
+    });
   }
 </script>

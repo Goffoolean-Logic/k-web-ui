@@ -1,12 +1,27 @@
 ---
-const slides = JSON.stringify([
+interface Props {
+  id?: string;
+}
+
+const { id = 'docs-carousel' } = Astro.props;
+
+const slides = [
   { src: '/scenery.jpg', alt: 'Scenery' },
   { src: '/travel-promo.jpg', alt: 'Travel promo' },
   { src: '/logo.png', alt: 'K-Web-UI' },
-]);
+];
 ---
 
-<k-carousel id="docs-carousel" class="k-carousel" slides={slides}></k-carousel>
+<div>
+  {
+    slides.map((slide, index) => (
+      <div id={`${id}-${index}`}>
+        <img src={slide.src} alt={slide.alt} />
+      </div>
+    ))
+  }
+</div>
+<k-carousel id={id} class="k-carousel k-carousel--autoscroll"></k-carousel>
 
 <script>
   import 'k-web-ui/js';

@@ -2,13 +2,13 @@
 interface Props {
   id?: string;
   autohide?: boolean;
-  size?: string;
-  axis?: 'x' | 'y' | 'both';
+  size?: 'sm' | 'lg';
+  axis?: 'x' | 'y';
 }
 
 const {
   id = 'docs-scrollbar',
-  autohide = false,
+  autohide = true,
   size,
   axis = 'y',
 } = Astro.props;
@@ -18,10 +18,10 @@ const lines = [
   'Install the kit',
   'Put a class on a button',
   'Import the JS once',
-  'Tabs write their own panels',
-  'Pagination windows a long list',
+  'Tabs label their own panels',
+  'Pagination counts the pages it finds',
   'Dropdown builds the menu',
-  'Carousel keeps a track',
+  'Carousel drives the track next door',
   'Gauge paints a square reading',
   'This pane is taller than its host',
   'Wheel, drag the thumb, or click the track',
@@ -31,11 +31,13 @@ const lines = [
 
 <k-scrollbar
   id={id}
-  class="k-scrollbar"
+  class:list={[
+    'k-scrollbar',
+    `k-scrollbar--${axis}`,
+    size && `k-scrollbar--${size}`,
+    !autohide && 'k-scrollbar--no-autohide',
+  ]}
   style={axis === 'x' ? 'height: 4.5rem' : 'height: 12rem'}
-  axis={axis}
-  autohide={autohide ? '' : undefined}
-  size={size}
 >
   <ul>
     {lines.map((line) => <li>{line}</li>)}

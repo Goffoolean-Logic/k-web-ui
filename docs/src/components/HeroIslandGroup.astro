@@ -196,15 +196,21 @@ const icon = (name: string, size = 'sm') =>
           <div class="k-sidebar">
             <aside class="k-sidebar__panel">
               <span class="k-sidebar__trigger">Close</span>
-              <a class="k-link" href="#_top" tabindex="-1">
-                Overview
-              </a>
-              <a class="k-link" href="#_top" tabindex="-1">
-                Projects
-              </a>
-              <a class="k-link" href="#_top" tabindex="-1">
-                Settings
-              </a>
+              <nav class="k-sidebar__nav" aria-hidden="true">
+                <ul class="k-sidebar__list">
+                  <li>
+                    <a class="k-sidebar__link" href="#_top" tabindex="-1" aria-current="page">
+                      Overview
+                    </a>
+                  </li>
+                  <li>
+                    <a class="k-sidebar__link" href="#_top" tabindex="-1">Projects</a>
+                  </li>
+                  <li>
+                    <a class="k-sidebar__link" href="#_top" tabindex="-1">Settings</a>
+                  </li>
+                </ul>
+              </nav>
             </aside>
             <div class="k-sidebar__main">
               <span class="k-sidebar__trigger">Menu</span>

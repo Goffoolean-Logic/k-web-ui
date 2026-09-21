@@ -26,9 +26,9 @@
         Dark
       </button>
     </div>
-    <k-tabs id="playground-scenes" class="k-tabs" label="Theme examples"></k-tabs>
-    <div class="k-playground__sources" hidden>
-      <div data-playground-panel="controls">
+    <k-tabs id="playground-scenes" class="k-tabs" aria-label="Theme examples"
+    ></k-tabs>
+    <div id="playground-scenes-0">
         <div class="k-playground__scene">
           <div class="k-playground__row">
             <button type="button" class="k-btn k-btn--primary">Save</button>
@@ -49,19 +49,15 @@
           <p>
             A <span class="k-tooltip" data-tip="Last saved 4 minutes ago"><a class="k-link" href="#">link</a></span> with extra context.
           </p>
-          <k-dropdown
-            id="playground-sort"
-            class="k-dropdown"
-            label="Sort"
-            options='[{"label":"Name"},{"label":"Date"},{"label":"Size"}]'></k-dropdown>
-          <k-pagination
-            id="playground-pages"
-            class="k-pagination"
-            count="4"
-            page="1"></k-pagination>
+          <k-dropdown id="playground-sort" class="k-dropdown"></k-dropdown>
+          <div id="playground-pages-0">Page 1 of 4</div>
+          <div id="playground-pages-1">Page 2 of 4</div>
+          <div id="playground-pages-2">Page 3 of 4</div>
+          <div id="playground-pages-3">Page 4 of 4</div>
+          <k-pagination id="playground-pages" class="k-pagination"></k-pagination>
         </div>
       </div>
-      <div data-playground-panel="content">
+      <div id="playground-scenes-1">
         <div class="k-playground__scene">
           <div class="k-card">
             <div class="k-card__header">
@@ -111,7 +107,7 @@
           </div>
         </div>
       </div>
-      <div data-playground-panel="feedback">
+      <div id="playground-scenes-2">
         <div class="k-playground__scene">
           <div class="k-playground__row">
             <span class="k-badge k-badge--primary">Primary</span>
@@ -131,7 +127,6 @@
           </div>
         </div>
       </div>
-    </div>
   </div>
 
   <div class="k-playground__editor">
@@ -146,36 +141,34 @@
     <k-tabs
       id="playground-editor-panes"
       class="k-tabs k-playground__editor-tabs"
-      label="Theme editor"></k-tabs>
-    <div class="k-playground__sources" hidden>
-      <div data-editor-panel="colors">
-        <div class="k-playground__colors">
-          <div class="k-playground__picker">
-            <hex-color-picker data-playground-picker></hex-color-picker>
-            <div class="k-playground__picker-meta">
-              <code data-playground-token-name></code>
-              <hex-input prefixed data-playground-hex></hex-input>
-            </div>
+      aria-label="Theme editor"></k-tabs>
+    <div id="playground-editor-panes-0">
+      <div class="k-playground__colors">
+        <div class="k-playground__picker">
+          <hex-color-picker data-playground-picker></hex-color-picker>
+          <div class="k-playground__picker-meta">
+            <code data-playground-token-name></code>
+            <hex-input prefixed data-playground-hex></hex-input>
           </div>
-          <div class="k-playground__token-list" data-playground-token-list></div>
         </div>
+        <div class="k-playground__token-list" data-playground-token-list></div>
       </div>
-      <div data-editor-panel="css" class="k-playground__code-panel">
-        <textarea
-          class="k-playground__code"
-          data-playground-code
-          spellcheck="false"
-          autocomplete="off"
-          autocapitalize="off"
-          aria-label="Theme CSS"></textarea>
-      </div>
+    </div>
+    <div id="playground-editor-panes-1" class="k-playground__code-panel">
+      <textarea
+        class="k-playground__code"
+        data-playground-code
+        spellcheck="false"
+        autocomplete="off"
+        autocapitalize="off"
+        aria-label="Theme CSS"></textarea>
     </div>
   </div>
 </div>
 
 <script>
-  import { KTabs, type KIconName, type KTabItem } from 'k-web-ui/js';
   import 'k-web-ui/js';
+  import type { KDropdown, KTabs } from 'k-web-ui/js';
   import { HexColorPicker } from 'vanilla-colorful/hex-color-picker.js';
   import { HexInput } from 'vanilla-colorful/hex-input.js';
   import {
@@ -215,66 +208,6 @@
     }
     const value = (event.detail as { value?: unknown } | undefined)?.value;
     return typeof value === 'string' ? value : null;
-  }
-
-  function paintTabs(
-    host: Element | null,
-    items: { label: string; icon?: KIconName; content: Element | null }[],
-  ): void {
-    if (
-      !(host instanceof HTMLElement) ||
-      host.localName !== 'k-tabs' ||
-      host.dataset.wired === 'true'
-    ) {
-      return;
-    }
-    const tabs = host as KTabs;
-    const next: KTabItem[] = [];
-    for (const item of items) {
-      if (!(item.content instanceof HTMLElement)) {
-        return;
-      }
-      const tab: KTabItem = { label: item.label, content: item.content };
-      if (item.icon) {
-        tab.icon = item.icon;
-      }
-      next.push(tab);
-    }
-    tabs.panels = next;
-    tabs.dataset.wired = 'true';
-  }
-
-  function wireScenes(root: Element): void {
-    paintTabs(root.querySelector('#playground-scenes'), [
-      {
-        label: 'Controls',
-        icon: 'info',
-        content: root.querySelector('[data-playground-panel="controls"]'),
-      },
-      {
-        label: 'Content',
-        icon: 'success',
-        content: root.querySelector('[data-playground-panel="content"]'),
-      },
-      {
-        label: 'Feedback',
-        icon: 'warning',
-        content: root.querySelector('[data-playground-panel="feedback"]'),
-      },
-    ]);
-  }
-
-  function wireEditorPanes(root: Element): void {
-    paintTabs(root.querySelector('#playground-editor-panes'), [
-      {
-        label: 'Colors',
-        content: root.querySelector('[data-editor-panel="colors"]'),
-      },
-      {
-        label: 'CSS',
-        content: root.querySelector('[data-editor-panel="css"]'),
-      },
-    ]);
   }
 
   function setPreviewTheme(root: Element, theme: 'k-light' | 'k-dark'): void {
@@ -524,10 +457,30 @@
   }
 
   function wireAll(): void {
-    for (const root of document.querySelectorAll('.k-playground')) {
-      wireScenes(root);
-      wireEditorPanes(root);
-      wire(root);
+    const scenes = document.querySelector<KTabs>('#playground-scenes');
+    const panes = document.querySelector<KTabs>('#playground-editor-panes');
+    const sort = document.querySelector<KDropdown>('#playground-sort');
+    if (scenes) {
+      scenes.options = [
+        { label: 'Controls', icon: 'info' },
+        { label: 'Content', icon: 'success' },
+        { label: 'Feedback', icon: 'warning' },
+      ];
+    }
+    if (panes) {
+      panes.options = [{ label: 'Colors' }, { label: 'CSS' }];
+    }
+    if (sort) {
+      sort.options = {
+        trigger: 'Sort',
+        items: [{ label: 'Name' }, { label: 'Date' }, { label: 'Size' }],
+        select: true,
+      };
+    }
+
+    const playground = document.querySelector('.k-playground');
+    if (playground) {
+      wire(playground);
     }
   }
 

@@ -1,0 +1,14 @@
+---
+import DocsSidebarNav from './DocsSidebarNav.astro';
+import MobileMenuFooter from 'virtual:starlight/components/MobileMenuFooter';
+
+const { sidebar } = Astro.locals.starlightRoute;
+---
+
+<nav class="k-sidebar__nav" aria-label={Astro.locals.t('sidebarNav.accessibleLabel')}>
+  <DocsSidebarNav entries={sidebar} />
+</nav>
+
+<div class="k-sidebar__footer md:sl-hidden">
+  <MobileMenuFooter />
+</div>

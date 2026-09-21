@@ -9,4 +9,5 @@ export type KPaginationState = {
   page: number;
   buttons: HTMLButtonElement[];
   signal: AbortSignal;
+  panels: HTMLElement[];
 };

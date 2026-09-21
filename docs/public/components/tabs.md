@@ -2,19 +2,36 @@
 
 **JS component.** Import `k-web-ui/js` once and the element writes the inside.
 
-k-tabs. Tablist, panels, and ARIA from panels.
+k-tabs. Tablist, ARIA, and panels linked by id.
 
 Tabs switch related panels in place: overview / usage / API, or three views of the same object. Don't use them for wizard steps or for a sequence the reader has to walk in order.
 
-Put `<k-tabs class="k-tabs">` on the page with `panels`. The element builds the tablist, tabs, panels, and ARIA. Each panel is a `label` and `content`. `icon` is optional: a kit icon name.
+Give the host an `id`, write the panels as `#id-0`, `#id-1`, and so on, and hand the element the labels:
 
-Tabs sit flush. The selected chrome is primary. Switching a tab slides that fill through the tabs in between, then fades the panel. Hidden panels use `[hidden]`. Changing `panels` rebuilds the tablist; changing `selected`, `size`, `label`, or `keyboard` doesn't. Reduced motion drops the motion.
+```html
+<k-tabs id="sections" class="k-tabs" aria-label="Sections"></k-tabs>
+<div id="sections-0">The first panel.</div>
+<div id="sections-1">The second panel.</div>
+```
+
+```js
+document.getElementById('sections').options = [
+  { label: 'Overview' },
+  { label: 'Usage' },
+];
+```
+
+The panels are your HTML. They stay where you put them, so a panel can sit anywhere on the page, hold any markup, and be rendered by any framework. The element only builds the tablist and wires the ARIA. Panels that arrive late are picked up when they land.
+
+Tabs sit flush and the selected chrome is primary. Switching a tab slides that fill through the tabs in between, then fades the panel. Hidden panels get `hidden` and `inert`. Setting `options` rebuilds the tablist; a class or `aria-label` change patches in place. Reduced motion drops the motion.
 
 ## Classes
 
 | Class | Type | Description |
 | --- | --- | --- |
-| `k-tabs` | component | The one class you write. The element generates the list, tabs, panels, and ink inside it. |
+| `k-tabs` | component | The one class you write. The element generates the list, tabs, and ink inside it. |
+| `k-tabs--lg` | modifier | Fixed 10rem tabs with larger padding and type. |
+| `k-tabs--no-keyboard` | modifier | Turns off arrow keys, Home, and End. |
 
 ### Generated classes
 
@@ -23,24 +40,23 @@ Tabs sit flush. The selected chrome is primary. Switching a tab slides that fill
 | `k-tabs__list` | part | The tablist the element builds. |
 | `k-tabs__ink` | part | The primary fill that slides under the selected tab. |
 | `k-tabs__tab` | part | One tab button. |
-| `k-tabs__panel` | part | One panel. Hidden ones use `[hidden]`. |
+| `k-tabs__panel` | part | Put on each linked panel. Hidden ones carry `hidden` and `inert`. |
 
-## Attributes
+## Options
 
-| Attribute | Type | Default | Description |
+`options` is an array, one entry per panel, in panel order. The length has to match the panels the element finds or it throws.
+
+| Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `panels` | JSON array | — | One object per panel: label, optional icon, and content. Content from an attribute is plain text. |
-| `label` | string | — | Accessible name for the generated tablist. |
-| `selected` | number | `0` | Zero-based index of the open panel. |
-| `keyboard` | `"false"` to disable | enabled | Arrow keys, Home, and End move between tabs. |
-| `size` | `"lg"` | — | Fixed 10rem tabs with larger padding and type. Omit for the default width. |
+| `label` | string | — | Tab text. Required. |
+| `icon` | `KIconName` | — | A kit icon name. The glyph sits before the label and shrinks to `1em`. |
 
 ## Properties
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `panels` | `KTabItem[]` | Read/write. Accepts a `Node` as `content` or `icon`, which is how you get links, headings, or images into a panel. Node values are not written back to the attribute. |
-| `count` | number | Read-only. Number of panels. Reads the attribute, so it works before the element connects. |
+| `options` | `KTabItem[]` | Read/write. Writing rebuilds the tablist. |
+| `count` | number | Read-only. Number of tabs. |
 | `tabs` | `HTMLElement[]` | Read-only copy of the tab buttons. |
 | `labels` | `string[]` | Read-only. Tab labels in order. |
 | `selectedIndex` | number | Read-only. Index of the open panel, or `-1` before the element has content. |
@@ -51,170 +67,115 @@ Tabs sit flush. The selected chrome is primary. Switching a tab slides that fill
 | --- | --- | --- |
 | `getSelected()` | `KTabsSelection \| null` | The open tab as `{ index, tab, panel, label }`, or null when nothing is built. |
 | `getTab(index)` | `HTMLElement \| null` | The tab button at an index. |
-| `getPanel(index)` | `HTMLElement \| null` | The panel at an index. |
+| `getPanel(index)` | `HTMLElement \| null` | The linked panel at an index. |
 | `select(index, { focus })` | void | Opens a panel and fires `k-change`. Pass `focus: true` to move focus to the tab. |
 | `selectByLabel(label, { focus })` | boolean | Opens the first panel whose label matches. Returns false on a miss. |
 | `next({ wrap, focus })` | void | Opens the following panel. Wraps past the last one unless `wrap` is false. |
 | `previous({ wrap, focus })` | void | Opens the preceding panel, wrapping the same way. |
-| `addPanel(panel, at)` | void | Inserts a panel, appending when `at` is left out. |
-| `removePanel(index)` | void | Drops a panel and its tab. |
-| `updatePanel(index, patch)` | void | Merges a partial panel into the one at that index. |
-| `refresh()` | void | Rebuilds the subtree from the current panels. |
+| `refresh()` | void | Relinks the panels and rebuilds the tablist. |
 | `disconnect()` | void | Removes listeners without removing the element from the page. |
 
-The three edit methods write through the `panels` property, so they reflect to the attribute and rebuild the tablist. Everything else patches in place.
-
-Selecting a tab dispatches `k-change` with `{ selected }`, and the event bubbles. Setting the `selected` attribute moves the panel without firing the event, so you can drive the element from your own state without a loop.
+Selecting a tab dispatches `k-change` with `{ index }`, and the event bubbles. `select()` fires it too, so one listener covers clicks, keys, and your own calls.
 
 ## Examples
 
-Each panel is a node cloned from a `<template>`. JSON in the `panels` attribute is still fine for plain text.
-
 ### Three panels
 
-Click a tab or move with the arrow keys once one is focused.
+Click a tab or move with the arrow keys once one is focused. The first panel holds a gauge, the last a form field. Panels are markup, so anything goes in them.
 
 ```html
-<template id="progress">
-  <k-gauge class="k-gauge" value="64" max="100" label="Upload" text="64"></k-gauge>
-</template>
-<template id="notes">
+<k-tabs id="sections" class="k-tabs" aria-label="Sections"></k-tabs>
+
+<div id="sections-0">
+  <k-gauge id="upload" class="k-gauge"></k-gauge>
+</div>
+<div id="sections-1">
   <p>The other two panels are components. This one is a paragraph.</p>
-</template>
-<template id="invite">
+</div>
+<div id="sections-2">
   <div class="k-field">
     <label class="k-label" for="email">Email</label>
     <input class="k-input" id="email" type="text" placeholder="maya@example.com" />
   </div>
   <button type="button" class="k-btn k-btn--primary">Send</button>
-</template>
-<k-tabs id="sections" class="k-tabs" label="Sections"></k-tabs>
+</div>
 ```
 
 ```ts
 import 'k-web-ui/js';
 
-const tabs = document.getElementById('sections');
-tabs.panels = [
-  {
-    label: 'Progress',
-    content: document.getElementById('progress').content.cloneNode(true),
-  },
-  {
-    label: 'Notes',
-    content: document.getElementById('notes').content.cloneNode(true),
-  },
-  {
-    label: 'Invite',
-    content: document.getElementById('invite').content.cloneNode(true),
-  },
+document.getElementById('sections').options = [
+  { label: 'Progress' },
+  { label: 'Notes' },
+  { label: 'Invite' },
 ];
+
+document.getElementById('upload').options = {
+  value: 64,
+  max: 100,
+  label: 'Upload',
+  format: '%',
+};
 ```
 
 ### With icons
 
-`icon` is a kit name like `info`. The glyph sits before the label and shrinks to `1em`.
+`icon` is a kit name like `info`.
 
 ```html
-<template id="icon-progress">
-  <k-gauge class="k-gauge" value="64" max="100" label="Upload" text="64"></k-gauge>
-</template>
-<template id="icon-notes">
-  <p>The other two panels are components. This one is a paragraph.</p>
-</template>
-<template id="icon-invite">
-  <div class="k-field">
-    <label class="k-label" for="icon-email">Email</label>
-    <input class="k-input" id="icon-email" type="text" placeholder="maya@example.com" />
-  </div>
-  <button type="button" class="k-btn k-btn--primary">Send</button>
-</template>
-<k-tabs id="icon-tabs" class="k-tabs"></k-tabs>
+<k-tabs id="icon-tabs" class="k-tabs" aria-label="Sections"></k-tabs>
+<div id="icon-tabs-0">…</div>
+<div id="icon-tabs-1">…</div>
+<div id="icon-tabs-2">…</div>
 ```
 
 ```ts
 import 'k-web-ui/js';
 
-const tabs = document.getElementById('icon-tabs');
-tabs.panels = [
-  {
-    label: 'Progress',
-    icon: 'info',
-    content: document.getElementById('icon-progress').content.cloneNode(true),
-  },
-  {
-    label: 'Notes',
-    icon: 'success',
-    content: document.getElementById('icon-notes').content.cloneNode(true),
-  },
-  {
-    label: 'Invite',
-    icon: 'warning',
-    content: document.getElementById('icon-invite').content.cloneNode(true),
-  },
+document.getElementById('icon-tabs').options = [
+  { label: 'Progress', icon: 'info' },
+  { label: 'Notes', icon: 'success' },
+  { label: 'Invite', icon: 'warning' },
 ];
 ```
 
 ### Large
 
-`size="lg"` makes every tab a fixed 10rem wide, with larger padding and type.
+`k-tabs--lg` makes every tab a fixed 10rem wide, with larger padding and type.
 
 ```html
-<template id="lg-progress">
-  <k-gauge class="k-gauge" value="64" max="100" label="Upload" text="64"></k-gauge>
-</template>
-<template id="lg-notes">
-  <p>The other two panels are components. This one is a paragraph.</p>
-</template>
-<template id="lg-invite">
-  <div class="k-field">
-    <label class="k-label" for="lg-email">Email</label>
-    <input class="k-input" id="lg-email" type="text" placeholder="maya@example.com" />
-  </div>
-  <button type="button" class="k-btn k-btn--primary">Send</button>
-</template>
-<k-tabs id="lg-tabs" class="k-tabs" size="lg"></k-tabs>
+<k-tabs id="lg-tabs" class="k-tabs k-tabs--lg" aria-label="Sections"></k-tabs>
+<div id="lg-tabs-0">…</div>
+<div id="lg-tabs-1">…</div>
+<div id="lg-tabs-2">…</div>
 ```
 
 ```ts
 import 'k-web-ui/js';
 
-const tabs = document.getElementById('lg-tabs');
-tabs.panels = [
-  {
-    label: 'Progress',
-    icon: 'info',
-    content: document.getElementById('lg-progress').content.cloneNode(true),
-  },
-  {
-    label: 'Notes',
-    icon: 'success',
-    content: document.getElementById('lg-notes').content.cloneNode(true),
-  },
-  {
-    label: 'Invite',
-    icon: 'warning',
-    content: document.getElementById('lg-invite').content.cloneNode(true),
-  },
+document.getElementById('lg-tabs').options = [
+  { label: 'Progress', icon: 'info' },
+  { label: 'Notes', icon: 'success' },
+  { label: 'Invite', icon: 'warning' },
 ];
 ```
 
 ## Accessibility
 
-`k-tabs` builds `role="tablist"`, `role="tab"`, and `role="tabpanel"` on the `k-tabs__list`, `k-tabs__tab`, and `k-tabs__panel` parts it generates. Tabs get `aria-selected`, `aria-controls`, and matching `aria-labelledby` on the panel. Hidden panels use `[hidden]`. Arrow keys, Home, and End move between tabs when `keyboard` is true (the default). Pass `label` to name the tablist. The kit focus ring applies to the tab buttons. Decorative icons are `aria-hidden`; keep the name in the tab text.
+The element builds `role="tablist"` and `role="tab"` on the list and buttons it generates, and puts `role="tabpanel"`, `aria-labelledby`, and `k-tabs__panel` on each linked panel. Tabs carry `aria-selected` and `aria-controls`. Closed panels get `hidden` and `inert`, so nothing inside them takes focus. Arrow keys, Home, and End move between tabs unless you add `k-tabs--no-keyboard`. `aria-label` on the host names the tablist; without one the element falls back to the host id. Decorative icons are `aria-hidden`, so keep the name in the tab text.
 
-Give the host an `id` when more than one `k-tabs` is on the page. Generated ids derive from it, so two id-less hosts collide.
+A popover or a `<dialog>` inside a closed panel is inert with it. Keep those as siblings of the host.
 
 ## Dos and don'ts
 
 **Do**
-- Use `<k-tabs class="k-tabs">` with `panels`.
-- Pass `panels` with a `label` and `content`. `icon` is optional.
+- Give the host a unique `id` and number the panels from `-0`.
+- Set `options` once, with one entry per panel.
 - Use tabs for related views of the same object.
-- Reach for the `panels` property when a panel needs real markup.
+- Write panel content as plain markup, wherever it belongs on the page.
 
 **Don't**
-- Use tabs as wizard steps.
 - Hand-write the tablist. The element builds it.
-- Hide required content in a panel the reader may never open.
+- Skip a number. The element stops linking at the first gap.
+- Use tabs as wizard steps.
 - Rely on the icon alone for the tab name.

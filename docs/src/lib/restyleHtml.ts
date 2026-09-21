@@ -70,5 +70,14 @@ export const restyleGaugeHtml = `<style>
     padding-bottom: 0;
   }
 </style>
-<k-gauge id="upload-square" class="k-gauge" value="64" max="100" label="Upload" text="64%"></k-gauge>
-<k-gauge id="upload-arc" class="k-gauge gauge-arc" value="64" max="100" label="Upload" text="64%"></k-gauge>`;
+<k-gauge id="upload-square" class="k-gauge"></k-gauge>
+<k-gauge id="upload-arc" class="k-gauge gauge-arc"></k-gauge>`;
+
+/** Copyable TypeScript for the half-circle gauge example. */
+export const restyleGaugeTs = `import 'k-web-ui/js';
+
+const reading = { value: 64, max: 100, label: 'Upload', format: '%' };
+
+document.getElementById('upload-square').options = reading;
+document.getElementById('upload-arc').options = reading;
+`;

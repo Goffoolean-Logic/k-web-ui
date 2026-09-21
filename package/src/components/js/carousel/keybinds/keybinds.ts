@@ -5,7 +5,10 @@ export function bindKeybinds(state: KCarouselState, signal: AbortSignal): void {
   state.root.addEventListener(
     'keydown',
     (event) => {
-      if (!state.keyboard) {
+      if (
+        !state.keyboard ||
+        state.root.classList.contains('k-carousel--no-keyboard')
+      ) {
         return;
       }
       if (event.key === 'ArrowLeft') {

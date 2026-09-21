@@ -70,13 +70,16 @@ export function attachScrollbar(
   target: HTMLElement | 'viewport' = 'viewport',
 ): HTMLElement {
   if (target === 'viewport') {
-    const existing = document.querySelector('k-scrollbar[target="viewport"]');
+    const existing = document.querySelector(
+      'k-scrollbar[data-k-target="viewport"]',
+    );
     if (existing instanceof HTMLElement) {
       return existing;
     }
     const el = document.createElement('k-scrollbar');
     el.className = 'k-scrollbar';
-    el.setAttribute('target', 'viewport');
+    el.setAttribute('data-k-target', 'viewport');
+    el.options = { target: 'viewport' };
     document.body.append(el);
     return el;
   }
@@ -88,19 +91,31 @@ export function attachScrollbar(
     target.setAttribute('data-k-scrollbar-id', id);
   }
   const selector = `[data-k-scrollbar-id="${id}"]`;
-  const existing = document.querySelector(`k-scrollbar[target='${selector}']`);
+  const existing = [...document.querySelectorAll('k-scrollbar')].find(
+    (node) => node.getAttribute('data-k-target') === selector,
+  );
   if (existing instanceof HTMLElement) {
     return existing;
   }
   const el = document.createElement('k-scrollbar');
   el.className = 'k-scrollbar';
-  el.setAttribute('target', selector);
+  el.setAttribute('data-k-target', selector);
+  el.options = { target: selector };
   document.body.append(el);
   return el;
 }
 
-export function init(root: HTMLElement, signal: AbortSignal): KScrollbarState {
-  const { viewport, mode } = resolveViewport(root, root.getAttribute('target'));
+export function init(
+  root: HTMLElement,
+  signal: AbortSignal,
+  target: string | null = null,
+): KScrollbarState {
+  const { viewport, mode } = resolveViewport(root, target);
+  const axis = root.classList.contains('k-scrollbar--x')
+    ? 'x'
+    : root.classList.contains('k-scrollbar--y')
+      ? 'y'
+      : 'both';
   const state: KScrollbarState = {
     root,
     viewport,
@@ -108,9 +123,9 @@ export function init(root: HTMLElement, signal: AbortSignal): KScrollbarState {
     vThumb: root,
     hTrack: root,
     hThumb: root,
-    axis: readAxis(root.getAttribute('axis')),
+    axis,
     mode,
-    autohide: root.hasAttribute('autohide'),
+    autohide: !root.classList.contains('k-scrollbar--no-autohide'),
     dragging: false,
     dragAxis: null,
     dragPointer: null,

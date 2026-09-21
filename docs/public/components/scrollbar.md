@@ -4,19 +4,38 @@
 
 k-scrollbar. Overlay thumbs that hide native bars.
 
-A scrollbar is the kit's own thumb, painted over a scrolling pane. Use it when you want the same chrome in Chrome, Firefox, and Safari. Native bars look different in each, and CSS can only recolor them. Don't use this for a progress reading. That's [progress](/components/progress.md) or [gauge](/components/gauge.md).
+A scrollbar is the kit's own thumb, painted over a scrolling pane. Use it when you want the same chrome in Chrome, Firefox, and Safari. Native bars look different in each, and CSS can only recolor them. Don't use this for a progress reading. That's [progress](/components/progress/) or [gauge](/components/gauge/).
 
-The kit sheet hides the document's native bar. Importing the JS paints a kit thumb over the page. For a pane you own, wrap the overflowing content.
+Wrap the content that overflows:
 
-Put `<k-scrollbar class="k-scrollbar">` around the content that overflows. Give the host a height for a vertical pane, and a width for a horizontal one. The element wraps the children in a viewport, hides the native bars, and paints overlay thumbs. Drag a thumb or click the track. The pane still takes wheel, touch, and keys.
+```html
+<k-scrollbar id="pane" class="k-scrollbar k-scrollbar--y" style="height: 12rem">
+  <ul>…</ul>
+</k-scrollbar>
+```
 
-Leave `target` off for a pane you own. `target="viewport"` paints over the page. A selector paints over someone else's scroller, which is how this docs site hides Starlight's bar. Changing `target` rebuilds. Changing `axis`, `autohide`, or `size` does not.
+Give the host a height for a vertical pane and a width for a horizontal one. The element wraps the children in a viewport, hides the native bars, and paints overlay thumbs. Drag a thumb or click the track; the pane still takes wheel, touch, and keys.
+
+This is the one element with no numbered content and, in the usual case, no options: axis, thickness, and autohide are modifier classes you write on the tag, and a class change patches without a rebuild.
+
+Importing the kit already paints a thumb over the page, so you don't set one up for the document. To paint over a scroller you didn't write, point one at it:
+
+```js
+document.getElementById('other').options = { target: '#their-pane' };
+```
+
+`attachScrollbar(target)` does the same in one call and reuses a scrollbar already attached to that node. Changing `target` rebuilds.
 
 ## Classes
 
 | Class | Type | Description |
 | --- | --- | --- |
 | `k-scrollbar` | component | The one class you write. The element generates the viewport and thumbs inside it. |
+| `k-scrollbar--y` | modifier | Paint the vertical thumb only. |
+| `k-scrollbar--x` | modifier | Paint the horizontal thumb only. |
+| `k-scrollbar--sm` | modifier | Thinner rails. Skip it for 0.5rem. |
+| `k-scrollbar--lg` | modifier | Thicker rails. |
+| `k-scrollbar--no-autohide` | modifier | Keep the rails showing. Without it they fade out until hover, focus, or scroll. |
 
 ### Generated classes
 
@@ -26,59 +45,57 @@ Leave `target` off for a pane you own. `target="viewport"` paints over the page.
 | `k-scrollbar__track` | part | One overlay rail. Combined with `--y` or `--x`. |
 | `k-scrollbar__thumb` | part | The draggable thumb. Combined with `--y` or `--x`. |
 
-## Attributes
+Skip `--x` and `--y` and the element paints both, hiding the rail for an axis that doesn't overflow.
 
-| Attribute | Type | Default | Description |
+## Options
+
+| Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `axis` | `"x"`, `"y"`, or `"both"` | `both` | Which thumbs to paint. Unused rails hide when that axis does not overflow. |
 | `target` | `"viewport"` or a selector | — | Paint over another scroller instead of wrapping the host. `viewport` is the page. |
-| `autohide` | boolean | — | Hide the rails until hover, focus, or scroll. |
-| `size` | `"sm"` or `"lg"` | — | Thinner or thicker rails. Skip it for 0.5rem. |
 
 ## Properties
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `axis` | `KScrollbarAxis` | Read/write. `x`, `y`, or `both`. |
-| `target` | `string` | Read/write. `viewport`, a selector, or empty for wrap mode. |
-| `autohide` | `boolean` | Read/write. Reflects the `autohide` attribute. |
-| `size` | `KScrollbarSize \| undefined` | Read/write. `sm` or `lg`. Undefined is the default thickness. |
-| `hasOverflowY` | `boolean` | Read-only. True when the pane is taller than its host. |
-| `hasOverflowX` | `boolean` | Read-only. True when the pane is wider than its host. |
+| `options` | `KScrollbarOptions` | Read/write. Writing a new target rebuilds. |
+| `axis` | `KScrollbarAxis` | Read/write. x, y, or both. Writing sets the class. |
+| `target` | string | Read/write. Empty in wrap mode. |
+| `autohide` | boolean | Read/write. False adds `k-scrollbar--no-autohide`. |
+| `size` | `KScrollbarSize \| undefined` | Read/write. sm or lg. Undefined is the default thickness. |
+| `hasOverflowY` | boolean | Read-only. True when the pane is taller than its host. |
+| `hasOverflowX` | boolean | Read-only. True when the pane is wider than its host. |
 
 ## Methods
 
 | Method | Returns | Description |
 | --- | --- | --- |
-| `goTo(top?, left?)` | `void` | Moves the pane and fires `k-change`. |
-| `getScroll()` | `KScrollbarMetrics` | The live `scrollTop` and `scrollLeft`. Both are 0 while disconnected. |
+| `goTo(top, left)` | void | Moves the pane and fires `k-change`. |
+| `getScroll()` | `KScrollbarMetrics` | The live scrollTop and scrollLeft. Both are 0 while disconnected. |
 | `getViewport()` | `HTMLElement \| null` | The scrolling node. In wrap mode that is the generated viewport. With a target, it is that element. Null while disconnected. |
 | `getThumbY()` | `HTMLElement \| null` | The vertical thumb, or null while disconnected. |
 | `getThumbX()` | `HTMLElement \| null` | The horizontal thumb, or null while disconnected. |
-| `refresh()` | `void` | Rebuilds from the current attributes. |
-| `disconnect()` | `void` | Removes listeners. |
+| `refresh()` | void | Rebuilds from the current classes and target. |
+| `disconnect()` | void | Removes listeners. |
 
-`attachScrollbar(target)` mounts one of these over the page (`"viewport"`) or over an existing element, and reuses one already attached to that node.
-
-Scroll changes dispatch `k-change` with `{ scrollTop, scrollLeft }`, and the event bubbles. Setting `axis`, `autohide`, or `size` does not fire it.
+Scroll changes dispatch `k-change` with `{ scrollTop, scrollLeft }`, and the event bubbles. A class change does not fire it.
 
 ## Examples
 
 ### Overflow pane
 
-A 12rem host with more lines than fit. The native bar is gone. The kit thumb sits on the right.
+A 12rem host with more lines than fit. The native bar is gone, and the kit thumb fades in on the right as you scroll.
 
 ```html
-<k-scrollbar id="docs-scrollbar" class="k-scrollbar" axis="y" style="height: 12rem">
+<k-scrollbar id="pane" class="k-scrollbar k-scrollbar--y" style="height: 12rem">
   <ul>
     <li>Overview</li>
     <li>Install the kit</li>
     <li>Put a class on a button</li>
     <li>Import the JS once</li>
-    <li>Tabs write their own panels</li>
-    <li>Pagination windows a long list</li>
+    <li>Tabs label their own panels</li>
+    <li>Pagination counts the pages it finds</li>
     <li>Dropdown builds the menu</li>
-    <li>Carousel keeps a track</li>
+    <li>Carousel drives the track next door</li>
     <li>Gauge paints a square reading</li>
     <li>This pane is taller than its host</li>
     <li>Wheel, drag the thumb, or click the track</li>
@@ -87,66 +104,45 @@ A 12rem host with more lines than fit. The native bar is gone. The kit thumb sit
 </k-scrollbar>
 ```
 
-### Autohide
+### Rails that stay
 
-Rails stay out of the way until you hover or scroll.
+`k-scrollbar--no-autohide` keeps them in view.
 
 ```html
-<k-scrollbar id="docs-scrollbar-autohide" class="k-scrollbar" axis="y" autohide style="height: 12rem">
-  <ul>
-    <li>Overview</li>
-    <li>Install the kit</li>
-    <li>Put a class on a button</li>
-    <li>Import the JS once</li>
-    <li>Tabs write their own panels</li>
-    <li>Pagination windows a long list</li>
-    <li>Dropdown builds the menu</li>
-    <li>Carousel keeps a track</li>
-    <li>Gauge paints a square reading</li>
-    <li>This pane is taller than its host</li>
-    <li>Wheel, drag the thumb, or click the track</li>
-    <li>Native bars stay hidden</li>
-  </ul>
+<k-scrollbar
+  id="pane-pinned"
+  class="k-scrollbar k-scrollbar--y k-scrollbar--no-autohide"
+  style="height: 12rem"
+>
+  <ul>…</ul>
 </k-scrollbar>
 ```
 
 ### Horizontal
 
-A wide strip in a short host. The native bar is gone. The kit thumb sits on the bottom.
+A wide strip in a short host. The thumb sits on the bottom.
 
 ```html
-<k-scrollbar id="docs-scrollbar-x" class="k-scrollbar" axis="x" style="height: 4.5rem">
-  <ul>
-    <li>Overview</li>
-    <li>Install the kit</li>
-    <li>Put a class on a button</li>
-    <li>Import the JS once</li>
-    <li>Tabs write their own panels</li>
-    <li>Pagination windows a long list</li>
-    <li>Dropdown builds the menu</li>
-    <li>Carousel keeps a track</li>
-    <li>Gauge paints a square reading</li>
-    <li>This pane is taller than its host</li>
-    <li>Wheel, drag the thumb, or click the track</li>
-    <li>Native bars stay hidden</li>
-  </ul>
+<k-scrollbar id="strip" class="k-scrollbar k-scrollbar--x" style="height: 4.5rem">
+  <ul>…</ul>
 </k-scrollbar>
 ```
 
 ## Accessibility
 
-The viewport is in the tab order in wrap mode, so keys still scroll it. Each thumb has `role="scrollbar"`, `aria-orientation`, `aria-valuemin`, `aria-valuemax`, and `aria-valuenow`. `aria-controls` points at the viewport when that node has an id. Give the host an `id` when more than one scrollbar is on the page. Generated ids derive from it.
+The viewport is in the tab order in wrap mode, so keys still scroll it. Each thumb has `role="scrollbar"`, `aria-orientation`, `aria-valuemin`, `aria-valuemax`, and `aria-valuenow`. `aria-controls` points at the viewport when that node has an id. Give the host an `id`, since the generated ids derive from it.
 
 Reduced motion drops the autohide fade. The thumbs still work.
 
 ## Dos and don'ts
 
 **Do**
-- Give a wrapping host a height for `axis="y"`, and a width for `axis="x"`. Otherwise the pane grows and never overflows.
-- Use `target="viewport"` for the page, and `attachScrollbar` for a scroller you don't own.
+- Give a wrapping host a height for `k-scrollbar--y`, and a width for `k-scrollbar--x`. Otherwise the pane grows and never overflows.
+- Use `attachScrollbar()` for a scroller you don't own.
 - Listen for `k-change` when the scroll position matters to the rest of the UI.
 
 **Don't**
 - Restyle native `::-webkit-scrollbar` on the same pane. The kit hides those.
+- Add a scrollbar for the page. The import already did.
 - Use a scrollbar to show task progress.
-- Leave `target` pointing at a node that isn't there. The element throws.
+- Point `target` at a node that isn't there. The element throws.

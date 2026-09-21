@@ -61,14 +61,25 @@ One attribute on the document root:
 
 ## JavaScript
 
-Six widgets are custom elements: tabs, pagination, dropdown, carousel, gauge, and scrollbar. Put the tag on the page with its inputs, import the JS once, and the element writes the inside.
+Six widgets are custom elements: tabs, pagination, dropdown, carousel, gauge, and scrollbar. Give the tag an `id`, write your content next to it with that id and a number, and import the JS once. The element finds the content and writes the chrome.
 
 ```html
-<k-tabs
-  class="k-tabs"
-  label="Sections"
-  panels='[{"label":"Overview","content":"The first panel."},{"label":"Usage","content":"The second panel."},{"label":"API","content":"The third panel."}]'
-></k-tabs>
+<k-tabs id="sections" class="k-tabs" aria-label="Sections"></k-tabs>
+<div id="sections-0">The first panel.</div>
+<div id="sections-1">The second panel.</div>
+<div id="sections-2">The third panel.</div>
 ```
+
+```ts
+import 'k-web-ui/js';
+
+document.getElementById('sections').options = [
+  { label: 'Overview' },
+  { label: 'Usage' },
+  { label: 'API' },
+];
+```
+
+That's the whole pattern. Pagination and carousel read the same numbered ids and need no options at all; dropdown and gauge take options and have no content to link.
 
 A progress bar is `<progress class="k-progress">`. Accordion, grid, modal, sidebar, spin, table, toast, and tooltip are CSS only. You write the markup and skip the JS import.

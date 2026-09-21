@@ -5,8 +5,9 @@ export type KDropdownItem = {
 
 export type KDropdownOptions = {
   items: KDropdownItem[];
-  /** Visible name on the generated trigger. */
-  label?: string;
+  trigger: string;
+  /** When true, picking an item writes its label onto the trigger. */
+  select?: boolean;
 };
 
 export type KDropdownState = {
@@ -15,4 +16,5 @@ export type KDropdownState = {
   menu: HTMLElement;
   items: HTMLElement[];
   open: boolean;
+  select: boolean;
 };

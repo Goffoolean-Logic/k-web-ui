@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
-  applyAttribute,
   attachScrollbar,
   init,
   isSize,
   resolveViewport,
+  setAxis,
 } from './controller.js';
 
 function mockOverflow(el: HTMLElement): void {
@@ -62,17 +62,6 @@ describe('resolveViewport', () => {
     pane.remove();
   });
 
-  it('finds a target by selector', () => {
-    const pane = document.createElement('div');
-    pane.setAttribute('data-k-scrollbar-id', 'pane-1');
-    document.body.append(pane);
-    const root = document.createElement('div');
-    expect(
-      resolveViewport(root, '[data-k-scrollbar-id="pane-1"]').viewport,
-    ).toBe(pane);
-    pane.remove();
-  });
-
   it('throws when nothing matches', () => {
     const root = document.createElement('div');
     expect(() => resolveViewport(root, '#missing')).toThrow(
@@ -97,43 +86,17 @@ describe('init', () => {
     abort.abort();
     root.remove();
   });
-});
 
-describe('applyAttribute', () => {
-  it('patches axis without rebuilding', () => {
+  it('reads axis from host class', () => {
     const root = document.createElement('div');
+    root.classList.add('k-scrollbar--y');
     root.append(document.createElement('p'));
     document.body.append(root);
     const abort = new AbortController();
     const state = init(root, abort.signal);
-    root.setAttribute('axis', 'x');
-    expect(applyAttribute(state, 'axis')).toBe(true);
+    expect(state.axis).toBe('y');
+    setAxis(state, 'x');
     expect(state.axis).toBe('x');
-    abort.abort();
-    root.remove();
-  });
-
-  it('patches autohide', () => {
-    const root = document.createElement('div');
-    root.append(document.createElement('p'));
-    document.body.append(root);
-    const abort = new AbortController();
-    const state = init(root, abort.signal);
-    root.setAttribute('autohide', '');
-    expect(applyAttribute(state, 'autohide')).toBe(true);
-    expect(state.autohide).toBe(true);
-    abort.abort();
-    root.remove();
-  });
-
-  it('declines target so the caller rebuilds', () => {
-    const root = document.createElement('div');
-    root.append(document.createElement('p'));
-    document.body.append(root);
-    const abort = new AbortController();
-    const state = init(root, abort.signal);
-    expect(applyAttribute(state, 'target')).toBe(false);
-    expect(applyAttribute(state, 'size')).toBe(true);
     abort.abort();
     root.remove();
   });
@@ -144,7 +107,7 @@ describe('attachScrollbar', () => {
     const first = attachScrollbar('viewport');
     const second = attachScrollbar('viewport');
     expect(second).toBe(first);
-    expect(first.getAttribute('target')).toBe('viewport');
+    expect(first.getAttribute('data-k-target')).toBe('viewport');
     first.remove();
   });
 

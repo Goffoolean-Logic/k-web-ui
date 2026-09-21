@@ -1,13 +1,40 @@
 ---
-import Default from '@astrojs/starlight/components/PageFrame.astro';
+const { hasSidebar } = Astro.locals.starlightRoute;
+const isSplash = Astro.locals.starlightRoute.entry.data.template === 'splash';
 ---
 
 <div class="site-shell">
-  <Default>
-    <slot />
-    <slot name="header" slot="header" />
-    <slot name="sidebar" slot="sidebar" />
-  </Default>
+  {
+    !isSplash && (
+      <header class="header">
+        <slot name="header" />
+      </header>
+    )
+  }
+  {
+    hasSidebar && !isSplash ? (
+      <div class="k-sidebar k-sidebar--docked docs-body">
+        <input id="docs-nav" type="checkbox" class="k-sidebar__toggle" />
+        <label for="docs-nav" class="k-sidebar__scrim"></label>
+        <aside class="k-sidebar__panel" id="starlight__sidebar">
+          <label
+            for="docs-nav"
+            class="k-sidebar__trigger k-sidebar__trigger--close"
+          >
+            Close
+          </label>
+          <slot name="sidebar" />
+        </aside>
+        <div class="k-sidebar__main docs-body__main">
+          <div class="main-frame"><slot /></div>
+        </div>
+      </div>
+    ) : (
+      <div class="page sl-flex docs-body docs-body--bare">
+        <div class="main-frame"><slot /></div>
+      </div>
+    )
+  }
   <footer class="site-footer px-8 py-4 tablet:px-15 laptop:px-18 desktop:px-36">
     <p>Caleb Goff</p>
     <a href="https://github.com/Goffoolean-Logic">
@@ -16,23 +43,92 @@ import Default from '@astrojs/starlight/components/PageFrame.astro';
     </a>
   </footer>
 </div>
-<k-scrollbar
-  id="docs-page-scroll"
-  class="k-scrollbar"
-  target="viewport"></k-scrollbar>
+
+<style>
+  .site-shell .header {
+    z-index: calc(var(--sl-z-index-navbar) + 5);
+    position: fixed;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
+    inset-block-start: 0;
+    width: 100%;
+    height: var(--sl-nav-height);
+    border-bottom: 1px solid var(--sl-color-hairline-shade);
+    padding: var(--sl-nav-pad-y) var(--sl-nav-pad-x);
+    background-color: var(--sl-color-bg-nav);
+  }
+
+  :global([data-has-sidebar]) .site-shell .header {
+    padding-inline-end: calc(
+      var(--sl-nav-gap) + var(--sl-nav-pad-x) + var(--sl-menu-button-size)
+    );
+  }
+
+  @media (min-width: 50em) {
+    :global([data-has-sidebar]) .site-shell .header {
+      padding-inline-end: var(--sl-nav-pad-x);
+    }
+  }
+
+  .docs-body {
+    display: flex;
+    min-height: 100vh;
+    padding-top: var(--sl-nav-height);
+  }
+
+  .docs-body__main {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .docs-body .main-frame {
+    flex: 1 1 auto;
+    padding-top: var(--sl-mobile-toc-height);
+  }
+
+  .docs-body--bare {
+    flex-direction: column;
+  }
+
+  .docs-body--bare .main-frame {
+    padding-top: calc(var(--sl-nav-height) + var(--sl-mobile-toc-height));
+  }
+
+  html:has(.hero) .site-shell .header {
+    display: none;
+  }
+
+  html:has(.hero) .docs-body--bare {
+    padding-top: 0;
+  }
+
+  html:has(.hero) .docs-body--bare .main-frame {
+    padding-top: 0;
+  }
+
+  @media (min-width: 50em) {
+    .docs-body {
+      --sl-content-inline-start: 0;
+    }
+
+    .docs-body .main-frame {
+      padding-inline-start: 0;
+    }
+  }
+</style>
 
 <script>
   import { attachScrollbar } from 'k-web-ui/js';
   import 'k-web-ui/js';
 
   const NESTED = [
-    '.sidebar-pane',
-    '.sidebar-content',
-    '#starlight__sidebar',
+    '.k-sidebar__panel',
     '.expressive-code pre',
     '.sl-markdown-content pre',
     '.k-playground__code',
-    '.k-playground__editor-tabs .k-tabs__panel',
+    '.k-playground__editor .k-tabs__panel',
     '.k-showcase-profile .k-tabs__panel',
   ];
 
@@ -49,8 +145,8 @@ import Default from '@astrojs/starlight/components/PageFrame.astro';
   }
 
   function prune(): void {
-    for (const el of document.querySelectorAll('k-scrollbar[target]')) {
-      const target = el.getAttribute('target');
+    for (const el of document.querySelectorAll('k-scrollbar[data-k-target]')) {
+      const target = el.getAttribute('data-k-target');
       if (!target || target === 'viewport' || target === 'html') {
         continue;
       }
@@ -64,6 +160,17 @@ import Default from '@astrojs/starlight/components/PageFrame.astro';
     prune();
     for (const node of nestedScrollers()) {
       attachScrollbar(node);
+    }
+
+    const toggle = document.getElementById('docs-nav');
+    const panel = document.querySelector('.docs-body > .k-sidebar__panel');
+    if (toggle instanceof HTMLInputElement && panel) {
+      panel.addEventListener('click', (event) => {
+        const target = event.target;
+        if (target instanceof Element && target.closest('a[href]')) {
+          toggle.checked = false;
+        }
+      });
     }
   }
 

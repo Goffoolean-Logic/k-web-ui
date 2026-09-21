@@ -1,42 +1,33 @@
+import { watchContent } from '../content.js';
 import { defineElement } from '../root.js';
 import {
-  applyAttribute,
+  applyHostClass,
   getCurrentSlide,
   getSlide,
   goTo,
   init,
-  insertAt,
   isPlaying,
-  parseSlides,
-  patchAt,
-  removeAt,
-  serializeSlides,
-  setAutoscroll,
-  toIndex,
 } from './controller/controller.js';
-import type { KCarouselSlide, KCarouselState } from './models/models.js';
+import type { KCarouselState } from './models/models.js';
 
 export type { KCarouselOptions, KCarouselSlide } from './models/models.js';
 
-/**
- * Carousel. The host is `<k-carousel class="k-carousel">`. `slides`, `loop`,
- * `autoscroll`, `index`, and `keyboard` are attributes. The element builds
- * the track, slides, and controls.
- *
- *   <k-carousel class="k-carousel" slides='[{"content":"One"}]'></k-carousel>
- */
 export class KCarousel extends HTMLElement {
   #state: KCarouselState | null = null;
   #abort = new AbortController();
-  #slides: KCarouselSlide[] | null = null;
-  #reflecting = false;
-
-  static get observedAttributes(): string[] {
-    return ['index', 'loop', 'keyboard', 'autoscroll', 'slides'];
-  }
+  #classObserver: MutationObserver | null = null;
 
   connectedCallback(): void {
     this.classList.add('k-carousel');
+    this.#classObserver = new MutationObserver(() => {
+      if (this.#state) {
+        applyHostClass(this.#state);
+      }
+    });
+    this.#classObserver.observe(this, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
     this.#init();
   }
 
@@ -46,62 +37,28 @@ export class KCarousel extends HTMLElement {
     this.#state = null;
   }
 
-  attributeChangedCallback(name: string): void {
-    if (this.#reflecting) {
-      return;
-    }
-    if (name === 'slides') {
-      this.#slides = null;
-    }
-    if (!this.isConnected) {
-      return;
-    }
-    if (name === 'slides') {
-      this.#init();
-      return;
-    }
-    if (this.#state) {
-      applyAttribute(this.#state, name);
-    }
-  }
-
   #init(): void {
-    const slides = this.slides;
-    if (slides.length === 0) {
-      return;
-    }
     this.#abort.abort();
     this.#abort = new AbortController();
-    this.#state = init(this, slides, this.#abort.signal);
+    watchContent(
+      this,
+      (slides) => {
+        this.#abort.abort();
+        this.#abort = new AbortController();
+        this.#state = init(this, slides, this.#abort.signal);
+      },
+      this.#abort.signal,
+    );
   }
 
-  /** Number of slides, readable before the element is connected. */
   get count(): number {
-    return this.slides.length;
-  }
-
-  get slides(): KCarouselSlide[] {
-    return this.#slides ?? parseSlides(this.getAttribute('slides'));
-  }
-
-  set slides(value: KCarouselSlide[]) {
-    this.#slides = value;
-    const json = serializeSlides(value);
-    if (json !== null) {
-      this.#reflecting = true;
-      this.setAttribute('slides', json);
-      this.#reflecting = false;
-    }
-    if (this.isConnected) {
-      this.#init();
-    }
+    return this.#state?.slides.length ?? 0;
   }
 
   get index(): number {
-    return this.#state?.index ?? toIndex(this.getAttribute('index'));
+    return this.#state?.index ?? 0;
   }
 
-  /** True while autoscroll is on and nothing is hovering or focusing it. */
   get isPlaying(): boolean {
     return this.#state ? isPlaying(this.#state) : false;
   }
@@ -112,6 +69,10 @@ export class KCarousel extends HTMLElement {
 
   getCurrentSlide(): HTMLElement | null {
     return this.#state ? getCurrentSlide(this.#state) : null;
+  }
+
+  select(index: number): void {
+    this.goTo(index);
   }
 
   goTo(index: number): void {
@@ -132,42 +93,14 @@ export class KCarousel extends HTMLElement {
     }
   }
 
-  first(): void {
-    this.goTo(0);
-  }
-
-  last(): void {
-    if (this.#state) {
-      goTo(this.#state, this.#state.slides.length - 1);
-    }
-  }
-
-  /** Starts autoscroll. Hovering or focusing still pauses it. */
   play(): void {
-    if (this.#state) {
-      setAutoscroll(this.#state, true);
-    }
+    this.classList.add('k-carousel--autoscroll');
   }
 
   pause(): void {
-    if (this.#state) {
-      setAutoscroll(this.#state, false);
-    }
+    this.classList.remove('k-carousel--autoscroll');
   }
 
-  addSlide(slide: KCarouselSlide, at?: number): void {
-    this.slides = insertAt(this.slides, slide, at);
-  }
-
-  removeSlide(index: number): void {
-    this.slides = removeAt(this.slides, index);
-  }
-
-  updateSlide(index: number, patch: Partial<KCarouselSlide>): void {
-    this.slides = patchAt(this.slides, index, patch);
-  }
-
-  /** Rebuilds the subtree from the current slides. */
   refresh(): void {
     if (this.isConnected) {
       this.#init();
@@ -176,6 +109,8 @@ export class KCarousel extends HTMLElement {
 
   disconnect(): void {
     this.#abort.abort();
+    this.#classObserver?.disconnect();
+    this.#classObserver = null;
   }
 }
 

@@ -43,37 +43,37 @@
     container-name: k-gauge;
   }
 
-  k-gauge[variant='info'] {
+  k-gauge.k-gauge--info {
     --k-gauge-color: var(--k-info);
   }
 
-  k-gauge[variant='success'] {
+  k-gauge.k-gauge--success {
     --k-gauge-color: var(--k-success);
   }
 
-  k-gauge[variant='warning'] {
+  k-gauge.k-gauge--warning {
     --k-gauge-color: var(--k-warning);
   }
 
-  k-gauge[variant='danger'] {
+  k-gauge.k-gauge--danger {
     --k-gauge-color: var(--k-danger);
   }
 
-  k-gauge[size='sm'] {
+  k-gauge.k-gauge--sm {
     --k-gauge-size: 4rem;
     --k-gauge-thickness: 0.4rem;
     width: 4rem;
     height: 4rem;
   }
 
-  k-gauge[size='lg'] {
+  k-gauge.k-gauge--lg {
     --k-gauge-size: 7.5rem;
     --k-gauge-thickness: 0.7rem;
     width: 7.5rem;
     height: 7.5rem;
   }
 
-  k-gauge[indeterminate]:has(progress:indeterminate) {
+  k-gauge.k-gauge--indeterminate:has(progress:indeterminate) {
     --k-gauge-amount: var(--k-gauge-head);
     animation: k-gauge-head 1.4s ease-in-out infinite alternate;
   }
@@ -182,11 +182,11 @@
     font-variant-numeric: tabular-nums lining-nums;
   }
 
-  k-gauge[size='sm'] > .k-gauge__label {
+  k-gauge.k-gauge--sm > .k-gauge__label {
     @apply text-[0.625rem];
   }
 
-  k-gauge[size='lg'] > .k-gauge__label {
+  k-gauge.k-gauge--lg > .k-gauge__label {
     @apply text-sm;
   }
 
@@ -205,7 +205,7 @@
       transition: none;
     }
 
-    k-gauge[indeterminate]:has(progress:indeterminate) {
+    k-gauge.k-gauge--indeterminate:has(progress:indeterminate) {
       animation: none;
       --k-gauge-head: 40%;
     }

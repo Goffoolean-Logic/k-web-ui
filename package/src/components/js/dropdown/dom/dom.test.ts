@@ -9,13 +9,13 @@ function built(id?: string) {
     root.id = id;
   }
   document.body.append(root);
-  return { root, parts: buildDropdown(root, { items, label: 'Sort' }) };
+  return { root, parts: buildDropdown(root, { items, trigger: 'Sort' }) };
 }
 
 describe('buildDropdown', () => {
   it('throws when items is empty', () => {
     const root = document.createElement('div');
-    expect(() => buildDropdown(root, { items: [] })).toThrow(
+    expect(() => buildDropdown(root, { items: [], trigger: 'Sort' })).toThrow(
       'KDropdown: at least one item is required',
     );
   });
@@ -51,7 +51,7 @@ describe('buildDropdown', () => {
     const root = document.createElement('div');
     root.id = 'nav';
     const parts = buildDropdown(root, {
-      label: 'More',
+      trigger: 'More',
       items: [{ label: 'Docs', href: '/docs' }],
     });
     expect(parts.items[0]?.tagName).toBe('A');
@@ -62,7 +62,7 @@ describe('buildDropdown', () => {
 describe('setLabel', () => {
   it('relabels the trigger without dropping the chevron', () => {
     const { root, parts } = built('sort');
-    const state = { ...parts, open: false };
+    const state = { ...parts, open: false, select: false };
     setLabel(state, 'Order');
     expect(parts.trigger.querySelector('.k-dropdown__label')?.textContent).toBe(
       'Order',
@@ -75,7 +75,7 @@ describe('setLabel', () => {
 describe('setOpen', () => {
   it('toggles hidden and aria-expanded', () => {
     const { root, parts } = built('sort');
-    const state = { ...parts, open: false };
+    const state = { ...parts, open: false, select: false };
     setOpen(state, true);
     expect(state.open).toBe(true);
     expect(state.menu.hidden).toBe(false);

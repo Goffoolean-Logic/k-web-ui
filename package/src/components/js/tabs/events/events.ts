@@ -143,6 +143,11 @@ export function selectTab(
     const panel = state.panels[i];
     if (panel) {
       panel.hidden = !on;
+      if (on) {
+        panel.removeAttribute('inert');
+      } else {
+        panel.setAttribute('inert', '');
+      }
     }
   }
 
@@ -157,7 +162,7 @@ export function selectTab(
   }
 
   if (emit) {
-    emitKChange(state.root, { selected: index });
+    emitKChange(state.root, { index });
   }
 }
 

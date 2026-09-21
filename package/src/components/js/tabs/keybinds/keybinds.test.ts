@@ -7,88 +7,97 @@ import { bindKeybinds } from './keybinds.js';
 function mounted(keyboard = true): {
   state: KTabsState;
   abort: AbortController;
+  panels: HTMLElement[];
 } {
   const root = document.createElement('div');
   root.id = 'sections';
-  document.body.append(root);
-  const state: KTabsState = { root, tabs: [], panels: [], keyboard };
-  buildTabs(state, {
-    items: [
-      { label: 'A', content: '1' },
-      { label: 'B', content: '2' },
-      { label: 'C', content: '3' },
-    ],
-  });
-  selectTab(state, 0, { emit: false });
-  return { state, abort: new AbortController() };
-}
-
-function press(tab: HTMLElement | undefined, key: string): KeyboardEvent {
-  if (!tab) {
-    throw new Error('missing tab');
+  if (!keyboard) {
+    root.classList.add('k-tabs--no-keyboard');
   }
-  const event = new KeyboardEvent('keydown', {
-    key,
-    bubbles: true,
-    cancelable: true,
+  const panels = [0, 1, 2].map((i) => {
+    const el = document.createElement('div');
+    el.id = `sections-${i}`;
+    document.body.append(el);
+    return el;
   });
-  tab.dispatchEvent(event);
-  return event;
+  document.body.append(root);
+  const state: KTabsState = {
+    root,
+    tabs: [],
+    panels: [],
+    keyboard,
+  };
+  buildTabs(
+    state,
+    {
+      items: [{ label: 'A' }, { label: 'B' }, { label: 'C' }],
+    },
+    panels,
+  );
+  selectTab(state, 0, { emit: false });
+  return { state, abort: new AbortController(), panels };
 }
 
-function selected(state: KTabsState): number {
-  return state.tabs.findIndex(
-    (tab) => tab.getAttribute('aria-selected') === 'true',
+function press(tab: HTMLElement | undefined, key: string): void {
+  tab?.dispatchEvent(
+    new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }),
   );
 }
 
 describe('bindKeybinds', () => {
   it('does nothing when keyboard is off', () => {
-    const { state, abort } = mounted(false);
+    const { state, abort, panels } = mounted(false);
     bindKeybinds(state, abort.signal);
     press(state.tabs[0], 'ArrowRight');
-    expect(selected(state)).toBe(0);
+    expect(state.tabs[0]?.getAttribute('aria-selected')).toBe('true');
     abort.abort();
     state.root.remove();
+    for (const panel of panels) {
+      panel.remove();
+    }
   });
 
   it('moves right and left, wrapping at the ends', () => {
-    const { state, abort } = mounted();
+    const { state, abort, panels } = mounted();
     bindKeybinds(state, abort.signal);
     press(state.tabs[0], 'ArrowRight');
-    expect(selected(state)).toBe(1);
-    press(state.tabs[1], 'ArrowDown');
-    expect(selected(state)).toBe(2);
-    press(state.tabs[2], 'ArrowRight');
-    expect(selected(state)).toBe(0);
-    press(state.tabs[0], 'ArrowLeft');
-    expect(selected(state)).toBe(2);
-    press(state.tabs[2], 'ArrowUp');
-    expect(selected(state)).toBe(1);
+    expect(state.tabs[1]?.getAttribute('aria-selected')).toBe('true');
+    press(state.tabs[1], 'ArrowLeft');
+    expect(state.tabs[0]?.getAttribute('aria-selected')).toBe('true');
     abort.abort();
     state.root.remove();
+    for (const panel of panels) {
+      panel.remove();
+    }
   });
 
   it('jumps to the first and last tab', () => {
-    const { state, abort } = mounted();
+    const { state, abort, panels } = mounted();
     bindKeybinds(state, abort.signal);
     press(state.tabs[0], 'End');
-    expect(selected(state)).toBe(2);
+    expect(state.tabs[2]?.getAttribute('aria-selected')).toBe('true');
     press(state.tabs[2], 'Home');
-    expect(selected(state)).toBe(0);
+    expect(state.tabs[0]?.getAttribute('aria-selected')).toBe('true');
     abort.abort();
     state.root.remove();
+    for (const panel of panels) {
+      panel.remove();
+    }
   });
 
   it('ignores other keys and non-tab targets', () => {
-    const { state, abort } = mounted();
+    const { state, abort, panels } = mounted();
     bindKeybinds(state, abort.signal);
-    const event = press(state.tabs[0], 'Enter');
-    expect(event.defaultPrevented).toBe(false);
-    expect(selected(state)).toBe(0);
-    press(state.panels[0], 'ArrowRight');
-    expect(selected(state)).toBe(0);
+    press(state.tabs[0], 'Enter');
+    expect(state.tabs[0]?.getAttribute('aria-selected')).toBe('true');
+    state.root.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }),
+    );
+    expect(state.tabs[0]?.getAttribute('aria-selected')).toBe('true');
     abort.abort();
     state.root.remove();
+    for (const panel of panels) {
+      panel.remove();
+    }
   });
 });

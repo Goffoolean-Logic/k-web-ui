@@ -1,13 +1,14 @@
 ---
 interface Props {
-  id?: string;
+  id: string;
   class?: string;
-  variant?: string;
-  size?: string;
+  variant?: 'info' | 'success' | 'warning' | 'danger';
+  size?: 'sm' | 'lg';
   indeterminate?: boolean;
-  value?: string;
-  max?: string;
+  value?: number;
+  max?: number;
   label?: string;
+  format?: string;
   text?: string;
 }
 
@@ -18,23 +19,32 @@ const {
   size,
   indeterminate = false,
   value,
-  max = '100',
+  max = 100,
   label,
+  format,
   text,
 } = Astro.props;
+
+const options = {
+  ...(value === undefined ? {} : { value }),
+  max,
+  ...(label ? { label } : {}),
+  ...(format ? { format } : {}),
+  ...(text ? { text } : {}),
+  ...(variant ? { variant } : {}),
+  ...(size ? { size } : {}),
+  ...(indeterminate ? { indeterminate: true } : {}),
+};
 ---
 
-<k-gauge
-  id={id}
-  class:list={['k-gauge', className]}
-  variant={variant}
-  size={size}
-  indeterminate={indeterminate ? '' : undefined}
-  value={value}
-  max={max}
-  label={label}
-  text={text}></k-gauge>
+<k-gauge id={id} class:list={['k-gauge', className]}></k-gauge>
 
 <script>
   import 'k-web-ui/js';
+</script>
+
+<script is:inline define:vars={{ id, options }}>
+  customElements.whenDefined('k-gauge').then(() => {
+    document.getElementById(id).options = options;
+  });
 </script>

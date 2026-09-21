@@ -5,7 +5,6 @@ import './index.js';
 function host(): KDropdown {
   const el = document.createElement('k-dropdown');
   el.id = 'sort';
-  el.setAttribute('label', 'Sort');
   return el;
 }
 
@@ -14,7 +13,7 @@ const options = [{ label: 'Name' }, { label: 'Date' }];
 describe('k-dropdown', () => {
   it('builds trigger, menu, items, and ARIA from the options attribute', () => {
     const dropdown = host();
-    dropdown.setAttribute('options', JSON.stringify(options));
+    dropdown.options = { trigger: 'Sort', items: options };
     document.body.append(dropdown);
 
     const trigger = dropdown.querySelector('.k-dropdown__trigger');
@@ -32,7 +31,7 @@ describe('k-dropdown', () => {
 
   it('opens and closes from the trigger', () => {
     const dropdown = host();
-    dropdown.options = options;
+    dropdown.options = { trigger: 'Sort', items: options };
     document.body.append(dropdown);
     const trigger = dropdown.querySelector<HTMLButtonElement>(
       '.k-dropdown__trigger',
@@ -47,7 +46,7 @@ describe('k-dropdown', () => {
 
   it('closes on outside click and Escape', () => {
     const dropdown = host();
-    dropdown.options = options;
+    dropdown.options = { trigger: 'Sort', items: options };
     document.body.append(dropdown);
     const trigger = dropdown.querySelector<HTMLButtonElement>(
       '.k-dropdown__trigger',
@@ -68,12 +67,12 @@ describe('k-dropdown', () => {
 
   it('relabels the trigger without rebuilding the menu', () => {
     const dropdown = host();
-    dropdown.options = options;
+    dropdown.options = { trigger: 'Sort', items: options };
     document.body.append(dropdown);
     const trigger = dropdown.querySelector('.k-dropdown__trigger');
     const menu = dropdown.querySelector('.k-dropdown__menu');
 
-    dropdown.setAttribute('label', 'Order');
+    dropdown.options = { trigger: 'Order', items: options };
 
     expect(dropdown.querySelector('.k-dropdown__trigger')).toBe(trigger);
     expect(dropdown.querySelector('.k-dropdown__menu')).toBe(menu);
@@ -86,9 +85,9 @@ describe('k-dropdown', () => {
 
   it('setting options again does not double-bind', () => {
     const dropdown = host();
-    dropdown.options = options;
+    dropdown.options = { trigger: 'Sort', items: options };
     document.body.append(dropdown);
-    dropdown.options = options;
+    dropdown.options = { trigger: 'Sort', items: options };
     expect(dropdown.querySelectorAll('.k-dropdown__trigger')).toHaveLength(1);
     expect(dropdown.querySelectorAll('.k-dropdown__item')).toHaveLength(2);
     dropdown.remove();
@@ -96,7 +95,7 @@ describe('k-dropdown', () => {
 
   it('fires k-change when an item is clicked', () => {
     const dropdown = host();
-    dropdown.options = options;
+    dropdown.options = { trigger: 'Sort', items: options };
     document.body.append(dropdown);
     const onChange = vi.fn();
     dropdown.addEventListener('k-change', onChange);
@@ -113,19 +112,33 @@ describe('k-dropdown', () => {
     expect(event.detail.label).toBe('Date');
     dropdown.remove();
   });
+
+  it('writes the pick onto the trigger when select is on', () => {
+    const dropdown = host();
+    dropdown.options = { trigger: 'Sort', items: options, select: true };
+    document.body.append(dropdown);
+
+    dropdown.select(1);
+
+    expect(
+      dropdown.trigger?.querySelector('.k-dropdown__label')?.textContent,
+    ).toBe('Date');
+    expect(dropdown.options?.trigger).toBe('Date');
+    dropdown.remove();
+  });
 });
 
 describe('k-dropdown api', () => {
   function mounted(): KDropdown {
     const dropdown = host();
-    dropdown.options = options;
+    dropdown.options = { trigger: 'Sort', items: options };
     document.body.append(dropdown);
     return dropdown;
   }
 
   it('reports count and labels with or without a connection', () => {
     const dropdown = host();
-    dropdown.options = options;
+    dropdown.options = { trigger: 'Sort', items: options };
     expect(dropdown.count).toBe(2);
     expect(dropdown.labels).toEqual(['Name', 'Date']);
     document.body.append(dropdown);
@@ -209,7 +222,10 @@ describe('k-dropdown api', () => {
   it('updateOption patches one option', () => {
     const dropdown = mounted();
     dropdown.updateOption(1, { href: '/date' });
-    expect(dropdown.options[1]).toEqual({ label: 'Date', href: '/date' });
+    expect(dropdown.options?.items[1]).toEqual({
+      label: 'Date',
+      href: '/date',
+    });
     expect(dropdown.getItem(1)).toBeInstanceOf(HTMLAnchorElement);
     dropdown.remove();
   });
@@ -225,7 +241,7 @@ describe('k-dropdown api', () => {
 
   it('api calls are inert while disconnected', () => {
     const dropdown = host();
-    dropdown.options = options;
+    dropdown.options = { trigger: 'Sort', items: options };
     expect(() => {
       dropdown.openMenu();
       dropdown.closeMenu();

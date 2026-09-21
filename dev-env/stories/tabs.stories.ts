@@ -2,37 +2,22 @@ import type { Meta, StoryObj } from '@storybook/html-vite';
 import type { KTabItem, KTabs } from 'k-web-ui/js';
 import 'k-web-ui/js';
 
-const PANELS: KTabItem[] = [
-  {
-    label: 'Overview',
-    content: 'Project home, recent activity, and pinned files.',
-  },
-  {
-    label: 'Activity',
-    content: 'Comments and status changes from the last 7 days.',
-  },
-  {
-    label: 'Settings',
-    content: 'Members, billing, and notification defaults.',
-  },
+const LABELS: KTabItem[] = [
+  { label: 'Overview' },
+  { label: 'Activity' },
+  { label: 'Settings' },
 ];
 
-const ICON_PANELS: KTabItem[] = [
-  {
-    label: 'Overview',
-    icon: 'info',
-    content: 'Project home, recent activity, and pinned files.',
-  },
-  {
-    label: 'Activity',
-    icon: 'success',
-    content: 'Comments and status changes from the last 7 days.',
-  },
-  {
-    label: 'Settings',
-    icon: 'warning',
-    content: 'Members, billing, and notification defaults.',
-  },
+const ICON_LABELS: KTabItem[] = [
+  { label: 'Overview', icon: 'info' },
+  { label: 'Activity', icon: 'success' },
+  { label: 'Settings', icon: 'warning' },
+];
+
+const TEXT = [
+  'Project home, recent activity, and pinned files.',
+  'Comments and status changes from the last 7 days.',
+  'Members, billing, and notification defaults.',
 ];
 
 const meta: Meta = {
@@ -44,77 +29,51 @@ export default meta;
 
 type Story = StoryObj;
 
-function paintTabs(
-  root: KTabs,
-  panels: KTabItem[] = PANELS,
-  selected?: number,
-): void {
-  root.setAttribute('label', 'Sections');
-  if (selected != null) {
-    root.setAttribute('selected', String(selected));
-  }
-  root.setAttribute('panels', JSON.stringify(panels));
-}
-
-function tabsRoot(
+/**
+ * The host takes the labels. The panels are plain divs named after it:
+ * `#id-0`, `#id-1`, `#id-2`.
+ */
+function tabs(
   id: string,
   {
-    selected,
-    panels = PANELS,
+    labels = LABELS,
     large = false,
-  }: { selected?: number; panels?: KTabItem[]; large?: boolean } = {},
-): KTabs {
-  const root = document.createElement('k-tabs');
-  root.id = id;
-  root.className = 'k-tabs';
-  if (large) {
-    root.setAttribute('size', 'lg');
+  }: { labels?: KTabItem[]; large?: boolean } = {},
+): HTMLDivElement {
+  const wrap = document.createElement('div');
+
+  const host = document.createElement('k-tabs');
+  host.id = id;
+  host.className = large ? 'k-tabs k-tabs--lg' : 'k-tabs';
+  host.setAttribute('aria-label', 'Sections');
+  wrap.append(host);
+
+  for (const [index, line] of TEXT.entries()) {
+    const panel = document.createElement('div');
+    panel.id = `${id}-${index}`;
+    panel.textContent = line;
+    wrap.append(panel);
   }
-  paintTabs(root, panels, selected);
-  return root;
+
+  host.options = labels;
+  return wrap;
 }
 
-/**
- * Empty `<k-tabs class="k-tabs">`. `panels` is an attribute. The element
- * builds the rest.
- */
 export const Default: Story = {
-  render: () => tabsRoot('section-tabs'),
-  play: ({ canvasElement }) => {
-    const root = canvasElement.querySelector<KTabs>('#section-tabs');
-    if (root) {
-      paintTabs(root);
-    }
-  },
-};
-
-export const SecondSelected: Story = {
-  render: () => tabsRoot('section-tabs-second', { selected: 1 }),
-  play: ({ canvasElement }) => {
-    const root = canvasElement.querySelector<KTabs>('#section-tabs-second');
-    if (root) {
-      paintTabs(root, PANELS, 1);
-    }
-  },
+  render: () => tabs('section-tabs'),
 };
 
 export const WithIcons: Story = {
-  render: () => tabsRoot('section-tabs-icons', { panels: ICON_PANELS }),
-  play: ({ canvasElement }) => {
-    const root = canvasElement.querySelector<KTabs>('#section-tabs-icons');
-    if (root) {
-      paintTabs(root, ICON_PANELS);
-    }
-  },
+  render: () => tabs('section-tabs-icons', { labels: ICON_LABELS }),
 };
 
 export const Large: Story = {
-  render: () =>
-    tabsRoot('section-tabs-lg', { panels: ICON_PANELS, large: true }),
+  render: () => tabs('section-tabs-lg', { labels: ICON_LABELS, large: true }),
+};
+
+export const SecondSelected: Story = {
+  render: () => tabs('section-tabs-second'),
   play: ({ canvasElement }) => {
-    const root = canvasElement.querySelector<KTabs>('#section-tabs-lg');
-    if (root) {
-      paintTabs(root, ICON_PANELS);
-    }
+    canvasElement.querySelector<KTabs>('#section-tabs-second')?.select(1);
   },
 };

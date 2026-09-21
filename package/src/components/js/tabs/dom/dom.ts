@@ -1,5 +1,4 @@
 import { createIcon } from '../../icon.js';
-import { fill } from '../../root.js';
 import type { KTabItem, KTabsOptions, KTabsState } from '../models/models.js';
 
 export function tabFromEvent(
@@ -25,18 +24,24 @@ export function setTabsLabel(state: KTabsState, label: string | null): void {
   list.removeAttribute('aria-label');
 }
 
-export function buildTabs(state: KTabsState, options: KTabsOptions): void {
+export function buildTabs(
+  state: KTabsState,
+  options: KTabsOptions,
+  panels: HTMLElement[],
+): void {
   if (options.items.length === 0) {
     throw new Error('KTabs: at least one item is required');
   }
+  if (options.items.length !== panels.length) {
+    throw new Error('KTabs: options length must match content nodes');
+  }
 
-  const hostId = state.root.id || 'k-tabs';
+  const hostId = state.root.id;
   const list = document.createElement('div');
   list.className = 'k-tabs__list';
   list.setAttribute('role', 'tablist');
-  if (options.label) {
-    list.setAttribute('aria-label', options.label);
-  }
+  const name = state.root.getAttribute('aria-label') || hostId;
+  list.setAttribute('aria-label', name);
 
   const ink = document.createElement('span');
   ink.className = 'k-tabs__ink';
@@ -44,42 +49,37 @@ export function buildTabs(state: KTabsState, options: KTabsOptions): void {
   list.append(ink);
 
   const tabs: HTMLElement[] = [];
-  const panels: HTMLElement[] = [];
 
   for (const [i, item] of options.items.entries()) {
+    const panel = panels[i];
+    if (!panel) {
+      throw new Error('KTabs: missing panel');
+    }
     const tab = document.createElement('button');
     tab.type = 'button';
     tab.className = 'k-tabs__tab';
     tab.setAttribute('role', 'tab');
     tab.id = `${hostId}-tab-${i}`;
-    tab.setAttribute('aria-controls', `${hostId}-panel-${i}`);
+    tab.setAttribute('aria-controls', panel.id);
     paintTab(tab, item);
 
-    const panel = document.createElement('div');
-    panel.className = 'k-tabs__panel';
+    panel.classList.add('k-tabs__panel');
     panel.setAttribute('role', 'tabpanel');
-    panel.id = `${hostId}-panel-${i}`;
     panel.setAttribute('aria-labelledby', tab.id);
-    fill(panel, item.content);
 
     tabs.push(tab);
-    panels.push(panel);
     list.append(tab);
   }
 
   state.tabs = tabs;
   state.panels = panels;
   state.ink = ink;
-  state.root.replaceChildren(list, ...panels);
+  state.root.replaceChildren(list);
 }
 
 function paintTab(tab: HTMLElement, item: KTabItem): void {
   if (item.icon !== undefined) {
-    tab.append(
-      typeof item.icon === 'string' ? createIcon(item.icon) : item.icon,
-    );
+    tab.append(createIcon(item.icon));
   }
-  if (item.label !== undefined) {
-    tab.append(item.label);
-  }
+  tab.append(item.label);
 }

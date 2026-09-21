@@ -5,25 +5,21 @@
  */
 import { DOCS_THEMES } from '../lib/themes';
 
-const options = JSON.stringify(
-  DOCS_THEMES.map((theme) => ({ label: theme.label })),
-);
+const items = DOCS_THEMES.map((theme) => ({ label: theme.label }));
 const id = `docs-theme-${crypto.randomUUID()}`;
 const initial = DOCS_THEMES[0]?.label ?? 'K-light';
 ---
 
 <starlight-theme-select>
-  <k-dropdown
-    id={id}
-    class="k-dropdown"
-    align="end"
-    label={initial}
-    options={options}></k-dropdown>
+  <k-dropdown id={id} class="k-dropdown k-dropdown--end"></k-dropdown>
 </starlight-theme-select>
 
 {/* Inlined to avoid FOUC. Uses global scope from `ThemeProvider.astro` */}
-<script is:inline>
-  StarlightThemeProvider.updatePickers();
+<script is:inline define:vars={{ id, items, initial }}>
+  customElements.whenDefined('k-dropdown').then(() => {
+    document.getElementById(id).options = { trigger: initial, items };
+    StarlightThemeProvider.updatePickers();
+  });
 </script>
 
 <script>

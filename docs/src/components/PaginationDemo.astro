@@ -2,13 +2,20 @@
 interface Props {
   id?: string;
   count?: number;
-  page?: number;
 }
 
-const { id = 'docs-pagination', count = 12, page = 5 } = Astro.props;
+const { id = 'docs-pagination', count = 12 } = Astro.props;
+const pages = Array.from({ length: count }, (_, index) => index);
 ---
 
-<k-pagination id={id} class="k-pagination" count={count} page={page}></k-pagination>
+{
+  pages.map((index) => (
+    <div id={`${id}-${index}`}>
+      Page {index + 1} of {count}
+    </div>
+  ))
+}
+<k-pagination id={id} class="k-pagination"></k-pagination>
 
 <script>
   import 'k-web-ui/js';

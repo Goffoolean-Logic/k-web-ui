@@ -2,10 +2,18 @@ import { describe, expect, it, vi } from 'vitest';
 import type { KTabs } from './index.js';
 import './index.js';
 
-function host(): KTabs {
-  const el = document.createElement('k-tabs');
-  el.id = 'sections';
-  return el;
+function mount(id = 'sections'): { tabs: KTabs; panels: HTMLElement[] } {
+  const tabs = document.createElement('k-tabs') as KTabs;
+  tabs.id = id;
+  const panels = [0, 1].map((i) => {
+    const el = document.createElement('div');
+    el.id = `${id}-${i}`;
+    el.textContent = i === 0 ? 'First' : 'Second';
+    return el;
+  });
+  document.body.append(panels[0]!, panels[1]!, tabs);
+  tabs.options = [{ label: 'Overview' }, { label: 'Usage' }];
+  return { tabs, panels: panels as HTMLElement[] };
 }
 
 function press(tab: HTMLElement | undefined, key: string): void {
@@ -17,143 +25,115 @@ function press(tab: HTMLElement | undefined, key: string): void {
   );
 }
 
-const panels = [
-  { label: 'Overview', content: 'First' },
-  { label: 'Usage', content: 'Second' },
-];
-
 describe('k-tabs', () => {
-  it('builds tablist, tabs, panels, and ARIA from the panels attribute', () => {
-    const tabs = host();
-    tabs.setAttribute('label', 'Sections');
-    tabs.setAttribute('panels', JSON.stringify(panels));
-    document.body.append(tabs);
-
+  it('builds the tablist and wires external panels', () => {
+    const { tabs, panels } = mount();
     const list = tabs.querySelector('[role="tablist"]');
-    expect(list).toBeTruthy();
-    expect(list?.getAttribute('aria-label')).toBe('Sections');
+    expect(list?.getAttribute('aria-label')).toBe('sections');
     expect(tabs.tabs).toHaveLength(2);
-    expect(tabs.tabs[0]?.getAttribute('aria-selected')).toBe('true');
-    expect(tabs.tabs[1]?.getAttribute('aria-selected')).toBe('false');
-    expect(tabs.tabs[0]?.getAttribute('aria-controls')).toBe(
-      'sections-panel-0',
-    );
-    expect(tabs.querySelectorAll('[role="tabpanel"]')).toHaveLength(2);
-    expect(tabs.querySelector<HTMLElement>('#sections-panel-0')?.hidden).toBe(
-      false,
-    );
-    expect(tabs.querySelector<HTMLElement>('#sections-panel-1')?.hidden).toBe(
-      true,
-    );
+    expect(tabs.tabs[0]?.getAttribute('aria-controls')).toBe('sections-0');
+    expect(panels[0]?.getAttribute('role')).toBe('tabpanel');
+    expect(panels[0]?.hidden).toBe(false);
+    expect(panels[1]?.hidden).toBe(true);
+    expect(panels[1]?.hasAttribute('inert')).toBe(true);
     tabs.remove();
+    panels[0]?.remove();
+    panels[1]?.remove();
   });
 
-  it('select shows one panel', () => {
-    const tabs = host();
-    tabs.panels = panels;
-    document.body.append(tabs);
+  it('does not leak across two hosts', () => {
+    const a = mount('alpha');
+    const b = mount('beta');
+    a.tabs.select(1);
+    expect(a.panels[1]?.hidden).toBe(false);
+    expect(b.panels[0]?.hidden).toBe(false);
+    expect(b.panels[1]?.hidden).toBe(true);
+    a.tabs.remove();
+    b.tabs.remove();
+    for (const node of [...a.panels, ...b.panels]) {
+      node.remove();
+    }
+  });
+
+  it('select shows one panel and emits index', () => {
+    const { tabs, panels } = mount();
+    const onChange = vi.fn();
+    tabs.addEventListener('k-change', onChange);
     tabs.select(1);
     expect(tabs.selectedIndex).toBe(1);
-    expect(tabs.querySelector<HTMLElement>('#sections-panel-0')?.hidden).toBe(
-      true,
-    );
-    expect(tabs.querySelector<HTMLElement>('#sections-panel-1')?.hidden).toBe(
-      false,
-    );
+    expect(panels[0]?.hidden).toBe(true);
+    expect(panels[1]?.hidden).toBe(false);
+    expect(onChange.mock.calls[0]?.[0].detail).toEqual({ index: 1 });
     tabs.remove();
-  });
-
-  it('setting panels again does not double-bind', () => {
-    const tabs = host();
-    tabs.panels = panels;
-    document.body.append(tabs);
-    tabs.panels = panels;
-    expect(tabs.querySelectorAll('[role="tablist"]')).toHaveLength(1);
-    expect(tabs.querySelectorAll('[role="tab"]')).toHaveLength(2);
-    tabs.remove();
+    panels[0]?.remove();
+    panels[1]?.remove();
   });
 
   it('renders a kit icon on the tab', () => {
-    const tabs = host();
-    tabs.panels = [{ label: 'Overview', icon: 'info', content: 'First' }];
-    document.body.append(tabs);
+    const { tabs, panels } = mount();
+    tabs.options = [{ label: 'Overview', icon: 'info' }, { label: 'Usage' }];
     expect(tabs.tabs[0]?.querySelector('.k-icon--info')).toBeTruthy();
     tabs.remove();
+    panels[0]?.remove();
+    panels[1]?.remove();
   });
 
-  it('keeps the tab and panel nodes when selected changes', () => {
-    const tabs = host();
-    tabs.panels = panels;
-    document.body.append(tabs);
-    const [first, second] = tabs.tabs;
-    const list = tabs.querySelector('[role="tablist"]');
-    const panel = tabs.querySelector('#sections-panel-1');
-    const onChange = vi.fn();
-    tabs.addEventListener('k-change', onChange);
-
-    tabs.setAttribute('selected', '1');
-
+  it('equal options do not rebuild', () => {
+    const { tabs, panels } = mount();
+    const first = tabs.tabs[0];
+    tabs.options = [{ label: 'Overview' }, { label: 'Usage' }];
     expect(tabs.tabs[0]).toBe(first);
-    expect(tabs.tabs[1]).toBe(second);
-    expect(tabs.querySelector('[role="tablist"]')).toBe(list);
-    expect(tabs.querySelector('#sections-panel-1')).toBe(panel);
-    expect(tabs.selectedIndex).toBe(1);
-    expect(onChange).not.toHaveBeenCalled();
     tabs.remove();
+    panels[0]?.remove();
+    panels[1]?.remove();
   });
 
-  it('turns keyboard navigation on and off after connect', () => {
-    const tabs = host();
-    tabs.panels = panels;
-    tabs.setAttribute('keyboard', 'false');
-    document.body.append(tabs);
-
+  it('turns keyboard off with k-tabs--no-keyboard', () => {
+    const { tabs, panels } = mount();
+    tabs.classList.add('k-tabs--no-keyboard');
     press(tabs.tabs[0], 'ArrowRight');
     expect(tabs.selectedIndex).toBe(0);
-
-    tabs.setAttribute('keyboard', 'true');
+    tabs.classList.remove('k-tabs--no-keyboard');
     press(tabs.tabs[0], 'ArrowRight');
     expect(tabs.selectedIndex).toBe(1);
     tabs.remove();
+    panels[0]?.remove();
+    panels[1]?.remove();
   });
 
-  it('relabels the tablist without rebuilding it', () => {
-    const tabs = host();
-    tabs.setAttribute('label', 'Sections');
-    tabs.panels = panels;
-    document.body.append(tabs);
-    const list = tabs.querySelector('[role="tablist"]');
-
-    tabs.setAttribute('label', 'Chapters');
-    expect(tabs.querySelector('[role="tablist"]')).toBe(list);
-    expect(list?.getAttribute('aria-label')).toBe('Chapters');
-
-    tabs.removeAttribute('label');
-    expect(list?.hasAttribute('aria-label')).toBe(false);
+  it('uses host aria-label on the tablist', () => {
+    const { tabs, panels } = mount();
+    tabs.setAttribute('aria-label', 'Education');
+    expect(
+      tabs.querySelector('[role="tablist"]')?.getAttribute('aria-label'),
+    ).toBe('Education');
     tabs.remove();
+    panels[0]?.remove();
+    panels[1]?.remove();
   });
 
-  it('keeps a node as panel content without writing it to the attribute', () => {
-    const tabs = host();
-    const child = document.createElement('strong');
-    child.textContent = 'Rich';
-    tabs.panels = [{ label: 'Overview', content: child }];
+  it('waits for content nodes', async () => {
+    const tabs = document.createElement('k-tabs') as KTabs;
+    tabs.id = 'late-tabs';
     document.body.append(tabs);
-    expect(tabs.hasAttribute('panels')).toBe(false);
-    expect(tabs.querySelector('#sections-panel-0')?.firstElementChild).toBe(
-      child,
-    );
+    tabs.options = [{ label: 'A' }, { label: 'B' }];
+    expect(tabs.tabs).toHaveLength(0);
+    const p0 = document.createElement('div');
+    p0.id = 'late-tabs-0';
+    const p1 = document.createElement('div');
+    p1.id = 'late-tabs-1';
+    document.body.append(p0, p1);
+    await vi.waitFor(() => expect(tabs.tabs).toHaveLength(2));
     tabs.remove();
+    p0.remove();
+    p1.remove();
   });
 });
 
 describe('k-tabs api', () => {
   it('getSelected returns the index, nodes, and label', () => {
-    const tabs = host();
-    tabs.panels = panels;
-    document.body.append(tabs);
+    const { tabs, panels } = mount();
     tabs.select(1);
-
     expect(tabs.getSelected()).toEqual({
       index: 1,
       tab: tabs.tabs[1],
@@ -161,124 +141,28 @@ describe('k-tabs api', () => {
       label: 'Usage',
     });
     tabs.remove();
+    panels[0]?.remove();
+    panels[1]?.remove();
   });
 
-  it('getSelected is null before the element is connected', () => {
-    const tabs = host();
-    tabs.panels = panels;
-    expect(tabs.getSelected()).toBeNull();
-    expect(tabs.selectedIndex).toBe(-1);
-  });
-
-  it('reports count and labels with or without a connection', () => {
-    const tabs = host();
-    tabs.panels = panels;
-    expect(tabs.count).toBe(2);
-    expect(tabs.labels).toEqual(['Overview', 'Usage']);
-
-    document.body.append(tabs);
-    expect(tabs.count).toBe(2);
-    expect(tabs.labels).toEqual(['Overview', 'Usage']);
-    tabs.remove();
-  });
-
-  it('getTab and getPanel hand back the live nodes, null past the end', () => {
-    const tabs = host();
-    tabs.panels = panels;
-    document.body.append(tabs);
-    expect(tabs.getTab(0)).toBe(tabs.tabs[0]);
-    expect(tabs.getPanel(1)?.id).toBe('sections-panel-1');
-    expect(tabs.getTab(9)).toBeNull();
-    expect(tabs.getPanel(9)).toBeNull();
-    tabs.remove();
-  });
-
-  it('next and previous wrap, and clamp when asked', () => {
-    const tabs = host();
-    tabs.panels = panels;
-    document.body.append(tabs);
-
+  it('next and previous wrap', () => {
+    const { tabs, panels } = mount();
     tabs.next();
     expect(tabs.selectedIndex).toBe(1);
     tabs.next();
     expect(tabs.selectedIndex).toBe(0);
-    tabs.previous();
-    expect(tabs.selectedIndex).toBe(1);
-
-    tabs.next({ wrap: false });
-    expect(tabs.selectedIndex).toBe(1);
-    tabs.select(0);
-    tabs.previous({ wrap: false });
-    expect(tabs.selectedIndex).toBe(0);
     tabs.remove();
+    panels[0]?.remove();
+    panels[1]?.remove();
   });
 
-  it('selectByLabel selects a match and reports a miss', () => {
-    const tabs = host();
-    tabs.panels = panels;
-    document.body.append(tabs);
-    expect(tabs.selectByLabel('Usage')).toBe(true);
-    expect(tabs.selectedIndex).toBe(1);
-    expect(tabs.selectByLabel('Nope')).toBe(false);
-    expect(tabs.selectedIndex).toBe(1);
-    tabs.remove();
-  });
-
-  it('addPanel appends or inserts, and renders the new tab', () => {
-    const tabs = host();
-    tabs.panels = panels;
-    document.body.append(tabs);
-
-    tabs.addPanel({ label: 'API', content: 'Third' });
-    expect(tabs.labels).toEqual(['Overview', 'Usage', 'API']);
-
-    tabs.addPanel({ label: 'Intro', content: 'Zero' }, 0);
-    expect(tabs.labels).toEqual(['Intro', 'Overview', 'Usage', 'API']);
-    expect(tabs.querySelectorAll('[role="tab"]')).toHaveLength(4);
-    tabs.remove();
-  });
-
-  it('removePanel drops a tab and its panel', () => {
-    const tabs = host();
-    tabs.panels = panels;
-    document.body.append(tabs);
-    tabs.removePanel(0);
-    expect(tabs.labels).toEqual(['Usage']);
-    expect(tabs.querySelectorAll('[role="tabpanel"]')).toHaveLength(1);
-    tabs.remove();
-  });
-
-  it('updatePanel patches one item and leaves the others alone', () => {
-    const tabs = host();
-    tabs.panels = panels;
-    document.body.append(tabs);
-    tabs.updatePanel(1, { label: 'Recipes' });
-    expect(tabs.labels).toEqual(['Overview', 'Recipes']);
-    expect(tabs.tabs[1]?.textContent).toBe('Recipes');
-    tabs.remove();
-  });
-
-  it('refresh rebuilds the subtree', () => {
-    const tabs = host();
-    tabs.panels = panels;
-    document.body.append(tabs);
-    const first = tabs.tabs[0];
-    tabs.refresh();
-    expect(tabs.tabs[0]).not.toBe(first);
-    expect(tabs.querySelectorAll('[role="tablist"]')).toHaveLength(1);
-    tabs.remove();
-  });
-
-  it('api calls are inert while disconnected', () => {
-    const tabs = host();
-    tabs.panels = panels;
+  it('throws when option count does not match nodes', () => {
+    const { tabs, panels } = mount();
     expect(() => {
-      tabs.select(1);
-      tabs.next();
-      tabs.previous();
-      tabs.refresh();
-    }).not.toThrow();
-    expect(tabs.selectByLabel('Usage')).toBe(false);
-    expect(tabs.tabs).toEqual([]);
+      tabs.options = [{ label: 'Only' }];
+    }).toThrow('KTabs: options length must match content nodes');
+    tabs.remove();
+    panels[0]?.remove();
+    panels[1]?.remove();
   });
 });

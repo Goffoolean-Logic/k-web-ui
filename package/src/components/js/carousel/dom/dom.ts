@@ -1,42 +1,39 @@
 import { createIcon } from '../../icon.js';
-import { fill } from '../../root.js';
-import type { KCarouselOptions, KCarouselState } from '../models/models.js';
+import type { KCarouselState } from '../models/models.js';
 
-export function buildCarousel(
-  root: HTMLElement,
-  options: KCarouselOptions,
-): Omit<
-  KCarouselState,
-  | 'index'
-  | 'loop'
-  | 'keyboard'
-  | 'autoscroll'
-  | 'autoscrollPaused'
-  | 'autoscrollTimer'
-> {
-  if (options.items.length === 0) {
-    throw new Error('KCarousel: at least one item is required');
+/**
+ * Slides stay where they are. Their parent becomes the track (flex + overflow).
+ * Transform is applied via `--k-carousel-index` on each slide.
+ */
+export function bindTrack(slides: HTMLElement[]): HTMLElement {
+  if (slides.length === 0) {
+    throw new Error('KCarousel: at least one slide is required');
+  }
+  const parent = slides[0]?.parentElement;
+  if (!parent) {
+    throw new Error('KCarousel: slides need a parent');
+  }
+  const children = [...parent.children];
+  if (
+    children.length !== slides.length ||
+    children.some((child, i) => child !== slides[i])
+  ) {
+    throw new Error('KCarousel: slides must sit alone in their track parent');
   }
 
-  const viewport = document.createElement('div');
-  viewport.className = 'k-carousel__viewport';
-
-  const track = document.createElement('div');
-  track.className = 'k-carousel__track';
-
-  const slides: HTMLElement[] = [];
-  for (const [i, item] of options.items.entries()) {
-    const slide = document.createElement('div');
-    slide.className = 'k-carousel__slide';
+  parent.classList.add('k-carousel__track');
+  for (const [i, slide] of slides.entries()) {
+    slide.classList.add('k-carousel__slide');
     slide.setAttribute('aria-roledescription', 'slide');
-    slide.setAttribute('aria-label', `${i + 1} of ${options.items.length}`);
-    fill(slide, item.content);
-    slides.push(slide);
-    track.append(slide);
+    slide.setAttribute('aria-label', `${i + 1} of ${slides.length}`);
   }
+  return parent;
+}
 
-  viewport.append(track);
-
+export function buildControls(
+  root: HTMLElement,
+  count: number,
+): Pick<KCarouselState, 'prev' | 'next' | 'dots'> {
   const prev = document.createElement('button');
   prev.type = 'button';
   prev.className = 'k-carousel__prev';
@@ -52,7 +49,7 @@ export function buildCarousel(
   const dotsWrap = document.createElement('div');
   dotsWrap.className = 'k-carousel__dots';
   const dots: HTMLButtonElement[] = [];
-  for (let i = 0; i < options.items.length; i += 1) {
+  for (let i = 0; i < count; i += 1) {
     const dot = document.createElement('button');
     dot.type = 'button';
     dot.className = 'k-carousel__dot';
@@ -61,15 +58,24 @@ export function buildCarousel(
     dotsWrap.append(dot);
   }
 
-  root.replaceChildren(viewport, prev, next, dotsWrap);
-  return { root, track, slides, dots, prev, next };
+  root.replaceChildren(prev, next, dotsWrap);
+  return { prev, next, dots };
 }
 
 export function paint(state: KCarouselState): void {
-  state.track.style.transform = `translateX(-${state.index * 100}%)`;
+  state.track.style.setProperty('--k-carousel-index', String(state.index));
   const last = state.slides.length - 1;
   state.prev.disabled = !state.loop && state.index === 0;
   state.next.disabled = !state.loop && state.index === last;
+  for (const [i, slide] of state.slides.entries()) {
+    const off = i !== state.index;
+    slide.setAttribute('aria-hidden', String(off));
+    if (off) {
+      slide.setAttribute('inert', '');
+    } else {
+      slide.removeAttribute('inert');
+    }
+  }
   for (const [i, dot] of state.dots.entries()) {
     if (i === state.index) {
       dot.setAttribute('aria-current', 'true');

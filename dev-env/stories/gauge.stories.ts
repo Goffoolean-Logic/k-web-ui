@@ -1,113 +1,79 @@
 import type { Meta, StoryObj } from '@storybook/html-vite';
-import type { KGauge } from 'k-web-ui/js';
+import type { KGauge, KGaugeOptions } from 'k-web-ui/js';
 import 'k-web-ui/js';
 
-const live = new Map<string, { chrome: string; el: KGauge }>();
+/** Keep one host per story so value changes ease instead of remounting. */
+const live = new Map<string, KGauge>();
 
-interface GaugeArgs {
-  value?: number;
-  max: number;
-  size: 'sm' | 'md' | 'lg';
-  variant: 'primary' | 'info' | 'success' | 'warning' | 'danger';
-  label: string;
-  text: string;
-  indeterminate: boolean;
-}
-
-const DEFAULTS: GaugeArgs = {
+const DEFAULTS: KGaugeOptions = {
   value: 64,
   max: 100,
-  size: 'md',
-  variant: 'primary',
   label: 'Upload',
-  text: '64%',
-  indeterminate: false,
+  format: '%',
 };
 
-function paintGauge(el: KGauge, args: GaugeArgs): void {
-  el.className = 'k-gauge';
-  el.setAttribute('max', String(args.max));
-  if (args.indeterminate || args.value === undefined) {
-    el.removeAttribute('value');
-  } else {
-    el.setAttribute('value', String(args.value));
-  }
-  if (args.label) {
-    el.setAttribute('label', args.label);
-  } else {
-    el.removeAttribute('label');
-  }
-  if (args.text) {
-    el.setAttribute('text', args.text);
-  } else {
-    el.removeAttribute('text');
-  }
-  if (args.size !== 'md') {
-    el.setAttribute('size', args.size);
-  } else {
-    el.removeAttribute('size');
-  }
-  if (args.variant !== 'primary') {
-    el.setAttribute('variant', args.variant);
-  } else {
-    el.removeAttribute('variant');
-  }
-  if (args.indeterminate) {
-    el.setAttribute('indeterminate', '');
-  } else {
-    el.removeAttribute('indeterminate');
-  }
+function toOptions(args: KGaugeOptions): KGaugeOptions {
+  return {
+    ...args,
+    // Storybook text controls use ""; blank must not shadow format.
+    format: args.format?.trim() || undefined,
+    text: args.text?.trim() || undefined,
+    size: args.size || undefined,
+    variant: args.variant || undefined,
+    indeterminate: args.indeterminate || undefined,
+  };
 }
 
-function gaugeRoot(id: string, overrides: Partial<GaugeArgs> = {}): KGauge {
-  const args = { ...DEFAULTS, ...overrides };
+/** One `options` assignment carries the reading, the caption, and the chrome. */
+function gauge(id: string, options: KGaugeOptions = DEFAULTS): KGauge {
   const el = document.createElement('k-gauge');
   el.id = id;
-  paintGauge(el, args);
+  el.className = 'k-gauge';
+  el.options = toOptions(options);
   return el;
 }
 
-function chromeKey(args: GaugeArgs): string {
-  return [args.size, args.variant, args.indeterminate, args.label].join();
-}
-
-/**
- * `<k-gauge id="upload" class="k-gauge">`. Attributes write the reading
- * and the caption.
- */
-const meta: Meta<GaugeArgs> = {
+const meta: Meta<KGaugeOptions> = {
   title: 'Components/Gauge',
   tags: ['autodocs'],
   render: (args, context) => {
     const current = live.get(context.id);
-    const chrome = chromeKey(args);
-    if (current && current.chrome === chrome) {
-      paintGauge(current.el, args);
-      return current.el;
+    if (current) {
+      current.options = toOptions(args);
+      return current;
     }
-
-    const el = gaugeRoot(`gauge-${context.id}`, args);
-    live.set(context.id, { chrome, el });
+    const el = gauge(`gauge-${context.id}`, args);
+    live.set(context.id, el);
     return el;
   },
   args: DEFAULTS,
   argTypes: {
-    value: { control: { type: 'range', min: 0, max: 100, step: 1 } },
+    value: { control: { type: 'range', min: 0, max: 1000, step: 1 } },
     max: { control: { type: 'number', min: 1 } },
-    size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
+    size: { control: 'inline-radio', options: [undefined, 'sm', 'lg'] },
     variant: {
       control: 'select',
-      options: ['primary', 'info', 'success', 'warning', 'danger'],
+      options: [undefined, 'info', 'success', 'warning', 'danger'],
     },
     label: { control: 'text' },
-    text: { control: 'text' },
+    format: {
+      control: 'select',
+      options: ['', '%', '$', '€', '£'],
+      description:
+        'Empty for a number. "%" for percent. Any other string prefixes the dial.',
+    },
+    text: {
+      control: 'text',
+      description:
+        'Optional dial override. Leave empty to let format drive the reading.',
+    },
     indeterminate: { control: 'boolean' },
   },
 };
 
 export default meta;
 
-type Story = StoryObj<GaugeArgs>;
+type Story = StoryObj<KGaugeOptions>;
 
 export const Default: Story = {};
 
@@ -121,22 +87,39 @@ const row = (...nodes: HTMLElement[]): HTMLDivElement => {
 export const Colors: Story = {
   render: () =>
     row(
-      gaugeRoot('gauge-primary', { label: 'Primary', text: '' }),
-      gaugeRoot('gauge-info', { label: 'Info', variant: 'info', text: '' }),
-      gaugeRoot('gauge-success', {
+      gauge('gauge-primary', {
+        value: 64,
+        max: 100,
+        label: 'Primary',
+        format: '%',
+      }),
+      gauge('gauge-info', {
+        value: 64,
+        max: 100,
+        label: 'Info',
+        variant: 'info',
+        format: '%',
+      }),
+      gauge('gauge-success', {
+        value: 64,
+        max: 100,
         label: 'Success',
         variant: 'success',
-        text: '',
+        format: '%',
       }),
-      gaugeRoot('gauge-warning', {
+      gauge('gauge-warning', {
+        value: 64,
+        max: 100,
         label: 'Warning',
         variant: 'warning',
-        text: '',
+        format: '%',
       }),
-      gaugeRoot('gauge-danger', {
+      gauge('gauge-danger', {
+        value: 64,
+        max: 100,
         label: 'Danger',
         variant: 'danger',
-        text: '',
+        format: '%',
       }),
     ),
 };
@@ -144,49 +127,77 @@ export const Colors: Story = {
 export const Sizes: Story = {
   render: () =>
     row(
-      gaugeRoot('gauge-sm', { label: 'Small', size: 'sm', text: '' }),
-      gaugeRoot('gauge-md', { label: 'Medium', text: '' }),
-      gaugeRoot('gauge-lg', { label: 'Large', size: 'lg', text: '' }),
+      gauge('gauge-sm', {
+        value: 64,
+        max: 100,
+        label: 'Small',
+        size: 'sm',
+        format: '%',
+      }),
+      gauge('gauge-md', { value: 64, max: 100, label: 'Medium', format: '%' }),
+      gauge('gauge-lg', {
+        value: 64,
+        max: 100,
+        label: 'Large',
+        size: 'lg',
+        format: '%',
+      }),
+    ),
+};
+
+/** Number (no format), currency (`$`), and percent (`%`) on the dial. */
+export const Formats: Story = {
+  render: () =>
+    row(
+      gauge('gauge-number', { value: 8, max: 100, label: 'Open' }),
+      gauge('gauge-currency', {
+        value: 2450,
+        max: 3000,
+        label: 'Balance',
+        format: '$',
+        variant: 'success',
+      }),
+      gauge('gauge-percent', {
+        value: 64,
+        max: 100,
+        label: 'Upload',
+        format: '%',
+        variant: 'info',
+      }),
     ),
 };
 
 export const Numbers: Story = {
   render: () =>
     row(
-      gaugeRoot('gauge-open', {
-        value: 8,
-        max: 100,
-        text: '8',
-        label: 'Open',
-      }),
-      gaugeRoot('gauge-requests', {
+      gauge('gauge-open', { value: 8, max: 100, label: 'Open' }),
+      gauge('gauge-requests', {
         value: 1024,
         max: 5000,
         variant: 'success',
-        text: '1,024',
         label: 'Requests',
       }),
-      gaugeRoot('gauge-bandwidth', {
+      gauge('gauge-bandwidth', {
         value: 12400,
         max: 20000,
         variant: 'info',
-        text: '12.4k',
         label: 'Bandwidth',
+        text: '12.4k',
       }),
-      gaugeRoot('gauge-uptime', {
+      gauge('gauge-uptime', {
         value: 99.99,
         max: 100,
         variant: 'warning',
-        text: '99.99%',
         label: 'Uptime',
+        format: '%',
       }),
     ),
 };
 
 export const Empty: Story = {
-  args: { label: 'Waiting', text: '', value: undefined },
+  args: { value: undefined, max: 100, label: 'Waiting', format: undefined },
 };
 
 export const Indeterminate: Story = {
-  args: { indeterminate: true, label: 'Syncing', text: '' },
+  args: { value: undefined, max: 100, label: 'Syncing', indeterminate: true },
 };

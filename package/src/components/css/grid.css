@@ -5,7 +5,7 @@
    * Cells are optional tiles.
    */
   :is(div.k-grid, ul.k-grid) {
-    @apply m-0 grid w-full list-none p-0;
+    @apply m-0 grid list-none p-0;
     gap: 0.75rem;
     grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
   }
