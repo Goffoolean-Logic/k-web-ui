@@ -8,6 +8,7 @@ Every docs page has a markdown twin. Start here, or take [/llms-full.txt](/llms-
 
 - [Getting started](/getting-started.md): Install the kit and put a class on a button.
 - [How it works](/how-it-works.md): How to read these docs, how the kit is put together, and how to add a theme.
+- [Changelog](/changelog.md): Release notes for the k-web-ui npm package.
 - [Showcase](/showcase.md): Kit pieces used together the way they would sit on a real page.
 - [Restyle](/showcase/restyle.md): Same markup. Your CSS. A different look.
 - [Theme playground](/theme-playground.md): Override kit tokens and copy a theme into your project.

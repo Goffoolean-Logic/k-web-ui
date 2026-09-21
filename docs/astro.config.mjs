@@ -43,6 +43,7 @@ export default defineConfig({
       sidebar: [
         { label: 'Getting started', slug: 'getting-started' },
         { label: 'How it works', slug: 'how-it-works' },
+        { label: 'Changelog', slug: 'changelog' },
         {
           label: 'Foundations',
           items: [
