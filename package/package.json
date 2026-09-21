@@ -1,6 +1,6 @@
 {
   "name": "k-web-ui",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "CSS for real HTML. A little JS when the browser cannot do the job.",
   "repository": {
     "type": "git",

@@ -58,7 +58,7 @@
     transform: rotate(-135deg);
   }
 
-  div.k-accordion__panel {
+  .k-accordion__panel {
     @apply px-4 pb-4 text-sm text-k-fg;
   }
 

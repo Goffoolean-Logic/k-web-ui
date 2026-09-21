@@ -17,7 +17,7 @@ Put title, body, and actions inside `.k-modal__box`. That box is the raised surf
 | `k-modal` | component | The dialog. Pair it with the `popover` attribute so the browser opens it. |
 | `k-modal__scrim` | part | Hide button covering the dimmed page, so a backdrop click closes. |
 | `k-modal__box` | part | The raised surface holding everything visible. |
-| `k-modal__title` | part | Name of the task. Use a real heading. |
+| `k-modal__title` | part | Name of the task. Any element; a heading is fine when the outline needs one. |
 | `k-modal__body` | part | The copy or the form. |
 | `k-modal__actions` | part | Row of buttons, aligned to the end. |
 

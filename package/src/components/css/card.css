@@ -3,23 +3,23 @@
     @apply flex flex-col shadow-k-1 rounded-k-lg border border-k-border bg-k-surface-raised;
   }
 
-  div.k-card__header {
+  .k-card__header {
     @apply flex flex-col gap-1 border-b border-k-border px-5 py-4;
   }
 
-  h3.k-card__title {
+  .k-card__title {
     @apply text-base leading-tight font-semibold text-k-fg;
   }
 
-  p.k-card__subtitle {
+  .k-card__subtitle {
     @apply text-sm text-k-fg-muted;
   }
 
-  div.k-card__body {
+  .k-card__body {
     @apply flex flex-col gap-4 px-5 py-4 text-sm text-k-fg;
   }
 
-  div.k-card__footer {
+  .k-card__footer {
     @apply flex items-center justify-end gap-2 border-t border-k-border px-5 py-3;
   }
 }

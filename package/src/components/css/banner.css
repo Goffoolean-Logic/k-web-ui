@@ -98,23 +98,23 @@
     }
   }
 
-  div.k-banner__body {
+  .k-banner__body {
     @apply flex min-w-0 flex-col gap-0.5;
   }
 
-  h3.k-banner__title {
+  .k-banner__title {
     @apply text-sm leading-tight font-semibold;
   }
 
-  p.k-banner__description {
+  .k-banner__description {
     @apply text-xs opacity-85;
   }
 
-  div.k-banner__actions {
+  .k-banner__actions {
     @apply flex flex-wrap items-center gap-2;
   }
 
-  div.k-banner--vertical div.k-banner__actions {
+  .k-banner--vertical .k-banner__actions {
     @apply justify-center;
   }
 }

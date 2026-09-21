@@ -3,7 +3,7 @@
     @apply flex flex-col gap-1.5;
   }
 
-  label.k-label {
+  .k-label {
     @apply text-sm font-medium text-k-fg;
   }
 
@@ -32,11 +32,11 @@
     @apply border-k-danger;
   }
 
-  p.k-hint {
+  .k-hint {
     @apply text-xs text-k-fg-muted;
   }
 
-  p.k-error {
+  .k-error {
     @apply text-xs text-k-danger;
   }
 }

@@ -14,7 +14,7 @@ The element is `<div class="k-card">`. Header, body, and footer are optional. Ti
 | --- | --- | --- |
 | `k-card` | component | The box. A layout shell, not a control. |
 | `k-card__header` | part | Holds the title and subtitle. Optional. |
-| `k-card__title` | part | Name of the thing. Use a real heading. |
+| `k-card__title` | part | Name of the thing. Any element; a heading is fine when the outline needs one. |
 | `k-card__subtitle` | part | Secondary line under the title. |
 | `k-card__body` | part | The copy. A card with only a body is fine. |
 | `k-card__footer` | part | Row of actions, aligned to the end. |
@@ -42,7 +42,7 @@ The full stack: identity in the header, copy in the body, an action in the foote
 
 ## Accessibility
 
-This is a grouping, not a button. Leave `onclick` off `.k-card`. The title should be a heading (`h3.k-card__title` in a normal outline). Actions belong in the footer as real buttons or links so they stay in the tab order and pick up the kit ring.
+This is a grouping, not a button. Leave `onclick` off `.k-card`. Put the name in `.k-card__title` (an `h3` is fine when it fits the page outline). Actions belong in the footer as real buttons or links so they stay in the tab order and pick up the kit ring.
 
 ## Dos and don'ts
 

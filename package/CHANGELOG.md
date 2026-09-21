@@ -5,6 +5,12 @@ All notable changes to the `k-web-ui` npm package.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/).
 
+## [0.1.5] - 2026-09-21
+
+### Changed
+
+- Text parts (card title/subtitle, modal title/body, banner title/description, label/hint/error, accordion panel) style from the class alone. Theme colors no longer require a specific tag like `h3` or `p`.
+
 ## [0.1.4] - 2026-09-21
 
 ### Changed

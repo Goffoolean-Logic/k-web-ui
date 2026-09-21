@@ -42,15 +42,15 @@
     overflow-y: auto;
   }
 
-  h3.k-modal__title {
-    @apply text-base leading-tight font-semibold;
+  .k-modal__title {
+    @apply text-base leading-tight font-semibold text-k-fg;
   }
 
-  p.k-modal__body {
+  .k-modal__body {
     @apply text-sm text-k-fg;
   }
 
-  div.k-modal__actions {
+  .k-modal__actions {
     @apply mt-2 flex justify-end gap-2;
   }
 }
