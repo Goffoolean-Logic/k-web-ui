@@ -34,7 +34,7 @@ A progress bar is `<progress class="k-progress">`. Accordion, grid, modal, sideb
 
 `import 'k-web-ui'` is the full prebuilt stylesheet. `@font-face` sits at the top of that file so the faces can start while the rest parses. `k-web-ui/fonts` is the faces alone if you want that sheet even earlier.
 
-Tailwind ships as a dependency of this package. Apps that want the compiler (so their own `w-*` / `flex` classes exist) import `k-web-ui/source` and point PostCSS at `k-web-ui/postcss`. They should not install `tailwindcss` themselves. You can also import `/base`, `/components`, and `/utilities` separately.
+Tailwind ships as a dependency of this package. Apps that want the compiler (so their own `w-*` / `flex` classes exist) import `k-web-ui/source` and point PostCSS at `k-web-ui/postcss`. They should not install `tailwindcss` themselves. That PostCSS entry also exposes the kit's Tailwind package to the Tailwind IntelliSense extension. You can also import `/base`, `/components`, and `/utilities` separately.
 
 ## Repo
 

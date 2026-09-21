@@ -38,6 +38,8 @@ To compile **your** utilities (`w-[100px]`, `flex`, arbitrary values) through th
 
 Do not import both `k-web-ui` and `k-web-ui/source`. Source already includes the kit layers plus Tailwind's theme and utilities.
 
+That same PostCSS step is what makes the Tailwind IntelliSense extension work. It does not rewrite editor settings. It exposes the kit's `tailwindcss` package so the extension can load `@theme` from `k-web-ui/source`. The app still does not add `tailwindcss` to `package.json`. After the first `ng serve` / CSS build, reload the editor window.
+
 ## Markup
 
 Classes are tied to the element. A button is a `<button>` with `.k-btn`, not a `div` you styled to look like one.
