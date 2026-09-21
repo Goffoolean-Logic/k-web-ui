@@ -16,7 +16,7 @@ import 'k-web-ui/js';
 
 Set `data-theme="k-light"` or `k-dark` on the document root.
 
-## JS components (0.2)
+## JS components
 
 Six custom elements: `k-tabs`, `k-pagination`, `k-carousel`, `k-dropdown`, `k-gauge`, `k-scrollbar`.
 
@@ -28,12 +28,12 @@ Six custom elements: `k-tabs`, `k-pagination`, `k-carousel`, `k-dropdown`, `k-ga
 | `k-pagination` | no options — count is the linked nodes |
 | `k-carousel` | no options — slides must be the only children of their parent (that parent becomes the track) |
 | `k-dropdown` | `.options = { trigger, items: [{ label, href? }], select? }` |
-| `k-gauge` | `.options = { value, max, format?, label?, text? }` plus modifier classes |
+| `k-gauge` | `.options = { value, max, format?, label?, text? }` — `format` drives the dial (`%`, `$`, …); `text` only for one-offs |
 | `k-scrollbar` | wraps children, or `.options = { target: 'viewport' \| selector }` |
 
 Modifier classes (not attributes): `k-tabs--lg`, `k-tabs--no-keyboard`, `k-carousel--autoscroll`, `k-carousel--no-keyboard`, `k-dropdown--end`, `k-gauge--sm` / `--lg` / `--info` / `--success` / `--warning` / `--danger` / `--indeterminate`, `k-scrollbar--x` / `--y` / `--sm` / `--lg` / `--no-autohide`.
 
-`select(index)` moves tabs, pagination, and carousel. They emit `k-change` with `{ index }`. Dropdown emits `{ index, label, href }`.
+`select(index)` moves tabs, pagination, and carousel. They emit `k-change` with `{ index }`. Dropdown emits `{ index, label, href }`. Gauge helpers: `setGauge(el, patch)` and `createGauge(options)`.
 
 ### Examples
 
@@ -51,6 +51,8 @@ Modifier classes (not attributes): `k-tabs--lg`, `k-tabs--no-keyboard`, `k-carou
 <div id="story-0">…</div>
 <div id="story-1">…</div>
 <k-pagination id="story"></k-pagination>
+
+<k-gauge id="upload" class="k-gauge"></k-gauge>
 ```
 
 ```js
@@ -58,6 +60,13 @@ document.getElementById('education').options = [
   { label: 'KSU', icon: 'info' },
   { label: 'Courses' },
 ];
+
+document.getElementById('upload').options = {
+  value: 64,
+  max: 100,
+  label: 'Upload',
+  format: '%',
+};
 ```
 
 Do not put `dialog[popover]` inside a hidden tab/page/slide. Keep those dialogs as siblings of the host.
@@ -65,3 +74,16 @@ Do not put `dialog[popover]` inside a hidden tab/page/slide. Keep those dialogs 
 ## CSS-only
 
 Button, card, modal, accordion, badge, banner, grid, input, link, progress, sidebar, spin, table, toast, tooltip — write the markup with `k-` classes. No JS import required for those.
+
+Sidebar is a checkbox drawer (`.k-sidebar`). Optional nav chrome: `.k-sidebar__nav`, `__list`, `__group`, `__heading`, `__link` (`aria-current="page"` for the active item), plus `--docked` / `--end`.
+
+## Build imports
+
+| Import | What you get |
+| --- | --- |
+| `k-web-ui` | Full prebuilt CSS |
+| `k-web-ui/min` | Minified full CSS |
+| `k-web-ui/js` | Custom elements |
+| `k-web-ui/source` | Source CSS for Tailwind apps |
+| `k-web-ui/postcss` | Kit PostCSS + IntelliSense wiring |
+| `k-web-ui/base`, `/components`, `/utilities`, `/fonts` | Split sheets |
