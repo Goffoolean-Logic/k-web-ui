@@ -125,6 +125,7 @@ Twelve pages. First and last stay, and the window slides as you move.
 <div id="story-1">Page 2 of 12</div>
 <div id="story-2">Page 3 of 12</div>
 <k-pagination id="story" class="k-pagination"></k-pagination>`}
+  ts={`import 'k-web-ui/js';`}
 >
   <PaginationDemo id="docs-pagination" count={12} />
 </Example>
@@ -133,11 +134,15 @@ Twelve pages. First and last stay, and the window slides as you move.
 
 Four pages. Every number is listed. First and last are omitted; Home and End still jump.
 
-<Example stack html={`<div id="notes-0">Page 1 of 4</div>
+<Example
+  stack
+  html={`<div id="notes-0">Page 1 of 4</div>
 <div id="notes-1">Page 2 of 4</div>
 <div id="notes-2">Page 3 of 4</div>
 <div id="notes-3">Page 4 of 4</div>
-<k-pagination id="notes" class="k-pagination"></k-pagination>`}>
+<k-pagination id="notes" class="k-pagination"></k-pagination>`}
+  ts={`import 'k-web-ui/js';`}
+>
   <PaginationDemo id="docs-pagination-few" count={4} />
 </Example>
 

@@ -1,5 +1,6 @@
 ---
 import { Code } from '@astrojs/starlight/components';
+import { toAngularExample, toReactExample } from '../lib/frameworkExamples';
 
 interface Props {
   html: string;
@@ -10,11 +11,19 @@ interface Props {
 
 const { html, ts, stack = false, lift = false } = Astro.props;
 
-type Snippet = { label: string; lang: 'html' | 'ts'; code: string };
+type Snippet = {
+  label: string;
+  lang: 'html' | 'ts' | 'tsx';
+  code: string;
+};
 
 const snippets: Snippet[] = [{ label: 'HTML', lang: 'html', code: html }];
 if (ts?.trim()) {
-  snippets.push({ label: 'TS', lang: 'ts', code: ts });
+  snippets.push(
+    { label: 'TS', lang: 'ts', code: ts },
+    { label: 'Angular', lang: 'ts', code: toAngularExample(html, ts) },
+    { label: 'React', lang: 'tsx', code: toReactExample(html, ts) },
+  );
 }
 
 const tabbed = snippets.length > 1;

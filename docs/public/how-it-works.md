@@ -8,7 +8,7 @@ Every component page follows the same structure: classes, API reference, example
 
 The **Classes** table shows the classes you add to your markup. For JavaScript components, generated markup is shown separately so you can see what the component creates and customize it with CSS.
 
-Examples show the markup alongside the rendered component. If JavaScript is required, the example source is split into **HTML** and **TS**.
+Examples show the markup alongside the rendered component. If JavaScript is required, the example source is split into **HTML**, **TS**, **Angular**, and **React**.
 
 ## CSS or JavaScript
 

@@ -151,6 +151,28 @@ function groupOpen(group: SidebarGroup): boolean {
         document.cookie = `${STORAGE_KEY}=${encodeURIComponent(raw)}; path=/; SameSite=Lax`;
       }
 
+      function groups(): NodeListOf<Element> {
+        return document.querySelectorAll(
+          'details.k-sidebar__group[data-sidebar-group]',
+        );
+      }
+
+      /** Persist groups that opened because they hold the current page (e.g. hero → View components). */
+      function persistCurrentOpens(): void {
+        const state = load();
+        let changed = false;
+        for (const el of groups()) {
+          if (!(el instanceof HTMLDetailsElement)) continue;
+          const id = el.getAttribute('data-sidebar-group');
+          if (!id || !el.open) continue;
+          if (!el.querySelector('a[aria-current="page"]')) continue;
+          if (state[id] === true) continue;
+          state[id] = true;
+          changed = true;
+        }
+        if (changed) save(state);
+      }
+
       function onToggle(event: Event): void {
         const el = event.target;
         if (!(el instanceof HTMLDetailsElement)) return;
@@ -162,6 +184,8 @@ function groupOpen(group: SidebarGroup): boolean {
         save(state);
       }
 
+      persistCurrentOpens();
+      document.addEventListener('astro:page-load', persistCurrentOpens);
       document.addEventListener('toggle', onToggle, true);
     </script>
   )

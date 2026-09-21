@@ -1,6 +1,7 @@
 ---
 import Default from '@astrojs/starlight/components/Head.astro';
 import outfit from 'k-web-ui/source/base/fonts/outfit-latin.woff2?url';
+import logo from '../assets/logo.png';
 ---
 
 <link
@@ -11,4 +12,5 @@ import outfit from 'k-web-ui/source/base/fonts/outfit-latin.woff2?url';
   crossorigin
   fetchpriority="high"
 />
+<link rel="preload" href={logo.src} as="image" fetchpriority="high" />
 <Default><slot /></Default>

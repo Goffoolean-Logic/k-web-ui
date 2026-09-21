@@ -2,22 +2,56 @@
 /**
  * Kit theme picker. Starlight still mounts this in the header on docs
  * pages. The splash hero mounts it next to the hero actions.
+ *
+ * A static trigger is rendered in the HTML so the control is visible
+ * before k-dropdown JS upgrades it. Labels follow data-theme from
+ * ThemeProvider (inline in <head>).
  */
 import { DOCS_THEMES } from '../lib/themes';
 
 const items = DOCS_THEMES.map((theme) => ({ label: theme.label }));
 const id = `docs-theme-${crypto.randomUUID()}`;
-const initial = DOCS_THEMES[0]?.label ?? 'K-light';
+const light = DOCS_THEMES.find((theme) => theme.id === 'k-light');
+const dark = DOCS_THEMES.find((theme) => theme.id === 'k-dark');
+const initial = light?.label ?? 'K-light';
 ---
 
 <starlight-theme-select>
-  <k-dropdown id={id} class="k-dropdown k-dropdown--end"></k-dropdown>
+  <k-dropdown id={id} class="k-dropdown k-dropdown--end">
+    <button
+      type="button"
+      class="k-btn k-btn--secondary k-dropdown__trigger"
+      aria-haspopup="menu"
+      aria-expanded="false"
+      tabindex="-1"
+      inert
+    >
+      <span
+        class={`k-icon k-icon--${light?.icon ?? 'sun'} k-icon--xs docs-theme-ssr docs-theme-ssr--light`}
+        aria-hidden="true"
+      ></span>
+      <span
+        class={`k-icon k-icon--${dark?.icon ?? 'moon'} k-icon--xs docs-theme-ssr docs-theme-ssr--dark`}
+        aria-hidden="true"
+      ></span>
+      <span class="k-dropdown__label docs-theme-ssr docs-theme-ssr--light"
+        >{light?.label ?? 'K-light'}</span
+      >
+      <span class="k-dropdown__label docs-theme-ssr docs-theme-ssr--dark"
+        >{dark?.label ?? 'K-dark'}</span
+      >
+      <span class="k-icon k-icon--chevron-down k-icon--xs" aria-hidden="true"
+      ></span>
+    </button>
+  </k-dropdown>
 </starlight-theme-select>
 
-{/* Inlined to avoid FOUC. Uses global scope from `ThemeProvider.astro` */}
+{/* Runs after ThemeProvider; upgrades as soon as the element is defined. */}
 <script is:inline define:vars={{ id, items, initial }}>
   customElements.whenDefined('k-dropdown').then(() => {
-    document.getElementById(id).options = { trigger: initial, items };
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.options = { trigger: initial, items };
     StarlightThemeProvider.updatePickers();
   });
 </script>
@@ -112,10 +146,10 @@ const initial = DOCS_THEMES[0]?.label ?? 'K-light';
 
       const decorate = (): void => decoratePicker(dropdown, loadTheme());
       decorate();
-      if (dropdown.querySelector('.k-dropdown__trigger')) return;
+      if (dropdown.querySelector('.k-dropdown__trigger:not([inert])')) return;
 
       const observer = new MutationObserver(() => {
-        if (dropdown.querySelector('.k-dropdown__trigger')) {
+        if (dropdown.querySelector('.k-dropdown__trigger:not([inert])')) {
           decorate();
           observer.disconnect();
         }

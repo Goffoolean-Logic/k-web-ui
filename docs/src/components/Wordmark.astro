@@ -3,6 +3,14 @@ import logo from '../assets/logo.png';
 ---
 
 <span class="k-wordmark">
-  <img src={logo.src} alt="k" width="32" height="32" />
+  <img
+    src={logo.src}
+    alt="k"
+    width="32"
+    height="32"
+    decoding="sync"
+    fetchpriority="high"
+    loading="eager"
+  />
   <span translate="no">-Web-UI</span>
 </span>
