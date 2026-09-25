@@ -330,6 +330,14 @@
   border-radius: var(--k-radius-lg);
 }
 
+.docs-version {
+  font-family: var(--k-font-mono);
+  font-size: 0.75rem;
+  line-height: 1;
+  color: var(--k-fg-muted);
+  white-space: nowrap;
+}
+
 .site-title {
   align-items: center;
   gap: 0;

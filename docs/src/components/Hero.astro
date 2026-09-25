@@ -2,6 +2,7 @@
 import DraftContentNotice from 'virtual:starlight/components/DraftContentNotice';
 import logo from '../assets/logo.png';
 import { HERO_TITLE_SIZE_REM } from '../lib/heroIntro';
+import DocsVersion from './DocsVersion.astro';
 import ThemeSelect from './ThemeSelect.astro';
 
 const { data } = Astro.locals.starlightRoute.entry;
@@ -14,6 +15,7 @@ const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
   data-hero-state="playing"
   style={`--hero-title-size: ${HERO_TITLE_SIZE_REM}`}
 >
+  <DocsVersion />
   <div class="hero-stage">
     <div class="hero-panel sl-flex">
       <div class="sl-flex stack">
@@ -106,6 +108,13 @@ const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
 
 <style>
   @layer starlight.core {
+    .hero :global(.docs-version) {
+      position: absolute;
+      z-index: 2;
+      top: 1rem;
+      inset-inline-end: 1.25rem;
+    }
+
     .hero {
       position: relative;
       isolation: isolate;
