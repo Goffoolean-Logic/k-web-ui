@@ -48,7 +48,7 @@ This is a pnpm workspace. Node 24.
 
 | Folder | What it is |
 | --- | --- |
-| `package/` | The kit on npm (`k-web-ui@0.1.5`). See `package/CHANGELOG.md` for releases. |
+| `package/` | The kit on npm (`k-web-ui@0.1.6`). See `package/CHANGELOG.md` for releases. |
 | `docs/` | The docs site. It depends on the package like anyone else. |
 | `dev-env/` | Storybook. Same deal. |
 | `infra/` | Docs hosting / pipeline. |

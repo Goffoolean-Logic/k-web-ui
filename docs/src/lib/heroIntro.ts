@@ -13,32 +13,11 @@ export const HERO_TITLE_SIZE_REM = pxToRem(HERO_TITLE_SIZE_PX);
 
 export const HERO_TITLE_REST = '-Web-UI';
 
-export const HERO_PHRASES = [
-  { text: 'Worried about frameworks?', end: 'letter' },
-  { text: 'Need something simple and flexible?', end: 'letter' },
-  { text: 'Just want a UI library that works?', end: 'logo' },
-] as const;
-
-export const HERO_TIMING = {
-  typeMs: 45,
-  deleteMs: 18,
-  kPauseMs: 650,
-  holdMs: 700,
-  lastHoldMs: 500,
-  restTypeMs: 70,
-  fadeMs: 560,
-  moveMs: 1100,
-  revealDelayMs: 400,
-} as const;
-
 interface HeroIntroEls {
   root: HTMLElement;
   intro: HTMLElement;
-  prompt: HTMLElement;
-  letter: HTMLElement;
   logo: HTMLElement;
   rest: HTMLElement;
-  caret: HTMLElement;
 }
 
 function prefersReducedMotion(): boolean {
@@ -47,226 +26,76 @@ function prefersReducedMotion(): boolean {
 
 function queryEls(root: HTMLElement): HeroIntroEls | null {
   const intro = root.querySelector('[data-hero-intro]');
-  const prompt = root.querySelector('[data-hero-prompt]');
-  const letter = root.querySelector('[data-hero-letter]');
   const logo = root.querySelector('[data-hero-logo]');
   const rest = root.querySelector('[data-hero-rest]');
-  const caret = root.querySelector('[data-hero-caret]');
 
   if (
     !(intro instanceof HTMLElement) ||
-    !(prompt instanceof HTMLElement) ||
-    !(letter instanceof HTMLElement) ||
     !(logo instanceof HTMLElement) ||
-    !(rest instanceof HTMLElement) ||
-    !(caret instanceof HTMLElement)
+    !(rest instanceof HTMLElement)
   ) {
     return null;
   }
 
-  return {
-    root,
-    intro,
-    prompt,
-    letter,
-    logo,
-    rest,
-    caret,
-  };
+  return { root, intro, logo, rest };
 }
 
-function wait(ms: number, signal: AbortSignal): Promise<boolean> {
-  if (signal.aborted) {
-    return Promise.resolve(false);
+/** One span per character, parked on the positions of the original string. --i is 0 for the rightmost letter. */
+function splitChars(root: HTMLElement, rest: HTMLElement): void {
+  const textNode = rest.firstChild;
+  if (!(textNode instanceof Text) || textNode.data.length === 0) {
+    return;
   }
 
-  return new Promise((resolve) => {
-    const id = window.setTimeout(() => {
-      signal.removeEventListener('abort', onAbort);
-      resolve(true);
-    }, ms);
-
-    const onAbort = (): void => {
-      window.clearTimeout(id);
-      resolve(false);
+  const text = textNode.data;
+  const fontSize = Number.parseFloat(getComputedStyle(rest).fontSize);
+  const origin = rest.getBoundingClientRect();
+  const range = document.createRange();
+  const chars = [...text].map((char, index) => {
+    range.setStart(textNode, index);
+    range.setEnd(textNode, index + 1);
+    const box = range.getBoundingClientRect();
+    return {
+      char,
+      left: (box.left - origin.left) / fontSize,
     };
-
-    signal.addEventListener('abort', onAbort, { once: true });
   });
-}
+  range.detach();
 
-async function typeText(
-  node: HTMLElement,
-  text: string,
-  ms: number,
-  signal: AbortSignal,
-): Promise<boolean> {
-  node.textContent = '';
-  for (const char of text) {
-    if (signal.aborted) {
-      return false;
-    }
-    node.textContent += char;
-    if (!(await wait(ms, signal))) {
-      return false;
-    }
-  }
-  return true;
-}
-
-async function deleteText(
-  node: HTMLElement,
-  ms: number,
-  signal: AbortSignal,
-): Promise<boolean> {
-  while (node.textContent) {
-    if (signal.aborted) {
-      return false;
-    }
-    node.textContent = node.textContent.slice(0, -1);
-    if (!(await wait(ms, signal))) {
-      return false;
-    }
-  }
-  return true;
-}
-
-async function moveLogoLeft(
-  els: HeroIntroEls,
-  signal: AbortSignal,
-  first = els.logo.getBoundingClientRect(),
-): Promise<boolean> {
-  els.root.dataset.heroState = 'settling';
-  const last = els.logo.getBoundingClientRect();
-  const dx = first.left - last.left;
-  const dy = first.top - last.top;
-
-  if (prefersReducedMotion() || (Math.abs(dx) < 1 && Math.abs(dy) < 1)) {
-    return !signal.aborted;
-  }
-
-  const animation = els.logo.animate(
-    [{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }],
-    {
-      duration: HERO_TIMING.moveMs,
-      easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-      fill: 'forwards',
-    },
-  );
-
-  await Promise.race([
-    animation.finished.then(
-      () => true,
-      () => false,
-    ),
-    wait(HERO_TIMING.moveMs + 50, signal),
-  ]);
-
-  animation.cancel();
-  els.logo.style.transform = '';
-  return !signal.aborted;
-}
-
-function hideAnswer(els: HeroIntroEls): void {
-  els.letter.hidden = true;
-  els.logo.hidden = true;
+  rest.style.width = `${origin.width / fontSize}em`;
+  rest.style.height = `${origin.height / fontSize}em`;
+  rest.replaceChildren();
+  chars.forEach((glyph, index) => {
+    const span = document.createElement('span');
+    span.className = 'hero-intro__char';
+    span.style.setProperty('--i', String(chars.length - 1 - index));
+    span.style.setProperty('--n', String(index));
+    span.style.left = `${glyph.left}em`;
+    span.textContent = glyph.char;
+    rest.append(span);
+  });
+  root.style.setProperty('--letters', String(chars.length));
+  root.dataset.heroChars = 'true';
 }
 
 function showComplete(els: HeroIntroEls, skipped: boolean): void {
-  els.prompt.textContent = '';
-  els.prompt.style.opacity = '';
-  els.prompt.style.transition = '';
-  els.letter.hidden = true;
-  els.logo.hidden = false;
-  els.rest.textContent = HERO_TITLE_REST;
-  els.caret.hidden = true;
   els.intro.classList.add('k-wordmark');
   if (skipped) {
     els.root.dataset.heroSkipped = 'true';
+    els.rest.textContent = HERO_TITLE_REST;
+    els.rest.style.width = '';
+    els.rest.style.height = '';
   }
   els.root.dataset.heroState = 'done';
-}
-
-function preparePlaying(els: HeroIntroEls): void {
-  els.prompt.textContent = '';
-  hideAnswer(els);
-  els.rest.textContent = '';
-  els.caret.hidden = false;
-}
-
-async function playPhrases(
-  els: HeroIntroEls,
-  signal: AbortSignal,
-): Promise<boolean> {
-  for (const [index, phrase] of HERO_PHRASES.entries()) {
-    const last = index === HERO_PHRASES.length - 1;
-    hideAnswer(els);
-
-    if (
-      !(await typeText(els.prompt, phrase.text, HERO_TIMING.typeMs, signal))
-    ) {
-      return false;
+  for (const node of [els.logo, els.rest, ...els.rest.children]) {
+    if (!(node instanceof HTMLElement)) {
+      continue;
     }
-
-    if (!(await wait(HERO_TIMING.kPauseMs, signal))) {
-      return false;
+    for (const animation of node.getAnimations()) {
+      animation.cancel();
     }
-
-    if (phrase.end === 'letter') {
-      els.letter.hidden = false;
-    } else {
-      els.logo.hidden = false;
-    }
-
-    const hold = last ? HERO_TIMING.lastHoldMs : HERO_TIMING.holdMs;
-    if (!(await wait(hold, signal))) {
-      return false;
-    }
-
-    if (last) {
-      return true;
-    }
-
-    hideAnswer(els);
-    if (!(await deleteText(els.prompt, HERO_TIMING.deleteMs, signal))) {
-      return false;
-    }
+    node.style.transform = '';
   }
-
-  return !signal.aborted;
-}
-
-async function morphToTitle(
-  els: HeroIntroEls,
-  signal: AbortSignal,
-): Promise<boolean> {
-  els.caret.hidden = true;
-  els.letter.hidden = true;
-  els.logo.hidden = false;
-  els.prompt.style.transition = `opacity ${HERO_TIMING.fadeMs}ms ease`;
-  els.prompt.style.opacity = '0';
-  if (!(await wait(HERO_TIMING.fadeMs, signal))) {
-    return false;
-  }
-
-  const first = els.logo.getBoundingClientRect();
-  els.prompt.textContent = '';
-  els.prompt.style.opacity = '';
-  els.prompt.style.transition = '';
-
-  if (!(await moveLogoLeft(els, signal, first))) {
-    return false;
-  }
-
-  els.caret.hidden = false;
-  if (
-    !(await typeText(els.rest, HERO_TITLE_REST, HERO_TIMING.restTypeMs, signal))
-  ) {
-    return false;
-  }
-
-  els.caret.hidden = true;
-  return wait(HERO_TIMING.revealDelayMs, signal);
 }
 
 export function playHeroIntro(): void {
@@ -287,16 +116,10 @@ export function playHeroIntro(): void {
     return;
   }
 
-  preparePlaying(els);
+  els.rest.textContent = HERO_TITLE_REST;
+  els.intro.classList.add('k-wordmark');
   root.dataset.heroState = 'playing';
-
-  const controller = new AbortController();
-  const skip = (): void => {
-    if (root.dataset.heroState === 'done') {
-      return;
-    }
-    controller.abort();
-  };
+  splitChars(root, els.rest);
 
   const onClick = (event: Event): void => {
     const node = event.target;
@@ -323,16 +146,42 @@ export function playHeroIntro(): void {
     }
   };
 
-  document.addEventListener('click', onClick);
-  document.addEventListener('keydown', onKey);
-
-  void (async () => {
-    const played = await playPhrases(els, controller.signal);
-    if (played) {
-      await morphToTitle(els, controller.signal);
+  const onLogo = (event: AnimationEvent): void => {
+    if (event.animationName !== 'hero-drop-logo' || event.target !== els.logo) {
+      return;
     }
+    els.logo.removeEventListener('animationend', onLogo);
+    root.dataset.heroLaunch = 'true';
+  };
+
+  const onEnd = (event: AnimationEvent): void => {
+    if (
+      event.animationName !== 'hero-settle' ||
+      event.target !== els.rest.lastElementChild ||
+      root.dataset.heroState === 'done'
+    ) {
+      return;
+    }
+    els.rest.removeEventListener('animationend', onEnd);
+    els.logo.removeEventListener('animationend', onLogo);
     document.removeEventListener('click', onClick);
     document.removeEventListener('keydown', onKey);
-    showComplete(els, controller.signal.aborted);
-  })();
+    showComplete(els, false);
+  };
+
+  const skip = (): void => {
+    if (root.dataset.heroState === 'done') {
+      return;
+    }
+    els.rest.removeEventListener('animationend', onEnd);
+    els.logo.removeEventListener('animationend', onLogo);
+    document.removeEventListener('click', onClick);
+    document.removeEventListener('keydown', onKey);
+    showComplete(els, true);
+  };
+
+  document.addEventListener('click', onClick);
+  document.addEventListener('keydown', onKey);
+  els.logo.addEventListener('animationend', onLogo);
+  els.rest.addEventListener('animationend', onEnd);
 }

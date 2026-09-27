@@ -15,9 +15,11 @@
 <style>
   label.k-sidebar__trigger--open {
     position: fixed;
-    top: calc((var(--sl-nav-height) - 2.25rem) / 2);
+    top: calc((var(--sl-nav-height) - 2.75rem) / 2);
     inset-inline-end: var(--sl-nav-pad-x);
-    z-index: var(--sl-z-index-navbar);
+    z-index: 1;
+    width: 2.75rem;
+    height: 2.75rem;
   }
 
   @media (min-width: 50em) {

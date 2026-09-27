@@ -5,6 +5,17 @@ All notable changes to the `k-web-ui` npm package.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/).
 
+## [0.1.6] - 2026-09-25
+
+### Added
+
+- Gradient tokens `--k-gradient-fade`, `--k-gradient-rise`, and `--k-gradient-sheen`. Use them as `bg-k-gradient-fade`, `bg-k-gradient-rise`, and `bg-k-gradient-sheen`.
+
+### Changed
+
+- `--k-shadow-1` is a larger soft shadow. In `k-dark` it picks up the primary color.
+- Dark `--k-surface-raised` is steel-700.
+
 ## [0.1.5] - 2026-09-21
 
 ### Changed

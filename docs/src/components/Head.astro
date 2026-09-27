@@ -4,6 +4,39 @@ import outfit from 'k-web-ui/source/base/fonts/outfit-latin.woff2?url';
 import logo from '../assets/logo.png';
 ---
 
+<script is:inline>
+  (() => {
+    const path = location.pathname.replace(/\/$/, '') || '/';
+    if (path !== '/') return;
+
+    history.scrollRestoration = 'manual';
+    if (location.hash) {
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+
+    const pinTop = () => {
+      const root = document.documentElement;
+      const locked = root.style.overflow;
+      root.style.overflow = 'auto';
+      scrollTo(0, 0);
+      root.style.overflow = locked;
+    };
+
+    pinTop();
+    document.addEventListener('DOMContentLoaded', pinTop);
+    window.addEventListener('pageshow', pinTop);
+    window.addEventListener('load', () => {
+      pinTop();
+      requestAnimationFrame(() => {
+        pinTop();
+        requestAnimationFrame(() => {
+          pinTop();
+          history.scrollRestoration = 'auto';
+        });
+      });
+    });
+  })();
+</script>
 <link
   rel="preload"
   href={outfit}

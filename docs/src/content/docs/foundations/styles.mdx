@@ -58,7 +58,21 @@ Three elevations. Use `--k-shadow-1` for a light lift (a resting card). `--k-sha
 | `--k-shadow-2` | Menus, dropdowns | `shadow-k-2` |
 | `--k-shadow-3` | Dialogs, overlays | `shadow-k-3` |
 
-Light mode uses a soft slate shadow. Dark mode adds a faint light edge so the lift still shows on black.
+`--k-shadow-1` carries a 2px spread so the lift sits outside a 1px border. Light mode is a slate shadow. Dark mode uses `--k-primary`, so the same lift reads orange on a black page.
+
+Three linear gradients ship for custom work. No component uses them.
+
+```html
+<div class="bg-k-gradient-fade">Fade</div>
+<div class="bg-k-gradient-rise">Rise</div>
+<div class="bg-k-gradient-sheen">Sheen</div>
+```
+
+| Token | Utility |
+| --- | --- |
+| `--k-gradient-fade` | `bg-k-gradient-fade` |
+| `--k-gradient-rise` | `bg-k-gradient-rise` |
+| `--k-gradient-sheen` | `bg-k-gradient-sheen` |
 
 ## Focus ring
 

@@ -259,7 +259,19 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  min-width: 0;
+  max-width: 100%;
   margin-block: 1.25rem 2rem;
+  overflow-x: auto;
+}
+
+.k-class-table > * {
+  min-width: 0;
+}
+
+.k-class-table .k-table {
+  width: max-content;
+  min-width: 100%;
 }
 
 .k-class-table__generated .k-accordion__panel {
@@ -331,11 +343,20 @@
 }
 
 .docs-version {
+  position: absolute;
+  z-index: 2;
+  top: 0.85rem;
+  inset-inline-end: 1rem;
+  margin: 0;
+  padding: 0.2rem 0.4rem;
+  border-radius: var(--k-radius);
+  background-color: var(--sl-color-bg-nav);
   font-family: var(--k-font-mono);
   font-size: 0.75rem;
   line-height: 1;
   color: var(--k-fg-muted);
   white-space: nowrap;
+  pointer-events: none;
 }
 
 .site-title {
@@ -372,6 +393,7 @@
 }
 
 .site-shell {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -539,6 +561,23 @@ html:has(.hero-island) {
   display: none;
   width: 0;
   height: 0;
+}
+
+@media (max-width: 50em) {
+  .expressive-code pre,
+  .sl-markdown-content pre,
+  .k-class-table {
+    scrollbar-width: thin;
+    overflow-x: auto;
+  }
+
+  .expressive-code pre::-webkit-scrollbar,
+  .sl-markdown-content pre::-webkit-scrollbar,
+  .k-class-table::-webkit-scrollbar {
+    display: block;
+    width: 0.45rem;
+    height: 0.45rem;
+  }
 }
 
 html:has(.hero[data-hero-state='playing']),
@@ -776,12 +815,66 @@ header.header {
   overflow: visible;
 }
 
-html:has(.hero) header.header {
-  display: none;
-}
-
 html:has(.hero) .main-frame {
   padding-top: 0;
+}
+
+/* Starlight's reset sets `font: inherit` on button in a later layer, so
+   kit type was only sticking to <a class="k-btn">. */
+:is(button, a).k-btn {
+  font-size: 0.875rem;
+  line-height: 1.25;
+  font-weight: 500;
+}
+
+:is(button, a).k-btn--sm {
+  font-size: 0.75rem;
+  line-height: 1.25;
+}
+
+:is(button, a).k-btn--lg {
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+@media (max-width: 50em) {
+  .docs-body.k-sidebar {
+    overflow: visible;
+  }
+
+  .docs-body > aside.k-sidebar__panel {
+    position: fixed;
+    top: var(--sl-nav-height);
+    bottom: 0;
+    height: auto;
+  }
+
+  .docs-body > input.k-sidebar__toggle:checked ~ aside.k-sidebar__panel {
+    translate: 0;
+  }
+
+  .docs-body > label.k-sidebar__scrim {
+    position: fixed;
+    inset: var(--sl-nav-height) 0 0 0;
+  }
+
+  .docs-body > aside.k-sidebar__panel > .k-sidebar__trigger--close {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: var(--k-surface);
+  }
+
+  header.header site-search button[data-open-modal] {
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+  }
+}
+
+html:has(#docs-nav:checked) {
+  overflow: hidden;
 }
 
 @media (min-width: 50rem) {

@@ -1,38 +1,7 @@
 ---
 import Default from '@astrojs/starlight/components/Header.astro';
-import DocsVersion from './DocsVersion.astro';
-
-const isSplash = Astro.locals.starlightRoute.entry.data.template === 'splash';
 ---
 
-{
-  !isSplash && (
-    <div class="docs-header">
-      <Default>
-        <slot />
-      </Default>
-      <DocsVersion />
-    </div>
-  )
-}
-
-<style>
-  .docs-header {
-    position: relative;
-    height: 100%;
-  }
-
-  .docs-header :global(.docs-version) {
-    position: absolute;
-    z-index: 1;
-    inset-inline-end: 0;
-    top: 50%;
-    translate: 0 -50%;
-  }
-
-  @media (min-width: 50rem) {
-    .docs-header :global(.right-group) {
-      margin-inline-end: 3.25rem;
-    }
-  }
-</style>
+<Default>
+  <slot />
+</Default>

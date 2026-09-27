@@ -79,9 +79,14 @@
   --k-space-15: 3.75rem;
   --k-space-18: 4.5rem;
 
-  --k-shadow-1: 0 1px 2px rgb(15 23 42 / 0.08);
+  --k-shadow-1: 0 4px 14px 2px rgb(15 23 42 / 0.22);
   --k-shadow-2: 0 4px 14px rgb(15 23 42 / 0.12);
   --k-shadow-3: 0 16px 40px rgb(15 23 42 / 0.18);
+
+  /* Spare. Nothing in the kit paints these. */
+  --k-gradient-fade: linear-gradient(to bottom, var(--k-surface-raised), transparent);
+  --k-gradient-rise: linear-gradient(to top, var(--k-primary), transparent);
+  --k-gradient-sheen: linear-gradient(135deg, var(--k-field), var(--k-primary));
 
   --k-font-sans: Outfit, ui-sans-serif, system-ui, sans-serif;
   --k-font-mono: 'IBM Plex Mono', ui-monospace, monospace;

@@ -2,7 +2,6 @@
 import DraftContentNotice from 'virtual:starlight/components/DraftContentNotice';
 import logo from '../assets/logo.png';
 import { HERO_TITLE_SIZE_REM } from '../lib/heroIntro';
-import DocsVersion from './DocsVersion.astro';
 import ThemeSelect from './ThemeSelect.astro';
 
 const { data } = Astro.locals.starlightRoute.entry;
@@ -15,7 +14,6 @@ const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
   data-hero-state="playing"
   style={`--hero-title-size: ${HERO_TITLE_SIZE_REM}`}
 >
-  <DocsVersion />
   <div class="hero-stage">
     <div class="hero-panel sl-flex">
       <div class="sl-flex stack">
@@ -23,20 +21,16 @@ const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
           <div class="hero-title">
             <h1 id="_top" data-page-title>
               <span class="k-visually-hidden">K-Web-UI</span>
-              <span class="hero-intro" data-hero-intro aria-hidden="true">
-                <span class="hero-intro__prompt" data-hero-prompt></span>
-                <span class="hero-intro__letter" data-hero-letter hidden>K</span>
-                <img
-                  class="hero-intro__logo"
-                  data-hero-logo
-                  src={logo.src}
-                  alt=""
-                  width="32"
-                  height="32"
-                  hidden
-                />
-                <span class="hero-intro__rest" data-hero-rest translate="no"></span>
-                <span class="hero-intro__caret" data-hero-caret></span>
+              <span class="hero-intro k-wordmark" data-hero-intro aria-hidden="true">
+                <span class="hero-intro__logo-slot">
+                  <img
+                    class="hero-intro__logo"
+                    data-hero-logo
+                    src={logo.src}
+                    alt=""
+                  />
+                </span>
+                <span class="hero-intro__rest" data-hero-rest translate="no">-Web-UI</span>
               </span>
             </h1>
           </div>
@@ -72,13 +66,15 @@ const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
 <noscript>
   <style>
     .hero[data-hero-state='playing'] .hero-intro__logo {
-      display: block !important;
+      top: 0 !important;
     }
-    .hero[data-hero-state='playing'] .hero-intro__rest::after {
-      content: '-Web-UI';
+
+    .hero[data-hero-state='playing'] .hero-intro__rest {
+      transform: none !important;
     }
-    .hero[data-hero-state='playing'] .hero-intro__caret {
-      display: none !important;
+
+    .hero[data-hero-state='playing'] .tagline {
+      opacity: 1 !important;
     }
   </style>
 </noscript>
@@ -89,14 +85,6 @@ const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
     if (!(hero instanceof HTMLElement)) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       hero.dataset.heroState = 'done';
-      const letter = hero.querySelector('[data-hero-letter]');
-      const logo = hero.querySelector('[data-hero-logo]');
-      const rest = hero.querySelector('[data-hero-rest]');
-      const caret = hero.querySelector('[data-hero-caret]');
-      if (letter instanceof HTMLElement) letter.hidden = true;
-      if (logo instanceof HTMLElement) logo.hidden = false;
-      if (rest) rest.textContent = '-Web-UI';
-      if (caret instanceof HTMLElement) caret.hidden = true;
     }
   })();
 </script>
@@ -104,18 +92,34 @@ const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
 <script>
   import { playHeroIntro } from '../lib/heroIntro.ts';
   playHeroIntro();
+
+  const hero = document.querySelector<HTMLElement>('[data-hero]');
+  if (hero && hero.dataset.heroScrollCue !== 'true') {
+    hero.dataset.heroScrollCue = 'true';
+    const dismiss = (): void => {
+      if (window.scrollY <= 0) return;
+      hero.dataset.heroScrolled = 'true';
+      window.removeEventListener('scroll', dismiss);
+    };
+    if (window.scrollY > 0) hero.dataset.heroScrolled = 'true';
+    else window.addEventListener('scroll', dismiss, { passive: true });
+  }
 </script>
 
 <style>
   @layer starlight.core {
-    .hero :global(.docs-version) {
-      position: absolute;
-      z-index: 2;
-      top: 1rem;
-      inset-inline-end: 1.25rem;
-    }
-
     .hero {
+      --stagger: 110ms;
+      --fall: 900ms;
+      --hold: 140ms;
+      --k: 260ms;
+      --jump: 160ms;
+      --settle: 460ms;
+      --letters: 7;
+      --fall-end: calc((var(--letters) - 1) * var(--stagger) + var(--fall));
+      --k-start: calc(var(--fall-end) + var(--hold));
+      --shot: 40ms;
+
       position: relative;
       isolation: isolate;
       display: flex;
@@ -204,7 +208,7 @@ const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
       position: relative;
       width: 100%;
       height: 1.15em;
-      font-size: min(var(--hero-title-size, 4.5rem), calc((100vw - 5rem) / 21));
+      font-size: clamp(2rem, calc((100vw - 5rem) / 21), var(--hero-title-size, 4.5rem));
       line-height: 1.15;
     }
 
@@ -235,46 +239,65 @@ const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
 
     @media (min-width: 1440px) {
       .hero-title {
-        font-size: min(
-          var(--hero-title-size, 4.5rem),
-          calc((100vw - 5rem) / 20.5)
+        font-size: clamp(
+          2rem,
+          calc((100vw - 5rem) / 20.5),
+          var(--hero-title-size, 4.5rem)
         );
       }
     }
 
-    .hero-intro__prompt:not(:empty) ~ .hero-intro__letter,
-    .hero-intro__prompt:not(:empty) ~ .hero-intro__logo {
-      margin-inline-start: 0.3em;
+    .hero[data-hero-state='playing']:not([data-hero-chars]) .hero-intro__logo {
+      top: -100vh;
     }
 
-    .hero-intro__letter[hidden] {
-      display: none;
+    .hero[data-hero-state='playing']:not([data-hero-chars]) .hero-intro__rest {
+      transform: translateY(-100vh);
+    }
+
+    .hero[data-hero-chars] :global(.hero-intro__char) {
+      animation: hero-drop var(--fall) linear calc(var(--i) * var(--stagger)) both;
+    }
+
+    .hero[data-hero-launch] :global(.hero-intro__char) {
+      --launch: calc(var(--n) * var(--shot));
+      animation:
+        hero-jump var(--jump) linear var(--launch) forwards,
+        hero-settle var(--settle) linear calc(var(--launch) + var(--jump)) forwards;
+    }
+
+    .hero[data-hero-chars] .hero-intro__logo {
+      animation: hero-drop-logo var(--k) linear var(--k-start) both;
+    }
+
+    .hero[data-hero-chars] .hero-intro__rest {
+      position: relative;
+      display: inline-block;
+    }
+
+    :global(.hero-intro__char) {
+      position: absolute;
+      top: 0;
+      display: inline-block;
+    }
+
+    .hero-intro__logo-slot {
+      position: relative;
+      display: block;
+      width: 1em;
+      height: 1em;
+      flex: none;
     }
 
     .hero-intro__logo {
+      position: absolute;
+      inset: 0;
       display: block;
-      height: 1em;
-      width: 1em;
+      width: 100%;
+      height: 100%;
       object-fit: contain;
       object-position: center;
       border-radius: 0.15em;
-    }
-
-    .hero-intro__logo[hidden] {
-      display: none;
-    }
-
-    .hero-intro__caret {
-      display: inline-block;
-      width: 0.08em;
-      height: 0.9em;
-      margin-inline-start: 0.08em;
-      background: currentColor;
-      animation: hero-caret 1s steps(1) infinite;
-    }
-
-    .hero-intro__caret[hidden] {
-      display: none;
     }
 
     .tagline {
@@ -285,6 +308,15 @@ const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
       text-align: center;
     }
 
+    .hero[data-hero-state='playing'] .tagline,
+    .hero[data-hero-state='settling'] .tagline {
+      opacity: 0;
+    }
+
+    .hero[data-hero-state='done']:not([data-hero-skipped]) .tagline {
+      animation: hero-tagline-in 0.6s ease both;
+    }
+
     .tagline :global(p) {
       margin: 0;
     }
@@ -293,6 +325,7 @@ const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
       flex-shrink: 0;
       gap: 1rem 1.25rem;
       flex-wrap: wrap;
+      align-items: center;
       justify-content: center;
     }
 
@@ -341,6 +374,7 @@ const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
+      transition: opacity 0.45s ease;
     }
 
     .hero[data-hero-state='done']:not([data-hero-skipped]) .hero-scroll {
@@ -351,18 +385,109 @@ const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
       animation: hero-scroll-bounce 1.8s ease-in-out infinite;
     }
 
+    .hero[data-hero-scrolled][data-hero-state='done'] .hero-scroll {
+      animation: none;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        opacity 0.45s ease,
+        visibility 0s linear 0.45s;
+    }
+
     @media (prefers-reduced-motion: reduce) {
-      .hero-intro__caret,
       .hero[data-hero-state='done'] .hero-scroll,
-      .hero[data-hero-state='done'] .hero-scroll .k-icon {
+      .hero[data-hero-state='done'] .hero-scroll .k-icon,
+      .hero[data-hero-state='done'] .tagline {
         animation: none;
+      }
+
+      .hero[data-hero-state='done'] .hero-scroll {
+        transition: none;
+      }
+
+      .hero .tagline {
+        opacity: 1;
       }
     }
   }
 
-  @keyframes hero-caret {
-    50% {
+  @keyframes hero-tagline-in {
+    from {
       opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes hero-drop-logo {
+    0% {
+      top: -100vh;
+      animation-timing-function: cubic-bezier(0.35, 0, 1, 1);
+    }
+
+    76% {
+      top: 0.08em;
+      animation-timing-function: cubic-bezier(0.2, 0, 0.35, 1);
+    }
+
+    88% {
+      top: -0.16em;
+      animation-timing-function: cubic-bezier(0.45, 0, 1, 1);
+    }
+
+    100% {
+      top: 0;
+    }
+  }
+
+  @keyframes hero-drop {
+    0% {
+      transform: translateY(-100vh);
+      animation-timing-function: cubic-bezier(0.35, 0, 1, 1);
+    }
+
+    76% {
+      transform: translateY(0.08em);
+      animation-timing-function: cubic-bezier(0.2, 0, 0.35, 1);
+    }
+
+    88% {
+      transform: translateY(-0.16em);
+      animation-timing-function: cubic-bezier(0.45, 0, 1, 1);
+    }
+
+    100% {
+      transform: none;
+    }
+  }
+
+  @keyframes hero-jump {
+    from {
+      transform: none;
+      animation-timing-function: cubic-bezier(0.05, 0.7, 0.2, 1);
+    }
+
+    to {
+      transform: translateY(-1.35em);
+    }
+  }
+
+  @keyframes hero-settle {
+    0% {
+      transform: translateY(-1.35em);
+      animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+    }
+
+    70% {
+      transform: translateY(0.06em);
+      animation-timing-function: cubic-bezier(0.2, 0, 0.4, 1);
+    }
+
+    100% {
+      transform: none;
     }
   }
 

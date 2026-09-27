@@ -55,6 +55,10 @@
   --shadow-k-2: var(--k-shadow-2);
   --shadow-k-3: var(--k-shadow-3);
 
+  --background-image-k-gradient-fade: var(--k-gradient-fade);
+  --background-image-k-gradient-rise: var(--k-gradient-rise);
+  --background-image-k-gradient-sheen: var(--k-gradient-sheen);
+
   --font-k-sans: var(--k-font-sans);
   --font-k-mono: var(--k-font-mono);
 }

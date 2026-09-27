@@ -13,6 +13,7 @@
 );
 @source inline("rounded-{k,k-lg}");
 @source inline("shadow-k-{1,2,3}");
+@source inline("bg-k-gradient-{fade,rise,sheen}");
 @source inline("font-k-{sans,mono}");
 @source inline("k-visually-hidden");
 @source inline("k-focus-ring");

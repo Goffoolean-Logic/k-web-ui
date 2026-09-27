@@ -21,6 +21,23 @@ The chevron is a CSS `::after` on the trigger. It flips when the item is open. T
 
 ## Examples
 
+### Several can stay open
+
+No `name`. Each item opens and closes on its own. The first starts open.
+
+```html
+<div class="k-accordion">
+  <details class="k-accordion__item" open>
+    <summary class="k-accordion__trigger">What is the kit?</summary>
+    <div class="k-accordion__panel">CSS chrome plus a small JS behavior layer.</div>
+  </details>
+  <details class="k-accordion__item">
+    <summary class="k-accordion__trigger">Does it need a framework?</summary>
+    <div class="k-accordion__panel">No. Write HTML.</div>
+  </details>
+</div>
+```
+
 ### Exclusive group
 
 Same `name` on both items. Opening the second closes the first. The first starts open.
