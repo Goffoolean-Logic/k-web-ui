@@ -4,7 +4,7 @@
    * Exclusive groups: the same name attribute on each details.
    */
   div.k-accordion {
-    @apply flex flex-col overflow-hidden rounded-k-lg border border-k-border;
+    @apply flex flex-col overflow-hidden rounded-k border border-k-border;
   }
 
   details.k-accordion__item {

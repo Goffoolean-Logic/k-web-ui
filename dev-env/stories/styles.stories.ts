@@ -9,22 +9,14 @@ export default meta;
 
 type Story = StoryObj;
 
-/** Default and large corners. */
+/** The one corner radius. */
 export const Radius: Story = {
   render: () => `
-    <div class="flex flex-wrap items-center gap-6">
-      <div
-        class="rounded-k bg-k-surface-raised border border-k-border"
-        style="display: flex; align-items: center; justify-content: center; min-height: 6rem; min-width: 10rem;"
-      >
-        rounded-k
-      </div>
-      <div
-        class="rounded-k-lg bg-k-surface-raised border border-k-border"
-        style="display: flex; align-items: center; justify-content: center; min-height: 6rem; min-width: 10rem;"
-      >
-        rounded-k-lg
-      </div>
+    <div
+      class="rounded-k bg-k-surface-raised border border-k-border"
+      style="display: flex; align-items: center; justify-content: center; min-height: 6rem; min-width: 10rem;"
+    >
+      rounded-k
     </div>
   `,
 };
@@ -37,19 +29,19 @@ export const Shadows: Story = {
   render: () => `
     <div class="flex flex-wrap items-center gap-8" style="padding: 1.5rem;">
       <div
-        class="rounded-k-lg bg-k-surface-raised shadow-k-1"
+        class="rounded-k bg-k-surface-raised shadow-k-1"
         style="display: flex; align-items: center; justify-content: center; min-height: 6rem; min-width: 10rem;"
       >
         shadow-k-1
       </div>
       <div
-        class="rounded-k-lg bg-k-surface-raised shadow-k-2"
+        class="rounded-k bg-k-surface-raised shadow-k-2"
         style="display: flex; align-items: center; justify-content: center; min-height: 6rem; min-width: 10rem;"
       >
         shadow-k-2
       </div>
       <div
-        class="rounded-k-lg bg-k-surface-raised shadow-k-3"
+        class="rounded-k bg-k-surface-raised shadow-k-3"
         style="display: flex; align-items: center; justify-content: center; min-height: 6rem; min-width: 10rem;"
       >
         shadow-k-3

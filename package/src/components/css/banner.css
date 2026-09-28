@@ -8,7 +8,7 @@
     --k-banner-on-color: var(--k-surface);
 
     @apply grid items-center justify-start justify-items-start gap-4
-      rounded-k-lg border border-k-border bg-k-surface-raised
+      rounded-k border border-k-border bg-k-surface-raised
       px-4 py-3 text-start text-sm text-k-fg;
     grid-auto-flow: column;
     grid-template-columns: auto;

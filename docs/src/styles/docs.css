@@ -61,7 +61,7 @@
   padding: 1.25rem;
   overflow: visible;
   border: 1px solid var(--k-border);
-  border-radius: var(--k-radius-lg);
+  border-radius: var(--k-radius);
   background-color: var(--k-surface);
 }
 
@@ -135,7 +135,7 @@
 .k-example__source {
   border: 1px solid var(--k-border);
   border-top: 0;
-  border-radius: 0 0 var(--k-radius-lg) var(--k-radius-lg);
+  border-radius: 0 0 var(--k-radius) var(--k-radius);
   background-color: var(--k-surface);
   overflow: hidden;
 }
@@ -147,13 +147,13 @@
 .k-example__source .expressive-code .frame {
   --ec-brdCol: transparent;
   border: 0;
-  border-radius: 0 0 var(--k-radius-lg) var(--k-radius-lg);
+  border-radius: 0 0 var(--k-radius) var(--k-radius);
   box-shadow: none;
 }
 
 .k-example__source .expressive-code pre {
   border: 0;
-  border-radius: 0 0 var(--k-radius-lg) var(--k-radius-lg);
+  border-radius: 0 0 var(--k-radius) var(--k-radius);
 }
 
 .k-example .k-preview k-tabs.k-tabs {
@@ -183,7 +183,7 @@
 
 .k-example__source--tabs .k-tabs__panel .expressive-code .frame,
 .k-example__source--tabs .k-tabs__panel .expressive-code pre {
-  border-radius: 0 0 var(--k-radius-lg) var(--k-radius-lg);
+  border-radius: 0 0 var(--k-radius) var(--k-radius);
 }
 
 .k-showcase-profile {
@@ -336,10 +336,6 @@
 
 .k-radius-demo--k {
   border-radius: var(--k-radius);
-}
-
-.k-radius-demo--lg {
-  border-radius: var(--k-radius-lg);
 }
 
 .docs-version {
@@ -722,7 +718,7 @@ html:has(.hero[data-hero-state='settling']) {
   width: 17.5rem;
   height: 16rem;
   border: 1px solid var(--k-border);
-  border-radius: var(--k-radius-lg, 0.75rem);
+  border-radius: var(--k-radius);
   background-color: var(--k-surface);
 }
 
@@ -1016,7 +1012,7 @@ html:has(.hero[data-hero-state='done'][data-hero-skipped]) .splash-lower {
   overflow: hidden;
   aspect-ratio: 16 / 9;
   border: 3px solid var(--k-border-hard);
-  border-radius: var(--k-radius-lg);
+  border-radius: var(--k-radius);
 }
 
 .splash-band__frame img {
@@ -1126,7 +1122,7 @@ html:has(.k-playground) {
   padding: 1rem;
   overflow: visible;
   border: 1px solid var(--k-border);
-  border-radius: var(--k-radius-lg);
+  border-radius: var(--k-radius);
   background-color: var(--k-surface);
   color: var(--k-fg);
 }
@@ -1175,7 +1171,7 @@ html:has(.k-playground) {
   flex-direction: column;
   overflow: hidden;
   border: 1px solid var(--k-border);
-  border-radius: var(--k-radius-lg);
+  border-radius: var(--k-radius);
   background-color: var(--k-surface);
 }
 

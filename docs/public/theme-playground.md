@@ -14,7 +14,6 @@ See [Colors](/foundations/colors.md) for what each token is for, and [Styles](/f
 
 :root {
   --k-radius: 0.125rem;
-  --k-radius-lg: 0.125rem;
 
   --k-field: #fdba74;
   --k-field-fg: #000000;

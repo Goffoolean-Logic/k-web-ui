@@ -9,39 +9,34 @@ Everything that isn't a [color](/foundations/colors/) or a [typeface](/foundatio
 
 ## Radius
 
-`--k-radius` is the default corner on buttons, inputs, and most controls. `--k-radius-lg` is used on cards, dialogs, and preview frames. Both are 2px.
+`--k-radius` is the corner on buttons, inputs, cards, and dialogs. It is 2px.
 
 <Preview>
   <div class="k-radius-demo k-radius-demo--k bg-k-surface-raised">
     rounded-k · 2px
   </div>
-  <div class="k-radius-demo k-radius-demo--lg bg-k-surface-raised">
-    rounded-k-lg · 2px
-  </div>
 </Preview>
 
 ```html
-<div class="rounded-k">Default</div>
-<div class="rounded-k-lg">Large</div>
+<div class="rounded-k">Rounded</div>
 ```
 
 | Token | Value | Utility |
 | --- | --- | --- |
 | `--k-radius` | 0.125rem | `rounded-k` |
-| `--k-radius-lg` | 0.125rem | `rounded-k-lg` |
 
 ## Shadows
 
 Three elevations. Use `--k-shadow-1` for a light lift (a resting card). `--k-shadow-2` is a menu or popover. `--k-shadow-3` is something that should sit clearly above the page, like a dialog.
 
 <Preview lift>
-  <div class="k-shadow-demo rounded-k-lg bg-k-surface-raised shadow-k-1">
+  <div class="k-shadow-demo rounded-k bg-k-surface-raised shadow-k-1">
     shadow-k-1
   </div>
-  <div class="k-shadow-demo rounded-k-lg bg-k-surface-raised shadow-k-2">
+  <div class="k-shadow-demo rounded-k bg-k-surface-raised shadow-k-2">
     shadow-k-2
   </div>
-  <div class="k-shadow-demo rounded-k-lg bg-k-surface-raised shadow-k-3">
+  <div class="k-shadow-demo rounded-k bg-k-surface-raised shadow-k-3">
     shadow-k-3
   </div>
 </Preview>

@@ -7,7 +7,6 @@ export const STARTER_THEME_CSS = `/* Paste after the k-web-ui stylesheet.
 
 :root {
   --k-radius: 0.125rem;
-  --k-radius-lg: 0.125rem;
 
   --k-field: #fdba74;
   --k-field-fg: #000000;

@@ -9,7 +9,7 @@
    * each slide translates by --k-carousel-index so we never wrap or move nodes.
    */
   div.k-carousel__track {
-    @apply flex overflow-hidden rounded-k-lg border border-k-border bg-k-surface-raised;
+    @apply flex overflow-hidden rounded-k border border-k-border bg-k-surface-raised;
   }
 
   div.k-carousel__slide {
