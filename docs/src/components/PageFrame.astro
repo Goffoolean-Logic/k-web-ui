@@ -1,6 +1,7 @@
 ---
 import DocsVersion from './DocsVersion.astro';
 import MobileMenuToggle from './MobileMenuToggle.astro';
+import ThemeSelect from './ThemeSelect.astro';
 
 const { hasSidebar } = Astro.locals.starlightRoute;
 const isSplash = Astro.locals.starlightRoute.entry.data.template === 'splash';
@@ -27,12 +28,9 @@ const isSplash = Astro.locals.starlightRoute.entry.data.template === 'splash';
         />
         <label for="docs-nav" class="k-sidebar__scrim"></label>
         <aside class="k-sidebar__panel" id="starlight__sidebar">
-          <label
-            for="docs-nav"
-            class="k-sidebar__trigger k-sidebar__trigger--close"
-          >
-            Close
-          </label>
+          <div class="docs-sidebar-theme">
+            <ThemeSelect />
+          </div>
           <slot name="sidebar" />
         </aside>
         <div class="k-sidebar__main docs-body__main">

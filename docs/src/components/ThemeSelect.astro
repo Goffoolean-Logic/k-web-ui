@@ -1,7 +1,8 @@
 ---
 /**
- * Kit theme picker. Starlight still mounts this in the header on docs
- * pages. The splash hero mounts it next to the hero actions.
+ * Kit theme picker. Docs pages mount it at the top of the sidebar
+ * panel (Starlight's header instance is hidden). The splash hero
+ * mounts it next to the hero actions.
  *
  * A static trigger is rendered in the HTML so the control is visible
  * before k-dropdown JS upgrades it. Labels follow data-theme from
@@ -9,6 +10,11 @@
  */
 import { DOCS_THEMES } from '../lib/themes';
 
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
 const items = DOCS_THEMES.map((theme) => ({ label: theme.label }));
 const id = `docs-theme-${crypto.randomUUID()}`;
 const light = DOCS_THEMES.find((theme) => theme.id === 'k-light');
@@ -16,7 +22,7 @@ const dark = DOCS_THEMES.find((theme) => theme.id === 'k-dark');
 const initial = light?.label ?? 'K-light';
 ---
 
-<starlight-theme-select>
+<starlight-theme-select class={className}>
   <k-dropdown id={id} class="k-dropdown k-dropdown--end">
     <button
       type="button"

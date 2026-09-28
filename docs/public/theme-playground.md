@@ -55,8 +55,8 @@ See [Colors](/foundations/colors.md) for what each token is for, and [Styles](/f
   --k-warning: #c2410c;
   --k-warning-fg: #ffffff;
 
-  --k-shadow-1: 0 4px 14px 2px rgb(15 23 42 / 0.22);
-  --k-shadow-2: 0 4px 14px rgb(15 23 42 / 0.12);
+  --k-shadow-1: 0 4px 14px rgb(15 23 42 / 0.12);
+  --k-shadow-2: 0 4px 14px 2px rgb(15 23 42 / 0.22);
   --k-shadow-3: 0 16px 40px rgb(15 23 42 / 0.18);
 }
 
@@ -64,7 +64,7 @@ See [Colors](/foundations/colors.md) for what each token is for, and [Styles](/f
   color-scheme: dark;
 
   --k-surface: #000000;
-  --k-surface-raised: #2c3137;
+  --k-surface-raised: #1a1d21;
   --k-surface-hard: #1a1d21;
   --k-surface-soft: #000000;
   --k-fg: #ffffff;
@@ -87,8 +87,8 @@ See [Colors](/foundations/colors.md) for what each token is for, and [Styles](/f
   --k-warning: #fb923c;
   --k-warning-fg: #431407;
 
-  --k-shadow-1: 0 4px 16px 2px color-mix(in srgb, var(--k-primary) 70%, transparent);
-  --k-shadow-2: 0 8px 20px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(255 255 255 / 0.06);
-  --k-shadow-3: 0 20px 50px rgb(0 0 0 / 0.75), 0 0 0 1px rgb(255 255 255 / 0.08);
+  --k-shadow-1: 0 4px 12px 2px color-mix(in srgb, var(--k-primary) 55%, transparent);
+  --k-shadow-2: 0 8px 20px 2px color-mix(in srgb, var(--k-primary) 55%, transparent);
+  --k-shadow-3: 0 20px 48px 2px color-mix(in srgb, var(--k-primary) 55%, transparent);
 }
 ```

@@ -45,9 +45,9 @@ const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
         </div>
         {
           Astro.slots.has('actions') && (
-            <div class="sl-flex actions">
+            <div class="actions sl-flex flex w-max max-w-full shrink-0 flex-col flex-nowrap items-stretch justify-center gap-4 tablet:w-auto tablet:flex-row tablet:flex-wrap tablet:items-center tablet:gap-x-5">
               <slot name="actions" />
-              <ThemeSelect />
+              <ThemeSelect class="w-full tablet:w-auto max-tablet:[&_k-dropdown]:w-full max-tablet:[&_.k-dropdown\_\_trigger]:box-border max-tablet:[&_.k-dropdown\_\_trigger]:min-h-10 max-tablet:[&_.k-dropdown\_\_trigger]:w-full max-tablet:[&_.k-dropdown\_\_trigger]:whitespace-nowrap tablet:[&_.k-dropdown\_\_trigger]:min-w-[9.5rem]" />
             </div>
           )
         }
@@ -319,14 +319,6 @@ const composed = Astro.slots.has('tagline') || Astro.slots.has('actions');
 
     .tagline :global(p) {
       margin: 0;
-    }
-
-    .actions {
-      flex-shrink: 0;
-      gap: 1rem 1.25rem;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
     }
 
     .hero[data-hero-state='playing'],

@@ -858,7 +858,7 @@ html:has(.hero) .main-frame {
     inset: var(--sl-nav-height) 0 0 0;
   }
 
-  .docs-body > aside.k-sidebar__panel > .k-sidebar__trigger--close {
+  .docs-body > aside.k-sidebar__panel > .docs-sidebar-theme {
     position: sticky;
     top: 0;
     z-index: 1;
@@ -887,6 +887,27 @@ html:has(#docs-nav:checked) {
     border-color: var(--k-primary);
     color: var(--k-fg);
   }
+}
+
+/* Theme lives in the sidebar panel (and the hero). Hide the header copy. */
+header.header starlight-theme-select {
+  display: none;
+}
+
+.docs-sidebar-theme {
+  display: flex;
+  width: 100%;
+}
+
+.docs-sidebar-theme starlight-theme-select,
+.docs-sidebar-theme k-dropdown.k-dropdown {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.docs-sidebar-theme .k-dropdown__trigger {
+  width: 100%;
 }
 
 starlight-theme-select {
@@ -934,17 +955,6 @@ starlight-theme-select .k-dropdown__trigger[inert] {
 starlight-theme-select .k-dropdown__menu {
   z-index: 80;
   width: max-content;
-  min-width: 9.5rem;
-}
-
-header.header starlight-theme-select .k-dropdown__trigger {
-  min-width: 7.5rem;
-  padding-block: 0.375rem;
-  padding-inline: 0.75rem;
-  font-size: 0.75rem;
-}
-
-.hero starlight-theme-select .k-dropdown__trigger {
   min-width: 9.5rem;
 }
 

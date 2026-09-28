@@ -5,7 +5,7 @@ description: Radius, shadows, and the focus ring.
 
 import Preview from '../../../components/Preview.astro';
 
-Everything that isn't a [color](/foundations/colors/) or a [typeface](/foundations/typography/) lives here: corner radius, elevation, and the focus ring. These tokens sit on `:root`. Shadows pick up a stronger treatment in dark mode so they still read on a black page.
+Everything that isn't a [color](/foundations/colors/) or a [typeface](/foundations/typography/) lives here: corner radius, elevation, and the focus ring. These tokens sit on `:root`. Shadows pick up orange in dark mode so they still read on a black page.
 
 ## Radius
 
@@ -58,7 +58,7 @@ Three elevations. Use `--k-shadow-1` for a light lift (a resting card). `--k-sha
 | `--k-shadow-2` | Menus, dropdowns | `shadow-k-2` |
 | `--k-shadow-3` | Dialogs, overlays | `shadow-k-3` |
 
-`--k-shadow-1` carries a 2px spread so the lift sits outside a 1px border. Light mode is a slate shadow. Dark mode uses `--k-primary`, so the same lift reads orange on a black page.
+Light mode is a slate shadow. In dark mode all three use `--k-primary`, with a 2px spread so the lift still shows outside a 1px border.
 
 Three linear gradients ship for custom work. No component uses them.
 

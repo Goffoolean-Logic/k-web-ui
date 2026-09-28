@@ -63,7 +63,7 @@ Brand. Light page wash, fields, actions, borders, and focus.
 
 ### Steel
 
-Dark page backgrounds. 950 is black. Raised panels sit on 900. Stronger fills sit on 800.
+Dark page backgrounds. 950 is black. Raised panels and stronger fills sit on 800.
 
 `steel-50`, `steel-100`, `steel-200`, `steel-300`, `steel-400`, `steel-500`, `steel-600`, `steel-700`, `steel-800`, `steel-900`, `steel-950`
 

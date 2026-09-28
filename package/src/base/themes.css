@@ -46,8 +46,8 @@
   --k-warning: var(--k-palette-orange-700);
   --k-warning-fg: var(--k-palette-white);
 
-  --k-shadow-1: 0 4px 14px 2px rgb(15 23 42 / 0.22);
-  --k-shadow-2: 0 4px 14px rgb(15 23 42 / 0.12);
+  --k-shadow-1: 0 4px 14px rgb(15 23 42 / 0.12);
+  --k-shadow-2: 0 4px 14px 2px rgb(15 23 42 / 0.22);
   --k-shadow-3: 0 16px 40px rgb(15 23 42 / 0.18);
 }
 
@@ -55,7 +55,7 @@
   color-scheme: dark;
 
   --k-surface: var(--k-palette-steel-950);
-  --k-surface-raised: var(--k-palette-steel-700);
+  --k-surface-raised: var(--k-palette-steel-800);
   --k-surface-hard: var(--k-palette-steel-800);
   --k-surface-soft: var(--k-palette-steel-950);
   --k-fg: var(--k-palette-white);
@@ -78,7 +78,8 @@
   --k-warning: var(--k-palette-orange-400);
   --k-warning-fg: var(--k-palette-orange-950);
 
-  --k-shadow-1: 0 4px 16px 2px color-mix(in srgb, var(--k-primary) 70%, transparent);
-  --k-shadow-2: 0 8px 20px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(255 255 255 / 0.06);
-  --k-shadow-3: 0 20px 50px rgb(0 0 0 / 0.75), 0 0 0 1px rgb(255 255 255 / 0.08);
+  /* Same orange on every elevation. The 2px spread clears a 1px border. */
+  --k-shadow-1: 0 4px 12px 2px color-mix(in srgb, var(--k-primary) 55%, transparent);
+  --k-shadow-2: 0 8px 20px 2px color-mix(in srgb, var(--k-primary) 55%, transparent);
+  --k-shadow-3: 0 20px 48px 2px color-mix(in srgb, var(--k-primary) 55%, transparent);
 }
